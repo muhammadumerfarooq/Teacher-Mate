@@ -21,8 +21,8 @@ import { NativePlayerPage } from '../native-player/native-player';
 const READONLY_API_KEY:string = '5m4sk493cjbolmjxvxfmlw3u3'; //'dgk0ptiuf9fuz2l70stnyjpc9';
 @IonicPage()
 @Component({
-  selector: 'page-broadcast-list',
-  templateUrl: 'broadcast-list.html',
+  selector: 'page-broadcasts-list',
+  templateUrl: 'broadcasts-list.html',
 })
 export class BroadcastsListPage {
   isFetching = false;

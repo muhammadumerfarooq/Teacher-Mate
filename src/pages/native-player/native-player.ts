@@ -10,8 +10,8 @@ const APPLICATION_ID:string = 'ZFh8bLaIRYLwphIxYMm2Yw';
 
 @IonicPage()
 @Component({
-  selector: 'page-player-native',
-  templateUrl: 'player-native.html'
+  selector: 'page-native-player',
+  templateUrl: 'native-player.html'
 })
 export class NativePlayerPage {
   player: any;

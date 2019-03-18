@@ -5,8 +5,8 @@ import { NavController, NavParams, IonicPage } from 'ionic-angular';
 
 @IonicPage()
 @Component({
-  selector: 'page-player-js',
-  templateUrl: 'player-js.html'
+  selector: 'page-java-script-player',
+  templateUrl: 'java-script-player.html',
 })
 export class JavaScriptPlayerPage {
   // Bind '<div #player>' in template to this.playerEl
