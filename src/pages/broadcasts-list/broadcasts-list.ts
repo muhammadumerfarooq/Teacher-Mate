@@ -3,8 +3,8 @@ import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angu
 import moment from 'moment';
 
 import * as agent from 'superagent';
-import { JavaScriptPlayerPage } from '../java-script-player/java-script-player';
-import { NativePlayerPage } from '../native-player/native-player';
+// import { JavaScriptPlayerPage } from '../java-script-player/java-script-player';
+//import { NativePlayerPage } from '../native-player/native-player';
 
 
 /**
@@ -95,7 +95,7 @@ export class BroadcastsListPage {
       // When using a modal, the elements of the parent page remains
       // behind the modal, which defeats or strategy of using a transparent
       // webview to reveal the native player underneath.
-      this.navCtrl.push(NativePlayerPage, {
+      this.navCtrl.push('NativePlayerPage', {
         resourceUri: broadcast.resourceUri,
         autoplay: true,
       });
@@ -103,7 +103,7 @@ export class BroadcastsListPage {
     } else {
       // Open js player page in a modal window
       // and instruct it to play the selected broadcast
-      const playerModal = this.modalCtrl.create(JavaScriptPlayerPage, {
+      const playerModal = this.modalCtrl.create('JavaScriptPlayerPage', {
         resourceUri: broadcast.resourceUri,
         autoplay: true,
         showCloseButton: true,
