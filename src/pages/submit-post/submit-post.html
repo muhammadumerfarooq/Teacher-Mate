@@ -1,0 +1,85 @@
+<ion-header>
+  <ion-navbar no-border-bottom color="primary">
+    <ion-title> {{mypost.title}} </ion-title>
+    <ion-buttons left>
+      <button ion-button icon-only (click)="viewctrl_dismiss()" class="my-style-for-modal">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+<!-- -->
+<ion-content class="content">
+
+
+<!--
+    <ion-fab right top>
+    <button ion-fab color="secondary">
+      <ion-icon name="pin"></ion-icon>
+    </button>
+  </ion-fab>
+  -->
+  <ion-card [hidden]="mypost.img == ''">
+
+
+    <img [src]="mypost.img">
+
+   <!-- <ion-row>
+      <ion-col>
+        <button ion-button icon-left clear small class="whitebtn">
+          <ion-icon name="thumbs-up"></ion-icon>
+          <div>{{likes}}</div>
+        </button>
+      </ion-col>
+      <ion-col>
+        <button ion-button icon-left clear small class="whitebtn">
+          <ion-icon name="chatboxes"></ion-icon>
+          <div>{{comments}}</div>
+        </button>
+      </ion-col>
+      <ion-col center text-center>
+        <button ion-button icon-left clear small class="whitebtn">
+          <ion-icon name="md-pin"></ion-icon>
+          <div> </div>
+        </button>
+      </ion-col>
+
+      <ion-col center text-center>
+        <button ion-button icon-left clear small (click)="openShare(group)" class="whitebtn">
+          <ion-icon name="share"></ion-icon>
+        </button>
+      </ion-col>
+    </ion-row> -->
+    <ion-item>
+      <ion-icon color="danger" name="md-timer" item-left large></ion-icon>
+
+      <p>
+        {{mypost.publisheddate | date : "medium" }}
+      </p>
+    </ion-item>
+    <ion-card-content>
+       <div class="div-input">
+
+      <p  class="paragraph">
+        {{mypost.description}}
+
+      </p>
+      </div>
+    </ion-card-content>
+    
+  <button ion-button icon-only block class="postbtn" (click)="postfeed()">
+    <ion-icon name="send"></ion-icon>
+  </button>
+
+  </ion-card>
+
+
+ 
+
+
+
+
+
+
+</ion-content>

@@ -1,0 +1,52 @@
+page-submit-post {
+    .content{
+        background: url("../assets/img/bg.jpg") no-repeat; 
+    }
+    .user-profile{
+       // background-color: #4c6df9;
+        border-radius: 1.2em;
+    }
+    .paragraph{
+        color: black;
+        
+        font-size: 1.5em;
+    }
+    .div-input{
+        padding: 13px 16px 13px 16px;
+           
+    }
+
+    ion-row {
+        background-color: #019689;
+    }
+    ion-buttons button[icon-only].my-style-for-modal {
+        margin: 0 6px;
+        min-width: 36px;
+     }
+
+    .div-input{
+        padding: 13px 16px 13px 16px;
+           
+   
+            textarea{
+                height: 160px;
+                font-size: 1.5em;
+                
+            }
+        
+            
+    }
+    .commentsimage{
+        border-radius: 50%;
+    }
+    .postbtn{
+      
+            margin-top: 5%;
+            width: 100%;
+           
+        
+    }
+    .whitebtn{
+        color: white;
+    }
+}

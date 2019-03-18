@@ -211,9 +211,9 @@
     border-radius: 0;
   }
   
-  .border-bottom {
-    border-bottom: 1px solid rgba(86, 61, 124, 0.1);
-  }
+  // .border-bottom {
+  //   border-bottom: 1px solid rgba(86, 61, 124, 0.1);
+  // }
   
   .full-width {
     width: 100% !important;
@@ -271,7 +271,7 @@
   // card style
   .card {
     background: #FFF;
-    border-radius: 1rem;
+    
     box-shadow: 0 0 1px rgba(86, 61, 124, 0.2), 0 2px 4px rgba(86, 61, 124, 0.15);
   }
   
@@ -296,6 +296,7 @@
     .item {
       .item-inner {
         border: none;
+        border-bottom: none;
       }
     }
   }
@@ -306,7 +307,7 @@
     .item,
     .item:first-child,
     .item:last-child {
-      border-bottom: 1px solid rgba(86, 61, 124, 0.2);
+    //  bitem-innerorder-bottom: 1px solid rgba(86, 61, 124, 0.2);
       .item-inner {
         border: none;
       }
@@ -646,15 +647,25 @@
     display: inline-block;
     border-radius: 50%;
     box-shadow: transparent;// inset 0 0 10rem rgba(0,0,0,.25), 0 0 4rem rgba(255,255,255,.45);
-    img {
+    // img {
       
-     // -webkit-border-radius: 50%;
-      border-radius: 50%;
-      float: right;
+    //  // -webkit-border-radius: 50%;
+    //   border-radius: 50%;
+    //   float: right;
+    //   overflow: visible;
+    //   // position: relative;
+    //   margin-top: -4.95rem;
+    //   background: transparent;
+    // }
+    img {
       overflow: visible;
-      // position: relative;
+      float: right;
       margin-top: -4.95rem;
       background: transparent;
+      height: 100%;
+      width: 100%;
+      align-items: center;
+      border-radius: 50%;
     }
   }
   .toolbar-background {
@@ -707,6 +718,9 @@
       border-radius: 50%;
       box-shadow: inset 0 0 10rem rgba(0,0,0,.25), 0 0 4rem rgba(255,255,255,.45);
       img {
+        height: 100%;
+        width: 100%;
+        align-items: center;
         border-radius: 50%;
       }
     }
@@ -727,10 +741,12 @@
   .user-list {
     .item {
       &:last-child {
-        border-bottom: 0;
+        border-bottom: none;
       }
       .item-inner {
-        border-color: rgba(86, 61, 124, .1);
+        border:none;
+        border-bottom: none;
+       // border-color: rgba(86, 61, 124, .1);
       }
     }
   }

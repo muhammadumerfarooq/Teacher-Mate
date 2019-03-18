@@ -1,3 +1,10 @@
 page-chat {
-
+ img {
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+    ion-buttons button[icon-only].my-style-for-modal {
+      margin: 0 6px;
+      min-width: 36px;
+   }
 }
+  

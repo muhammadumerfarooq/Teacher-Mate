@@ -1,6 +1,12 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, ViewController, AlertController } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
+import { Storage } from '@ionic/storage';
+import { LoaderserviceProvider } from '../../providers/loaderservice/loaderservice';
+import { Observable } from 'rxjs';
+import { AngularFirestore } from 'angularfire2/firestore';
+
+
 /**
  * Generated class for the ParentloginPage page.
  *
@@ -14,21 +20,14 @@ import { AngularFireAuth } from 'angularfire2/auth';
   templateUrl: 'parentlogin.html',
 })
 export class ParentloginPage {
-  teacher_email: string= "";
-  teacher_password: string= "";
+  parent_email: string= "";
+  parent_password: string= "";
   emailverified: boolean = false;
+  parentsarray: Observable<any[]>;
 
-constructor(public modalctrl: ModalController, public viewCtrl:ViewController, public navCtrl: NavController, public navParams: NavParams, public afauth: AngularFireAuth, public alertCtrl:AlertController) {
+constructor(private afs:AngularFirestore, private loader:LoaderserviceProvider,public loaderserivce:LoaderserviceProvider,public storage:Storage,public modalctrl: ModalController, public viewCtrl:ViewController, public navCtrl: NavController, public navParams: NavParams, public afauth: AngularFireAuth, public alertCtrl:AlertController) {
 
- // this.afauth.auth.onAuthStateChanged(user => {
- //   if (user){
- //   //  this.navCtrl.pop();
- //    //   this.navCtrl.popToRoot();
- //     //  this.navCtrl.setRoot(HomePage);
- //      this.navCtrl.push(HomePage);
- //   }
- // });
-//    console.log(this.afauth.auth.currentUser)
+
 if (this.afauth.auth.currentUser != null || this.afauth.auth.currentUser != undefined){
  if (this.afauth.auth.currentUser.emailVerified ){
    this.emailverified = true;
@@ -53,42 +52,133 @@ presentAlert(alerttitle, alertsub) {
 }
 
 login(){
- let tcredts = {
-   email: this.teacher_email,
-   password: this.teacher_password
- }
+console.log(this.parent_email, " ", this.parent_password)
  // this.loginprovider.findteacher(tcredts);
- this.afauth.auth.signInWithEmailAndPassword(tcredts.email,tcredts.password).then(res=> {
-   
-   // let childnavs = this.navCtrl.getViews();
-   // for (let i=0;i<childnavs.length;i++){
-   // console.log(childnavs[i].component.name+" "+childnavs[i]);
-   
-   // }
-   console.log(this.afauth.auth.currentUser);
-   if (this.afauth.auth.currentUser!= undefined && this.afauth.auth.currentUser!= null && this.afauth.auth.currentUser.emailVerified){
-   this.viewCtrl.dismiss(true);
-   }else{
-     this.emailverified = false;
-   }
-  // this.navCtrl.popToRoot();
-  // this.navCtrl.push(HomePage);
- 
-   // this.navCtrl.push(HomePage)
-   // .then(() => {
-   //   const startIndex = this.navCtrl.getActive().index - 1;
-   //   this.navCtrl.remove(startIndex, 1);
-   // }); 
+ this.loader.loading = this.loader.loadingCtrl.create({
+          
+  content: `
+    <div class="custom-spinner-container">
+      <div class="custom-spinner-box"> loading... </div>
+    </div>`,
 
- }).catch(err=>{
-   this.presentAlert('Login Failed ',' Username not found ');
- });
+});
+this.loader.loading.present().then(()=>{
+  this.parentsarray =  this.afs.collection<any>('parents').snapshotChanges().take(1).map(actions => {
+   return actions.map(action => {
+     console.log(action.payload.doc.id);
+     
+        if (action.payload.doc.id == this.parent_email){
+          const data = action.payload.doc.data();
+          const id = action.payload.doc.id;
+        return { id, ...data };
+        }
+    });
+ 
+})
+console.log(this.parentsarray);
+this.parentsarray.subscribe(res=>{
+  console.log(res);
+  for (let i=0;i<res.length;i++){   
+    
+    if (res[i] !=undefined &&  res[i].id == this.parent_email){
+    
+        
+      console.log(this.afauth.auth.currentUser);
+       
+       this.storage.set('user', 'parent').then(res=>{
+        this.storage.set('email',this.parent_email).then(res=>{
+          
+          this.afauth.auth.signInWithEmailAndPassword(this.parent_email,this.parent_password).then(()=>{
+            this.emailverified=this.afauth.auth.currentUser.emailVerified;
+            
+            this.loader.dismissloading();
+            this.viewCtrl.dismiss(true);
+
+         
+
+
+       
+
+          }).catch(err=>{
+            this.storage.clear().then(()=>{
+              this.loader.dismissloading();
+              this.presentAlert('Login Failed ',err);
+            }).catch(()=>{
+              this.loader.dismissloading();
+              this.presentAlert('Login Failed ',err);
+            })
+
+          })
+          this.emailverified=true;
+          this.loader.dismissloading();
+          this.viewCtrl.dismiss(true);
+        }).catch(err=>{
+          
+          this.loader.dismissloading();
+          this.presentAlert('Login Failed ',err);
+        });
+      }).catch(err=>{
+        this.loader.dismissloading();
+        this.presentAlert('Login Failed ',err);
+      });
+      
+      /*else{
+        this.storage.set('user', 'parent').then(res=>{
+          this.storage.set('email',this.parent_email).then(res=>{
+           
+            this.afauth.auth.signInWithEmailAndPassword(this.parent_email,this.parent_password).then(res=> {
+            
+              this.emailverified=false;
+
+              this.storage.clear().then(()=>{
+                this.loader.dismissloading();
+                this.viewCtrl.dismiss(true);
+              }).catch((err)=>{
+                this.loader.dismissloading();
+                this.presentAlert('Login Failed ',err);
+              });
+
+
+            }).catch((err=>{
+              this.loader.dismissloading();
+              this.presentAlert('Login Failed ',err);
+            }));
+            
+            this.loader.dismissloading();
+            this.viewCtrl.dismiss(true);
+          }).catch(err=>{
+            
+            this.loader.dismissloading();
+            this.presentAlert('Login Failed ',err);
+          });
+        }).catch(err=>{
+          this.loader.dismissloading();
+          this.presentAlert('Login Failed ',err);
+        });
+      }*/
+    
+
+  }else{
+    
+    this.loader.dismissloading();
+    this.presentAlert('Login Failed ',' Username not found ');
+    break;
+
+  }
+  }
+  if (res.length==0){
+    this.loader.dismissloading();
+    this.presentAlert(' login failed ',' no account found with this email address ')
+  }
+});
+
+
+});
+ 
+
 }
 googlelogin(){
- let tcredts = {
-   email: this.teacher_email,
-   password : this.teacher_password
- }
+
  
 }
 
@@ -114,12 +204,14 @@ sendverification(){
 }
 
 verified(){
- if (this.afauth.auth.currentUser.emailVerified ){
+ /* if (this.afauth.auth.currentUser.emailVerified ){
    this.emailverified = true;
    this.navCtrl.popToRoot();
  }else{
    this.presentAlert('Email verfication ',' Failed ');
  }
+ */
+this.login();
 }
 
 }

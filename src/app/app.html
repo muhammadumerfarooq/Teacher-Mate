@@ -1,4 +1,4 @@
-<ion-menu side="left" id="authenticated" [content]="content">
+<ion-menu side="left" id="authenticated" [content]="content" >
   <ion-header>
     <ion-toolbar class="user-profile">
 
@@ -6,20 +6,20 @@
         <ion-row>
           <ion-col col-4>
               <div class="user-avatar">
-                <img src="../assets/img/teacher.png">
+                <img [src]="homeservice.userprofile.imgurl">
               </div>
           </ion-col>
           <ion-col padding-top col-8>
             <h2 ion-text class="no-margin bold text-white">
-              User Name
+              {{homeservice.userprofile.username}}
             </h2>
-            <span ion-text color="light">Customer</span>
+            <span ion-text color="light">{{homeservice.userprofile.useremail}}</span>
           </ion-col>
         </ion-row>
 
         <ion-row no-padding class="other-data">
           <ion-col no-padding class="column">
-            <button ion-button icon-left small full color="light" menuClose disabled>
+            <button ion-button icon-left small full color="light" menuClose (click)="editprofile()">
               <ion-icon name="contact"></ion-icon>
               Edit Profile
             </button>

@@ -1,0 +1,151 @@
+<ion-header>
+  <ion-navbar no-border-bottom color="primary">
+    <ion-title> {{mypost.title}} </ion-title>
+    <ion-buttons left>
+      <button ion-button icon-only (click)="viewctrl_dismiss()" class="my-style-for-modal">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+<!-- -->
+<ion-content class="content">
+
+  <!--
+    <ion-fab right top>
+    <button ion-fab color="secondary">
+      <ion-icon name="pin"></ion-icon>
+    </button>
+  </ion-fab>
+  -->
+  <ion-card *ngIf="mypost.img != ''" [hidden]="mypost.img == ''">
+
+    <ion-row>
+
+      <ion-item class="item-avatar" [ngStyle]="{'background-color': '#4c6df9'}">
+
+        <ion-avatar item-start>
+          <img [src]="mypost.userurl" [ngStyle]="{'width': '50px', 'height': '50px'}">
+        </ion-avatar>
+
+      </ion-item>
+
+    </ion-row>
+    <ion-card>
+      <img [src]="mypost.imgurl">
+    </ion-card>
+    <ion-item>
+      <ion-icon color="danger" name="md-timer" item-left large></ion-icon>
+
+      <p>
+        {{mypost.publisheddate | date : "medium" }}
+      </p>
+    </ion-item>
+    <ion-card-content>
+      <div class="div-input">
+
+        <p class="paragraph">
+          {{mypost.description}}
+
+        </p>
+      </div>
+    </ion-card-content>
+
+    <ion-row>
+      <ion-col>
+        <button ion-button icon-left clear small class="whitebtn" (click)="likeclick(mypost)">
+          <ion-icon padding-left name="thumbs-up"></ion-icon>
+          <div>{{mypost.likes.length}}</div>
+        </button>
+      </ion-col>
+      <ion-col>
+        <button ion-button icon-left clear small class="whitebtn" (click)="commentclick(mypost)">
+          <ion-icon padding-left name="chatboxes"></ion-icon>
+          <div>{{mypost.comments.length}}</div>
+        </button>
+      </ion-col>
+      <!--  <ion-col center text-center>
+        <button ion-button icon-left clear small class="whitebtn">
+          <ion-icon name="md-pin"></ion-icon>
+          <div> </div>
+        </button>
+      </ion-col>
+    -->
+      <ion-col center text-center>
+        <button ion-button icon-left clear small (click)="openShare(group)" class="whitebtn">
+          <ion-icon padding-left name="share"></ion-icon>
+        </button>
+      </ion-col>
+    </ion-row>
+
+
+
+  </ion-card>
+
+  <ion-card *ngIf="mypost.likes.length > 0" [hidden]="mypost.likes.count == 0">
+
+
+    <ion-card-header>
+      <b>Likes</b>
+    </ion-card-header>
+
+    <ion-list [hidden]="mypost.comments.count == 0">
+      <ion-item-sliding *ngFor="let like of mypost.likes">
+        <ion-item>
+          <ion-avatar item-start>
+            <img [src]="like.userurl">
+          </ion-avatar>
+          <span ion-text color="primary">{{like.date | date : "mediumDate" }}</span>
+        </ion-item>
+      </ion-item-sliding>
+    </ion-list>
+
+  </ion-card>
+
+
+
+  <ion-card *ngIf="mypost.comments.length > 0" [hidden]="mypost.comments.count == 0">
+    <ion-card-header>
+      <b>Comments</b>
+    </ion-card-header>
+
+    <ion-list [hidden]="mypost.comments.count == 0">
+      <ion-item-sliding *ngFor="let comment of mypost.comments">
+        <ion-item>
+          <ion-avatar item-start>
+            <img [src]="comment.userurl">
+          </ion-avatar>
+          <div *ngIf ="comment.date == commenttime">
+          <span class="blinking">
+          {{comment.comment}} 
+          <span ion-text>{{comment.date | date : "mediumDate" }}</span>
+          </span>
+          </div>
+          <div *ngIf ="comment.date != commenttime">
+          
+          <h2 [ngStyle]="{'white-space':'normal'}">{{comment.comment}} </h2>
+          <span ion-text>{{comment.date | date : "mediumDate" }}</span>
+         
+          </div>
+          
+        </ion-item>
+      </ion-item-sliding>
+    </ion-list>
+
+  </ion-card>
+
+  <ion-card>
+    <div class="div-input">
+
+      <ion-textarea class="textbox" type="string" placeholder="Add Comment" [(ngModel)]="newcomment" name="text"></ion-textarea>
+
+      <button ion-button icon-only block class="submitbtn" (click)="addcomment()">
+        <ion-icon name="paper-plane"></ion-icon>
+      </button>
+    </div>
+  </ion-card>
+
+
+
+</ion-content>

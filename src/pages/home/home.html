@@ -8,20 +8,22 @@
       <strong>My </strong> Classrooms
     </ion-title>
     <ion-buttons end> 
-<!--      <button ion-button tappable (click)="presentNotifications($event)">
-        <ion-icon name="notifications"></ion-icon> 
-      </button>
-      <button ion-button tappable (click)="goToAccount()">
-        <ion-icon name="cog"></ion-icon>
-      </button> -->
-
-      <button ion-button tappable  (click)="createclassroom()" >
+   
+      <div *ngIf = "this.homeservice.searchname == 'parent'">
+      <button   ion-button tappable  (click)="joinclassroom()" >
         <ion-icon name="add-circle"  class="button-add" ></ion-icon> 
       </button>
-       <button ion-button tappable class="chat-button">
+      </div>
+      <div *ngIf = "this.homeservice.searchname == 'teacher'"> 
+      <button  ion-button tappable  (click)="classoptions()" >
+        <ion-icon name="arrow-dropdown-circle"  class="button-add" ></ion-icon> 
+      </button>
+      </div>
+      <!-- 
+       <button ion-button tappable class="chat-button" (click)="chatroom()" >
         <ion-icon name="chatbubbles"></ion-icon>
         <span class="button__badge">4</span>
-       </button>
+       </button> -->
     </ion-buttons>
   </ion-navbar>
 </ion-header>
@@ -48,7 +50,7 @@
 -->
   <!--list of trips-->
   <div *ngIf="this.homeservice.classfound">
-  <div class="trip card" *ngFor="let myclass of this.homeservice.teacherclassroom" tappable (click)="viewClassroom(myclass.classname, myclass.teacheremail)" margin-bottom>
+  <div class="trip card" *ngFor="let myclass of this.homeservice.myclassroom" tappable (click)="viewClassroom(myclass.classname, myclass.teacheremail)" margin-bottom>
     <div class="background border-bottom" [ngStyle]="{'background-image': 'url(assets/img/trip/thumb/trip_1.jpg)'}"> 
       <div class="background-filter rlt">
         <div class="align-bottom" padding-left padding-right>
@@ -65,7 +67,7 @@
                <ion-row>
                 <ion-col col-4>
                   <div class="user-avatar">
-                     <img src="../assets/img/avatar.jpeg">
+                     <img [src]="myclass.imgurl">
                   </div> 
          
                 </ion-col>

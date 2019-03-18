@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "765787238011",
+    "firebase_url": "https://wired-coffee-4f603.firebaseio.com",
+    "project_id": "wired-coffee-4f603",
+    "storage_bucket": "wired-coffee-4f603.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:765787238011:android:b38df01d3dc5f73c",
+        "android_client_info": {
+          "package_name": "com.ionic.teachermate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "765787238011-11j62h35falc07kn5j6ptfprpuf844lg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ionic.teachermate",
+            "certificate_hash": "cfd8fc64e07e7777468fa8e3e00b2bede3079298"
+          }
+        },
+        {
+          "client_id": "765787238011-5bm3620k63nn7afjkfet58j7u7n9tt72.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAoLV5KjR9i9CSMg2QAJVnctcTfzsWr_FM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "765787238011-5bm3620k63nn7afjkfet58j7u7n9tt72.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "765787238011-k1dcog49j608p15buu0166hald041krg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ionic.teachermate"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

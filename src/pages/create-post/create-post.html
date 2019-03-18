@@ -1,0 +1,152 @@
+<!-- 
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      <strong>TimeLine </strong> 
+    </ion-title>
+    <ion-buttons end> 
+      <button ion-button tappable (click)="presentNotifications($event)">
+        <ion-icon name="notifications"></ion-icon> 
+      </button>
+      <button ion-button tappable (click)="goToAccount()">
+        <ion-icon name="cog"></ion-icon>
+      </button> 
+
+    <button ion-button tappable  (click)="createclassroom()" >
+        <ion-icon name="add-circle"  class="button-add" ></ion-icon> 
+      </button>
+       <button ion-button tappable class="chat-button" (click) = "chatpage()">
+        <ion-icon name="chatbubbles"></ion-icon>
+        <span class="button__badge">4</span>
+       </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+ -->
+
+<ion-header>
+  <ion-navbar no-border-bottom color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title> Create Your Post </ion-title>
+  </ion-navbar>
+
+</ion-header>
+<!-- -->
+<ion-content padding class="content">
+
+
+  <ion-card class="card-css">
+    <!-- <img [src]="item.img" alt="Not Available" imageViewer/> -->
+
+    <div class="container">
+      <div *ngIf="mypost.filetype == 'img'">
+        <img [src]="mypost.img" alt="Avatar" class="image">
+        <div class="overlay">
+          <a clear small color="light" padding-bottom class="icon-href" title="Edit Image">
+            <ion-icon name="create"></ion-icon>
+          </a>
+          <a clear small color="light" padding-bottom class="icon-href-left" title="Delete Image">
+            <ion-icon name="trash"></ion-icon>
+          </a>
+        </div>
+      </div>
+
+
+      <div *ngIf="mypost.filetype == 'pdf'" [ngStyle]="{'background-color': 'transparent'}">
+        <button ion-button (click)="openfile()" class="btn-file">
+          <img src="../assets/img/allfile.jpg" class="fileimage">
+
+          <div class="overlay-center">
+            <a clear small color="light" padding-bottom class="icon-href-center" title="change image">
+              {{filename.name}}
+              <!--  <ion-icon name="camera"></ion-icon> -->
+            </a>
+          </div>
+        </button>
+      </div>
+
+
+
+    </div>
+
+  </ion-card>
+
+  <!-- <ion-card>
+
+    <div *ngIf="Video.length > 0" class="container">
+      <video width="100%" controls>
+        <source [src]="Video" type="video/mp4" class="video">
+
+      </video>
+    </div>
+  </ion-card> -->
+  <!-- <ion-row>
+            <ion-col>
+                <button ion-button icon-left clear small color="light" (click) ="editimage(item)">
+                    <ion-icon name="create"></ion-icon>
+                </button>
+            </ion-col>
+            <ion-col>
+                <button ion-button icon-left clear small color="light" (click) ="deleteimage(item)">
+                <ion-icon name="trash" ></ion-icon>
+                </button>
+            </ion-col>
+            </ion-row>
+        -->
+
+  <ion-toolbar class="user-profile">
+    <ion-card>
+
+      <div class="div-input">
+
+        <!-- {{offer.desc}} Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. -->
+        <ion-input class="input-box" type="text" placeholder="Enter Post Title" [(ngModel)]="mypost.title" name="text"></ion-input>
+
+        <ion-textarea class="textbox" type="string" placeholder="Enter Discription" [(ngModel)]="mypost.description"
+          name="text"></ion-textarea>
+
+        <button class="optionbtn" img-center clear color="light" (click)="picutreoption()">
+          <img src="assets/icon/addimage.png" class="imgpicker">
+        </button>
+        <button class="optionbtn" img-center clear color="light" (click)="chosefile()">
+          <img src="assets/icon/file.png" class="imgpicker">
+        </button>
+        <button ion-button icon-only block class="submitbtn" (click)="submitbtn()">
+          <ion-icon name="paper-plane"></ion-icon>
+        </button>
+      </div>
+
+
+
+      <!-- <ion-row>
+      <ion-col></ion-col>
+
+      <ion-col>
+      
+        <button ion-button icon-left clear large color="light" (click)="picutreoption()">
+          <ion-icon name="image"></ion-icon>
+          <div></div>
+        </button>
+
+      </ion-col>
+      <ion-col></ion-col>
+      <ion-col>
+        <button ion-button icon-left clear large color="light" (click)="imagesoption()">
+          <ion-icon name="images"></ion-icon>
+          <div></div>
+        </button>
+
+      </ion-col>
+      <ion-col></ion-col>
+    </ion-row> -->
+
+    </ion-card>
+
+  </ion-toolbar>
+
+</ion-content>

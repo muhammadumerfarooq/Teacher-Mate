@@ -1,4 +1,4 @@
-<!-- -->
+<!-- 
 <ion-header>
   <ion-navbar color="primary">
     <button ion-button menuToggle>
@@ -8,17 +8,16 @@
       <strong>TimeLine </strong> 
     </ion-title>
     <ion-buttons end> 
-<!--      <button ion-button tappable (click)="presentNotifications($event)">
+      <button ion-button tappable (click)="presentNotifications($event)">
         <ion-icon name="notifications"></ion-icon> 
       </button>
       <button ion-button tappable (click)="goToAccount()">
         <ion-icon name="cog"></ion-icon>
-      </button> -->
+      </button> 
 
-     <!-- <button ion-button tappable  (click)="createclassroom()" >
+    <button ion-button tappable  (click)="createclassroom()" >
         <ion-icon name="add-circle"  class="button-add" ></ion-icon> 
       </button>
-       --> 
        <button ion-button tappable class="chat-button" (click) = "chatpage()">
         <ion-icon name="chatbubbles"></ion-icon>
         <span class="button__badge">4</span>
@@ -26,14 +25,96 @@
     </ion-buttons>
   </ion-navbar>
 </ion-header>
- 
+ -->
 
-<!--
-<div class="navbar">
-  <div class="button">
-    <i class="fa fa-globe"></i>
-    <span class="button__badge">2</span>
-  </div> 
+<ion-header>
+  <ion-navbar no-border-bottom color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title> Feed </ion-title>
+
+    <ion-buttons end>
+
+      <button ion-button tappable class="chat-button" (click)="chatpage()">
+        <ion-icon name="chatbubbles"></ion-icon>
+        <span class="button__badge">4</span>
+      </button>
  
-</div>
--->
+      <button ion-button tappable class="chat-button" (click)="presentNotifications($event)">
+        <ion-icon name="notifications"></ion-icon>
+         <span class="button__badge">4</span>
+      </button>
+    </ion-buttons>
+
+
+
+
+  </ion-navbar>
+  <ion-toolbar no-border-top color="primary">
+    <ion-searchbar (click)="showAddressModal()" type="text" placeholder="Search Post" color="primary">
+    </ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="content">
+  <ion-card *ngFor="let feed of post.Feeds" [hidden]="post.Feeds.count == 0">
+
+    <ion-row>
+
+      <ion-item class="item-avatar" [ngStyle]="{'background-color': '#4c6df9'}">
+
+        <ion-avatar item-start >
+          <img [src]="feed.userurl" [ngStyle]="{'width': '50px', 'height': '50px'}">
+        </ion-avatar>
+
+
+        <ion-buttons end>
+
+          <button ion-button tappable [ngStyle]="{'background-color': '#4c6df9', 'box-shadow':'none'}" (click)="feedoption(feed, $event)">
+            <ion-icon name="more" class="more-class"></ion-icon>
+          </button>
+
+        </ion-buttons>
+
+      </ion-item>
+
+    </ion-row>
+
+    <img [src]="feed.imgurl" alt="Not Available" imageViewer />
+    <ion-card-content>
+      <div class="card-title">{{feed.title}} </div>
+      <div class="card-subtitle">{{feed.publisheddate | date : "medium" }}</div>
+    </ion-card-content>
+    <ion-row>
+      <ion-col>
+        <button ion-button icon-left clear small class="whitebtn">
+          <ion-icon padding-left name="thumbs-up"></ion-icon>
+          <div>{{feed.likes.length}}</div>
+        </button>
+      </ion-col>
+      <ion-col>
+        <button ion-button icon-left clear small class="whitebtn">
+          <ion-icon padding-left name="chatboxes"></ion-icon>
+          <div>{{feed.comments.length}}</div>
+        </button>
+      </ion-col>
+      <!--    <ion-col center text-center>
+        <button ion-button icon-left clear small class="whitebtn">
+          <ion-icon name="md-pin"></ion-icon>
+          <div></div>
+        </button>
+      </ion-col> -->
+      <ion-col center text-center>
+        <button ion-button icon-left clear small class="whitebtn" (click)="goToDetail(feed)">
+          <ion-icon name="md-arrow-round-forward"></ion-icon>
+        </button>
+      </ion-col>
+    </ion-row>
+
+  </ion-card>
+  <ion-card *ngIf="post.Feeds.length == 0" [hidden]="post.Feeds.count > 0">
+    No Feeds found you
+  </ion-card>
+
+
+</ion-content>

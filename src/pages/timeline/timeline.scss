@@ -1,3 +1,53 @@
-page-timeline {
+$categories: (ionic: color($colors, primary), angular: #AC282B, communication: #8E8D93, tooling: #FE4C52, services: #FD8B2D, design: #FED035, workshop: #69BB7B, food: #3BC7C4, documentation: #B16BE3, navigation: #6600CC, );
 
+@function auxiliary-categories() {
+  @return map-remove($categories);
+}
+
+.avatar-user{
+  
+ 
+    border-radius: 50%;
+    overflow: hidden;
+    width: 50px;
+    height: 50px;
+
+}
+
+page-timeline {
+  .content{
+    background: url("../assets/img/bg.jpg") no-repeat; 
+}
+.whitebtn{
+  color: white;
+}
+  // @each $track, $value in auxiliary-categories() {
+  //  ion-item-sliding[track=#{$track}] ion-label {
+  //    border-left: 2px solid $value;
+  //    padding-left: 10px;
+  //  }
+  // }
+  // .card-content,
+  // .card-header {
+  //     background-color: #f0f0f0
+  // }
+  .more-class {
+    font-size: 2.2em;
+  }
+  ion-row {
+    background-color: #4c6df9;
+  }
+
+  .card-title {
+    font-size: 1.2em;
+    width: 100%;
+    font-weight: bold;
+    color: #ff5722;
+  }
+
+  .card-subtitle {
+    font-size: 1.0em;
+    width: 100%;
+    color: #ff5722;
+  }
 }

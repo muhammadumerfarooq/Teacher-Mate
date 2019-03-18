@@ -4,23 +4,53 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
+<!-- -->
 <ion-header>
+  <ion-navbar color="primary">
+    <ion-buttons left>
+      <button ion-button icon-only (click)="viewctrl_dismiss()" class="my-style-for-modal">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
 
-  <ion-navbar>
-    <ion-title>chat-page</ion-title>
+    <!-- <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button> -->
+    <ion-title>
+      <strong> Chats ({{user}}) </strong> 
+    </ion-title>
+    <ion-buttons end> 
+    
+<!--      <button ion-button tappable (click)="presentNotifications($event)">
+        <ion-icon name="notifications"></ion-icon> 
+      </button>
+      <button ion-button tappable (click)="goToAccount()">
+        <ion-icon name="cog"></ion-icon>
+      </button> -->
+
+     <!-- <button ion-button tappable  (click)="createclassroom()" >
+        <ion-icon name="add-circle"  class="button-add" ></ion-icon> 
+      </button>
+       --> 
+       <!-- <button ion-button tappable class="chat-button" (click) = "chatpage()">
+        <ion-icon name="chatbubbles"></ion-icon>
+        <span class="button__badge">4</span>
+       </button>
+       -->
+    </ion-buttons>
   </ion-navbar>
-
 </ion-header>
+ 
 
 
 <ion-content padding-top>
   <ion-list>
-    <ion-item-sliding #sliding *ngFor="let friend of friends">
+    <ion-item-sliding #sliding *ngFor="let friend of friends | async">
       <ion-item (click)="goToChatRoom(friend)">
         <ion-avatar item-start>
-          <img [src]="">
+          <img [src]="friend.userurl">
         </ion-avatar>
-        <h2>{{ friend.fullname }} <span ion-text color="primary">({{ friend.username }})</span></h2>
+        <h2>{{ friend.id }} <span ion-text color="primary">({{ friend.user }})</span></h2>
       </ion-item>
       <ion-item-options side="right">
         <button ion-button color="primary" (click)="goToProfileFriend(sliding, friend)">

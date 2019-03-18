@@ -1,10 +1,14 @@
-import { Component } from '@angular/core';
-import {ModalController ,NavController, PopoverController, ToastController, AlertController} from "ionic-angular";
+import { Component, OnInit } from '@angular/core';
+import { ModalController, NavController, PopoverController, ToastController, AlertController } from "ionic-angular";
 import { Storage } from '@ionic/storage';
 import { Platform, ActionSheetController } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
 
 import { HomeServiceProvider } from '../../providers/home-service/home-service';
+
+// import {OnInit} from '@angular/core';
+import { FCM } from '@ionic-native/fcm';
+import { ProfileServiceProvider, profile } from '../../providers/profile-service/profile-service';
 
 // import { LoaderserviceProvider } from '../../providers/loaderservice/loaderservice';
 
@@ -12,65 +16,71 @@ import { HomeServiceProvider } from '../../providers/home-service/home-service';
   selector: 'page-home',
   templateUrl: 'home.html'
 })
-export class HomePage {
+export class HomePage implements OnInit {
 
-   // search condition
-   public search = {
-    name: "name ",
-    date: new Date().toISOString()
+  
+  public searchuser = {
+    name: "name"
   }
 
-  constructor(public homeservice: HomeServiceProvider, public afAuth:AngularFireAuth, public alertctrl:AlertController ,public toastctrl:ToastController, public modalctrl: ModalController, public platform: Platform, public actionsheetCtrl: ActionSheetController, private storage: Storage, public nav: NavController, public popoverCtrl: PopoverController) {
-    let childnavs = this.nav.getViews();
-    console.log(childnavs);
-      for (let i=0;i<childnavs.length;i++){
-      console.log(childnavs[i].component.name+" "+childnavs[i]);
+
+  constructor(private modalCtrl: ModalController,private profileservice :ProfileServiceProvider,private fcm: FCM, public homeservice: HomeServiceProvider, public afAuth: AngularFireAuth, public alertctrl: AlertController, public toastctrl: ToastController, public modalctrl: ModalController, public platform: Platform, public actionsheetCtrl: ActionSheetController, private storage: Storage, public nav: NavController, public popoverCtrl: PopoverController) {
+    console.log(this.homeservice.searchname);
+
+    /// this.searchuser.name = this.homeservice.searchname; 
+
+  }
+
+  ngOnInit() {
+    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+    //Add 'implements OnInit' to the class.
+    this.afAuth.auth.onAuthStateChanged(user => {
+
+      console.log(user);
+
+      if (user == undefined) {
+        console.log('go to login');
+        var modalPage = this.modalCtrl.create('LoginmenuPage');
+        modalPage.onDidDismiss(data=>{
+          if (data == true)
+          {
+            console.log(data+" login menu ");
+          //  this.navCtrl.popToRoot();
+          }
+        });
+        modalPage.present();
+
+     //   this.nav.push('LoginmenuPage')
+
       }
-  this.afAuth.auth.onAuthStateChanged(user => {
-    
-    console.log(user);
-    console.log(childnavs);
-    if (user == undefined){
-      console.log('go to login');
-      this.nav.push('LoginmenuPage')
-      //  .then(() => {
-      //   const startIndex = this.nav.getActive().index - 1;
-      //   this.nav.remove(startIndex, 1);
-      // }); 
-    // var modalpage = this.modalctrl.create('LoginmenuPage');
-    //  modalpage.present();
-    }
-  });
-    
+
+    });
+    // console.log(this.fcm);
+
+    //   this.initFCM();
   }
- 
+
   ionViewWillEnter() {
     // this.search.pickup = "Rio de Janeiro, Brazil";
     // this.search.dropOff = "Same as pickup";
-    this.storage.get('pickup').then((val) => {
-      if (val === null) {
-        this.search.name = "User name "
-      } else {
-        this.search.name = val;
-      }
-    }).catch((err) => {
-      console.log(err)
-    });
+    
+    
+    
   }
 
   // go to result page
   doSearch() {
-  //  this.nav.push(TripsPage);
+    //  this.nav.push(TripsPage);
   }
 
   // choose place
   choosePlace(from) {
-  //  this.nav.push(SearchLocationPage, from);
+    //  this.nav.push(SearchLocationPage, from);
   }
 
   // to go account page
   goToAccount() {
-  //  this.nav.push(SettingsPage);
+    //  this.nav.push(SettingsPage);
   }
 
   presentNotifications(myEvent) {
@@ -82,8 +92,99 @@ export class HomePage {
   }
 
 
-  viewClassroom(classname: any, classteacher: any){
-    this.nav.push('TimelinePage')
+  viewClassroom(classname: any, classteacher: any) {
+    this.homeservice.getchatusers(classname, classteacher);
+    this.storage.set('classroom', classname);
+    this.storage.set('classteacher', classteacher);
+    this.nav.setRoot('TabsPage')
+  }
+
+  classoptions() {
+    let createjoinclass = this.alertctrl.create({
+      title: 'Create/Join class',
+      buttons: [
+        {
+          text: 'Create',
+          handler: data => {
+            console.log('Create clicked');
+            this.createclassroom();
+          }
+        },
+
+        {
+          text: 'Join',
+          handler: data => {
+            console.log('Join clicked');
+            console.log(data);
+            this.joinclassroom();
+          }
+        }
+      ],
+
+    });
+    createjoinclass.present();
+  }
+
+  joinclassroom() {
+    let joinclass = this.alertctrl.create({
+      title: 'Join class',
+      message: "Enter Class Code",
+      inputs: [
+        {
+          name: 'classcode',
+          placeholder: 'class code',
+          type: 'name'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Join',
+          handler: data => {
+            console.log('Join clicked');
+            console.log(data);
+            let classname = '';
+
+            if (data.classcode == '') {
+              let toast = this.toastctrl.create({
+                message: 'Classcode must not be empty',
+                duration: 1000,
+                position: 'middle'
+              });
+
+              toast.onDidDismiss(() => {
+                console.log('Dismissed toast');
+              });
+
+              toast.present();
+            } else {
+
+              classname = data.classcode;
+              this.homeservice.findclassroom(classname).then(res => {
+                if (res == 'found') {
+
+                } else if (res == 'notfound') {
+                  this.presentAlert('classcode ', ' not found ')
+                } else if (res == 'error') {
+                  this.presentAlert('classcode ', ' not found ')
+                }
+              }).catch(err => {
+                this.presentAlert('error ', ' not found ')
+              });
+            }
+
+
+
+          }
+        }
+      ]
+    });
+    joinclass.present();
   }
 
   createclassroom() {
@@ -122,39 +223,49 @@ export class HomePage {
             let classname = '';
             let subject = '';
             let section = '';
-            if (data.classname == ''){
+            if (data.classname == '') {
               classname = data.classname;
-            }else{
+            } else {
               classname = data.classname;
             }
 
-            if (data.subject == ''){
+            if (data.subject == '') {
               subject = data.subject;
-            }else{
+            } else {
               subject = data.subject;
             }
-            
-            if (data.section == ''){
+
+            if (data.section == '') {
               section = data.section;
-            }else{
+            } else {
               section = data.section;
             }
-            
+
 
             let teacherclass = {
               email: this.afAuth.auth.currentUser.email,
               classname: classname,
-               section: section,
-               subject: subject,
-               teachername: this.afAuth.auth.currentUser.email
+              section: section,
+              subject: subject,
+              teachername: this.afAuth.auth.currentUser.email
             };
-            this.homeservice.addclassroom(teacherclass).then(res=>{
-            this.nav.push('ChatPage');
-            }).catch(err=>{
+            this.homeservice.addclassroom(teacherclass).then(res => {
+              if (res == 'error') {
+                this.presentAlert('Error', 'Cannot Create Classroom');
+              } else {
+                this.nav.push('TimelinePage');
 
+                this.homeservice.getchatusers(classname, teacherclass.teachername);
+                this.storage.set('classroom', classname);
+                this.storage.set('classteacher',  teacherclass.teachername);
+                this.nav.setRoot('TabsPage')
+              }
+
+            }).catch(err => {
+              this.presentAlert('Error', 'Cannot Create Classroom');
             });
 
-            this.presentAlert('Error','Cannot Create Classroom');   
+
           }
         }
       ]
@@ -171,5 +282,16 @@ export class HomePage {
     alert.present();
 
   }
+  // initFCM(){
+  //   this.fcm.onNotification().subscribe(data=>{
+  //     if (data.wasTapped){
+  //       console.log(data)
+  //       this.presentAlert(data.title, data.content);
+  //     }else{
+  //       console.log(data);
+  //       this.presentAlert(data.title, data.content);
+  //     }
+  //   })
+  // }
 
 }

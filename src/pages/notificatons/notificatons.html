@@ -1,0 +1,15 @@
+<ion-list class="no-margin">
+  <ion-list-header class="no-margin">
+  	<ion-icon name="notifications" color="primary"></ion-icon>
+  	<span ion-text color="primary" class="bold">Notifications</span>
+  </ion-list-header>
+      <ion-item-sliding *ngFor="let notifications of notifyservice.Notifications" [hidden]="notifyservice.Notifications.length == 0"  (click)="selectednotify(notifications)">
+        <ion-item [ngStyle]="{'border':'none', 'white-space':'normal', 'background':'#4c6df9'}">
+          <ion-avatar item-start>
+            <img [src]="notifications.userurl">
+          </ion-avatar>
+          <p ion-text color="primary" [ngStyle]="{'white-space':'normal','border': 'none', 'width': '100%', 'font-size':'medium','color':'#FFF'}">{{notifications.message}}</p>
+        </ion-item>
+      </ion-item-sliding>
+    
+</ion-list>

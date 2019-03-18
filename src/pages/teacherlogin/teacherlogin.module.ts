@@ -8,9 +8,6 @@ import { TeacherloginPage } from './teacherlogin';
   ],
   imports: [
     IonicPageModule.forChild(TeacherloginPage),
-  ],
-  exports: [
-    TeacherloginPage
   ]
 })
 export class TeacherloginPageModule {}
