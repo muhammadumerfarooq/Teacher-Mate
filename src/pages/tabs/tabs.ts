@@ -19,7 +19,7 @@ export class TabsPage {
   tab1Root: any = 'TimelinePage';
   tab2Root: any = 'CreatePostPage';
   tab3Root: any = 'BroadcasterPage';
-
+  tab4Root: any = 'BroadcastsListPage'
   mySelectedIndex: number;
 
   constructor(navParams: NavParams) {
