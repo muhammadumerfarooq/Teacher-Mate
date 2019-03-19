@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Component, ViewContainerRef } from '@angular/core';
+import { IonicPage, NavController, NavParams, ViewController, ModalCmp, ModalController } from 'ionic-angular';
+import { student, StudentProvider } from '../../providers/student/student';
 
 /**
  * Generated class for the StudentListPage page.
@@ -15,11 +16,31 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class StudentListPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(private modalctrl:ModalController ,public viewctrl: ViewController,public navCtrl: NavController, public navParams: NavParams, private studentservice:StudentProvider) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad StudentListPage');
   }
 
+  studentDetail(studentdetail:student){
+
+  }
+  studentProfile(studenprofile:student){
+    var modalPage = this.modalctrl.create('StudentDetailPage',{ studentprofile: studenprofile});
+    modalPage.onDidDismiss(data=>{
+     if (data == true)
+     {
+       console.log(data+" chat page ")
+      // this.viewCtrl.dismiss(true);
+     }
+
+   });
+    modalPage.present();
+   }
+  
+  
+  viewctrl_dismiss(){
+    this.viewctrl.dismiss('back');
+  }
 }

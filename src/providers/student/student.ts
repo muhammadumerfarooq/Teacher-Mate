@@ -12,6 +12,8 @@ classname:string;
 classteacher: string;
 parentemail: string;
 createdate: string;
+userurl: string;
+name: string;
 }
 @Injectable()
 export class StudentProvider {
@@ -34,6 +36,16 @@ export class StudentProvider {
     
   }
   insertstudent(studentdata:student){
-      this.afs.collection('students')
-  }
+
+    return new Promise((resolve,reject)=>{
+      const objectclass = Object.assign({}, studentdata);
+
+      this.afs.collection('students').doc(studentdata.createdate).set({objectclass}).then(()=>{
+        return resolve('done')
+      }).catch(err=>{
+        return reject('error');
+      });
+  });
+    }
+   
 }

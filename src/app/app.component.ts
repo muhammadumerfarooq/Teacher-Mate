@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { Platform } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { Platform, Nav, ModalController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -8,16 +8,36 @@ import { HomeServiceProvider } from '../providers/home-service/home-service';
 import { AngularFireAuth } from 'angularfire2/auth'
 import { App } from 'ionic-angular/components/app/app';
 import { Storage } from '@ionic/storage';
+import { StudentListPage } from '../pages/student-list/student-list';
+import { NavController } from 'ionic-angular/navigation/nav-controller';
+
+export interface MenuItem {
+  title: string;
+  component: any;
+  icon: string;
+}
+
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
+  
+  @ViewChild(Nav) nav: Nav;
   rootPage: any = HomePage;
   // homePage:any = HomePage;
- 
+  appMenuItems: Array<MenuItem>;
+
   
-  constructor(private storage:Storage,private homeservice:HomeServiceProvider,private app: App, platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public afauth: AngularFireAuth) {
+  constructor(private modalctrl:ModalController,private storage:Storage,private homeservice:HomeServiceProvider,private app: App, platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public afauth: AngularFireAuth) {
     platform.ready().then(() => {
+      
+    this.appMenuItems = [
+      {title: 'Home', component: 'HomePage', icon: 'home'},
+      {title: 'Students List', component: 'StudentListPage', icon: 'people'},
+      {title: 'Add Student', component: 'AddStudent', icon: 'person-add'},
+      
+    ];
+
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       // this.nav.setRoot(HomePage);
@@ -30,6 +50,28 @@ export class MyApp {
       splashScreen.hide();
       
     });
+  }
+
+  openPage(page) {
+    // Reset the content nav to have just this page
+    // we wouldn't want the back button to show in this scenario
+   // this.nav.setRoot(page.component);
+   if (page.component == 'HomePage'){
+    this.nav.setRoot(HomePage);
+   }else {
+     
+    var modalPage = this.modalctrl.create(page.component);
+    modalPage.onDidDismiss(data=>{
+     if (data == true)
+     {
+       console.log(data+" chat page ")
+      // this.viewCtrl.dismiss(true);
+     }
+
+   });
+    modalPage.present();
+   }
+
   }
 
   logout() {
