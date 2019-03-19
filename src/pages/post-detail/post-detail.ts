@@ -13,6 +13,7 @@ import { ProfileServiceProvider } from '../../providers/profile-service/profile-
  * Ionic pages and navigation.
  */
 
+
 @IonicPage()
 @Component({
   selector: 'page-post-detail',
@@ -24,13 +25,17 @@ export class PostDetailPage {
   likes: number = 0;
   newcomment: string = '';
   commenttime: string = '';
-
+  likedperson: string = '';
   constructor(private profileservice:ProfileServiceProvider,private alertctrl: AlertController, private postservice: PostProvider, private homeservice: HomeServiceProvider, public navCtrl: NavController, public navParams: NavParams, private viewctrl: ViewController) {
     this.mypost = this.navParams.get('Myfeed');
     this.commenttime = this.navParams.get('commentedtime');
-
+    this.likedperson = this.navParams.get('likedperson');
+    console.log(this.commenttime + ' ' + this.likedperson);
+    console.log(this.mypost);
+    
     this.comments = Object.keys(this.mypost.comments).length
     this.likes = Object.keys(this.mypost.likes).length
+ 
   }
 
   ionViewDidLoad() {
@@ -42,7 +47,7 @@ export class PostDetailPage {
   }
 
   likeclick(feed: Myfeed) {
-
+debugger
     let findemail = false;
     for (let i = 0; i < feed.likes.length; i++) {
       if (feed.likes[i].useremail == this.homeservice.userprofile.useremail) {
@@ -53,7 +58,7 @@ export class PostDetailPage {
     if (!findemail) {
       let like: likes;
       like = new likes();
-
+      debugger
       like.date = new Date().getTime().toString();
       like.useremail = this.homeservice.userprofile.useremail;
 
@@ -136,14 +141,14 @@ debugger
           this.mypost.comments = this.mypost.comments.filter(item => item !== comment);
           this.newcomment = '';
         } else {
-          
+          this.newcomment = '';
         }
 
       }).catch(err => {
         this.presentAlert('Comment not Added ', 'Error');
       });
     } else {
-      this.presentAlert(' your post is already ', ' liked ');
+      this.presentAlert(' you have already liked the post ', ' liked ');
     }
   }
 
@@ -179,7 +184,7 @@ debugger
   findimgurllike(like:likes) {
     this.profileservice.allparents.forEach(parents => {
    if ( like.useremail==parents.useremail){
-    like.useremail = parents.imgurl; 
+    like.userurl = parents.imgurl; 
     return like;
    }
    
@@ -187,7 +192,7 @@ debugger
 
     this.profileservice.allteachers.forEach(teachers => {
       if ( like.useremail==teachers.useremail){
-        like.useremail = teachers.imgurl; 
+        like.userurl = teachers.imgurl; 
        return like;
       }
       

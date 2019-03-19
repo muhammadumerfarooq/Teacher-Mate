@@ -24,13 +24,23 @@ export class NotificatonsPage {
     console.log('ionViewDidLoad NotificatonsPage');
   }
   selectednotify(notifications: notify){
-    debugger
+    
     let foundfeed: Myfeed = new Myfeed();
     foundfeed = this.findfeed(notifications,foundfeed);
     this.notifyservice.updateobjectnotification(notifications);
   debugger
     if (foundfeed.publisheddate != undefined && foundfeed.publisheddate != null){
-      var modalPage = this.modalCtrl.create('PostDetailPage', { Myfeed: foundfeed, 'commentedtime': notifications.publisheddate });
+      var modalPage: any;
+debugger
+    if (notifications.message.toString().includes('liked')){
+      modalPage = this.modalCtrl.create('PostDetailPage', { Myfeed: foundfeed, 'likedperson': notifications.useremail });
+
+    }
+    if (notifications.message.toString().includes('commented')){
+      modalPage = this.modalCtrl.create('PostDetailPage', { Myfeed: foundfeed, 'commentedtime': notifications.publisheddate });
+
+    }
+
       modalPage.onDidDismiss(data => {
         if (data == true) {
          // this.presentAlert('Success', ' post created');

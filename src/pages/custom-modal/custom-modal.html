@@ -1,0 +1,41 @@
+
+ 
+
+<!--
+<div class="navbar">
+  <div class="button">
+    <i class="fa fa-globe"></i>
+    <span class="button__badge">2</span>
+  </div> 
+ 
+</div>
+-->
+
+<ion-content padding class="trips detail-bg">
+
+<!--
+  <div class="chatbox">
+  <button ion-button class="pull-right" tappable >
+<ion-icon name="chatbubbles"></ion-icon>
+ </button>
+</div>
+-->
+  <!--list of trips-->
+
+  <div>
+  <div class="trip card" *ngFor="let img of images" tappable margin-bottom (click)="dismiss(img)">
+    <div class="background border-bottom" [ngStyle]="{'background-image': 'url('+ img + ')'}"> 
+      <div class="background-filter rlt">
+ 
+        
+      </div>
+   
+    </div>
+
+  </div>
+ </div> 
+
+<!-- chat icon -->
+ 
+
+</ion-content>

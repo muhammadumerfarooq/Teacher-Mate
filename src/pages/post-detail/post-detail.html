@@ -92,12 +92,20 @@
 
     <ion-list [hidden]="mypost.comments.count == 0">
       <ion-item-sliding *ngFor="let like of mypost.likes">
-        <ion-item>
+        <ion-item  class="img-tag" *ngIf="like.useremail == likedperson">
           <ion-avatar item-start>
             <img [src]="like.userurl">
           </ion-avatar>
           <span ion-text color="primary">{{like.date | date : "mediumDate" }}</span>
         </ion-item>
+
+         <ion-item  class="border-tag" *ngIf="like.useremail != likedperson">
+          <ion-avatar item-start>
+            <img [src]="like.userurl">
+          </ion-avatar>
+          <span ion-text color="primary">{{like.date | date : "mediumDate" }}</span>
+        </ion-item>
+
       </ion-item-sliding>
     </ion-list>
 
@@ -111,25 +119,41 @@
     </ion-card-header>
 
     <ion-list [hidden]="mypost.comments.count == 0">
-      <ion-item-sliding *ngFor="let comment of mypost.comments">
-        <ion-item>
+      <ion-item-sliding *ngFor="let commented of mypost.comments">
+
+
+        <ion-item class="border-tag" *ngIf="commented.date != commenttime">
+
           <ion-avatar item-start>
-            <img [src]="comment.userurl">
+            <img [ngStyle]="{'color':'#000'}" [src]="commented.userurl">
           </ion-avatar>
-          <div *ngIf ="comment.date == commenttime">
-          <span class="blinking">
-          {{comment.comment}} 
-          <span ion-text>{{comment.date | date : "mediumDate" }}</span>
-          </span>
-          </div>
-          <div *ngIf ="comment.date != commenttime">
-          
-          <h2 [ngStyle]="{'white-space':'normal'}">{{comment.comment}} </h2>
-          <span ion-text>{{comment.date | date : "mediumDate" }}</span>
-         
-          </div>
-          
+
+
+          <!-- <h2 [ngStyle]="{'white-space':'normal'}">{{comment.comment}} </h2> -->
+
+          <span [ngStyle]="{'white-space':'normal'}">{{commented.comment}} {{commented.date | date : "mediumDate" }}</span>
+
+
         </ion-item>
+
+
+     
+          <ion-item class="img-tag" *ngIf="commented.date == commenttime">
+
+            <ion-avatar item-start>
+              <img [src]="commented.userurl">
+            </ion-avatar>
+
+
+            <!-- <h2 [ngStyle]="{'white-space':'normal'}">{{comment.comment}} </h2> -->
+
+            <span [ngStyle]="{'white-space':'normal'}">{{commented.comment}} {{commented.date | date : "mediumDate" }}</span>
+
+
+          </ion-item>
+
+
+      
       </ion-item-sliding>
     </ion-list>
 

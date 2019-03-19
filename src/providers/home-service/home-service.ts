@@ -44,6 +44,7 @@ export class classroom {
         subject: string;
         parentsemail: Array<string>
         imgurl: string;
+        backgroundimg: string;
 }
 @Injectable()
 export class HomeServiceProvider {
@@ -185,6 +186,7 @@ if ( user!=undefined){
       tempclass.subject = teacherclass.subject;
       tempclass.classname = teacherclass.classname;
       tempclass.imgurl = this.userprofile.imgurl;
+      tempclass.backgroundimg = teacherclass.backgroundimg;
 
 try{
 
@@ -249,7 +251,8 @@ try{
             updatedclass.subject = data.subject;
             updatedclass.classname = data.classname;
             updatedclass.imgurl = this.userprofile.imgurl;
-      
+            updatedclass.backgroundimg = data.backgrounimg;
+
             this.afs.doc<classroom>('classroom/'+docid).update(updatedclass
             ).then(()=>{
                 resolve('join')
@@ -295,7 +298,8 @@ try{
               updatedclass.subject = data.subject;
               updatedclass.classname = data.classname;
               updatedclass.imgurl = this.userprofile.imgurl;
-      
+              updatedclass.backgroundimg = data.backgrounimg;
+
               
             this.afs.doc<classroom>('classroom/'+docid).update(updatedclass).then(()=>{
             

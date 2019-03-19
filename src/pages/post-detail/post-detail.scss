@@ -25,18 +25,40 @@ page-post-detail {
         margin: 0 6px;
         min-width: 36px;
      }
-     .blinking{
-        animation:blinkingText 1.2s infinite;
-      animation-duration: 10s;
-    }
-    @keyframes blinkingText{
+    //  .blinking{
+    //     animation:blinkingText 1.2s infinite;
+    //   animation-duration: 10s;
+    // }
+    
+    @keyframes blink{
         80%{		color: #000;	}
-        88%{	color: transparent;	}
-        95%{	color: transparent;	}
-        99%{	color:transparent;	}
+        88%{	color:  #000;	}
+        95%{	color:  #000;	}
+        99%{	color: #000;	}
         100%{	color: #000;	}
       from {background-color: #4c6df9;}
       to {background-color: #FFF;}
+    }
+    // @keyframes blink {
+    //     0% {
+    //         opacity: 1;
+    //     }
+    //     50% {
+    //         opacity: 0;
+    //     }
+    //     100% {
+    //         opacity: 1;
+    //     }
+    // }
+    .border-tag{
+        border: solid thin gray;
+        border-radius: 1.2em; 
+    }
+    .img-tag {
+        animation: blink 3.6s;
+        animation-iteration-count: infinite;
+        border: solid thin gray;
+        border-radius: 1.2em; 
     }
 
     .div-input{

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, NavController, PopoverController, ToastController, AlertController } from "ionic-angular";
+import { ModalController, NavController, PopoverController, ToastController, AlertController, ViewController } from "ionic-angular";
 import { Storage } from '@ionic/storage';
 import { Platform, ActionSheetController } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -18,7 +18,7 @@ import { ProfileServiceProvider, profile } from '../../providers/profile-service
 })
 export class HomePage implements OnInit {
 
-  
+  images :  String[] = [];
   public searchuser = {
     name: "name"
   }
@@ -26,7 +26,7 @@ export class HomePage implements OnInit {
 
   constructor(private modalCtrl: ModalController,private profileservice :ProfileServiceProvider,private fcm: FCM, public homeservice: HomeServiceProvider, public afAuth: AngularFireAuth, public alertctrl: AlertController, public toastctrl: ToastController, public modalctrl: ModalController, public platform: Platform, public actionsheetCtrl: ActionSheetController, private storage: Storage, public nav: NavController, public popoverCtrl: PopoverController) {
     console.log(this.homeservice.searchname);
-
+   // this.presentCustomModal();
     /// this.searchuser.name = this.homeservice.searchname; 
 
   }
@@ -240,15 +240,26 @@ export class HomePage implements OnInit {
             } else {
               section = data.section;
             }
+            
 
+            this.images.push('assets/img/trip/thumb/brown.jpg');
+            this.images.push('assets/img/trip/thumb/brushes.jpg');
+            this.images.push('assets/img/trip/thumb/deepteal.jpg');
+            this.images.push('assets/img/trip/thumb/light.jpg');
+            this.images.push('assets/img/trip/thumb/tree.jpg');
+            this.images.push('assets/img/trip/thumb/ltblue.jpg');
+            this.images.push('assets/img/trip/thumb/beakers.jpg');
 
+            const randid = Math.floor(Math.random() * 6); 
             let teacherclass = {
               email: this.afAuth.auth.currentUser.email,
               classname: classname,
               section: section,
               subject: subject,
-              teachername: this.afAuth.auth.currentUser.email
+              teachername: this.afAuth.auth.currentUser.email,
+              backgroundimg: this.images[randid]
             };
+
             this.homeservice.addclassroom(teacherclass).then(res => {
               if (res == 'error') {
                 this.presentAlert('Error', 'Cannot Create Classroom');
@@ -282,6 +293,18 @@ export class HomePage implements OnInit {
     alert.present();
 
   }
+  presentCustomModal() {
+    let customModal = this.modalCtrl.create('CustomModalPage');
+
+    customModal.onDidDismiss((val) => {
+        // Do what you want ...
+        console.log(val);
+    });
+
+    // Present the modal
+    customModal.present();
+}
+
   // initFCM(){
   //   this.fcm.onNotification().subscribe(data=>{
   //     if (data.wasTapped){
@@ -295,3 +318,6 @@ export class HomePage implements OnInit {
   // }
 
 }
+/* ********************
+    Custom modal 
+********************* */
