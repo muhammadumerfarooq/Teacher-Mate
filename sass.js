@@ -27,7 +27,7 @@ module.exports = {
         'last 2 versions',
         'iOS >= 8',
         'Android >= 4.4',
-        'Explorer >= 11',
+        'Explorer >= 9',
         'ExplorerMobile >= 11'
       ],
       cascade: false

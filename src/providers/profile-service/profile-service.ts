@@ -62,7 +62,7 @@ export class ProfileServiceProvider {
               parent = snapshot.payload.doc.data() as userprofile;
               let userprof : userprofile = new userprofile();
               userprof.imgurl = parent.imgurl;
-              userprof.username = parent.imgurl;
+              userprof.username = parent.username;
               userprof.user = parent.user;
               userprof.useremail = snapshot.payload.doc.id;
               
@@ -80,7 +80,7 @@ export class ProfileServiceProvider {
               teacher = snapshot.payload.doc.data() as userprofile;
               let userprof : userprofile = new userprofile();
               userprof.imgurl = teacher.imgurl;
-              userprof.username = teacher.imgurl;
+              userprof.username = teacher.username;
               userprof.user = teacher.user;
               userprof.useremail = snapshot.payload.doc.id;
               

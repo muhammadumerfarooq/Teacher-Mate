@@ -16,9 +16,12 @@ import { student } from '../../providers/student/student';
   templateUrl: 'student-detail.html',
 })
 export class StudentDetailPage {
+
    studentprofile: student = new student();
   constructor(private camera:Camera,public navCtrl: NavController, public navParams: NavParams, private alertCtrl:AlertController) {
   this.studentprofile = this.navParams.get('studentprofile');
+  this.studentprofile.name = '';
+  this.studentprofile.userurl = '';
 
   }
 
@@ -26,6 +29,7 @@ export class StudentDetailPage {
     console.log('ionViewDidLoad StudentDetailPage');
   }
   changeimage(){
+    
 
     try{
       const options: CameraOptions = {

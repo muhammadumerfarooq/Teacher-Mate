@@ -58,7 +58,21 @@ export class MyApp {
    // this.nav.setRoot(page.component);
    if (page.component == 'HomePage'){
     this.nav.setRoot(HomePage);
-   }else {
+   }else if (page.component == 'AddStudent'){
+    
+     modalPage = this.modalctrl.create('StudentProfilePage');
+     modalPage.onDidDismiss(data=>{
+      if (data == true)
+      {
+        console.log(data+" chat page ")
+       // this.viewCtrl.dismiss(true);
+      }
+ 
+    });
+     modalPage.present();
+    }
+   
+   else {
      
     var modalPage = this.modalctrl.create(page.component);
     modalPage.onDidDismiss(data=>{
