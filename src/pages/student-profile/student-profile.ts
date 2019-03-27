@@ -53,26 +53,54 @@ export class StudentProfilePage {
             this.user = 'parent';
             this.storage.get('email').then(email => {
               this.studentprofile.parentemail = email;
-              this.loader.dismissloading();
+              
+              // getting class name and teacher
+              this.storage.get('classroom').then(classname => {
+                
+                this.studentprofile.classname = classname;
+                this.storage.get('classteacher').then(classteacher => {
+                  
+                  this.studentprofile.classteacher = classteacher;
+                  this.loader.dismissloading();
+                }).catch(() => {
+                  
+                  this.loader.dismissloading();
+                });
+
+              }).catch(() => {
+                
+                this.loader.dismissloading();
+              });
+
+              // this.loader.dismissloading();
             }).catch(() => {
               this.loader.dismissloading();
             })
 
-            // getting class name and teacher
-            this.storage.get('classname').then(classname => {
-              this.studentprofile.classname = classname;
-            }).catch(() => {
-              this.loader.dismissloading();
-            });
-            this.storage.get('classteacher').then(classteacher => {
-              this.studentprofile.classteacher = classteacher;
-            }).catch(() => {
-              this.loader.dismissloading();
-            });
+
 
           } else {
             this.user = 'teacher';
-            this.loader.dismissloading();
+            // getting class name and teacher
+            this.storage.get('classroom').then(classname => {
+              
+              this.studentprofile.classname = classname;
+              this.storage.get('classteacher').then(classteacher => {
+                
+                this.studentprofile.classteacher = classteacher;
+                this.loader.dismissloading();
+              }).catch(() => {
+                
+                this.loader.dismissloading();
+              });
+
+            }).catch(() => {
+              
+              this.loader.dismissloading();
+            });
+
+
+            //  this.loader.dismissloading();
           }
 
 
@@ -132,9 +160,9 @@ export class StudentProfilePage {
     this.viewctrl.dismiss('back');
   }
   parentprofile(parent: userprofile) {
-    
+
     this.selectedparent = new userprofile();
-    
+
     this.studentprofile.parentemail = parent.useremail;
     this.selectedparent.imgurl = parent.imgurl;
     this.selectedparent.useremail = parent.useremail;
@@ -142,7 +170,7 @@ export class StudentProfilePage {
   }
 
   updatestudent() {
-    this.studentprofile.createdate = new Date().getDate.toString();
+    this.studentprofile.datecreation = new Date().getTime().toString();
 
     this.studentservice.insertstudent(this.studentprofile, this.base64Image).then(() => {
       this.presentAlert('Student added ', 'Successfully');

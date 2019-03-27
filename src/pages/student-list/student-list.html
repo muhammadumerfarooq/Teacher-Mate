@@ -50,7 +50,7 @@
         <ion-avatar item-start>
           <img [src]="student.userurl">
         </ion-avatar>
-        <h2>{{ student.name }} <span ion-text color="primary"> Student of Class ({{ student.classname }})</span></h2>
+        <h2>{{ student.name }} <span ion-text color="primary">  ( Student of Class {{ student.classname }})</span></h2>
       </ion-item>
       <ion-item-options side="right">
         <button ion-button color="primary" (click)="studentProfile(student)">
@@ -60,4 +60,9 @@
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
+    <div class="chatbox">
+    <button ion-button class="pull-right" color="secondary" tappable (click)="student_add()">
+      <ion-icon name="person-add"></ion-icon>
+    </button>
+  </div>
 </ion-content>

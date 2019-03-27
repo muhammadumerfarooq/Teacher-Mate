@@ -20,9 +20,9 @@ export class StudentDetailPage {
    studentprofile: student = new student();
   constructor(private camera:Camera,public navCtrl: NavController, public navParams: NavParams, private alertCtrl:AlertController) {
   this.studentprofile = this.navParams.get('studentprofile');
-  this.studentprofile.name = '';
-  this.studentprofile.userurl = '';
-
+ // this.studentprofile.name = '';
+ // this.studentprofile.userurl = '';
+this.studentprofile.parentemail
   }
 
   ionViewDidLoad() {

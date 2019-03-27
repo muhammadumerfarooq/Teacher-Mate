@@ -14,7 +14,7 @@ export class student {
   classname: string;
   classteacher: string;
   parentemail: string;
-  createdate: string;
+ 
   userurl: string;
   name: string;
   datecreation: string;
@@ -22,7 +22,7 @@ export class student {
     this.name = '';
     this.classteacher = '';
     this.parentemail = '';
-    this.createdate = '';
+
     this.userurl = '';
     this.classname = '';
     this.datecreation = '';
@@ -81,6 +81,7 @@ export class StudentProvider {
 
           const id = this.afs.createId();
           const pictures = storage().ref('profile/' + id);
+          debugger
           pictures.putString(imguri, 'data_url').then(() => {
             storage().ref().child('profile/' + id).getDownloadURL().then((url) => {
 
@@ -89,18 +90,23 @@ export class StudentProvider {
 
 
 
-              this.afs.doc(studentdata.createdate).set(objectclass).then(() => {
+              this.afs.collection('students').doc(studentdata.datecreation).set(objectclass).then(() => {
 
                 this.loaderservice.dismissloading();
                 return resolve('done');
               }).catch((err) => {
-
+                debugger
                 this.loaderservice.dismissloading();
                 return reject('error');
               });
 
+            }).catch(err=>{
+              debugger
+              this.loaderservice.dismissloading();
+              return reject('error');
             });
           }).catch(err => {
+            debugger
             this.loaderservice.dismissloading();
             return reject('error');
           });

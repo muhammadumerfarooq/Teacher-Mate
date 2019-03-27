@@ -94,9 +94,14 @@ export class HomePage implements OnInit {
 
   viewClassroom(classname: any, classteacher: any) {
     this.homeservice.getchatusers(classname, classteacher);
-    this.storage.set('classroom', classname);
-    this.storage.set('classteacher', classteacher);
-    this.nav.setRoot('TabsPage')
+    this.storage.set('classroom', classname).then(()=>{
+      this.storage.set('classteacher', classteacher).then(()=>{
+        
+        this.nav.setRoot('TabsPage')
+      });
+    });
+
+
   }
 
   classoptions() {

@@ -23,11 +23,9 @@ export class StudentListPage {
     console.log('ionViewDidLoad StudentListPage');
   }
 
+  
   studentDetail(studentdetail:student){
-
-  }
-  studentProfile(studenprofile:student){
-    var modalPage = this.modalctrl.create('StudentDetailPage',{ studentprofile: studenprofile});
+    var modalPage = this.modalctrl.create('StudentDetailPage',{ studentprofile: studentdetail});
     modalPage.onDidDismiss(data=>{
      if (data == true)
      {
@@ -43,4 +41,18 @@ export class StudentListPage {
   viewctrl_dismiss(){
     this.viewctrl.dismiss('back');
   }
+
+  student_add(){
+    var modalPage = this.modalctrl.create('StudentProfilePage');
+    modalPage.onDidDismiss(data=>{
+     if (data == true)
+     {
+       console.log(data+" chat page ")
+      // this.viewCtrl.dismiss(true);
+     }
+
+   });
+    modalPage.present();
+   }
+  
 }

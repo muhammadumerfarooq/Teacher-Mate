@@ -9,7 +9,7 @@ import { AngularFireAuth } from 'angularfire2/auth'
 import { App } from 'ionic-angular/components/app/app';
 import { Storage } from '@ionic/storage';
 import { StudentListPage } from '../pages/student-list/student-list';
-import { NavController } from 'ionic-angular/navigation/nav-controller';
+
 
 export interface MenuItem {
   title: string;
@@ -31,18 +31,31 @@ export class MyApp {
   constructor(private modalctrl:ModalController,private storage:Storage,private homeservice:HomeServiceProvider,private app: App, platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public afauth: AngularFireAuth) {
     platform.ready().then(() => {
       
-    this.appMenuItems = [
-      {title: 'Home', component: 'HomePage', icon: 'home'},
-      {title: 'Students List', component: 'StudentListPage', icon: 'people'},
-      {title: 'Add Student', component: 'AddStudent', icon: 'person-add'},
-      
-    ];
+   
 
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       // this.nav.setRoot(HomePage);
       //  app.getActiveNav().setRoot(HomePage); 
-  
+ 
+      this.storage.get('user').then(val=>{
+        if (val=='parent'){
+          this.appMenuItems = [
+            {title: 'Home', component: 'HomePage', icon: 'home'},
+            {title: 'Students List', component: 'StudentListPage', icon: 'people'},
+            {title: 'Your Child', component: 'AddStudent', icon: 'person'},
+            
+          ];
+        }else{
+          this.appMenuItems = [
+            {title: 'Home', component: 'HomePage', icon: 'home'},
+            {title: 'Students List', component: 'StudentListPage', icon: 'people'},
+            {title: 'Add Student', component: 'AddStudent', icon: 'person-add'},
+            
+          ];
+        }
+      })
+    
       this.homeservice.userprofile.imgurl;
       this.homeservice.userprofile.username;
       this.homeservice.userprofile.useremail;
@@ -51,7 +64,9 @@ export class MyApp {
       
     });
   }
+  
 
+  
   openPage(page) {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario

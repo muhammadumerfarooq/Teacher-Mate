@@ -31,8 +31,8 @@
               <img src="../assets/img/logo.png">
             </div>
             -->
-          <div class="container" *ngIf="studentprofile.userurl">
-            <img [src]="studentprofile.userurl" class="image">
+          <div class="container" *ngIf="this.base64Image">
+            <img [src]="this.base64Image" class="image">
             <div class="overlay">
               <a clear small color="light" padding-bottom class="icon-href" title="change image"
                 (click)="changeimage()">
@@ -41,7 +41,7 @@
             </div>
           </div>
 
-          <div *ngIf="!studentprofile.userurl" class="container">
+          <div *ngIf="!this.base64Image" class="container">
             <img src="../assets/img/logo.png" class="image">
 
             <div class="overlay">
