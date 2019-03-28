@@ -1,0 +1,135 @@
+<!-- <ion-header>
+
+
+
+  <ion-navbar color="primary">
+    <ion-title color="#fff">Course Saylabus</ion-title>
+    <ion-buttons left>
+      <button ion-button icon-only (click)="viewctrl_dismiss()" class="my-style-for-modal">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+
+  <ion-list *ngFor="let highlight of highlights">
+
+    <ion-item-sliding>
+      <ion-item>{{highlight}} ({{highlight}})
+       
+      </ion-item>
+
+      <ion-item-options>
+        <button margin-right (click)="showEditModal(highlight)">
+          <ion-icon name="create"></ion-icon>
+        </button>
+        <button danger margin-right (click)="doConfirm(highlight)">
+          <ion-icon name="trash"></ion-icon>
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+
+
+  </ion-list>
+</ion-content>
+-->
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let p of pages; let i=index" text-wrap (click)="toggleLevel1('idx'+i)"
+      [ngClass]="{active: isLevel1Shown('idx'+i)}">
+
+      <h4>
+
+        {{p.category}}
+        <ion-icon color="success" item-right [name]="isLevel1Shown('idx'+i) ? 'arrow-dropdown' : 'arrow-dropright'">
+        </ion-icon>
+      </h4>
+      <ion-list *ngIf="isLevel1Shown('idx'+i)">
+        <ion-item *ngFor="let s of p.subs; let i2=index" text-wrap (click)="toggleLevel2('idx'+i+'idx'+i2)"
+          [ngClass]="{active: isLevel2Shown('idx'+i+'idx'+i2)}">
+
+          <h4>
+            {{s.subcategory}}
+            <ion-icon color="success" item-right
+              [name]="isLevel2Shown('idx'+i+'idx'+i2) ? 'arrow-dropdown' : 'arrow-dropright'"></ion-icon>
+
+            <button ion-button (click)="openfile()">
+
+
+              <ion-icon name="document"></ion-icon>
+
+
+            </button>
+
+          </h4>
+          <ion-list *ngIf="isLevel2Shown('idx'+i+'idx'+i2)">
+            <ion-item *ngFor="let m of s.manufactures" text-wrap>
+              {{m.manufacture}}
+            </ion-item>
+          </ion-list>
+        </ion-item>
+      </ion-list>
+    </ion-item>
+  </ion-list>
+
+  <ion-input class="input-box" type="text" placeholder="Enter Chapter Name" name="text"></ion-input>
+  <!-- <ion-input class="input-box" type="text" placeholder="Enter Topic Name" name="text"></ion-input> -->
+
+  <!--{{att.label}}{{idx+1}}-->
+  <!-- <ion-item *ngFor="let top of topics; let idxtopic = index">
+    <ion-label color="primary">Topic</ion-label>
+    <ion-input type="text" text-left [(ngModel)]="topics[idxtopic].value"></ion-input>
+  
+ 
+  <ion-item *ngFor="let att of anArray; let idx = index">
+    
+    <ion-label color="primary">SubTopic {{topics[idxtopic].value}}</ion-label>
+    <ion-input type="text" text-left [(ngModel)]="anArray[idx].value"></ion-input>
+     <button ion-button icon-only block  >
+          <ion-icon name="delete"></ion-icon>
+        </button>
+  </ion-item>
+  </ion-item>
+-->
+  <ng-template ngFor let-topic [ngForOf]="mycourses.Topics"  let-top="index">
+    <ion-item>
+      <ion-label color="primary">Topic</ion-label>
+      <ion-input type="text" text-left [(ngModel)]="topic.value"></ion-input>
+         <button ion-button icon-only block>
+            <ion-icon name="delete"></ion-icon>
+          </button>
+    </ion-item>
+    <ion-list>
+      <ng-template ngFor let-subtopics [ngForOf]="topic.subtopics" let-i="index">
+
+        <ion-item>
+          <ion-label color="primary">SubTopic ({{topic.value}})</ion-label>
+          <ion-input type="text" text-left [(ngModel)]="subtopics.value"></ion-input>
+          <button ion-button icon-only block>
+            <ion-icon name="delete"></ion-icon>
+          </button>
+        </ion-item>
+  
+      </ng-template>
+    </ion-list>
+   
+
+      </ng-template>
+
+        <button ion-button margin-left (click)="addTopics()">Add Topics</button>
+    <button ion-button margin-left (click)="addSubtopic()">Add SubTopics</button>
+   
+  
+  <button ion-button full (click)="goTo()">Add Course </button>
+
+  <!-- <ion-card *ngIf="data">
+ <ion-item *ngFor="let att of anArray;">
+   <div class="card-title">{{att.value}}</div>
+ </ion-item>
+</ion-card> -->
+
+</ion-content>

@@ -74,6 +74,7 @@ export class BroadcasterPage {
     try {
       await this.broadcaster.startBroadcast();
       toast.dismiss();
+      console.log(this.broadcaster);
       this.isBroadcasting = true;
       this.isPending = false;
 

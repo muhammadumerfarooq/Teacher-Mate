@@ -1,0 +1,31 @@
+page-course-info {
+    body {
+        cursor: url('https://ionicframework.com/img/finger.png'), auto;
+      }
+      
+      .list .item.item-accordion {
+        line-height: 38px;
+        padding-left: 40px;
+        padding-top: 0;
+        padding-bottom: 0;
+        transition: 0.09s all linear;
+      }
+      .input-box{
+        color: black;
+        height: 50px;
+        font-size: 1.5em;
+        border-bottom: thin solid antiquewhite;
+    }
+      .list .item.item-accordion.ng-hide {
+        line-height: 0px;
+      }
+      
+      .list .item.item-accordion.ng-hide-add,
+      .list .item.item-accordion.ng-hide-remove {
+        display: block !important;
+      }
+      
+      .sub-item {
+        padding-left: 20px;
+      }
+}

@@ -31,6 +31,7 @@ import { FilePath } from '@ionic-native/file-path';
 import { NativeAudio } from '@ionic-native/native-audio';
 import { NotificationsServiceProvider } from '../providers/notifications-service/notifications-service';
 import { StudentProvider } from '../providers/student/student';
+import { HttpModule } from '@angular/http';
 
 // import { TeacherloginPage } from '../pages/teacherlogin/teacherlogin';
 // import { ParentloginPage } from '../pages/parentlogin/parentlogin';
@@ -62,7 +63,7 @@ export const firebaseConfig = {
     AngularFirestoreModule,
     AngularCropperjsModule,
     IonicStorageModule.forRoot(),
-    
+    HttpModule
     
   ],
   bootstrap: [IonicApp],

@@ -44,14 +44,15 @@ export class MyApp {
             {title: 'Home', component: 'HomePage', icon: 'home'},
             {title: 'Students List', component: 'StudentListPage', icon: 'people'},
             {title: 'Your Child', component: 'AddStudent', icon: 'person'},
-            
+            {title: 'Course', component: 'CourseInfo', icon: 'person'},
           ];
         }else{
           this.appMenuItems = [
             {title: 'Home', component: 'HomePage', icon: 'home'},
             {title: 'Students List', component: 'StudentListPage', icon: 'people'},
             {title: 'Add Student', component: 'AddStudent', icon: 'person-add'},
-            
+            {title: 'Course', component: 'CourseInfo', icon: 'person'},
+
           ];
         }
       })
@@ -86,7 +87,20 @@ export class MyApp {
     });
      modalPage.present();
     }
-   
+    else if (page.component == 'CourseInfo'){
+    
+      modalPage = this.modalctrl.create('CourseInfoPage');
+      modalPage.onDidDismiss(data=>{
+       if (data == true)
+       {
+         console.log(data+" chat page ")
+        // this.viewCtrl.dismiss(true);
+       }
+  
+     });
+      modalPage.present();
+     }
+    
    else {
      
     var modalPage = this.modalctrl.create(page.component);

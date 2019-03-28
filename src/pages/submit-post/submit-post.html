@@ -13,7 +13,7 @@
 <ion-content class="content">
 
 
-<!--
+  <!--
     <ion-fab right top>
     <button ion-fab color="secondary">
       <ion-icon name="pin"></ion-icon>
@@ -25,7 +25,7 @@
 
     <img [src]="mypost.img">
 
-   <!-- <ion-row>
+    <!-- <ion-row>
       <ion-col>
         <button ion-button icon-left clear small class="whitebtn">
           <ion-icon name="thumbs-up"></ion-icon>
@@ -59,27 +59,62 @@
       </p>
     </ion-item>
     <ion-card-content>
-       <div class="div-input">
+      <div class="div-input">
 
-      <p  class="paragraph">
-        {{mypost.description}}
+        <p class="paragraph">
+          {{mypost.description}}
 
-      </p>
+        </p>
       </div>
     </ion-card-content>
-    
-  <button ion-button icon-only block class="postbtn" (click)="postfeed()">
-    <ion-icon name="send"></ion-icon>
-  </button>
+
+    <button ion-button icon-only block class="postbtn" (click)="postfeed()">
+      <ion-icon name="send"></ion-icon>
+    </button>
+
+  </ion-card>
+
+ <ion-card [hidden]="mypost.filetype == 'img'">
+
+
+    <img src="../assets/img/allfile.jpg">
+
+  
+    <ion-item>
+      <ion-icon color="danger" name="md-timer" item-left large></ion-icon>
+
+      <p>
+        {{mypost.publisheddate | date : "medium" }}
+      </p>
+    </ion-item>
+    <ion-card-content>
+      <div class="div-input">
+
+        <p class="paragraph">
+          {{mypost.filename}}
+
+        </p>
+      </div>
+    </ion-card-content>
+
+    <button ion-button icon-only block class="postbtn" (click)="postfeed()">
+      <ion-icon name="send"></ion-icon>
+    </button>
 
   </ion-card>
 
 
- 
+<!-- <div *ngIf="mypost.filetype == 'pdf'" [ngStyle]="{'background-color': 'transparent'}">
+        <button ion-button (click)="openfile()" class="btn-file">
+          <img src="../assets/img/allfile.jpg" class="fileimage">
 
-
-
-
-
-
+          <div class="overlay-center">
+            <a clear small color="light" padding-bottom class="icon-href-center" title="change image">
+              {{filename.name}}
+               <ion-icon name="camera"></ion-icon> 
+       </a>
+          </div>
+        </button>
+      </div>
+-->
 </ion-content>

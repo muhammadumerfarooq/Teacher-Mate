@@ -39,6 +39,7 @@ export class post {
   comments: Array<comments>;
   publisheddate: String;
   userurl:string;
+  filename:String;
 }
 
 @IonicPage()
@@ -233,11 +234,13 @@ export class CreatePostPage {
 
         this.mypost.img = resolvedFilePath;
         this.mypost.filetype = 'pdf';
-        
+    
         this.filename.name = this.getfilename(resolvedFilePath);
         this.filename.fullpath = resolvedFilePath;
         this.filename.filetype = this.getfiletype(resolvedFilePath);
-        this.presentAlert(this.filename.filetype, '');
+
+        this.mypost.filename = this.filename.name 
+      //  this.presentAlert(this.filename.filetype, '');
        // this.presentAlert(filename + " ", fileext + " ");
         /* this.fileOpener.open(resolvedFilePath, 'application/pdf').then(file => {
            alert(file);
