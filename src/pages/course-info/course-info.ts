@@ -10,7 +10,14 @@ import { map } from 'rxjs/operators';
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
-
+export class Chapters{
+value:string;
+Topics: Array<Topics>;
+constructor(){
+  this.value = '';
+  this.Topics = new Array<Topics>();
+}
+}
  export class Topics {
   value:string;
    subtopics: Array<Subtopics>;
@@ -25,9 +32,9 @@ import { map } from 'rxjs/operators';
    }
  }
  export class Courses {
-   Topics:Array<Topics>;
+  Chapters:Array<Chapters>;
    constructor(){
-     this.Topics = new Array<Topics>();
+     this.Chapters = new Array<Chapters>();
    }
  }
 
@@ -51,10 +58,10 @@ export class CourseInfoPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private http:Http) {
     // this.topics.push({'value':''});
-    this.mycourses.Topics.push(new Topics);
-    this.mycourses.Topics[0].value = '';
-    this.mycourses.Topics[0].subtopics.push(new Subtopics);
-    this.mycourses.Topics[0].subtopics[0].value = '';
+  //  this.mycourses.Chapters.push(new Chapters);
+  //  this.mycourses.Chapters[0].value = '';
+  //  this.mycourses.Topics[0].subtopics.push(new Subtopics);
+  //  this.mycourses.Topics[0].subtopics[0].value = '';
 
     this.getMenus()
     .subscribe((response)=> {
@@ -100,30 +107,37 @@ export class CourseInfoPage {
     console.log('this.anArray',this.anArray);
     this.data=true;
     }
+
+    addChapter(){
+      let chapterindex = this.mycourses.Chapters.length;
+      this.mycourses.Chapters.push(new Chapters());
+
+    }
   addSubtopic(){
-    let topindex = this.mycourses.Topics.length;
+    let chapterindex = this.mycourses.Chapters.length;
+    let topindex = this.mycourses.Chapters[chapterindex-1].Topics.length;
     
 
-    this.mycourses.Topics[topindex-1].subtopics.push(new Subtopics);
+    this.mycourses.Chapters[chapterindex-1].Topics[topindex-1].subtopics.push(new Subtopics);
 
-    let index = this.mycourses.Topics[topindex-1].subtopics.length;
+    let index =  this.mycourses.Chapters[chapterindex-1].Topics[topindex-1].subtopics.length;
 
-    this.mycourses.Topics[topindex-1].subtopics[index-1].value = '';
+    this.mycourses.Chapters[chapterindex-1].Topics[topindex-1].subtopics[index-1].value = '';
 
-    console.log(this.mycourses.Topics)
+    console.log(this.mycourses.Chapters)
    // console.log(this.anArray);
   //  this.anArray.push({'value':''});
     }
 
     addTopics(){
 
-     
+      let chapterindex = this.mycourses.Chapters.length;
 
-      this.mycourses.Topics.push(new Topics());
-      let topindex = this.mycourses.Topics.length;
-      this.mycourses.Topics[topindex-1].value = '';
+      this.mycourses.Chapters[chapterindex-1].Topics.push(new Topics());
+      let topindex = this.mycourses.Chapters[chapterindex-1].Topics.length;
+      this.mycourses.Chapters[chapterindex-1].Topics[topindex-1].value = '';
 
-      console.log(this.mycourses.Topics)
+      console.log(this.mycourses.Chapters)
   
 
     }

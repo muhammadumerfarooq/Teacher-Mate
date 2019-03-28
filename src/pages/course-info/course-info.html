@@ -39,21 +39,21 @@
 
 <ion-content>
   <ion-list>
-    <ion-item *ngFor="let p of pages; let i=index" text-wrap (click)="toggleLevel1('idx'+i)"
+    <ion-item *ngFor="let p of mycourses.Chapters; let i=index" text-wrap (click)="toggleLevel1('idx'+i)"
       [ngClass]="{active: isLevel1Shown('idx'+i)}">
 
       <h4>
 
-        {{p.category}}
+        {{p.value}}
         <ion-icon color="success" item-right [name]="isLevel1Shown('idx'+i) ? 'arrow-dropdown' : 'arrow-dropright'">
         </ion-icon>
       </h4>
       <ion-list *ngIf="isLevel1Shown('idx'+i)">
-        <ion-item *ngFor="let s of p.subs; let i2=index" text-wrap (click)="toggleLevel2('idx'+i+'idx'+i2)"
+        <ion-item *ngFor="let s of p.Topics; let i2=index" text-wrap (click)="toggleLevel2('idx'+i+'idx'+i2)"
           [ngClass]="{active: isLevel2Shown('idx'+i+'idx'+i2)}">
 
           <h4>
-            {{s.subcategory}}
+            {{s.value}}
             <ion-icon color="success" item-right
               [name]="isLevel2Shown('idx'+i+'idx'+i2) ? 'arrow-dropdown' : 'arrow-dropright'"></ion-icon>
 
@@ -66,17 +66,17 @@
             </button>
 
           </h4>
-          <ion-list *ngIf="isLevel2Shown('idx'+i+'idx'+i2)">
-            <ion-item *ngFor="let m of s.manufactures" text-wrap>
-              {{m.manufacture}}
+         <ion-list *ngIf="isLevel2Shown('idx'+i+'idx'+i2)">
+            <ion-item *ngFor="let m of s.subtopics" text-wrap>
+              {{m.value}}
             </ion-item>
-          </ion-list>
+          </ion-list> 
         </ion-item>
       </ion-list>
     </ion-item>
   </ion-list>
 
-  <ion-input class="input-box" type="text" placeholder="Enter Chapter Name" name="text"></ion-input>
+ <!-- <ion-input class="input-box" type="text" placeholder="Enter Chapter Name" name="text"></ion-input> -->
   <!-- <ion-input class="input-box" type="text" placeholder="Enter Topic Name" name="text"></ion-input> -->
 
   <!--{{att.label}}{{idx+1}}-->
@@ -95,35 +95,46 @@
   </ion-item>
   </ion-item>
 -->
-  <ng-template ngFor let-topic [ngForOf]="mycourses.Topics"  let-top="index">
+  <ng-template ngFor let-chapter [ngForOf]="mycourses.Chapters" let-chap="index">
     <ion-item>
-      <ion-label color="primary">Topic</ion-label>
-      <ion-input type="text" text-left [(ngModel)]="topic.value"></ion-input>
-         <button ion-button icon-only block>
-            <ion-icon name="delete"></ion-icon>
-          </button>
+      <ion-label color="primary">Chapter</ion-label>
+      <ion-input type="text" text-left [(ngModel)]="chapter.value"></ion-input>
+      <button ion-button icon-only block>
+        <ion-icon name="delete"></ion-icon>
+      </button>
     </ion-item>
-    <ion-list>
-      <ng-template ngFor let-subtopics [ngForOf]="topic.subtopics" let-i="index">
 
-        <ion-item>
-          <ion-label color="primary">SubTopic ({{topic.value}})</ion-label>
-          <ion-input type="text" text-left [(ngModel)]="subtopics.value"></ion-input>
-          <button ion-button icon-only block>
-            <ion-icon name="delete"></ion-icon>
-          </button>
-        </ion-item>
-  
-      </ng-template>
-    </ion-list>
-   
 
-      </ng-template>
+    <ng-template ngFor let-topic [ngForOf]="chapter.Topics" let-top="index">
+      <ion-item>
+        <ion-label color="primary">Topic ({{chapter.value}})</ion-label>
+        <ion-input type="text" text-left [(ngModel)]="topic.value"></ion-input>
+        <button ion-button icon-only block>
+          <ion-icon name="delete"></ion-icon>
+        </button>
+      </ion-item>
+      <ion-list>
+        <ng-template ngFor let-subtopics [ngForOf]="topic.subtopics" let-i="index">
 
-        <button ion-button margin-left (click)="addTopics()">Add Topics</button>
-    <button ion-button margin-left (click)="addSubtopic()">Add SubTopics</button>
-   
-  
+          <ion-item>
+            <ion-label color="primary">SubTopic ({{topic.value}})</ion-label>
+            <ion-input type="text" text-left [(ngModel)]="subtopics.value"></ion-input>
+            <button ion-button icon-only block>
+              <ion-icon name="delete"></ion-icon>
+            </button>
+          </ion-item>
+
+        </ng-template>
+      </ion-list>
+
+
+    </ng-template>
+  </ng-template>
+    <button ion-button margin-left (click)="addChapter()">Add Chapters</button>
+  <button ion-button margin-left (click)="addTopics()">Add Topics</button>
+  <button ion-button margin-left (click)="addSubtopic()">Add SubTopics</button>
+
+
   <button ion-button full (click)="goTo()">Add Course </button>
 
   <!-- <ion-card *ngIf="data">
