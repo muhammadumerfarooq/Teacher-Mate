@@ -2,7 +2,9 @@ page-course-info {
     body {
         cursor: url('https://ionicframework.com/img/finger.png'), auto;
       }
-      
+      .content{
+        background: url("../assets/img/bg.jpg") no-repeat; 
+    }
       .list .item.item-accordion {
         line-height: 38px;
         padding-left: 40px;

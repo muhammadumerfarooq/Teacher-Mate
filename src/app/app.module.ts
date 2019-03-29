@@ -32,6 +32,9 @@ import { NativeAudio } from '@ionic-native/native-audio';
 import { NotificationsServiceProvider } from '../providers/notifications-service/notifications-service';
 import { StudentProvider } from '../providers/student/student';
 import { HttpModule } from '@angular/http';
+import { CourseProvider } from '../providers/course/course';
+import { ClassProvider } from '../providers/class/class';
+import { ClassServiceProvider } from '../providers/class-service/class-service';
 
 // import { TeacherloginPage } from '../pages/teacherlogin/teacherlogin';
 // import { ParentloginPage } from '../pages/parentlogin/parentlogin';
@@ -96,7 +99,10 @@ export const firebaseConfig = {
     FilePath,
     NativeAudio,
     NotificationsServiceProvider,
-    StudentProvider
+    StudentProvider,
+    CourseProvider,
+    ClassProvider,
+    ClassServiceProvider
   ]
 })
 export class AppModule {}

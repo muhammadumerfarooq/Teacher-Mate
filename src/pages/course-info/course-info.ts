@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 import { Http, Response } from "@angular/http";
 
 import { map } from 'rxjs/operators';
+import { Courses, Chapters, Subtopics, Topics } from '../../providers/course/course';
 
 /**
  * Generated class for the CourseInfoPage page.
@@ -10,33 +11,6 @@ import { map } from 'rxjs/operators';
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
-export class Chapters{
-value:string;
-Topics: Array<Topics>;
-constructor(){
-  this.value = '';
-  this.Topics = new Array<Topics>();
-}
-}
- export class Topics {
-  value:string;
-   subtopics: Array<Subtopics>;
-   constructor(){
-     this.subtopics = new Array<Subtopics>();
-   }
- }
- export class Subtopics{
-   value:string;
-   constructor(){
-     this.value = '';
-   }
- }
- export class Courses {
-  Chapters:Array<Chapters>;
-   constructor(){
-     this.Chapters = new Array<Chapters>();
-   }
- }
 
 @IonicPage()
 @Component({
@@ -44,9 +18,7 @@ constructor(){
   templateUrl: 'course-info.html',
 })
 export class CourseInfoPage {
-  highlights = ['highlights', 'highlights', 'highlights', 'highlights', 'highlights'];
-  anArray:any=[];
-  topics:any=[];
+ 
   
   showLevel1 = null;
   showLevel2 = null;
@@ -56,7 +28,7 @@ export class CourseInfoPage {
 
   mycourses: Courses = new Courses();
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private http:Http) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private http:Http, private viewctrl:ViewController) {
     // this.topics.push({'value':''});
   //  this.mycourses.Chapters.push(new Chapters);
   //  this.mycourses.Chapters[0].value = '';
@@ -103,10 +75,7 @@ export class CourseInfoPage {
   isLevel2Shown(idx) {
     return this.showLevel2 === idx;
   };
-  goTo(){
-    console.log('this.anArray',this.anArray);
-    this.data=true;
-    }
+
 
     addChapter(){
       let chapterindex = this.mycourses.Chapters.length;
@@ -139,6 +108,14 @@ export class CourseInfoPage {
 
       console.log(this.mycourses.Chapters)
   
+
+    }
+
+    viewctrl_dismiss(){
+      this.viewctrl.dismiss('back');
+    }
+
+    addSyllabus(){
 
     }
 }

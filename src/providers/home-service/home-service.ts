@@ -13,7 +13,7 @@ import {
 import { LoaderserviceProvider } from '../loaderservice/loaderservice';
 import { Storage } from '@ionic/storage';
 import { ProfileServiceProvider, profile } from '../profile-service/profile-service';
-import { isThisQuarter } from 'date-fns';
+
 
 /*
   Generated class for the HomeServiceProvider provider.
