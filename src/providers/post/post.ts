@@ -335,6 +335,7 @@ debugger
     });
 
   }
+  
   uploadfile(feeddata: Myfeed, resolvedFilePath: string) {
 
     return new Promise((resolve, reject) => {

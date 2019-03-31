@@ -21,7 +21,24 @@ page-course-info {
       .list .item.item-accordion.ng-hide {
         line-height: 0px;
       }
-      
+      .card-css{
+        border-radius: 1.2em;
+        margin-top: 5%;
+        box-shadow: solid thin lightblue;
+        background: transparent;
+    }
+    .Syllabusclass{
+        width: 90%;
+        margin-left: 5%;
+
+
+    }
+    .btnfile{
+        padding-right: 5%;
+     //   border-right: 1px solid rgba(36, 50, 157, .25);
+        margin-right: 5%;
+
+    }
       .list .item.item-accordion.ng-hide-add,
       .list .item.item-accordion.ng-hide-remove {
         display: block !important;

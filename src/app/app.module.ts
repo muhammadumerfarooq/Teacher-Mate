@@ -33,7 +33,6 @@ import { NotificationsServiceProvider } from '../providers/notifications-service
 import { StudentProvider } from '../providers/student/student';
 import { HttpModule } from '@angular/http';
 import { CourseProvider } from '../providers/course/course';
-import { ClassProvider } from '../providers/class/class';
 import { ClassServiceProvider } from '../providers/class-service/class-service';
 
 // import { TeacherloginPage } from '../pages/teacherlogin/teacherlogin';
@@ -101,7 +100,6 @@ export const firebaseConfig = {
     NotificationsServiceProvider,
     StudentProvider,
     CourseProvider,
-    ClassProvider,
     ClassServiceProvider
   ]
 })
