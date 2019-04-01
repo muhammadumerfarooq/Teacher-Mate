@@ -7,6 +7,7 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 import { PostProvider, Myfeed } from '../../providers/post/post';
 import { HomeServiceProvider } from '../../providers/home-service/home-service';
 import { NativeAudio } from '@ionic-native/native-audio';
+import { ClassServiceProvider } from '../../providers/class-service/class-service';
 /**
  * Generated class for the TimelinePage page.
  *
@@ -22,7 +23,7 @@ import { NativeAudio } from '@ionic-native/native-audio';
 export class TimelinePage {
   photos = [];
 
-  constructor(public popoverCtrl: PopoverController ,private homeservice: HomeServiceProvider, private modalctrl: ModalController, private post: PostProvider, private camera: Camera, private alertctrl: AlertController, private cropservice: Crop, private imagepicker: ImagePicker, public navCtrl: NavController, public navParams: NavParams, public afauth: AngularFireAuth) {
+  constructor(private classservice:ClassServiceProvider,public popoverCtrl: PopoverController ,private homeservice: HomeServiceProvider, private modalctrl: ModalController, private post: PostProvider, private camera: Camera, private alertctrl: AlertController, private cropservice: Crop, private imagepicker: ImagePicker, public navCtrl: NavController, public navParams: NavParams, public afauth: AngularFireAuth) {
 
     this.afauth.auth.onAuthStateChanged(user => {
 

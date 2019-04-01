@@ -1,0 +1,69 @@
+<!--
+  Generated template for the CourseDetailsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar no-border-bottom color="primary">
+    <ion-title> Course Syllabus </ion-title>
+    <ion-buttons left>
+      <button ion-button icon-only (click)="viewctrl_dismiss()" class="my-style-for-modal">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+<ion-content class="content">
+  <ion-card class="card-css">
+    <ion-list>
+      <ion-item *ngFor="let p of mycourses.Chapters; let i=index" text-wrap (click)="toggleLevel1('idx'+i)"
+        [ngClass]="{active: isLevel1Shown('idx'+i)}">
+
+        <h2 [ngStyle]="{'color':'#4c6df9'}">
+     
+
+
+          {{p.value}}
+          <ion-icon color="success" item-right [name]="isLevel1Shown('idx'+i) ? 'arrow-dropdown' : 'arrow-dropright'">
+          </ion-icon>
+        </h2>
+        <ion-list *ngIf="isLevel1Shown('idx'+i)">
+          <ion-item *ngFor="let s of p.Topics; let i2=index" text-wrap (click)="toggleLevel2('idx'+i+'idx'+i2)"
+            [ngClass]="{active: isLevel2Shown('idx'+i+'idx'+i2)}">
+
+
+            {{s.value}}
+
+            <button ion-button margin-right clear item-end icon-only (click)="downaloadAndOpenfile(s.fileurl, s.filetype)">
+              <!-- here -->
+              <ion-icon name="cloud-done"></ion-icon>
+            </button>
+
+            <ion-icon color="success" item-right
+              [name]="isLevel2Shown('idx'+i+'idx'+i2) ? 'arrow-dropdown' : 'arrow-dropright'"></ion-icon>
+
+
+
+            <ion-list *ngIf="isLevel2Shown('idx'+i+'idx'+i2)">
+              <ion-item *ngFor="let m of s.subtopics" text-wrap>
+                {{m.value}}
+                <button margin-top ion-button clear item-end icon-only (click)="downaloadAndOpenfile(m.fileurl, m.filetype)">
+                  <!-- here -->
+                  <ion-icon name="cloud-done"></ion-icon>
+                </button>
+              </ion-item>
+            </ion-list>
+
+
+          </ion-item>
+        </ion-list>
+
+      </ion-item>
+    </ion-list>
+
+        <button class="Syllabusclass" ion-button margin-top full (click)="addSyllabus()">Submit Syllabus </button>
+
+  </ion-card>
+</ion-content>

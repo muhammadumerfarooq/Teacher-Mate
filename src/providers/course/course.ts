@@ -28,6 +28,7 @@ export class Topics {
    filetext:string;
    filetype:string;
   filepath:string;
+  filestatus:string;
    constructor(){
      this.subtopics = new Array<Subtopics>();
      this.filename = '';
@@ -35,6 +36,7 @@ export class Topics {
      this.filetext= '';
      this.filetype='';
      this.fileurl='';
+     this.filestatus = '';
 
    }
  }
@@ -45,6 +47,7 @@ export class Topics {
    filetext:string;
    filetype:string;
   filepath:string;
+  filestatus:string;
    constructor(){
      this.value = '';
      this.filename = '';
@@ -52,7 +55,7 @@ export class Topics {
      this.filetext= '';
      this.filetype='';
      this.fileurl='';
-     
+     this.filestatus = '';
    }
  }
  export class Courses {
@@ -84,22 +87,28 @@ export class CourseProvider {
   allcourses: Array<Courses> = [];
 
   constructor( private fileservice: File,private fileChooser: FileChooser, private filePath: FilePath, private fileOpener: FileOpener,private afs:AngularFirestore, private classervice: ClassServiceProvider, private loaderservice:LoaderserviceProvider) {
-   this.afs.collection<Courses>('courses').snapshotChanges().forEach(snap=>{
+   this.afs.collection<Courses>('courses', ref=>{
+     return ref.where("classname","==",classervice.classname).where("classteacher","==",classervice.classteacher);
+   }).snapshotChanges().forEach(snap=>{
      this.allcourses = new Array<Courses>(); 
 
      snap.forEach(snapshot=>{
+       
        if (snapshot.payload.doc.exists){
+         console.log(snapshot.payload.doc.data() as Courses)
           this.allcourses.push(snapshot.payload.doc.data() as Courses);
        }
      })
    })
+
+   
   }
 
   insert_course(course: Courses){
    
     const objectcourse= Object.assign({}, course);
     objectcourse.Chapters = Object.assign({},course.Chapters);
-    
+    return new Promise((resolve,reject)=>{
     for (let i=0;i<objectcourse.Chapters.length;i++)
     {
       objectcourse.Chapters[i] =  Object.assign({},course.Chapters[i]);
@@ -127,20 +136,26 @@ export class CourseProvider {
     setTimeout(() => {
               
       this.loaderservice.loading.present().then(()=>{
+       
+           
         this.afs.collection<Courses>('courses').doc(course.creationdate).set({objectcourse}).then(res=>{
           this.loaderservice.dismissloading();
 
           debugger
+          return resolve('inserted');
 
         }).catch(err=>{
           this.loaderservice.dismissloading();
+       
           debugger
-        
+          return reject('error'); 
         });
-
-      });
-
+     
+      })
+     
     }, 2000);
+  });
+
   }
 
   makeFileIntoBlob(_imagePath, name, type) {
@@ -173,8 +188,8 @@ export class CourseProvider {
   }
 
 
-    uploadfiletopic(resolvedFilePath: string, filename:string, filetxt:string) {
-
+    uploadfiletopic(resolvedFilePath: string, filename:string, filetxt:string, filetype:string) {
+      
       return new Promise((resolve, reject) => {
   
         this.loaderservice.loading = this.loaderservice.loadingCtrl.create({
@@ -188,43 +203,44 @@ export class CourseProvider {
         setTimeout(() => {
           this.loaderservice.loading.present().then(() => {
   
-            this.fileChooser.open().then(file => {
-              this.filePath.resolveNativePath(file).then(resolvedFilePath => {
+            // this.fileChooser.open().then(file => {
+            //   this.filePath.resolveNativePath(file).then(resolvedFilePath => {
   
-
+debugger
                 this.makeFileIntoBlob(resolvedFilePath, filetxt, "application/pdf").then((fileblob) => {
   
                   const id = this.afs.createId();
-                  
+                
                   const pictures = storage().ref('blob/' + id + filename);
-                  pictures.put(fileblob, { contentType: "application/pdf" }).then(val => {
+                  pictures.put(fileblob, { contentType: "application/"+filetype }).then(val => {
                     console.log(val);
                     
                     pictures.getDownloadURL().then((val)=>{
+
+
                       let value:string = val;
                       this.loaderservice.dismissloading();
                       return resolve(value);
                     }).catch(err=>{
+                      debugger
                       this.loaderservice.dismissloading();
                       return reject('error');
                     });
 
                   }).catch(err => {
+
+                    debugger
                     this.loaderservice.dismissloading();
                     return reject('error');
                   });//
                 }).catch(err => {
+                  debugger
                   this.loaderservice.dismissloading();
                   return reject('error');
   
                 });
   
-              }).catch(err => {
-                alert(JSON.stringify(err));
-              });
-            }).catch(err => {
-              alert(JSON.stringify(err));
-            });
+              
           })
         }, 2000);
   

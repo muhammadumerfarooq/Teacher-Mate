@@ -34,6 +34,8 @@ import { StudentProvider } from '../providers/student/student';
 import { HttpModule } from '@angular/http';
 import { CourseProvider } from '../providers/course/course';
 import { ClassServiceProvider } from '../providers/class-service/class-service';
+import { FileTransfer } from '@ionic-native/file-transfer';
+import { DocumentViewer } from '@ionic-native/document-viewer';
 
 // import { TeacherloginPage } from '../pages/teacherlogin/teacherlogin';
 // import { ParentloginPage } from '../pages/parentlogin/parentlogin';
@@ -96,6 +98,8 @@ export const firebaseConfig = {
     FileChooser,
     FileOpener,
     FilePath,
+    FileTransfer,
+    DocumentViewer,
     NativeAudio,
     NotificationsServiceProvider,
     StudentProvider,

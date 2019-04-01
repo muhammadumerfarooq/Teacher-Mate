@@ -48,48 +48,52 @@
 
 </ion-header>
 <ion-content class="content">
-  <ion-card class="card-css">
-  <ion-list>
-    <ion-item *ngFor="let p of mycourses.Chapters; let i=index" text-wrap (click)="toggleLevel1('idx'+i)"
-      [ngClass]="{active: isLevel1Shown('idx'+i)}">
+  <ion-card class="card-css" [hidden]="this.courseservice.allcourses.length == 0">
+    <ion-list *ngFor="let ch of this.courseservice.allcourses">
+      <ion-item *ngFor="let p of ch.Chapters; let i=index" text-wrap (click)="toggleLevel1('idx'+i)"
+        [ngClass]="{active: isLevel1Shown('idx'+i)}">
 
-      <h2 [ngStyle]="{'color':'#4c6df9'}">
-
-        {{p.value}}
-        <ion-icon color="success" item-right [name]="isLevel1Shown('idx'+i) ? 'arrow-dropdown' : 'arrow-dropright'">
-        </ion-icon>
-      </h2>
-      <ion-list *ngIf="isLevel1Shown('idx'+i)">
-        <ion-item *ngFor="let s of p.Topics; let i2=index" text-wrap (click)="toggleLevel2('idx'+i+'idx'+i2)"
-          [ngClass]="{active: isLevel2Shown('idx'+i+'idx'+i2)}">
+        <h2 [ngStyle]="{'color':'#4c6df9'}">
+     
 
 
-          {{s.value}}
-          <ion-icon color="success" item-right
-            [name]="isLevel2Shown('idx'+i+'idx'+i2) ? 'arrow-dropdown' : 'arrow-dropright'"></ion-icon>
+          {{p.value}}
+          <ion-icon color="success" item-right [name]="isLevel1Shown('idx'+i) ? 'arrow-dropdown' : 'arrow-dropright'">
+          </ion-icon>
+        </h2>
+        <ion-list *ngIf="isLevel1Shown('idx'+i)">
+          <ion-item *ngFor="let s of p.Topics; let i2=index" text-wrap (click)="toggleLevel2('idx'+i+'idx'+i2)"
+            [ngClass]="{active: isLevel2Shown('idx'+i+'idx'+i2)}">
+
+
+            {{s.value}}
+
+            <button ion-button margin-right clear item-end icon-only (click)="downaloadAndOpenfile(s.fileurl, s.filetype)">
+              <!-- here -->
+              <ion-icon name="cloud-done"></ion-icon>
+            </button>
+
+            <ion-icon color="success" item-right
+              [name]="isLevel2Shown('idx'+i+'idx'+i2) ? 'arrow-dropdown' : 'arrow-dropright'"></ion-icon>
 
 
 
-          <ion-list *ngIf="isLevel2Shown('idx'+i+'idx'+i2)">
-            <ion-item *ngFor="let m of s.subtopics" text-wrap>
-              {{m.value}}
-              <button margin-top ion-button clear item-end icon-only (click)="openfile()">
-                <!-- here -->
-                <ion-icon name="document"></ion-icon>
-              </button>
-            </ion-item>
-          </ion-list>
+            <ion-list *ngIf="isLevel2Shown('idx'+i+'idx'+i2)">
+              <ion-item *ngFor="let m of s.subtopics" text-wrap>
+                {{m.value}}
+                <button margin-top ion-button clear item-end icon-only (click)="downaloadAndOpenfile(m.fileurl, m.filetype)">
+                  <!-- here -->
+                  <ion-icon name="cloud-done"></ion-icon>
+                </button>
+              </ion-item>
+            </ion-list>
 
-          <button ion-button margin-bottom clear item-end icon-only (click)="openfile()">
-            <!-- here -->
-            <ion-icon name="document"></ion-icon>
-          </button>
 
-        </ion-item>
-      </ion-list>
+          </ion-item>
+        </ion-list>
 
-    </ion-item>
-  </ion-list>
+      </ion-item>
+    </ion-list>
   </ion-card>
   <!-- <ion-input class="input-box" type="text" placeholder="Enter Chapter Name" name="text"></ion-input> -->
   <!-- <ion-input class="input-box" type="text" placeholder="Enter Topic Name" name="text"></ion-input> -->
@@ -110,79 +114,94 @@
   </ion-item>
   </ion-item>
 -->
+<!--
   <ion-card class="card-css">
-  <ng-template ngFor let-chapter [ngForOf]="mycourses.Chapters" let-chap="index">
-    <ion-item>
-
-      <button class="btnfile" margin-right ion-button clear item-end icon-only>
-        <!-- here -->
-        <ion-icon name="document"></ion-icon>
-      </button>
-      <button ion-button clear  margin-right item-end icon-only>
-        <!-- here -->
-        <ion-icon name="trash"></ion-icon>
-      </button>
-
-
-      <!--  <ion-label color="primary">Chapter</ion-label> -->
-      <ion-input type="text" placeholder="Enter Chapter" text-left [(ngModel)]="chapter.value"></ion-input>
-
-
-    </ion-item>
-
-
-    <ng-template ngFor let-topic [ngForOf]="chapter.Topics" let-top="index">
+    <ng-template ngFor let-chapter [ngForOf]="mycourses.Chapters" let-chap="index">
       <ion-item>
-        <!--   <ion-label color="primary">Topic ({{chapter.value}})</ion-label> -->
-        <ion-input type="text" placeholder="Enter Topic of {{chapter.value}}" text-left [(ngModel)]="topic.value">
-        </ion-input>
-        <button class="btnfile" margin-right ion-button clear item-end icon-only (click)="openfile_topic(chap,top)">
-          <!-- here -->
-          <ion-icon name="document"></ion-icon>
-        </button>
-        <button ion-button clear  margin-right item-end icon-only>
-          <!-- here -->
+         <button class="btnfile" margin-right ion-button clear item-end icon-only>
+
+      </button>
+      -
+        <button ion-button clear margin-right item-end icon-only>
+    
           <ion-icon name="trash"></ion-icon>
         </button>
 
 
+        <ion-input type="text" placeholder="Enter Chapter" text-left [(ngModel)]="chapter.value"></ion-input>
+
+
       </ion-item>
-      <ion-list>
-        <ng-template ngFor let-subtopics [ngForOf]="topic.subtopics" let-i="index">
-
-          <ion-item>
-            <!--        <ion-label color="primary">SubTopic ({{topic.value}})</ion-label> -->
-            <ion-input type="text" placeholder="Enter Subtopic of {{topic.value}}" text-left
-              [(ngModel)]="subtopics.value"></ion-input>
-
-            <button class="btnfile" margin-right ion-button clear item-end icon-only (click)="openfile_subtopic(chap,top,i)">
-              <!-- here -->
-              <ion-icon name="document"></ion-icon>
-            </button>
-            <button ion-button  margin-right clear item-end icon-only (click)="removefile_subtopic(chap,top,i)">
-              <!-- here -->
-              <ion-icon name="trash"></ion-icon>
-            </button>
 
 
-          </ion-item>
+      <ng-template ngFor let-topic [ngForOf]="chapter.Topics" let-top="index">
+        <ion-item>
+          <ion-input type="text" placeholder="Enter Topic of {{chapter.value}}" text-left [(ngModel)]="topic.value">
+          </ion-input>
 
-        </ng-template>
-      </ion-list>
+          <button ion-button clear margin-right item-end icon-only (click)="openfile_topic(chap,top)">
+            
+            <ion-icon name="document"></ion-icon>
+          </button>
+
+          <button ion-button clear margin-right item-end icon-only>
+            <ion-icon name="trash"></ion-icon>
+          </button>
 
 
+        </ion-item>
+        <ion-list>
+          <ng-template ngFor let-subtopics [ngForOf]="topic.subtopics" let-i="index">
+
+            <ion-item>
+              <ion-input type="text" placeholder="Enter Subtopic of {{topic.value}}" text-left
+                [(ngModel)]="subtopics.value"></ion-input>
+
+              <button class="btnfile" margin-right ion-button clear item-end icon-only
+                (click)="openfile_subtopic(chap,top,i)">
+                <ion-icon name="document"></ion-icon>
+              </button>
+              <button ion-button margin-right clear item-end icon-only (click)="removefile_subtopic(chap,top,i)">
+                <ion-icon name="trash"></ion-icon>
+              </button>
+
+
+            </ion-item>
+
+          </ng-template>
+        </ion-list>
+
+
+      </ng-template>
     </ng-template>
-  </ng-template>
   </ion-card>
   <ion-card class="card-css">
+  -->
+<!--
     <button ion-button margin-left (click)="addChapter()">Chapters</button>
-    <button ion-button margin-left (click)="addTopics()">Topics</button>
-    <button ion-button margin-left (click)="addSubtopic()">SubTopics</button>
+    <button ion-button (click)="addTopics()">Topics</button>
+    <button ion-button (click)="addSubtopic()">SubTopics</button>
+-->  
+<ion-card class="card-css" [hidden] = " this.courseservice.allcourses.length > 0">
+<div *ngIf = " this.courseservice.allcourses.length == 0 ">
+<p>
+No course Syllabus are added
+</p>
+</div>
 
+</ion-card>
+<!--    <div class="divclass">
+      <span ion-text margin-left color="secondary" tappable (click)="addChapter()"><strong>Chapters</strong></span>
 
-    <button class="Syllabusclass" ion-button margin-top full (click)="addSyllabus()">Add Syllabus </button>
+      <span ion-text margin-left color="secondary" tappable (click)="addTopics()"><strong>Topics</strong></span>
+
+      <span ion-text margin-left color="secondary" tappable (click)="addSubtopic()"><strong>SubTopics</strong></span>
+
+    </div>
+
+    <button class="Syllabusclass" ion-button margin-top full (click)="downaloadAndOpenfile()">Add Syllabus </button>
   </ion-card>
-
+-->
 
   <!-- <ion-card *ngIf="data">
  <ion-item *ngFor="let att of anArray;">

@@ -44,14 +44,15 @@ export class MyApp {
             {title: 'Home', component: 'HomePage', icon: 'home'},
             {title: 'Students List', component: 'StudentListPage', icon: 'people'},
             {title: 'Your Child', component: 'AddStudent', icon: 'person'},
-            {title: 'Course', component: 'CourseInfo', icon: 'person'},
+            {title: 'Courses Info', component: 'CourseInfo', icon: 'paper'},
           ];
         }else{
           this.appMenuItems = [
             {title: 'Home', component: 'HomePage', icon: 'home'},
             {title: 'Students List', component: 'StudentListPage', icon: 'people'},
             {title: 'Add Student', component: 'AddStudent', icon: 'person-add'},
-            {title: 'Course', component: 'CourseInfo', icon: 'person'},
+            {title: 'Courses Info', component: 'CourseInfo', icon: 'paper'},
+            {title: 'Add Courses', component: 'AddCoursesPage', icon: 'create'},
 
           ];
         }
