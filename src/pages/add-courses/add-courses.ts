@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, ModalController } from 'ionic-angular';
 
 
-import { Courses, Chapters, Subtopics, Topics, CourseProvider } from '../../providers/course/course';
+import { Courses, Chapters, Topics, CourseProvider } from '../../providers/course/course';
 import { ClassServiceProvider } from '../../providers/class-service/class-service';
 import { FileChooser } from '@ionic-native/file-chooser';
 import { FileOpener } from '@ionic-native/file-opener';
@@ -35,7 +35,7 @@ export class AddCoursesPage {
   files = new Map();
 
   constructor(private modalctrl:ModalController,private documentview: DocumentViewer,private filetransfer:FileTransfer,private file:File,private plateform: Platform,private fileChooser: FileChooser, private filePath: FilePath, private alertctrl: AlertController, private fileOpener: FileOpener, private courseservice: CourseProvider, private classprovider: ClassServiceProvider, public navCtrl: NavController, public navParams: NavParams,  private viewctrl: ViewController) {
-
+       
 
     // this.topics.push({'value':''});
     //  this.mycourses.Chapters.push(new Chapters);
@@ -56,7 +56,7 @@ export class AddCoursesPage {
   // }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad CourseInfoPage');
+    console.log('ionViewDidLoad AddCoursesPage');
   }
   toggleLevel1(idx) {
     if (this.isLevel1Shown(idx)) {
@@ -90,7 +90,7 @@ export class AddCoursesPage {
     this.mycourses.Chapters.push(new Chapters());
 
   }
-  addSubtopic() {
+ /* addSubtopic() {
     let chapterindex = this.mycourses.Chapters.length;
     let topindex = this.mycourses.Chapters[chapterindex - 1].Topics.length;
 
@@ -105,7 +105,7 @@ export class AddCoursesPage {
     // console.log(this.anArray);
     //  this.anArray.push({'value':''});
   }
-
+*/
   addTopics() {
 
     let chapterindex = this.mycourses.Chapters.length;
@@ -129,7 +129,7 @@ export class AddCoursesPage {
     this.mycourses.classname = this.classprovider.classname;
 
 //    this.courseservice.insert_course(this.mycourses)
-
+debugger
     
     var modalPage = this.modalctrl.create('CourseDetailsPage', { mycourses: this.mycourses });
     modalPage.onDidDismiss(data => {
@@ -140,6 +140,7 @@ export class AddCoursesPage {
         this.presentAlert('Error', ' courses not added ');
       } 
     });
+    modalPage.present();
   }
 
 
@@ -161,10 +162,18 @@ export class AddCoursesPage {
           this.mycourses.Chapters[chap].Topics[top].filetext = this.getfileext(resolvedFilePath);
           this.courseservice.uploadfiletopic(resolvedFilePath, this.mycourses.Chapters[chap].Topics[top].filename, this.mycourses.Chapters[chap].Topics[top].filetext, this.mycourses.Chapters[chap].Topics[top].filetype).then((val) => {
             let value: string = val.toString();
+            if (value=='error'){
+              this.mycourses.Chapters[chap].Topics[top].fileurl = '';
+              this.mycourses.Chapters[chap].Topics[top].filestatus = 'error';              
+              this.files.set(this.mycourses.Chapters[chap].Topics[top].filename, 'error');
+              this.presentAlert(' Uplaoding ', ' Failed ');
+
+            }else{
             this.mycourses.Chapters[chap].Topics[top].fileurl = value;
             this.mycourses.Chapters[chap].Topics[top].filestatus = 'uploaded';
             this.files.set(this.mycourses.Chapters[chap].Topics[top].filename, value);
             this.presentAlert(' Uploaded ', 'Successfully');
+            }
           }).catch(err => {
             this.presentAlert('Error ', err.toString());
             this.mycourses.Chapters[chap].Topics[top].fileurl = '';
@@ -186,7 +195,7 @@ export class AddCoursesPage {
       alert(JSON.stringify(err));
     });
   }
-
+/*
   openfile_subtopic(chap, top, i) {
     this.fileChooser.open().then(file => {
       this.filePath.resolveNativePath(file).then(resolvedFilePath => {
@@ -203,12 +212,19 @@ export class AddCoursesPage {
           this.mycourses.Chapters[chap].Topics[top].subtopics[i].filetext = this.getfileext(resolvedFilePath);
           this.courseservice.uploadfiletopic(resolvedFilePath, this.mycourses.Chapters[chap].Topics[top].subtopics[i].filename, this.mycourses.Chapters[chap].Topics[top].subtopics[i].filetext, this.mycourses.Chapters[chap].Topics[top].subtopics[i].filetype).then((val) => {
             let value: string = val.toString();
-            this.mycourses.Chapters[chap].Topics[top].subtopics[i].fileurl = value;
 
+            if (value=='error'){
             this.mycourses.Chapters[chap].Topics[top].subtopics[i].filestatus = 'error';
             this.files.set(this.mycourses.Chapters[chap].Topics[top].subtopics[i].filename, 'error');
             this.presentAlert(' Uplaoding ', ' Failed ');
+            this.mycourses.Chapters[chap].Topics[top].subtopics[i].fileurl = '';
+            }else{
+              this.mycourses.Chapters[chap].Topics[top].subtopics[i].fileurl = value;
+              this.mycourses.Chapters[chap].Topics[top].subtopics[i].filestatus = 'uploaded';
+              this.files.set(this.mycourses.Chapters[chap].Topics[top].subtopics[i].filename, 'uploaded');
+              this.presentAlert(' Uploaded ', 'Successfully');
 
+            }
           }).catch(err => {
             this.presentAlert('Error ', err.toString());
             this.mycourses.Chapters[chap].Topics[top].subtopics[i].fileurl = '';
@@ -232,7 +248,7 @@ export class AddCoursesPage {
       alert(JSON.stringify(err));
     });
   }
-
+*/
   getfilename(filestring) {
 
     let file

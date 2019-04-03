@@ -18,6 +18,7 @@ classname: string;
 classteacher:string;
 
   constructor(private afs:AngularFirestore, private storage:Storage) {
+    console.log('in classservice ')
     this.storage.get("classroom").then(val=>{
       this.classname = val;
     }).catch(err=>{

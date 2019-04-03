@@ -130,7 +130,7 @@ return (of(friends));
  // console.log('res')
     this.parents.snapshotChanges().forEach(snap=>{
       snap.forEach(snapshot=>{
-       console.log(snapshot.payload.doc.id)
+       console.log(snapshot.payload.doc.id, chatusers)
        chatusers.forEach(element => {
         if( element.useremail == snapshot.payload.doc.id ){
         

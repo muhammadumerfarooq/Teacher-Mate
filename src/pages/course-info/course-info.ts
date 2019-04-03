@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, AlertController } from 'ionic-angular';
 
-import { Courses, Chapters, Subtopics, Topics, CourseProvider } from '../../providers/course/course';
+import { Courses, Chapters,  Topics, CourseProvider } from '../../providers/course/course';
 import { ClassServiceProvider } from '../../providers/class-service/class-service';
 import { FileChooser } from '@ionic-native/file-chooser';
 import { FileOpener } from '@ionic-native/file-opener';

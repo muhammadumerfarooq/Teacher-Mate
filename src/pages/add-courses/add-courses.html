@@ -49,7 +49,7 @@
 </ion-header>
 <ion-content class="content">
   <ion-card class="card-css">
-    <ion-list>
+    <ion-list [hidden] = "mycourses.Chapters.length == 0">
       <ion-item *ngFor="let p of mycourses.Chapters; let i=index" text-wrap (click)="toggleLevel1('idx'+i)"
         [ngClass]="{active: isLevel1Shown('idx'+i)}">
 
@@ -65,29 +65,30 @@
           <ion-item *ngFor="let s of p.Topics; let i2=index" text-wrap (click)="toggleLevel2('idx'+i+'idx'+i2)"
             [ngClass]="{active: isLevel2Shown('idx'+i+'idx'+i2)}">
 
-
-            {{s.value}}
-
-            <button ion-button margin-right clear item-end icon-only (click)="downaloadAndOpenfile(s.fileurl, s.filetype)">
+<h2 [ngStyle]="{'color':'#4c6df9'}">
+     
+             {{s.value}}
+</h2>
+         <button ion-button margin-right clear item-end icon-only (click)="downaloadAndOpenfile(s.fileurl, s.filetype)">
               <!-- here -->
               <ion-icon name="cloud-done"></ion-icon>
             </button>
 
-            <ion-icon color="success" item-right
+<!--            <ion-icon color="success" item-right
               [name]="isLevel2Shown('idx'+i+'idx'+i2) ? 'arrow-dropdown' : 'arrow-dropright'"></ion-icon>
+-->
 
 
-
-            <ion-list *ngIf="isLevel2Shown('idx'+i+'idx'+i2)">
+   <!--         <ion-list *ngIf="isLevel2Shown('idx'+i+'idx'+i2)">
               <ion-item *ngFor="let m of s.subtopics" text-wrap>
                 {{m.value}}
                 <button margin-top ion-button clear item-end icon-only (click)="downaloadAndOpenfile(m.fileurl, m.filetype)">
-                  <!-- here -->
+              
                   <ion-icon name="cloud-done"></ion-icon>
                 </button>
               </ion-item>
             </ion-list>
-
+-->
 
           </ion-item>
         </ion-list>
@@ -152,21 +153,20 @@
 
 
         </ion-item>
+        <!--
         <ion-list>
           <ng-template ngFor let-subtopics [ngForOf]="topic.subtopics" let-i="index">
 
             <ion-item>
-              <!--        <ion-label color="primary">SubTopic ({{topic.value}})</ion-label> -->
               <ion-input type="text" placeholder="Enter Subtopic of {{topic.value}}" text-left
                 [(ngModel)]="subtopics.value"></ion-input>
 
               <button class="btnfile" margin-right ion-button clear item-end icon-only
                 (click)="openfile_subtopic(chap,top,i)">
-                <!-- here -->
+                
                 <ion-icon name="document"></ion-icon>
               </button>
               <button ion-button margin-right clear item-end icon-only (click)="removefile_subtopic(chap,top,i)">
-                <!-- here -->
                 <ion-icon name="trash"></ion-icon>
               </button>
 
@@ -175,7 +175,7 @@
 
           </ng-template>
         </ion-list>
-
+-->
 
       </ng-template>
     </ng-template>
@@ -191,7 +191,7 @@
 
       <span ion-text margin-left color="secondary" tappable (click)="addTopics()"><strong>Topics</strong></span>
 
-      <span ion-text margin-left color="secondary" tappable (click)="addSubtopic()"><strong>SubTopics</strong></span>
+<!--      <span ion-text margin-left color="secondary" tappable (click)="addSubtopic()"><strong>SubTopics</strong></span> -->
 
     </div>
 

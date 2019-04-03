@@ -17,7 +17,7 @@
 </ion-header>
 <ion-content class="content">
   <ion-card class="card-css">
-    <ion-list>
+    <ion-list [hidden] = "mycourses.Chapters.length == 0">
       <ion-item *ngFor="let p of mycourses.Chapters; let i=index" text-wrap (click)="toggleLevel1('idx'+i)"
         [ngClass]="{active: isLevel1Shown('idx'+i)}">
 
@@ -40,7 +40,7 @@
               <!-- here -->
               <ion-icon name="cloud-done"></ion-icon>
             </button>
-
+<!--
             <ion-icon color="success" item-right
               [name]="isLevel2Shown('idx'+i+'idx'+i2) ? 'arrow-dropdown' : 'arrow-dropright'"></ion-icon>
 
@@ -50,12 +50,11 @@
               <ion-item *ngFor="let m of s.subtopics" text-wrap>
                 {{m.value}}
                 <button margin-top ion-button clear item-end icon-only (click)="downaloadAndOpenfile(m.fileurl, m.filetype)">
-                  <!-- here -->
                   <ion-icon name="cloud-done"></ion-icon>
                 </button>
               </ion-item>
             </ion-list>
-
+-->
 
           </ion-item>
         </ion-list>

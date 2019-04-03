@@ -22,7 +22,7 @@ import { File } from '@ionic-native/file';
 */
 export class Topics {
   value:string;
-   subtopics: Array<Subtopics>;
+ //  subtopics: Array<Subtopics>;
    fileurl: string;
    filename:string;
    filetext:string;
@@ -30,7 +30,7 @@ export class Topics {
   filepath:string;
   filestatus:string;
    constructor(){
-     this.subtopics = new Array<Subtopics>();
+//     this.subtopics = new Array<Subtopics>();
      this.filename = '';
      this.filepath='';
      this.filetext= '';
@@ -40,7 +40,7 @@ export class Topics {
 
    }
  }
- export class Subtopics{
+ /* export class Subtopics{
    value:string;
    fileurl: string;
    filename:string;
@@ -57,7 +57,7 @@ export class Topics {
      this.fileurl='';
      this.filestatus = '';
    }
- }
+ }*/
  export class Courses {
   creationdate: string;
   Chapters:Array<Chapters>;
@@ -88,10 +88,11 @@ export class CourseProvider {
 
   constructor( private fileservice: File,private fileChooser: FileChooser, private filePath: FilePath, private fileOpener: FileOpener,private afs:AngularFirestore, private classervice: ClassServiceProvider, private loaderservice:LoaderserviceProvider) {
    this.afs.collection<Courses>('courses', ref=>{
+     debugger
      return ref.where("classname","==",classervice.classname).where("classteacher","==",classervice.classteacher);
    }).snapshotChanges().forEach(snap=>{
      this.allcourses = new Array<Courses>(); 
-
+debugger
      snap.forEach(snapshot=>{
        
        if (snapshot.payload.doc.exists){
@@ -104,24 +105,25 @@ export class CourseProvider {
    
   }
 
-  insert_course(course: Courses){
+  insert_course(courses: Courses){
    
-    const objectcourse= Object.assign({}, course);
-    objectcourse.Chapters = Object.assign({},course.Chapters);
+    const course= Object.assign({}, courses);
+    course.Chapters = Object.assign({},course.Chapters);
     return new Promise((resolve,reject)=>{
-    for (let i=0;i<objectcourse.Chapters.length;i++)
+      debugger
+    for (let i=0;i<courses.Chapters.length;i++)
     {
-      objectcourse.Chapters[i] =  Object.assign({},course.Chapters[i]);
+      course.Chapters[i] =  Object.assign({},courses.Chapters[i]);
       
-      objectcourse.Chapters[i].Topics =  Object.assign({},course.Chapters[i].Topics);
-      for (let j=0;j<objectcourse.Chapters[i].Topics.length;j++)
+      course.Chapters[i].Topics =  Object.assign({},courses.Chapters[i].Topics);
+      for (let j=0;j<courses.Chapters[i].Topics.length;j++)
       {
-        objectcourse.Chapters[i].Topics[j] =  Object.assign({},course.Chapters[i].Topics[j]); 
-        objectcourse.Chapters[i].Topics[j].subtopics =  Object.assign({},course.Chapters[j].Topics[j].subtopics);
-        for (let k=0;k<objectcourse.Chapters[j].Topics[j].subtopics.length;k++)
-        {
-          objectcourse.Chapters[i].Topics[j].subtopics[k] =  Object.assign({},course.Chapters[j].Topics[j].subtopics[k]);
-        }
+        course.Chapters[i].Topics[j] =  Object.assign({},courses.Chapters[i].Topics[j]); 
+        // objectcourse.Chapters[i].Topics[j].subtopics =  Object.assign({},course.Chapters[j].Topics[j].subtopics);
+        // for (let k=0;k<objectcourse.Chapters[j].Topics[j].subtopics.length;k++)
+        // {
+        //   objectcourse.Chapters[i].Topics[j].subtopics[k] =  Object.assign({},course.Chapters[j].Topics[j].subtopics[k]);
+        // }
       }
     }
     this.loaderservice.loading = this.loaderservice.loadingCtrl.create({
@@ -137,8 +139,8 @@ export class CourseProvider {
               
       this.loaderservice.loading.present().then(()=>{
        
-           
-        this.afs.collection<Courses>('courses').doc(course.creationdate).set({objectcourse}).then(res=>{
+          debugger 
+        this.afs.collection<Courses>('courses').doc(course.creationdate).set(course).then(res=>{
           this.loaderservice.dismissloading();
 
           debugger
