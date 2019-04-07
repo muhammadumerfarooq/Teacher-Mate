@@ -25,7 +25,7 @@ export class ChatPage {
   toUser : {toUserId: string, toUserName: string};
   friends: Observable<any[]>;
   constructor(public viewctrl:ViewController,private modalctrl:ModalController,private storage: Storage, private homeservice :HomeServiceProvider,private chatpublicservice: ChatpublicServiceProvider,public chatservice:ChatServiceProvider, public afauth:AngularFireAuth, public afs: AngularFirestore, public navCtrl: NavController, public navParams: NavParams) {
-    
+    debugger
     this.friends = this.chatservice.getall(this.homeservice.chatusers);
     
     this.friends.subscribe(res=>{
@@ -70,7 +70,7 @@ export class ChatPage {
       //    Colid: res
       //  });
 
-           
+           debugger
     var modalPage = this.modalctrl.create('ChatpublicPage' ,{
       toUser: this.toUser,
       Colid: res

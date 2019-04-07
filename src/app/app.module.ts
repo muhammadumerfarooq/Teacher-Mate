@@ -36,6 +36,7 @@ import { CourseProvider } from '../providers/course/course';
 import { ClassServiceProvider } from '../providers/class-service/class-service';
 import { FileTransfer } from '@ionic-native/file-transfer';
 import { DocumentViewer } from '@ionic-native/document-viewer';
+import { QuizServiceProvider } from '../providers/quiz-service/quiz-service';
 
 // import { TeacherloginPage } from '../pages/teacherlogin/teacherlogin';
 // import { ParentloginPage } from '../pages/parentlogin/parentlogin';
@@ -104,7 +105,8 @@ export const firebaseConfig = {
     NotificationsServiceProvider,
     StudentProvider,
     CourseProvider,
-    ClassServiceProvider
+    ClassServiceProvider,
+    QuizServiceProvider
   ]
 })
 export class AppModule {}

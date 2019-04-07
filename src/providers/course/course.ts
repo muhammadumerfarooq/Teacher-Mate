@@ -94,10 +94,46 @@ export class CourseProvider {
      this.allcourses = new Array<Courses>(); 
 debugger
      snap.forEach(snapshot=>{
-       
+      debugger
        if (snapshot.payload.doc.exists){
          console.log(snapshot.payload.doc.data() as Courses)
-          this.allcourses.push(snapshot.payload.doc.data() as Courses);
+         let tempcourse: Courses = snapshot.payload.doc.data() as Courses;
+         let courses: Courses =new  Courses();
+
+         courses.classname = tempcourse.classname;
+         courses.classteacher = tempcourse.classteacher;
+         courses.creationdate = tempcourse.creationdate;
+
+          let i = 0;
+          let chap =0;
+          while (i>-1){
+            if (tempcourse.Chapters[i] != undefined && tempcourse.Chapters[i] != null){
+              courses.Chapters.push( new Chapters());
+              courses.Chapters[chap].value = tempcourse.Chapters[i].value;
+             
+              let top = 0;
+              let j = 0;
+              while (j>-1){
+                if (tempcourse.Chapters[i].Topics[j]!=null && tempcourse.Chapters[i].Topics[j]!=undefined){
+                  courses.Chapters[chap].Topics.push(new Topics());
+                  courses.Chapters[chap].Topics[top] = tempcourse.Chapters[i].Topics[j]; 
+                  top++;
+                }
+                else{
+                  break;
+                }
+                j++;
+              }
+              chap++; 
+              
+            }else{
+              break;
+            }
+            i++;
+          }
+
+
+          this.allcourses.push(courses);
        }
      })
    })

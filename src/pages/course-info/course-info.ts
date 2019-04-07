@@ -73,5 +73,55 @@ export class CourseInfoPage {
   viewctrl_dismiss() {
     this.viewctrl.dismiss('back');
   }
-
+  downaloadAndOpenfile(filename: string,fileurl:string, filetype: string){
+    let path = null;
+    if (this.plateform.is('ios') ){
+      path = this.file.documentsDirectory;
+    }else{
+      path = this.file.externalApplicationStorageDirectory;
+    }
+    const transfer = this.filetransfer.create();
+    transfer.download(fileurl, path+filename+'.'+filetype).then(entry=>{
+     // this.presentAlert('file path ',path+'myfile.'+filetype);
+     // let url = entry.toURL();
+      
+      let fileMIMEType=this.getMIMEtype(filetype);
+    
+      this.fileOpener.open(path+filename+'.'+filetype, fileMIMEType).then(file => {
+     //   alert(file);
+    
+     //   alert("It worked!")
+      }).catch(err => {
+        alert(JSON.stringify(err));
+      });
+    });
+    //   this.documentview.viewDocument(url,'application/'+filetype,{});
+    // }).catch(err=>{
+    //   this.presentAlert('Error ',err);
+    // });
+    
+      }
+    
+      
+    getMIMEtype(extn){
+      let ext=extn.toLowerCase();
+      let MIMETypes={
+        'txt' :'text/plain',
+        'docx':'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'doc' : 'application/msword',
+        'pdf' : 'application/pdf',
+        'jpg' : 'image/jpeg',
+        'bmp' : 'image/bmp',
+        'png' : 'image/png',
+        'xls' : 'application/vnd.ms-excel',
+        'xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'rtf' : 'application/rtf',
+        'ppt' : 'application/vnd.ms-powerpoint',
+        'pptx': 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+      }
+      return MIMETypes[ext];
+    }
+    Quiz(courseid:string, topicname:string ){
+      
+    }
 }

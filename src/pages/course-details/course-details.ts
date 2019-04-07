@@ -70,7 +70,7 @@ export class CourseDetailsPage {
     });
   }
 
-  downaloadAndOpenfile(fileurl:string, filetype: string){
+  downaloadAndOpenfile(filename : string,fileurl:string, filetype: string){
     let path = null;
     if (this.plateform.is('ios') ){
       path = this.file.documentsDirectory;
@@ -78,13 +78,13 @@ export class CourseDetailsPage {
       path = this.file.externalApplicationStorageDirectory;
     }
     const transfer = this.filetransfer.create();
-    transfer.download(fileurl, path+'myfile.'+filetype).then(entry=>{
+    transfer.download(fileurl, path+filename+'.'+filetype).then(entry=>{
      // this.presentAlert('file path ',path+'myfile.'+filetype);
      // let url = entry.toURL();
       
       let fileMIMEType=this.getMIMEtype(filetype);
     
-      this.fileOpener.open(path+'myfile.'+filetype, fileMIMEType).then(file => {
+      this.fileOpener.open(path+filename+'.'+filetype, fileMIMEType).then(file => {
      //   alert(file);
     
      //   alert("It worked!")
