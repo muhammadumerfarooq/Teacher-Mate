@@ -129,7 +129,7 @@ export class AddCoursesPage {
     this.mycourses.classname = this.classprovider.classname;
 
 //    this.courseservice.insert_course(this.mycourses)
-debugger
+
     
     var modalPage = this.modalctrl.create('CourseDetailsPage', { mycourses: this.mycourses });
     modalPage.onDidDismiss(data => {
@@ -180,7 +180,7 @@ debugger
             this.mycourses.Chapters[chap].Topics[top].filestatus = 'error';
             this.files.set(this.mycourses.Chapters[chap].Topics[top].filename, 'error');
             this.presentAlert(' Uplaoding ', ' Failed ');
-            debugger
+            
           });
         }
         else {

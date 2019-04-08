@@ -88,13 +88,13 @@ export class CourseProvider {
 
   constructor( private fileservice: File,private fileChooser: FileChooser, private filePath: FilePath, private fileOpener: FileOpener,private afs:AngularFirestore, private classervice: ClassServiceProvider, private loaderservice:LoaderserviceProvider) {
    this.afs.collection<Courses>('courses', ref=>{
-     debugger
+     
      return ref.where("classname","==",classervice.classname).where("classteacher","==",classervice.classteacher);
    }).snapshotChanges().forEach(snap=>{
      this.allcourses = new Array<Courses>(); 
-debugger
+
      snap.forEach(snapshot=>{
-      debugger
+      
        if (snapshot.payload.doc.exists){
          console.log(snapshot.payload.doc.data() as Courses)
          let tempcourse: Courses = snapshot.payload.doc.data() as Courses;
@@ -146,7 +146,7 @@ debugger
     const course= Object.assign({}, courses);
     course.Chapters = Object.assign({},course.Chapters);
     return new Promise((resolve,reject)=>{
-      debugger
+      
     for (let i=0;i<courses.Chapters.length;i++)
     {
       course.Chapters[i] =  Object.assign({},courses.Chapters[i]);
@@ -175,17 +175,17 @@ debugger
               
       this.loaderservice.loading.present().then(()=>{
        
-          debugger 
+           
         this.afs.collection<Courses>('courses').doc(course.creationdate).set(course).then(res=>{
           this.loaderservice.dismissloading();
 
-          debugger
+          
           return resolve('inserted');
 
         }).catch(err=>{
           this.loaderservice.dismissloading();
        
-          debugger
+          
           return reject('error'); 
         });
      
@@ -244,7 +244,7 @@ debugger
             // this.fileChooser.open().then(file => {
             //   this.filePath.resolveNativePath(file).then(resolvedFilePath => {
   
-debugger
+
                 this.makeFileIntoBlob(resolvedFilePath, filetxt, "application/pdf").then((fileblob) => {
   
                   const id = this.afs.createId();
@@ -260,19 +260,19 @@ debugger
                       this.loaderservice.dismissloading();
                       return resolve(value);
                     }).catch(err=>{
-                      debugger
+                      
                       this.loaderservice.dismissloading();
                       return reject('error');
                     });
 
                   }).catch(err => {
 
-                    debugger
+                    
                     this.loaderservice.dismissloading();
                     return reject('error');
                   });//
                 }).catch(err => {
-                  debugger
+                  
                   this.loaderservice.dismissloading();
                   return reject('error');
   

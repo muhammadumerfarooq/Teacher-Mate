@@ -113,11 +113,11 @@ export class ProfileServiceProvider {
   }
 
   editprofile(user: string, email, imguri) {
-    debugger
+    
     return new Promise((resolve, reject) => {
       
       this.afs.doc(user + "/" + email).snapshotChanges().take(1).forEach(snap => {
-        debugger
+        
         if (snap.payload.exists) {
           this.loaderservice.loading = this.loaderservice.loadingCtrl.create({
 
@@ -164,7 +164,7 @@ export class ProfileServiceProvider {
           }, 1000);
 
         } else {
-debugger
+
           return reject('error');
         }
       });

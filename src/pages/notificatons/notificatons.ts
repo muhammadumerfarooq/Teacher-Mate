@@ -28,10 +28,10 @@ export class NotificatonsPage {
     let foundfeed: Myfeed = new Myfeed();
     foundfeed = this.findfeed(notifications,foundfeed);
     this.notifyservice.updateobjectnotification(notifications);
-  debugger
+  
     if (foundfeed.publisheddate != undefined && foundfeed.publisheddate != null){
       var modalPage: any;
-debugger
+
     if (notifications.message.toString().includes('liked')){
       modalPage = this.modalCtrl.create('PostDetailPage', { Myfeed: foundfeed, 'likedperson': notifications.useremail });
 
@@ -60,7 +60,7 @@ debugger
     for (let i=0;i<this.postservice.Feeds.length;i++){
       
       if(this.postservice.Feeds[i].classid == notifications.classname && this.postservice.Feeds[i].teacheremail == notifications.classteacher && this.postservice.Feeds[i].title == notifications.feedtitle){
-        debugger
+  
         foundfeed =  this.postservice.Feeds[i];
         return foundfeed;
       }

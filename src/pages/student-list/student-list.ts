@@ -43,6 +43,9 @@ export class StudentListPage {
   }
 
   student_add(){
+   let  studentprofile: student= new student();
+ studentprofile.parentemail
+ 
     var modalPage = this.modalctrl.create('StudentProfilePage');
     modalPage.onDidDismiss(data=>{
      if (data == true)

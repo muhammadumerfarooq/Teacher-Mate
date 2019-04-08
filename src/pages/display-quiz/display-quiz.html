@@ -12,13 +12,21 @@
 </ion-header>
 
 <ion-content>
+  <div class="chatbox">
+    <button ion-button class="pull-right" color="secondary" tappable (click)="create_quiz()">
+      <ion-icon name="clipboard"></ion-icon>
+    </button>
+  </div>
+  
   <h3 class="search-query">
     <span>Showing: </span>
     <ion-badge class="query-tag">{{ quizinfo.topicname }}</ion-badge>
     <span class="query-explanation"> concepts</span>
   </h3>
 
-  <ion-card class="category-concept-card" [style.background-color]="category.background" *ngFor="let category of categories" (click)="openDetails({ category: category })">
+  <ion-card class="category-concept-card" [style.background-color]="category.background"
+    *ngFor="let questions of  quizservice.myquizes.questions"
+    (click)="openDetails(quizservice.myquizes.creationdate, quizservice.myquizes.quizname)">
     <ion-card-header>
       <h2 class="category-title">{{ quizservice.myquizes.quizname }}</h2>
     </ion-card-header>
@@ -28,9 +36,22 @@
       </p>
       <ion-row>
         <ion-col no-padding>
-          <ion-badge class="category-tag" *ngFor="let tag of category.tags" item-right>{{quizservice.myquizes.quiztype }}</ion-badge>
+          <ion-badge class="category-tag" *ngFor="let tag of category.tags" item-right>
+            {{quizservice.myquizes.quiztype }}</ion-badge>
         </ion-col>
       </ion-row>
+
+
     </ion-card-content>
   </ion-card>
+
+
+
+  <div *ngIf="!quizservice.myquizes.questions">
+    <h3 class="search-query">
+      <span>No Quiz Found under Topic </span>
+      <ion-badge class="query-tag">{{ quizinfo.topicname }}</ion-badge>
+      <span class="query-explanation"> </span>
+    </h3>
+  </div>
 </ion-content>

@@ -331,11 +331,11 @@ try{
   }
   
   getchatusers(classname: string, teacheremail: string){
-debugger
+
     this.chatusers = [];
 
     this.myclassroom.forEach(element => {
-      debugger
+      
       if (element.classname == classname && element.teacheremail == teacheremail){
         
         element.parentsemail.forEach(ele => {

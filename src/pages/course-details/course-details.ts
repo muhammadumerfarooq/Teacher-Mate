@@ -25,7 +25,7 @@ export class CourseDetailsPage {
  constructor(private file:File, private filetransfer:FileTransfer, private fileOpener:FileOpener ,private plateform:Platform,private viewctrl:ViewController,public navCtrl: NavController, public navParams: NavParams, private courseservice:CourseProvider) {
     this.mycourses = this.navParams.get('mycourses');
     
-    debugger
+    
   }
 
   ionViewDidLoad() {

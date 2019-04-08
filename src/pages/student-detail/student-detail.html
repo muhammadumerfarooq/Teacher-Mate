@@ -1,22 +1,61 @@
-<ion-header class="bar-stable">
-  <h1 class="title"></h1>
+<ion-header>
+  <ion-navbar no-border-bottom color="primary">
+    <ion-title> Student Detail </ion-title>
+    <ion-buttons left>
+      <button ion-button icon-only (click)="viewctrl_dismiss()" class="my-style-for-modal">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
 </ion-header>
-<ion-content ng-controller="ProfileCtrl">
-  <div *ngIf= "studentprofile!=null || studentprofile !=undefined" >
-    <div class="profile-picture big-profile-picture">
+<ion-content class="content">
+<ion-card class = "card-css">
+  <div margin-top *ngIf= "studentprofile!=null || studentprofile !=undefined" >
+    <div margin-top class="profile-picture big-profile-picture">
       <img [src]="studentprofile.userurl">
     </div>
-    <h2 class="profile-name dark">{{studentprofile.name}} </h2>
+   <!-- <h2 class="profile-name dark">{{studentprofile.name}} </h2>
     <h2 class="profile-name dark">{{studentprofile.parentemail}} (parent)</h2>
+    -->
+<h3 class="search-query">
+    <span> Student Name:  </span>
+    <ion-badge class="query-tag"> {{studentprofile.name}}</ion-badge>
+    <span class="query-explanation"> </span>
+  </h3>
 
+<h3 class="search-query">
+    <span> Parent Name: </span>
+    <ion-badge class="query-tag"> {{studentprofile.parentemail}} </ion-badge>
+    <span class="query-explanation"> </span>
+  </h3>
+<h3 class="search-query">
+    <span> Student Class: </span>
+    <ion-badge class="query-tag"> {{studentprofile.classname}} </ion-badge>
+    <span class="query-explanation"> </span>
+  </h3>
 
-    <button ion-button icon-start block color="dark" tappable (click)="updatestudent()">
+<h3 class="search-query">
+    <span> Class Teacher: </span>
+    <ion-badge class="query-tag"> {{studentprofile.classteacher}} </ion-badge>
+    <span class="query-explanation"> </span>
+  </h3>
+    <button ion-button icon-start block color="dark" class="Updatebtn" tappable (click)="updatestudent()">
       <ion-icon name="log-in"></ion-icon>
       Update Student
     </button>
 
   </div>
-  <div *ngIf = "studentprofile==undefined" >
+<!--  <div *ngIf = "studentprofile==undefined" >
   Your child info is not added, try to add it in menu option
   </div>
+-->
+    <div *ngIf = "!studentprofile">
+    <h3 class="search-query">
+    <span> Your child info is not added, try to add it in menu option</span>
+    <ion-badge class="query-tag"> MENU OPTION</ion-badge>
+    <span class="query-explanation"> </span>
+  </h3>
+  </div>
+</ion-card>
+
 </ion-content>

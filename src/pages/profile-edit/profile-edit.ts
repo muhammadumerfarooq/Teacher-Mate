@@ -59,7 +59,7 @@ export class ProfileEditPage {
               user = 'parents';
           }
           this.storage.get('email').then(v  =>{
-            debugger
+            
             email = v;
             this.profileservice.editprofile(user,email,base64Image);
           }).catch((err)=>{  this.presentAlert('error',err)});

@@ -239,7 +239,7 @@ export class PostProvider {
           this.notifyservice.insertnotification(notifications).then((res) => {
             if (res == 'done') {
               
-debugger
+
               this.afs.collection("feeds/").doc(updatedfeed.publisheddate.toString()).update(objectfeed).then(res => {
 
                 this.loader.dismissloading();

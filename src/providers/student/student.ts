@@ -63,7 +63,7 @@ export class StudentProvider {
   }
 */
   insertstudent(studentdata: student, imguri: string) {
-    debugger
+    
     return new Promise((resolve, reject) => {
 
 
@@ -81,7 +81,7 @@ export class StudentProvider {
 
           const id = this.afs.createId();
           const pictures = storage().ref('profile/' + id);
-          debugger
+          
           pictures.putString(imguri, 'data_url').then(() => {
             storage().ref().child('profile/' + id).getDownloadURL().then((url) => {
 
@@ -95,18 +95,18 @@ export class StudentProvider {
                 this.loaderservice.dismissloading();
                 return resolve('done');
               }).catch((err) => {
-                debugger
+                
                 this.loaderservice.dismissloading();
                 return reject('error');
               });
 
             }).catch(err=>{
-              debugger
+              
               this.loaderservice.dismissloading();
               return reject('error');
             });
           }).catch(err => {
-            debugger
+            
             this.loaderservice.dismissloading();
             return reject('error');
           });

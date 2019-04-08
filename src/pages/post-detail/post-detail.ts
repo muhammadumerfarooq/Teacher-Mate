@@ -47,7 +47,7 @@ export class PostDetailPage {
   }
 
   likeclick(feed: Myfeed) {
-debugger
+
     let findemail = false;
     for (let i = 0; i < feed.likes.length; i++) {
       if (feed.likes[i].useremail == this.homeservice.userprofile.useremail) {
@@ -58,7 +58,7 @@ debugger
     if (!findemail) {
       let like: likes;
       like = new likes();
-      debugger
+      
       like.date = new Date().getTime().toString();
       like.useremail = this.homeservice.userprofile.useremail;
 
@@ -75,7 +75,7 @@ debugger
       notifications.message = this.homeservice.userprofile.useremail + ' liked your Feed '
       notifications.publisheddate = new Date().getTime().toString();
       notifications.useremail = this.homeservice.userprofile.useremail;
-      debugger
+      
       
       let tempfeed : Myfeed = new Myfeed();
       tempfeed = this.mypost;
@@ -131,7 +131,7 @@ debugger
       let tempfeed : Myfeed = new Myfeed();
       tempfeed = this.mypost;
       tempfeed.comments.push(comment);
-debugger
+
       this.postservice.updatedcomments(tempfeed, notifications).then(res => {
         if (res == 'error') {
           this.presentAlert('Comment not Added ', 'Error');

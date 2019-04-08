@@ -12,7 +12,7 @@
 </ion-header>
 <ion-content class="content">
   <ion-card class="card-css">
-    <ion-list [hidden] = "myquizes.questions.length == 0">
+    <ion-list [hidden] = "myquizes.questions != undefined &&  myquizes.questions != null">
       <ion-item *ngFor="let p of myquizes.questions; let i=index" text-wrap (click)="toggleLevel1('idx'+i)"
         [ngClass]="{active: isLevel1Shown('idx'+i)}">
 
@@ -116,9 +116,9 @@
     <button ion-button (click)="addSubtopic()">SubTopics</button>
 -->
     <div class="divclass">
-      <span ion-text margin-left color="secondary" tappable (click)="addChapter()"><strong>Add Question</strong></span>
+      <span ion-text margin-left color="secondary" tappable (click)="addQuestion()"><strong>Add Question</strong></span>
 
-      <span ion-text margin-left color="secondary" tappable (click)="addTopics()"><strong>Add Options</strong></span>
+      <span ion-text margin-left color="secondary" tappable (click)="addOption()"><strong>Add Options</strong></span>
 
 <!--      <span ion-text margin-left color="secondary" tappable (click)="addSubtopic()"><strong>SubTopics</strong></span> -->
 

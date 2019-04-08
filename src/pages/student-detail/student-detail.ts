@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ViewController } from 'ionic-angular';
 import { CameraOptions, Camera } from '@ionic-native/camera';
 import { student } from '../../providers/student/student';
 
@@ -18,11 +18,11 @@ import { student } from '../../providers/student/student';
 export class StudentDetailPage {
 
    studentprofile: student = new student();
-  constructor(private camera:Camera,public navCtrl: NavController, public navParams: NavParams, private alertCtrl:AlertController) {
+  constructor(private viewctrl:ViewController,private camera:Camera,public navCtrl: NavController, public navParams: NavParams, private alertCtrl:AlertController) {
   this.studentprofile = this.navParams.get('studentprofile');
  // this.studentprofile.name = '';
  // this.studentprofile.userurl = '';
-this.studentprofile.parentemail
+
   }
 
   ionViewDidLoad() {
@@ -70,5 +70,11 @@ this.studentprofile.parentemail
     alert.present();
    
    }
+   viewctrl_dismiss() {
+    this.viewctrl.dismiss('back');
+  }
 
+  updatestudent(){
+    
+  }
 }

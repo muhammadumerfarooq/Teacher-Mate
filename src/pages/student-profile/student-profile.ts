@@ -31,7 +31,7 @@ export class StudentProfilePage {
   constructor(private studentservice: StudentProvider, private loader: LoaderserviceProvider, private storage: Storage, private viewctrl: ViewController, private profileservice: ProfileServiceProvider, private camera: Camera, public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController) {
     this.studentprofile = new student();
 
-    // this.studentprofile = this.navParams.get('studentprofile');
+   // this.studentprofile = this.navParams.get('studentprofile');
     this.studentprofile.name = '';
     this.studentprofile.userurl = '';
     // this.studentprofile.parentemail = 
@@ -112,7 +112,7 @@ export class StudentProfilePage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad StudentDetailPage');
+    console.log('ionViewDidLoad StudentProfilePage');
   }
   changeimage() {
 

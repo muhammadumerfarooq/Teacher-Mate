@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, ModalController } from 'ionic-angular';
 import { QuizServiceProvider } from '../../providers/quiz-service/quiz-service';
 
 /**
@@ -21,7 +21,7 @@ export class DisplayQuizPage {
     courseid: '',
     topicname: ''
   }
-  constructor(private viewctrl :ViewController,public navCtrl: NavController, public navParams: NavParams, private quizservice:QuizServiceProvider) {
+  constructor(private modalctrl:ModalController, private viewctrl :ViewController,public navCtrl: NavController, public navParams: NavParams, private quizservice:QuizServiceProvider) {
     this.quizinfo = this.navParams.get('quizinfo');
 
     this.quizservice.getquiz(this.quizinfo.topicname); 
@@ -34,4 +34,22 @@ export class DisplayQuizPage {
   viewctrl_dismiss() {
     this.viewctrl.dismiss('back');
   }
+
+  openDetails(creationdate: string, quizname: string){
+
+  }
+
+  create_quiz(){
+    var modalPage = this.modalctrl.create('CreateQuizPage',{ quizinfo: this.quizinfo});
+    modalPage.onDidDismiss(data=>{
+     if (data == true)
+     {
+       console.log(data+" chat page ")
+
+     }
+
+   });
+    modalPage.present();
+   }
+  
 }

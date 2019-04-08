@@ -36,7 +36,7 @@ export class ChatpublicPage {
     this.toUser = navParams.get('toUser');
     this.collectionid = navParams.get('Colid');
     console.log(this.toUser, this.collectionid);
-debugger
+
     // Get mock user information
 
 

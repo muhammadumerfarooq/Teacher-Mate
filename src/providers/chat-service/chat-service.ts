@@ -54,7 +54,7 @@ export class ChatServiceProvider {
   }
   getall(chatusers: chats[]): Observable<any[]> {
   //  console.log('in chat service')
-  debugger
+  
   this.loaderservice.loading = this.loaderservice.loadingCtrl.create({
           
     content: `
@@ -75,7 +75,7 @@ console.log(val, chatusers);
     if (snap.length>0){
     snap.forEach(snapshot=>{
       
-      debugger
+      
       chatusers.forEach(element => {
        if( element.useremail == snapshot.payload.doc.id){
 
@@ -108,7 +108,7 @@ return (of(friends));
     if (snap.length>0){
     snap.forEach(snapshot=>{
       
-      debugger
+      
       chatusers.forEach(element => {
        if( element.useremail == snapshot.payload.doc.id && element.useremail != this.afauth.auth.currentUser.email ){
        
@@ -132,7 +132,7 @@ return (of(friends));
       snap.forEach(snapshot=>{
        console.log(snapshot.payload.doc.id, chatusers)
        chatusers.forEach(element => {
-         debugger
+         
         if( element.useremail == snapshot.payload.doc.id ){
         
           let parentprofile: userprofile  = new userprofile();

@@ -83,7 +83,7 @@ export class QuizServiceProvider {
 
       this.loaderservice.loading.present().then(() => {
 
-        debugger
+        
         this.afs.collection<Quiz>('quizes').snapshotChanges().forEach(snap => {
 
           this.myquizes = new Array<Quiz>();
