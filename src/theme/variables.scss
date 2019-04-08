@@ -35,12 +35,40 @@ $background-color: #fff;
 // colors so you can add, rename and remove colors as needed.
 // The "primary" color is the only required color in the map.
 
+$white: #FFFFFF;
+$white-a: darken($white, 3%);
+$white-b: darken($white, 6%);
+$white-c: darken($white, 12%);
+$white-d: darken($white, 24%);
+
+$black: rgba(#000000, .8);
+$black-a: lighten($black, 10%);
+$black-b: lighten($black, 20%);
+$black-c: lighten($black, 40%);
+$black-d: lighten($black, 60%);
+
+$theme-color-1: $black-a;
+$theme-color-2: #00e9d5;
+$theme-color-3: $black-b;
+$theme-color-4: #ae75e7;
+
 $colors: (
   primary: #4c6df9,
   secondary: #5b5ef4,
   danger: #f53d3d,
   light: #75C4FD,
-  dark: #0039a2
+  dark: #0039a2,
+  ask:       $theme-color-4,
+  answer:       $theme-color-2,
+  header:(
+    base: $black-a,
+    contrast: $white-b
+  ),
+  background:(
+    base: $white-b,
+    contrast: $black-a
+  )
+  
 );
 
 

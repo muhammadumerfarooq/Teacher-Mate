@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
+import { QuizServiceProvider, Quiz } from '../../providers/quiz-service/quiz-service';
 /**
  * Generated class for the CreateQuizPage page.
  *
@@ -14,8 +14,10 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'create-quiz.html',
 })
 export class CreateQuizPage {
-
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  
+  myquizes: Quiz = new Quiz();
+  constructor(public navCtrl: NavController, public navParams: NavParams, private quizservice:QuizServiceProvider) {
+    
   }
 
   ionViewDidLoad() {

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, AlertController, ModalController } from 'ionic-angular';
 
 import { Courses, Chapters,  Topics, CourseProvider } from '../../providers/course/course';
 import { ClassServiceProvider } from '../../providers/class-service/class-service';
@@ -36,7 +36,7 @@ export class CourseInfoPage {
   mycourses: Courses = new Courses();
   files = new Map();
 
-  constructor(private documentview: DocumentViewer,private filetransfer:FileTransfer,private file:File,private plateform: Platform,private fileChooser: FileChooser, private filePath: FilePath, private alertctrl: AlertController, private fileOpener: FileOpener, private courseservice: CourseProvider, private classprovider: ClassServiceProvider, public navCtrl: NavController, public navParams: NavParams, private viewctrl: ViewController) {
+  constructor(private class_service:ClassServiceProvider,private modalctrl:ModalController ,private documentview: DocumentViewer,private filetransfer:FileTransfer,private file:File,private plateform: Platform,private fileChooser: FileChooser, private filePath: FilePath, private alertctrl: AlertController, private fileOpener: FileOpener, private courseservice: CourseProvider, private classprovider: ClassServiceProvider, public navCtrl: NavController, public navParams: NavParams, private viewctrl: ViewController) {
     
   }
 
@@ -121,7 +121,38 @@ export class CourseInfoPage {
       }
       return MIMETypes[ext];
     }
+    presentAlert(alerttitle, alertsub) {
+      let alert = this.alertctrl.create({
+        title: alerttitle,
+        subTitle: alertsub,
+        buttons: ['OK']
+      });
+      alert.present();
+  
+    }
+
     Quiz(courseid:string, topicname:string ){
+
+      let quizinfo = {
+        classname: this.class_service.classname,
+        classteacher: this.class_service.classteacher,
+        courseid: courseid,
+        topicname: topicname
+      }
+      var modalPage = this.modalctrl.create('DisplayQuizPage', { quizinfo: quizinfo });
+      modalPage.onDidDismiss(data => {
+        if (data == true) {
+          
+          
       
+        } else if (data == false) {
+        
+        } else if (data == 'back') {
+  
+        }
+      });
+      modalPage.present();
+      
+
     }
 }

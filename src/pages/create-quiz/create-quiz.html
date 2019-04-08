@@ -12,8 +12,8 @@
 </ion-header>
 <ion-content class="content">
   <ion-card class="card-css">
-    <ion-list [hidden] = "mycourses.Chapters.length == 0">
-      <ion-item *ngFor="let p of mycourses.Chapters; let i=index" text-wrap (click)="toggleLevel1('idx'+i)"
+    <ion-list [hidden] = "myquizes.questions.length == 0">
+      <ion-item *ngFor="let p of myquizes.questions; let i=index" text-wrap (click)="toggleLevel1('idx'+i)"
         [ngClass]="{active: isLevel1Shown('idx'+i)}">
 
         <h2 [ngStyle]="{'color':'#4c6df9'}">
@@ -25,33 +25,17 @@
           </ion-icon>
         </h2>
         <ion-list *ngIf="isLevel1Shown('idx'+i)">
-          <ion-item *ngFor="let s of p.Topics; let i2=index" text-wrap (click)="toggleLevel2('idx'+i+'idx'+i2)"
+          <ion-item *ngFor="let s of p.options; let i2=index" text-wrap (click)="toggleLevel2('idx'+i+'idx'+i2)"
             [ngClass]="{active: isLevel2Shown('idx'+i+'idx'+i2)}">
 
 <h2 [ngStyle]="{'color':'#4c6df9'}">
      
-             {{s.value}}
+             {{s.option}}
 </h2>
          <button ion-button margin-right clear item-end icon-only (click)="downaloadAndOpenfile(s.filename,s.fileurl, s.filetype)">
               <!-- here -->
               <ion-icon name="cloud-done"></ion-icon>
             </button>
-
-<!--            <ion-icon color="success" item-right
-              [name]="isLevel2Shown('idx'+i+'idx'+i2) ? 'arrow-dropdown' : 'arrow-dropright'"></ion-icon>
--->
-
-
-   <!--         <ion-list *ngIf="isLevel2Shown('idx'+i+'idx'+i2)">
-              <ion-item *ngFor="let m of s.subtopics" text-wrap>
-                {{m.value}}
-                <button margin-top ion-button clear item-end icon-only (click)="downaloadAndOpenfile(m.fileurl, m.filetype)">
-              
-                  <ion-icon name="cloud-done"></ion-icon>
-                </button>
-              </ion-item>
-            </ion-list>
--->
 
           </ion-item>
         </ion-list>
@@ -59,9 +43,12 @@
       </ion-item>
     </ion-list>
   </ion-card>
-  <!-- <ion-input class="input-box" type="text" placeholder="Enter Chapter Name" name="text"></ion-input> -->
-  <!-- <ion-input class="input-box" type="text" placeholder="Enter Topic Name" name="text"></ion-input> -->
+    <ion-card class="card-css">
 
+  <ion-input class="input-box" type="text" placeholder="Enter Quiz Name" name="text"  [(ngModel)]="myquizes.quizname"></ion-input> 
+
+        <ion-textarea class="textbox" type="string" placeholder="Enter Discription" [(ngModel)]="myquizes.quizdescription"
+          name="text"></ion-textarea> </ion-card>
   <!--{{att.label}}{{idx+1}}-->
   <!-- <ion-item *ngFor="let top of topics; let idxtopic = index">
     <ion-label color="primary">Topic</ion-label>
@@ -79,7 +66,8 @@
   </ion-item>
 -->
   <ion-card class="card-css">
-    <ng-template ngFor let-chapter [ngForOf]="mycourses.Chapters" let-chap="index">
+
+    <ng-template ngFor let-quest [ngForOf]="myquizes.questions" let-chap="index">
       <ion-item>
          <button class="btnfile" margin-right ion-button clear item-end icon-only>
 
@@ -92,16 +80,16 @@
 
 
         <!--  <ion-label color="primary">Chapter</ion-label> -->
-        <ion-input type="text" placeholder="Enter Chapter" text-left [(ngModel)]="chapter.value"></ion-input>
+        <ion-input type="text" placeholder="Enter Question" text-left [(ngModel)]="quest.question"></ion-input>
 
 
       </ion-item>
 
 
-      <ng-template ngFor let-topic [ngForOf]="chapter.Topics" let-top="index">
+      <ng-template ngFor let-opt [ngForOf]="quest.options" let-top="index">
         <ion-item>
           <!--   <ion-label color="primary">Topic ({{chapter.value}})</ion-label> -->
-          <ion-input type="text" placeholder="Enter Topic of {{chapter.value}}" text-left [(ngModel)]="topic.value">
+          <ion-input type="text" placeholder="Enter Topic of {{quest.question}}" text-left [(ngModel)]="opt.option">
           </ion-input>
 
           <button ion-button clear margin-right item-end icon-only (click)="openfile_topic(chap,top)">

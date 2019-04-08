@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-navbar no-border-bottom color="primary">
+    <ion-buttons left>
+      <button ion-button icon-only (click)="viewctrl_dismiss()" class="my-style-for-modal">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>
+      <span>Learn By Taking Quiz!</span>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <h3 class="search-query">
+    <span>Showing: </span>
+    <ion-badge class="query-tag">{{ quizinfo.topicname }}</ion-badge>
+    <span class="query-explanation"> concepts</span>
+  </h3>
+
+  <ion-card class="category-concept-card" [style.background-color]="category.background" *ngFor="let category of categories" (click)="openDetails({ category: category })">
+    <ion-card-header>
+      <h2 class="category-title">{{ quizservice.myquizes.quizname }}</h2>
+    </ion-card-header>
+    <ion-card-content>
+      <p class="category-description">
+        {{ quizservice.myquizes.quizdescription }}
+      </p>
+      <ion-row>
+        <ion-col no-padding>
+          <ion-badge class="category-tag" *ngFor="let tag of category.tags" item-right>{{quizservice.myquizes.quiztype }}</ion-badge>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
