@@ -12,7 +12,7 @@ import { DateTime } from 'ionic-angular/umd';
 export class Options {
   option: string;
   isanswer: boolean;
-  Options() {
+  constructor() {
     this.option = "";
     this.isanswer = false;
   }
@@ -27,7 +27,7 @@ export class Quiz {
   classteacher: string;
   syllabusid: string;
   creationdate: Date;
-  Quiz() {
+  constructor() {
     this.questions = new Array<Question>();
     this.classid = "";
     this.classteacher = "";
@@ -42,7 +42,7 @@ export class Question {
   question: string;
   options: Array<Options>;
 
-  Question() {
+  constructor() {
     this.question = "";
     this.options = new Array<Options>();
 
