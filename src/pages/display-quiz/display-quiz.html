@@ -24,20 +24,20 @@
     <span class="query-explanation"> concepts</span>
   </h3>
 
-  <ion-card class="category-concept-card" [style.background-color]="category.background"
-    *ngFor="let questions of  quizservice.myquizes.questions"
-    (click)="openDetails(quizservice.myquizes.creationdate, quizservice.myquizes.quizname)">
+  <ion-card class="category-concept-card" [style.background-color]="Quiz.background"
+    *ngFor="let Quiz of  quizservice.myquizes"
+    (click)="openDetails(Quiz.creationdate, Quiz.quizname)">
     <ion-card-header>
-      <h2 class="category-title">{{ quizservice.myquizes.quizname }}</h2>
+      <h2 class="category-title">{{ Quiz.quizname }}</h2>
     </ion-card-header>
     <ion-card-content>
       <p class="category-description">
-        {{ quizservice.myquizes.quizdescription }}
+        {{ Quiz.quizdescription }}
       </p>
       <ion-row>
         <ion-col no-padding>
-          <ion-badge class="category-tag" *ngFor="let tag of category.tags" item-right>
-            {{quizservice.myquizes.quiztype }}</ion-badge>
+          <ion-badge class="category-tag"  item-right>
+            {{Quiz.quiztype }}</ion-badge>
         </ion-col>
       </ion-row>
 

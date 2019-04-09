@@ -27,7 +27,13 @@ export class Quiz {
   classteacher: string;
   syllabusid: string;
   creationdate: Date;
+  Month:string;
+  Day:string;
+  background: string;
   constructor() {
+    this.background = '';
+    this.Month = '';
+    this.Day = '';
     this.questions = new Array<Question>();
     this.classid = "";
     this.classteacher = "";
@@ -89,6 +95,7 @@ export class QuizServiceProvider {
           this.myquizes = new Array<Quiz>();
 
           snap.forEach(snapshot => {
+            
             if (snapshot.payload.doc.exists) {
               const coursetemp = snapshot.payload.doc.data() as Quiz;
 
@@ -128,6 +135,7 @@ export class QuizServiceProvider {
                     }
                     qu++;
                     this.myquizes.push(quiz);
+                    console.log(this.myquizes);
                   }
                   else {
                     break;
@@ -147,6 +155,8 @@ export class QuizServiceProvider {
   }
 
   insert_Quiz(quizes: Quiz) {
+    quizes.classid = this.classservice.classname;
+    quizes.classteacher = this.classservice.classteacher;
     return new Promise((resolve, reject) => {
 
       this.loaderservice.loading = this.loaderservice.loadingCtrl.create({
