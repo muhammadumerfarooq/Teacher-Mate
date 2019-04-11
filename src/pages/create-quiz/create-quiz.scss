@@ -3,6 +3,9 @@ page-create-quiz {
         margin: 0 6px;
         min-width: 36px;
      }
+     .div-ion{
+      color: $theme-color-3;
+     }
      .search-query
 	{
 		font-size: 1.4rem;
@@ -47,7 +50,7 @@ page-create-quiz {
             }
           }
         }
-      
+ 
         .item.no-border .item-inner {
           padding-right: 0;
           [item-end] {
@@ -61,4 +64,10 @@ page-create-quiz {
 
 
   }
+  .box{
+    margin-top: 5%;
+    width:25px;
+    height:25px;
+  }
+
 }

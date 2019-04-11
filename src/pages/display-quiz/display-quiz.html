@@ -26,7 +26,7 @@
 
   <ion-card class="category-concept-card" [style.background-color]="Quiz.background"
     *ngFor="let Quiz of  quizservice.myquizes"
-    (click)="openDetails(Quiz.creationdate, Quiz.quizname)">
+    (click)="openDetails(Quiz)">
     <ion-card-header>
       <h2 class="category-title">{{ Quiz.quizname }}</h2>
     </ion-card-header>
@@ -39,6 +39,11 @@
           <ion-badge class="category-tag"  item-right>
             {{Quiz.quiztype }}</ion-badge>
         </ion-col>
+        <ion-col no-padding col-2>
+          <button class="delete-button" color="danger" ion-button clear medium (click)="delete_quiz(Quiz);$event.stopPropagation()">
+              <ion-icon name="ios-trash-outline"></ion-icon>
+            </button>
+         </ion-col>
       </ion-row>
 
 
@@ -47,7 +52,7 @@
 
 
 
-  <div *ngIf="!quizservice.myquizes.questions">
+  <div *ngIf="quizservice.myquizes.length == 0">
     <h3 class="search-query">
       <span>No Quiz Found under Topic </span>
       <ion-badge class="query-tag">{{ quizinfo.topicname }}</ion-badge>

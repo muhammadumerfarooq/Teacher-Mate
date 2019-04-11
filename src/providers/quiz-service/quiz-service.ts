@@ -8,6 +8,16 @@ import { LoaderserviceProvider } from '../loaderservice/loaderservice';
 import { ClassServiceProvider } from '../class-service/class-service';
 import { DateTime } from 'ionic-angular/umd';
 
+export class OptionsAnswer{
+  option: string;
+  isanswer: boolean;
+  myanswer: boolean;
+  constructor() {
+    this.option = "";
+    this.isanswer = false;
+    this.myanswer = false;
+  }
+}
 
 export class Options {
   option: string;
@@ -23,10 +33,10 @@ export class Quiz {
   quizdescription: string;
   quiztype: string;
   questions: Array<Question>;
-  classid: string;
+  classname: string;
   classteacher: string;
   syllabusid: string;
-  creationdate: Date;
+  creationdate: string;
   Month:string;
   Day:string;
   background: string;
@@ -35,15 +45,49 @@ export class Quiz {
     this.Month = '';
     this.Day = '';
     this.questions = new Array<Question>();
-    this.classid = "";
+    this.classname = "";
     this.classteacher = "";
     this.syllabusid = "";
-    this.creationdate = new Date();
+    this.creationdate = new Date().toString();
   }
 
 }
 
+export class QuizAnswer {
+  quizname: string;
+  quizdescription: string;
+  quiztype: string;
+  questions: Array<QuestionAnswer>;
+  classname: string;
+  classteacher: string;
+  syllabusid: string;
+  creationdate: string;
+  Month:string;
+  Day:string;
+  background: string;
+  constructor() {
+    this.background = '';
+    this.Month = '';
+    this.Day = '';
+    this.questions = new Array<QuestionAnswer>();
+    this.classname = "";
+    this.classteacher = "";
+    this.syllabusid = "";
+    this.creationdate = new Date().toString();
+  }
 
+}
+
+export class QuestionAnswer {
+  question: string;
+  options: Array<OptionsAnswer>;
+
+  constructor() {
+    this.question = "";
+    this.options = new Array<OptionsAnswer>();
+
+  }
+}
 export class Question {
   question: string;
   options: Array<Options>;
@@ -90,7 +134,9 @@ export class QuizServiceProvider {
       this.loaderservice.loading.present().then(() => {
 
         
-        this.afs.collection<Quiz>('quizes').snapshotChanges().forEach(snap => {
+        this.afs.collection<Quiz>('quizes', ref => {
+          return ref.where('classname', '==', this.classservice.classname).where('classteacher', '==', this.classservice.classteacher);
+        }).snapshotChanges().forEach(snap => {
 
           this.myquizes = new Array<Quiz>();
 
@@ -98,22 +144,36 @@ export class QuizServiceProvider {
             
             if (snapshot.payload.doc.exists) {
               const coursetemp = snapshot.payload.doc.data() as Quiz;
-
+              
               if (coursetemp.syllabusid == syllid) {
 
 
                 let i = 0;
                 let qu = 0;
+                let quiz: Quiz = new Quiz();
+                quiz.background = coursetemp.background;
+                quiz.classname = coursetemp.classname;
+                quiz.classteacher = coursetemp.classteacher;
+                quiz.creationdate = coursetemp.creationdate;
+                quiz.Day = coursetemp.Day;
+                quiz.Month = coursetemp.Month;
+                quiz.quizdescription = coursetemp.quizdescription;
+                quiz.quizname  = coursetemp.quizname;
+                quiz.quiztype = coursetemp.quiztype;
+                quiz.syllabusid = coursetemp.syllabusid;
+
                 while (i > -1) {
-                  let quiz: Quiz = new Quiz();
+         
                   let j = 0;
                   let op = 0;
 
                   if (coursetemp.questions[i] != null && coursetemp.questions[i] != undefined) {
                     let tempques: Question = new Question();
                     tempques.question = coursetemp.questions[i].question;
+                    
                     quiz.questions.push(tempques);
 
+              
                     // quiz.questions[qu] = (tempques);
 
 
@@ -134,7 +194,7 @@ export class QuizServiceProvider {
                       j++;
                     }
                     qu++;
-                    this.myquizes.push(quiz);
+                    
                     console.log(this.myquizes);
                   }
                   else {
@@ -143,6 +203,7 @@ export class QuizServiceProvider {
 
                   i++;
                 }
+                this.myquizes.push(quiz);
               }
             }
           })
@@ -155,8 +216,9 @@ export class QuizServiceProvider {
   }
 
   insert_Quiz(quizes: Quiz) {
-    quizes.classid = this.classservice.classname;
+    quizes.classname = this.classservice.classname;
     quizes.classteacher = this.classservice.classteacher;
+    
     return new Promise((resolve, reject) => {
 
       this.loaderservice.loading = this.loaderservice.loadingCtrl.create({
@@ -182,7 +244,7 @@ export class QuizServiceProvider {
             }
           }
 
-          this.afs.collection<Quiz>('quizes').doc(quizes.creationdate.toString()).set(quiz).then(() => {
+          this.afs.collection<Quiz>('quizes').doc(quizes.creationdate).set(quiz).then(() => {
 
             this.loaderservice.dismissloading();
             resolve('done');
@@ -196,6 +258,83 @@ export class QuizServiceProvider {
 
     });
   }
+  delete_question(myquiz: Quiz){
+
+       return new Promise((resolve, reject) => {
+
+      this.loaderservice.loading = this.loaderservice.loadingCtrl.create({
+
+        content: `
+        <div class="custom-spinner-container">
+          <div class="custom-spinner-box"> loading... </div>
+        </div>`,
+
+      });
+
+      setTimeout(() => {
+
+        this.loaderservice.loading.present().then(() => {
+          const quiz = Object.assign({}, myquiz);
+
+          for (let i = 0; i < myquiz.questions.length; i++) {
+            quiz.questions[i] = Object.assign({}, myquiz.questions[i]);
+
+            for (let j = 0; j < myquiz.questions[i].options.length; j++) {
+              quiz.questions[i].options[j] = Object.assign({}, myquiz.questions[i].options[j]);
+
+            }
+          }
+
+          this.afs.collection<Quiz>('quizes').doc(myquiz.creationdate.toString()).update(quiz).then(() => {
+
+            this.loaderservice.dismissloading();
+            resolve('done');
+          }).catch(err => {
+            this.loaderservice.dismissloading();
+            debugger
+            reject('error');
+          });
+
+        });
+      }, 500);
+
+    });
+  }
+  
+  deleteQuiz(quiz:Quiz){
+    return new Promise((resolve, reject) => {
+
+      this.loaderservice.loading = this.loaderservice.loadingCtrl.create({
+
+        content: `
+        <div class="custom-spinner-container">
+          <div class="custom-spinner-box"> loading... </div>
+        </div>`,
+
+      });
+
+      setTimeout(() => {
+
+        this.loaderservice.loading.present().then(() => {
+          
+
+         
+          this.afs.collection<Quiz>('quizes').doc(quiz.creationdate.toString()).delete().then(() => {
+
+            this.loaderservice.dismissloading();
+            resolve('done');
+          }).catch(err => {
+            this.loaderservice.dismissloading();
+            debugger
+            reject('error');
+          });
+
+        });
+      }, 200);
+
+    });
+  }
+  
 }
 
 

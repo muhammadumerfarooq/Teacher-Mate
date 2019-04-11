@@ -10,8 +10,10 @@ import { QuizServiceProvider, Quiz, Question, Options } from '../../providers/qu
 
 export class colors {
   value: string;
-  constructor(col: string) {
+  code: string;
+  constructor(col: string, code: string) {
     this.value = col;
+    this.code = code;
   }
 
 
@@ -43,10 +45,16 @@ export class month {
 })
 export class CreateQuizPage {
 
+  currentStyles = {
+    'background-color': '#F84C61'
+  };
   selected_day: string = '';
   selected_month: string = '';
 
   quizcolor: Array<colors>;
+  mycolor = "#F84C61";
+
+  quiztype: string[] = [];
 
   showLevel1 = null;
   showLevel2 = null;
@@ -68,11 +76,13 @@ export class CreateQuizPage {
     this.myquizes.syllabusid = this.quizinfo.topicname;
     this.quizcolor = new Array<colors>();
 
-    this.quizcolor.push(new colors('blue'));
-    this.quizcolor.push(new colors('purple'));
-    this.quizcolor.push(new colors('red'));
-    this.quizcolor.push(new colors('green'));
+    this.quizcolor.push(new colors('blue', '#0077ff'));
+    this.quizcolor.push(new colors('light green', '#B5E61B'));
+    this.quizcolor.push(new colors('dard blue', '#16144A'));
+    this.quizcolor.push(new colors('purple', '#432B9C'));
 
+    this.quiztype.push('hard');
+    this.quiztype.push('easy');
   }
 
   ionViewDidLoad() {
@@ -92,13 +102,16 @@ export class CreateQuizPage {
   addOption() {
 
     let questionindex = this.myquizes.questions.length;
+    if (questionindex - 1 < 0) {
+      this.presentAlert('First Add Question ', '');
+    } else {
+      this.myquizes.questions[questionindex - 1].options.push(new Options());
+      let topindex = this.myquizes.questions[questionindex - 1].options.length;
+      this.myquizes.questions[questionindex - 1].options[topindex - 1].option = '';
 
-    this.myquizes.questions[questionindex - 1].options.push(new Options());
-    let topindex = this.myquizes.questions[questionindex - 1].options.length;
-    this.myquizes.questions[questionindex - 1].options[topindex - 1].option = '';
+      console.log(this.myquizes.questions)
 
-    console.log(this.myquizes.questions)
-
+    }
 
   }
   toggleLevel1(idx) {
@@ -428,7 +441,15 @@ export class CreateQuizPage {
     this.myquizes.Day = this.selected_day.toString();
   }
 
-  colorselected(value:string) {
+  colorselected(value: string) {
+    console.log(value);
+
     this.myquizes.background = value;
+    this.mycolor = value;
+  }
+
+  typeselected(value: string) {
+    console.log(value);
+    this.myquizes.quiztype = value;
   }
 }

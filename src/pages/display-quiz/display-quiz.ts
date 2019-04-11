@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController, ModalController } from 'ionic-angular';
-import { QuizServiceProvider } from '../../providers/quiz-service/quiz-service';
+import { IonicPage, NavController, NavParams, ViewController, ModalController, AlertController } from 'ionic-angular';
+import { QuizServiceProvider, Quiz } from '../../providers/quiz-service/quiz-service';
 
 /**
  * Generated class for the DisplayQuizPage page.
@@ -15,16 +15,16 @@ import { QuizServiceProvider } from '../../providers/quiz-service/quiz-service';
   templateUrl: 'display-quiz.html',
 })
 export class DisplayQuizPage {
-   quizinfo = {
+  quizinfo = {
     classname: '',
-    classteacher:'',
+    classteacher: '',
     courseid: '',
     topicname: ''
   }
-  constructor(private modalctrl:ModalController, private viewctrl :ViewController,public navCtrl: NavController, public navParams: NavParams, private quizservice:QuizServiceProvider) {
+  constructor(private alertctrl: AlertController, private modalctrl: ModalController, private viewctrl: ViewController, public navCtrl: NavController, public navParams: NavParams, private quizservice: QuizServiceProvider) {
     this.quizinfo = this.navParams.get('quizinfo');
 
-    this.quizservice.getquiz(this.quizinfo.topicname); 
+    this.quizservice.getquiz(this.quizinfo.topicname);
 
   }
 
@@ -35,21 +35,55 @@ export class DisplayQuizPage {
     this.viewctrl.dismiss('back');
   }
 
-  openDetails(creationdate: string, quizname: string){
+  openDetails(myquiz: Quiz) {
+    console.log(myquiz);
 
+    var modalPage = this.modalctrl.create('QuizDetailPage', { myquiz: myquiz });
+    modalPage.onDidDismiss(data => {
+      if (data == true) {
+        console.log(data + " chat page ")
+
+      }
+
+    });
+    modalPage.present();
   }
 
-  create_quiz(){
-    var modalPage = this.modalctrl.create('CreateQuizPage',{ quizinfo: this.quizinfo});
-    modalPage.onDidDismiss(data=>{
-     if (data == true)
-     {
-       console.log(data+" chat page ")
+  create_quiz() {
+    var modalPage = this.modalctrl.create('CreateQuizPage', { quizinfo: this.quizinfo });
+    modalPage.onDidDismiss(data => {
+      if (data == true) {
+        console.log(data + " chat page ")
 
-     }
+      }
 
-   });
+    });
     modalPage.present();
-   }
-  
+  }
+
+
+  delete_quiz(deletequiz: Quiz) {
+    this.quizservice.deleteQuiz(deletequiz).then(res => {
+      if (res == 'done') {
+        this.presentAlert('Quiz Deleted Successfully', 'Successfully');
+
+      } else {
+        this.presentAlert('Error! ', 'Quiz Not Deleted');
+
+      }
+
+    }).catch(err => {
+
+    });
+  }
+
+  presentAlert(alerttitle, alertsub) {
+    let alert = this.alertctrl.create({
+      title: alerttitle,
+      subTitle: alertsub,
+      buttons: ['OK']
+    });
+    alert.present();
+
+  }
 }

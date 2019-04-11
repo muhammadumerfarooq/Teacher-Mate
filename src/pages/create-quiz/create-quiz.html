@@ -118,8 +118,26 @@
           <ion-col col-4>
             <ion-item no-padding>
               <ion-select placeholder="COLOR" class="max-width full-width" >
-                <div *ngFor="let color of colors " [style.background-color]="color">
-                  <ion-option (ionSelect)="colorselected(color.value)" value="{{color.value}}"> {{color}} </ion-option>
+                <div *ngFor="let color of quizcolor" >
+                  <ion-option (ionSelect)="colorselected(color.code)" value="{{color.value}}" class="div-ion"> {{color.value}}
+                  </ion-option>
+                </div>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+          <ion-col col4>
+            <!--<ion-item no-padding>-->
+            <div class="box" [style.background-color]="mycolor"></div>
+
+            <!-- </ion-item> -->
+          </ion-col>
+          <ion-col col-4>
+            <ion-item no-padding>
+              <ion-select placeholder="Quiz Type" class="max-width full-width" >
+                <div *ngFor="let type of quiztype" >
+                  <ion-option (ionSelect)="typeselected(type)" value="{{type}}" class="div-ion"> {{type}}
+
+                  </ion-option>
                 </div>
               </ion-select>
             </ion-item>
