@@ -79,7 +79,7 @@ console.log(this.parentsarray);
 this.parentsarray.subscribe(res=>{
   console.log(res);
   for (let i=0;i<res.length;i++){   
-    
+    debugger
     if (res[i] !=undefined &&  res[i].id == this.parent_email){
     
         
@@ -158,13 +158,14 @@ this.parentsarray.subscribe(res=>{
       }*/
     
 
-  }else{
+  }
+  /*else{
     
     this.loader.dismissloading();
     this.presentAlert('Login Failed ',' Username not found ');
     break;
 
-  }
+  }*/
   }
   if (res.length==0){
     this.loader.dismissloading();

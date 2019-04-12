@@ -91,6 +91,7 @@ if (this.afauth.auth.currentUser != null || this.afauth.auth.currentUser != unde
      
 
       for (let i=0;i<res.length;i++){
+        debugger
       if (res[i] !=undefined &&  res[i].id == tcredts.email){
     
         
@@ -168,13 +169,15 @@ if (this.afauth.auth.currentUser != null || this.afauth.auth.currentUser != unde
         }
       */
   
-    }else{
+    }
+    /*else{
       
       this.loader.dismissloading();
       this.presentAlert('Login Failed ',' Username not found ');
       break;
 
     }
+    */
     //else{
   //    this.loader.dismissloading();
     //  this.presentAlert(' login failed ',' no account found with this email address ')
