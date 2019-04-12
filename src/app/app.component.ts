@@ -48,6 +48,7 @@ export class MyApp {
             {title: 'Students List', component: 'StudentListPage', icon: 'people'},
             {title: 'Your Child', component: 'AddStudent', icon: 'person'},
             {title: 'Courses Info', component: 'CourseInfo', icon: 'paper'},
+            {title: 'Take Quiz', component: 'CourseInfo', icon: 'paper'},
           ];
         }else{
           this.appMenuItems = [

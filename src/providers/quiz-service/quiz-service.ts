@@ -8,7 +8,7 @@ import { LoaderserviceProvider } from '../loaderservice/loaderservice';
 import { ClassServiceProvider } from '../class-service/class-service';
 import { DateTime } from 'ionic-angular/umd';
 
-export class OptionsAnswer{
+export class OptionsAnswer {
   option: string;
   isanswer: boolean;
   myanswer: boolean;
@@ -17,6 +17,7 @@ export class OptionsAnswer{
     this.isanswer = false;
     this.myanswer = false;
   }
+
 }
 
 export class Options {
@@ -37,13 +38,12 @@ export class Quiz {
   classteacher: string;
   syllabusid: string;
   creationdate: string;
-  Month:string;
-  Day:string;
+  scheduledate: string;
   background: string;
   constructor() {
     this.background = '';
-    this.Month = '';
-    this.Day = '';
+    this.scheduledate = '';
+
     this.questions = new Array<Question>();
     this.classname = "";
     this.classteacher = "";
@@ -62,13 +62,11 @@ export class QuizAnswer {
   classteacher: string;
   syllabusid: string;
   creationdate: string;
-  Month:string;
-  Day:string;
+  scheduledate: string;
   background: string;
   constructor() {
     this.background = '';
-    this.Month = '';
-    this.Day = '';
+    this.scheduledate = '';
     this.questions = new Array<QuestionAnswer>();
     this.classname = "";
     this.classteacher = "";
@@ -99,6 +97,16 @@ export class Question {
   }
 }
 
+export class Datediff {
+  Mon: string;
+  Day: string;
+
+  constructor() {
+    this.Mon = '';
+    this.Day = '';
+  }
+
+}
 
 /*
   Generated class for the QuizServiceProvider provider.
@@ -110,6 +118,7 @@ export class Question {
 @Injectable()
 export class QuizServiceProvider {
 
+  Dates: Array<string> = new Array<string>();
   myquizes: Array<Quiz> = new Array<Quiz>();
   constructor(private afs: AngularFirestore, private classservice: ClassServiceProvider, private loaderservice: LoaderserviceProvider) {
 
@@ -133,7 +142,7 @@ export class QuizServiceProvider {
 
       this.loaderservice.loading.present().then(() => {
 
-        
+
         this.afs.collection<Quiz>('quizes', ref => {
           return ref.where('classname', '==', this.classservice.classname).where('classteacher', '==', this.classservice.classteacher);
         }).snapshotChanges().forEach(snap => {
@@ -141,10 +150,10 @@ export class QuizServiceProvider {
           this.myquizes = new Array<Quiz>();
 
           snap.forEach(snapshot => {
-            
+
             if (snapshot.payload.doc.exists) {
               const coursetemp = snapshot.payload.doc.data() as Quiz;
-              
+
               if (coursetemp.syllabusid == syllid) {
 
 
@@ -155,25 +164,24 @@ export class QuizServiceProvider {
                 quiz.classname = coursetemp.classname;
                 quiz.classteacher = coursetemp.classteacher;
                 quiz.creationdate = coursetemp.creationdate;
-                quiz.Day = coursetemp.Day;
-                quiz.Month = coursetemp.Month;
+                quiz.scheduledate = coursetemp.scheduledate;
                 quiz.quizdescription = coursetemp.quizdescription;
-                quiz.quizname  = coursetemp.quizname;
+                quiz.quizname = coursetemp.quizname;
                 quiz.quiztype = coursetemp.quiztype;
                 quiz.syllabusid = coursetemp.syllabusid;
 
                 while (i > -1) {
-         
+
                   let j = 0;
                   let op = 0;
 
                   if (coursetemp.questions[i] != null && coursetemp.questions[i] != undefined) {
                     let tempques: Question = new Question();
                     tempques.question = coursetemp.questions[i].question;
-                    
+
                     quiz.questions.push(tempques);
 
-              
+
                     // quiz.questions[qu] = (tempques);
 
 
@@ -194,7 +202,7 @@ export class QuizServiceProvider {
                       j++;
                     }
                     qu++;
-                    
+
                     console.log(this.myquizes);
                   }
                   else {
@@ -218,7 +226,7 @@ export class QuizServiceProvider {
   insert_Quiz(quizes: Quiz) {
     quizes.classname = this.classservice.classname;
     quizes.classteacher = this.classservice.classteacher;
-    
+
     return new Promise((resolve, reject) => {
 
       this.loaderservice.loading = this.loaderservice.loadingCtrl.create({
@@ -258,9 +266,9 @@ export class QuizServiceProvider {
 
     });
   }
-  delete_question(myquiz: Quiz){
+  delete_question(myquiz: Quiz) {
 
-       return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
 
       this.loaderservice.loading = this.loaderservice.loadingCtrl.create({
 
@@ -300,8 +308,8 @@ export class QuizServiceProvider {
 
     });
   }
-  
-  deleteQuiz(quiz:Quiz){
+
+  deleteQuiz(quiz: Quiz) {
     return new Promise((resolve, reject) => {
 
       this.loaderservice.loading = this.loaderservice.loadingCtrl.create({
@@ -316,9 +324,9 @@ export class QuizServiceProvider {
       setTimeout(() => {
 
         this.loaderservice.loading.present().then(() => {
-          
 
-         
+
+
           this.afs.collection<Quiz>('quizes').doc(quiz.creationdate.toString()).delete().then(() => {
 
             this.loaderservice.dismissloading();
@@ -334,7 +342,16 @@ export class QuizServiceProvider {
 
     });
   }
-  
+
+  quizes_datediff() {
+    this.Dates = new Array<string>();
+    for (let i = 0; i < this.myquizes.length; i++) {
+      let date = new Datediff();
+      this.Dates.push(this.myquizes[i].scheduledate);
+
+
+    }
+  }
 }
 
 

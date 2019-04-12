@@ -28,8 +28,7 @@ export class TakeQuizPage {
     this.myanswers.classname = this.myquiz.classname
     this.myanswers.classteacher = this.myquiz.classteacher
     this.myanswers.creationdate = this.myquiz.creationdate
-    this.myanswers.Day = this.myquiz.Day
-    this.myanswers.Month = this.myquiz.Month
+    this.myanswers.scheduledate = this.myquiz.scheduledate
     this.myanswers.quizdescription = this.myquiz.quizdescription
     this.myanswers.quizname = this.myquiz.quizname
     this.myanswers.quiztype = this.myquiz.quiztype
@@ -96,8 +95,7 @@ export class TakeQuizPage {
          tempquiz.classname = this.myquiz.classname
          tempquiz.classteacher = this.myquiz.classteacher
          tempquiz.creationdate = this.myquiz.creationdate
-         tempquiz.Day = this.myquiz.Day
-         tempquiz.Month = this.myquiz.Month
+         tempquiz.scheduledate = this.myquiz.scheduledate
          tempquiz.quizdescription = this.myquiz.quizdescription
          tempquiz.quizname = this.myquiz.quizname
          tempquiz.quiztype = this.myquiz.quiztype

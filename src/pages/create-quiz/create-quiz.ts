@@ -1,6 +1,9 @@
 import { Component, ViewContainerRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, AlertController } from 'ionic-angular';
 import { QuizServiceProvider, Quiz, Question, Options } from '../../providers/quiz-service/quiz-service';
+import moment from 'moment';
+
+
 /**
  * Generated class for the CreateQuizPage page.
  *
@@ -44,7 +47,7 @@ export class month {
   templateUrl: 'create-quiz.html',
 })
 export class CreateQuizPage {
-
+  mydate = '';
   currentStyles = {
     'background-color': '#F84C61'
   };
@@ -52,7 +55,7 @@ export class CreateQuizPage {
   selected_month: string = '';
 
   quizcolor: Array<colors>;
-  mycolor = "#F84C61";
+  mycolor = "#FFF";
 
   quiztype: string[] = [];
 
@@ -87,6 +90,7 @@ export class CreateQuizPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad CreateQuizPage');
+    // console.log(this.mydate)
   }
 
   viewctrl_dismiss() {
@@ -149,6 +153,7 @@ export class CreateQuizPage {
   }
 
   addQuiz() {
+
     this.quizservice.insert_Quiz(this.myquizes).then(val => {
 
       if (val == 'done') {
@@ -171,274 +176,316 @@ export class CreateQuizPage {
 
   }
 
+  /* setDate() {
+     let mon = new Date().getMonth();
+     mon++;
+ 
+     let today_day = new Date().getDate();
+ 
+     console.log(mon + " " + today_day + " " + new Date().getDate());
+ 
+     for (let i = mon; i < 13; i++) {
+       if (i == 4) {
+         if (i == mon) {
+ 
+           let today_month = new month();
+           today_month.date = 'April';
+ 
+           for (let j = today_day; j < 31; j++) {
+             let now_day = new day();
+             now_day.date = j.toString();
+ 
+             today_month.days.push(now_day);
+           }
+           this.months.push(today_month);
+ 
+         } else {
+           let today_month = new month();
+           today_month.date = 'April';
+ 
+           for (let j = 1; j < 31; j++) {
+             let now_day = new day();
+             now_day.date = j.toString();
+ 
+             today_month.days.push(now_day);
+ 
+           }
+           this.months.push(today_month);
+ 
+         }
+       }
+       else if (i == 5) {
+         if (i == mon) {
+           let today_month = new month();
+           today_month.date = 'May';
+ 
+           for (let j = today_day; j < 32; j++) {
+             let now_day = new day();
+             now_day.date = j.toString();
+ 
+             today_month.days.push(now_day);
+           }
+           this.months.push(today_month);
+ 
+         } else {
+           let today_month = new month();
+           today_month.date = 'May';
+ 
+           for (let j = 1; j < 32; j++) {
+             let now_day = new day();
+             now_day.date = j.toString();
+ 
+             today_month.days.push(now_day);
+           }
+           this.months.push(today_month);
+ 
+ 
+         }
+       }
+       else if (i == 6) {
+         if (i == mon) {
+           let today_month = new month();
+           today_month.date = 'June';
+           for (let j = today_day; j < 30; j++) {
+             let now_day = new day();
+             now_day.date = j.toString();
+ 
+             today_month.days.push(now_day);
+           }
+           this.months.push(today_month);
+ 
+         } else {
+ 
+           let today_month = new month();
+           today_month.date = 'June';
+           for (let j = 1; j < 30; j++) {
+             let now_day = new day();
+             now_day.date = j.toString();
+ 
+             today_month.days.push(now_day);
+           }
+           this.months.push(today_month);
+ 
+         }
+       }
+       else if (i == 7) {
+         if (i == mon) {
+           let today_month = new month();
+           today_month.date = 'July';
+           for (let j = today_day; j < 32; j++) {
+             let now_day = new day();
+             now_day.date = j.toString();
+ 
+             today_month.days.push(now_day);
+           }
+           this.months.push(today_month);
+ 
+         } else {
+           let today_month = new month();
+           today_month.date = 'July';
+           for (let j = 1; j < 32; j++) {
+             let now_day = new day();
+             now_day.date = j.toString();
+ 
+             today_month.days.push(now_day);
+           }
+           this.months.push(today_month);
+ 
+         }
+ 
+       }
+       else if (i == 8) {
+         if (i == mon) {
+           let today_month = new month();
+           today_month.date = 'August';
+ 
+           for (let j = today_day; j < 32; j++) {
+             let now_day = new day();
+             now_day.date = j.toString();
+ 
+             today_month.days.push(now_day);
+           }
+           this.months.push(today_month);
+ 
+         } else {
+           let today_month = new month();
+           today_month.date = 'August';
+ 
+           for (let j = 1; j < 32; j++) {
+             let now_day = new day();
+             now_day.date = j.toString();
+ 
+             today_month.days.push(now_day);
+           }
+           this.months.push(today_month);
+ 
+         }
+       }
+       else if (i == 9) {
+         if (i == mon) {
+           let today_month = new month();
+           today_month.date = 'September';
+ 
+           for (let j = today_day; j < 30; j++) {
+             let now_day = new day();
+             now_day.date = j.toString();
+ 
+             today_month.days.push(now_day);
+ 
+           }
+           this.months.push(today_month);
+ 
+         } else {
+           let today_month = new month();
+           today_month.date = 'September';
+ 
+           for (let j = 1; j < 30; j++) {
+             let now_day = new day();
+             now_day.date = j.toString();
+ 
+             today_month.days.push(now_day);
+           }
+           this.months.push(today_month);
+ 
+         }
+       }
+       else if (i == 10) {
+         if (i == mon) {
+           let today_month = new month();
+           today_month.date = 'October';
+ 
+           for (let j = today_day; j < 32; j++) {
+             let now_day = new day();
+             now_day.date = j.toString();
+ 
+             today_month.days.push(now_day);
+           }
+           this.months.push(today_month);
+ 
+         } else {
+           let today_month = new month();
+           today_month.date = 'October';
+ 
+           for (let j = 1; j < 32; j++) {
+             let now_day = new day();
+             now_day.date = j.toString();
+ 
+             today_month.days.push(now_day);
+           }
+           this.months.push(today_month);
+         }
+       }
+       else if (i == 11) {
+         if (i == mon) {
+           let today_month = new month();
+           today_month.date = 'November';
+ 
+ 
+           for (let j = today_day; j < 31; j++) {
+             let now_day = new day();
+             now_day.date = j.toString();
+ 
+             today_month.days.push(now_day);
+           }
+           this.months.push(today_month);
+ 
+         }
+         else {
+           let today_month = new month();
+           today_month.date = 'November';
+ 
+ 
+           for (let j = 1; j < 31; j++) {
+             let now_day = new day();
+             now_day.date = j.toString();
+ 
+             today_month.days.push(now_day);
+           }
+           this.months.push(today_month);
+ 
+         }
+       }
+       else if (i == 12) {
+         if (i == mon) {
+           let today_month = new month();
+           today_month.date = 'December';
+ 
+           for (let j = today_day; j < 32; j++) {
+             let now_day = new day();
+             now_day.date = j.toString();
+ 
+             today_month.days.push(now_day);
+           }
+           this.months.push(today_month);
+         } else {
+           let today_month = new month();
+           today_month.date = 'December';
+ 
+           for (let j = 1; j < 32; j++) {
+             let now_day = new day();
+             now_day.date = j.toString();
+ 
+             today_month.days.push(now_day);
+           }
+           this.months.push(today_month);
+         }
+ 
+       }
+ 
+     }
+   }
+   */
   setDate() {
-    let mon = new Date().getMonth();
-    mon++;
+    this.quizservice.quizes_datediff();
 
-    let today_day = new Date().getDate();
+    let lastdate = '';
+    if (this.quizservice.Dates.length > 0) {
+      lastdate = this.quizservice.Dates[this.quizservice.Dates.length - 1];
 
-    console.log(mon + " " + today_day + " " + new Date().getDate());
+      var start = moment(lastdate, "YYYY-MM-DD");
 
-    for (let i = mon; i < 13; i++) {
-      if (i == 4) {
-        if (i == mon) {
+      var end = moment(this.mydate, "YYYY-MM-DD");
 
-          let today_month = new month();
-          today_month.date = 'April';
+      console.log(start.diff(end, 'minutes'))
+      console.log(start.diff(end, 'hours'))
+      console.log(start.diff(end, 'days'))
+      console.log(start.diff(end, 'weeks'))
+      let weekdiff = start.diff(end, 'weeks');
 
-          for (let j = today_day; j < 31; j++) {
-            let now_day = new day();
-            now_day.date = j.toString();
-
-            today_month.days.push(now_day);
-          }
-          this.months.push(today_month);
-
-        } else {
-          let today_month = new month();
-          today_month.date = 'April';
-
-          for (let j = 1; j < 31; j++) {
-            let now_day = new day();
-            now_day.date = j.toString();
-
-            today_month.days.push(now_day);
-
-          }
-          this.months.push(today_month);
-
-        }
+      if (weekdiff < 0) {
+        this.presentAlert('Error', ' Quiz must have Difference of >=1 week between previous Quiz');
+        this.mydate = '';
+      } else {
+        this.myquizes.scheduledate = this.mydate;
       }
-      else if (i == 5) {
-        if (i == mon) {
-          let today_month = new month();
-          today_month.date = 'May';
 
-          for (let j = today_day; j < 32; j++) {
-            let now_day = new day();
-            now_day.date = j.toString();
+    } else {
+      start = moment(new Date(), "YYYY-MM-DD").add(1,'weeks');
 
-            today_month.days.push(now_day);
-          }
-          this.months.push(today_month);
+      end = moment(this.mydate, "YYYY-MM-DD");
 
-        } else {
-          let today_month = new month();
-          today_month.date = 'May';
+      console.log(start.diff(end, 'minutes'))
+      console.log(start.diff(end, 'hours'))
+      console.log(start.diff(end, 'days'))
+      console.log(start.diff(end, 'weeks'))
 
-          for (let j = 1; j < 32; j++) {
-            let now_day = new day();
-            now_day.date = j.toString();
+      let weekdiff = start.diff(end, 'weeks');
 
-            today_month.days.push(now_day);
-          }
-          this.months.push(today_month);
-
-
-        }
+      if (weekdiff < 0) {
+        this.presentAlert('Error', ' Quiz must have Difference of >=1 week between previous Quiz');
+        this.mydate = '';
+      } else {
+        this.myquizes.scheduledate = this.mydate;
       }
-      else if (i == 6) {
-        if (i == mon) {
-          let today_month = new month();
-          today_month.date = 'June';
-          for (let j = today_day; j < 30; j++) {
-            let now_day = new day();
-            now_day.date = j.toString();
 
-            today_month.days.push(now_day);
-          }
-          this.months.push(today_month);
-
-        } else {
-
-          let today_month = new month();
-          today_month.date = 'June';
-          for (let j = 1; j < 30; j++) {
-            let now_day = new day();
-            now_day.date = j.toString();
-
-            today_month.days.push(now_day);
-          }
-          this.months.push(today_month);
-
-        }
-      }
-      else if (i == 7) {
-        if (i == mon) {
-          let today_month = new month();
-          today_month.date = 'July';
-          for (let j = today_day; j < 32; j++) {
-            let now_day = new day();
-            now_day.date = j.toString();
-
-            today_month.days.push(now_day);
-          }
-          this.months.push(today_month);
-
-        } else {
-          let today_month = new month();
-          today_month.date = 'July';
-          for (let j = 1; j < 32; j++) {
-            let now_day = new day();
-            now_day.date = j.toString();
-
-            today_month.days.push(now_day);
-          }
-          this.months.push(today_month);
-
-        }
-
-      }
-      else if (i == 8) {
-        if (i == mon) {
-          let today_month = new month();
-          today_month.date = 'August';
-
-          for (let j = today_day; j < 32; j++) {
-            let now_day = new day();
-            now_day.date = j.toString();
-
-            today_month.days.push(now_day);
-          }
-          this.months.push(today_month);
-
-        } else {
-          let today_month = new month();
-          today_month.date = 'August';
-
-          for (let j = 1; j < 32; j++) {
-            let now_day = new day();
-            now_day.date = j.toString();
-
-            today_month.days.push(now_day);
-          }
-          this.months.push(today_month);
-
-        }
-      }
-      else if (i == 9) {
-        if (i == mon) {
-          let today_month = new month();
-          today_month.date = 'September';
-
-          for (let j = today_day; j < 30; j++) {
-            let now_day = new day();
-            now_day.date = j.toString();
-
-            today_month.days.push(now_day);
-
-          }
-          this.months.push(today_month);
-
-        } else {
-          let today_month = new month();
-          today_month.date = 'September';
-
-          for (let j = 1; j < 30; j++) {
-            let now_day = new day();
-            now_day.date = j.toString();
-
-            today_month.days.push(now_day);
-          }
-          this.months.push(today_month);
-
-        }
-      }
-      else if (i == 10) {
-        if (i == mon) {
-          let today_month = new month();
-          today_month.date = 'October';
-
-          for (let j = today_day; j < 32; j++) {
-            let now_day = new day();
-            now_day.date = j.toString();
-
-            today_month.days.push(now_day);
-          }
-          this.months.push(today_month);
-
-        } else {
-          let today_month = new month();
-          today_month.date = 'October';
-
-          for (let j = 1; j < 32; j++) {
-            let now_day = new day();
-            now_day.date = j.toString();
-
-            today_month.days.push(now_day);
-          }
-          this.months.push(today_month);
-        }
-      }
-      else if (i == 11) {
-        if (i == mon) {
-          let today_month = new month();
-          today_month.date = 'November';
-
-
-          for (let j = today_day; j < 31; j++) {
-            let now_day = new day();
-            now_day.date = j.toString();
-
-            today_month.days.push(now_day);
-          }
-          this.months.push(today_month);
-
-        }
-        else {
-          let today_month = new month();
-          today_month.date = 'November';
-
-
-          for (let j = 1; j < 31; j++) {
-            let now_day = new day();
-            now_day.date = j.toString();
-
-            today_month.days.push(now_day);
-          }
-          this.months.push(today_month);
-
-        }
-      }
-      else if (i == 12) {
-        if (i == mon) {
-          let today_month = new month();
-          today_month.date = 'December';
-
-          for (let j = today_day; j < 32; j++) {
-            let now_day = new day();
-            now_day.date = j.toString();
-
-            today_month.days.push(now_day);
-          }
-          this.months.push(today_month);
-        } else {
-          let today_month = new month();
-          today_month.date = 'December';
-
-          for (let j = 1; j < 32; j++) {
-            let now_day = new day();
-            now_day.date = j.toString();
-
-            today_month.days.push(now_day);
-          }
-          this.months.push(today_month);
-        }
-
-      }
 
     }
-  }
-  monthOption(mon: month) {
-    console.log(mon);
-    this.days = mon.days;
-    this.selected_month = mon.date;
-    this.myquizes.Month = this.selected_month.toString();
-  }
 
-  dayOption(today: day) {
-    this.selected_day = today.date;
-    this.myquizes.Day = this.selected_day.toString();
+
+
+
+
+    this.myquizes.scheduledate = this.mydate;
   }
 
   colorselected(value: string) {
