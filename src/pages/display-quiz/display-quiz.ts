@@ -86,4 +86,6 @@ export class DisplayQuizPage {
     alert.present();
 
   }
+
+  
 }

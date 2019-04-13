@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, AlertController, Option } from 'ionic-angular';
 import { QuizServiceProvider, Quiz, QuestionAnswer, OptionsAnswer, QuizAnswer, Question, Options } from '../../providers/quiz-service/quiz-service';
+import { isThisMinute } from 'date-fns';
 
 /**
  * Generated class for the QuizDetailPage page.
@@ -8,7 +9,29 @@ import { QuizServiceProvider, Quiz, QuestionAnswer, OptionsAnswer, QuizAnswer, Q
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
-
+export class SingleQuiz {
+  quizno : number;
+  quizname: string;
+  quizdescription: string;
+  quiztype: string;
+  questions: Question;
+  classname: string;
+  classteacher: string;
+  syllabusid: string;
+  creationdate: string;
+  scheduledate: string;
+  background: string;
+  constructor() {
+    this.quizno = 0;
+    this.background = '';
+    this.scheduledate = '';
+    this.questions = new Question();
+    this.classname = "";
+    this.classteacher = "";
+    this.syllabusid = "";
+    this.creationdate = new Date().toString();
+  }
+}
 @IonicPage()
 @Component({
   selector: 'page-quiz-detail',
@@ -16,43 +39,42 @@ import { QuizServiceProvider, Quiz, QuestionAnswer, OptionsAnswer, QuizAnswer, Q
 })
 export class QuizDetailPage {
   myquiz: Quiz;
-  myanswers: QuizAnswer;
+  quiz: SingleQuiz;
+  quizno : number = 0;
 
   constructor(private alertCtrl:AlertController, private viewctrl: ViewController, public navCtrl: NavController, public navParams: NavParams, private quizservice: QuizServiceProvider) {
     this.myquiz = new Quiz();
     this.myquiz = this.navParams.get('myquiz');
+    this.quiz = new SingleQuiz();
 
-    this.myanswers = new QuizAnswer();
-    this.myanswers.background = this.myquiz.background
-    this.myanswers.classname = this.myquiz.classname
-    this.myanswers.classteacher = this.myquiz.classteacher
-    this.myanswers.creationdate = this.myquiz.creationdate
-    this.myanswers.scheduledate = this.myquiz.scheduledate
-    this.myanswers.quizdescription = this.myquiz.quizdescription
-    this.myanswers.quizname = this.myquiz.quizname
-    this.myanswers.quiztype = this.myquiz.quiztype
-    this.myanswers.syllabusid = this.myquiz.syllabusid
+    this.quiz.background = this.myquiz.background
+    this.quiz.classname = this.myquiz.classname
+    this.quiz.classteacher = this.myquiz.classteacher
+    this.quiz.creationdate = this.myquiz.creationdate
+    this.quiz.scheduledate = this.myquiz.scheduledate
+    this.quiz.quizdescription = this.myquiz.quizdescription
+    this.quiz.quizname = this.myquiz.quizname
+    this.quiz.quiztype = this.myquiz.quiztype
+    this.quiz.syllabusid = this.myquiz.syllabusid
 
-    for (let i = 0; i < this.myquiz.questions.length; i++) {
-      let myquestion: QuestionAnswer = new QuestionAnswer();
-      myquestion.question = this.myquiz.questions[i].question;
+  if (this.myquiz.questions.length>0){
+    let myquestion: QuestionAnswer = new QuestionAnswer();
+    myquestion.question = this.myquiz.questions[this.quizno].question;
 
-      for (let j = 0; j < this.myquiz.questions[i].options.length; j++) {
+    for (let j = 0; j < this.myquiz.questions[this.quizno].options.length; j++) {
 
-        let myoption : OptionsAnswer = new OptionsAnswer();
+      let myoption : OptionsAnswer = new OptionsAnswer();
 
-        myoption.isanswer =this.myquiz.questions[i].options[j].isanswer
-        myoption.myanswer =false;
-        myoption.option =this.myquiz.questions[i].options[j].option
+      myoption.isanswer =this.myquiz.questions[this.quizno].options[j].isanswer
+      myoption.myanswer =false;
+      myoption.option =this.myquiz.questions[this.quizno].options[j].option
 
-        myquestion.options.push(myoption)
-        
-      }
-
-      this.myanswers.questions.push(myquestion);
+      myquestion.options.push(myoption)
+      
     }
-    
-  console.log(this.myanswers)
+    this.quiz.questions = myquestion;
+    this.quizno++;
+  }
 
   }
 
@@ -62,7 +84,7 @@ export class QuizDetailPage {
   viewctrl_dismiss() {
     this.viewctrl.dismiss();
   }
-
+/*
   selected_option(ques: number, op: number){
     // for (let i=0;i<   this.myanswers.questions[ques].options.length;i++){
     //   this.myanswers.questions[ques].options[i].myanswer = false;
@@ -73,7 +95,12 @@ export class QuizDetailPage {
     else
     this.myanswers.questions[ques].options[op].myanswer = true;
   }
+  */
   delete_question(quesid: number){
+    if (quesid<0){
+      this.presentAlert('No Question Selected','');
+    }
+    else{
     let confirm = this.alertCtrl.create({
       title: 'Delete question',
       message: 'Are you sure you want to delete this question?',
@@ -126,6 +153,8 @@ export class QuizDetailPage {
             this.myquiz = tempquiz;
             tempquiz = null;
             this.presentAlert('Question Deleted ', 'Successfully')
+            this.quiz.questions = new Question();
+            this.backQuestion();
            }else{
             this.presentAlert('Error! ', ' Question Not Deleted')
            }
@@ -138,6 +167,7 @@ export class QuizDetailPage {
     });
     confirm.present();
   }
+  }
  
   presentAlert(alerttitle, alertsub) {
     let alert = this.alertCtrl.create({
@@ -147,5 +177,56 @@ export class QuizDetailPage {
     });
     alert.present();
    
+   }
+
+   nextQuestion(){
+    if (this.quizno+1<this.myquiz.questions.length){
+
+      let myquestion: QuestionAnswer = new QuestionAnswer();
+      myquestion.question = this.myquiz.questions[this.quizno].question;
+
+      for (let j = 0; j < this.myquiz.questions[this.quizno].options.length; j++) {
+
+        let myoption : OptionsAnswer = new OptionsAnswer();
+
+        myoption.isanswer =this.myquiz.questions[this.quizno].options[j].isanswer
+        myoption.myanswer =false;
+        myoption.option =this.myquiz.questions[this.quizno].options[j].option
+
+        myquestion.options.push(myoption)
+        
+      }
+    //  this.quiz = new SingleQuiz();
+      this.quiz.questions = myquestion;
+      this.quizno++;
+
+    }else{
+      this.presentAlert('No more Questions ', ' :) ');
+    }
+   }
+
+   backQuestion(){
+    
+    if (this.quizno - 1<this.myquiz.questions.length){
+      this.quizno -- ;
+      let myquestion: QuestionAnswer = new QuestionAnswer();
+      myquestion.question = this.myquiz.questions[this.quizno].question;
+
+      for (let j = 0; j < this.myquiz.questions[this.quizno].options.length; j++) {
+
+        let myoption : OptionsAnswer = new OptionsAnswer();
+
+        myoption.isanswer =this.myquiz.questions[this.quizno].options[j].isanswer
+        myoption.myanswer =false;
+        myoption.option =this.myquiz.questions[this.quizno].options[j].option
+
+        myquestion.options.push(myoption)
+        
+      }
+      this.quiz.questions = myquestion;
+
+    }else{
+      this.presentAlert('No more Questions ', ' :) ');
+    }
    }
 }

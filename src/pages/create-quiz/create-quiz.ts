@@ -499,4 +499,14 @@ export class CreateQuizPage {
     console.log(value);
     this.myquizes.quiztype = value;
   }
+  delete_question(chap: number){
+    this.myquizes.questions.splice(chap,1);
+
+  }
+
+  delete_option(chap: number, op: number){
+    this.myquizes.questions[chap].options.splice(op,1);
+
+  }
+  
 }

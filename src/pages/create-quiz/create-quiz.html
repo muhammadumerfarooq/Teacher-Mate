@@ -182,7 +182,7 @@
 
         </button>
         -
-        <button ion-button clear margin-right item-end icon-only>
+        <button ion-button clear margin-right item-end icon-only (click)="delete_question(chap)">
           <!-- here -->
           <ion-icon name="trash"></ion-icon>
         </button>
@@ -206,7 +206,7 @@
             <ion-checkbox slot="end" [(ngModel)]="opt.isanswer"></ion-checkbox>
           </button>
 
-          <button ion-button clear margin-right item-end icon-only>
+          <button ion-button clear margin-right item-end icon-only (click)="delete_option(chap,top)">
             <!-- here -->
             <ion-icon name="trash"></ion-icon>
           </button>

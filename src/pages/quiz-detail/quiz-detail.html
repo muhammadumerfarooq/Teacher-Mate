@@ -38,36 +38,36 @@
 
     <ion-list class="questions-list">
 
-      <ion-item *ngFor="let question of myquiz.questions; let i= index" class="question-item" >
+      <ion-item class="question-item" >
 
 
         <ion-row>
           <ion-col class="votes-col" col-2>
-            <button class="vote-button up-vote" ion-button clear small (click)="addPositiveVote(question)">
+            <button class="vote-button up-vote" ion-button clear small (click)="backQuestion(quiz.questions)">
               <ion-icon name="arrow-up"></ion-icon>
-            </button>
+            </button> 
             <span class="question-score"
-              [ngClass]="{'good-score': (i+1) > 0, 'no-score': (i+1) == 0, 'bad-score': (i+1) < 0}">{{(i+1)}}</span>
-            <button class="vote-button down-vote" ion-button clear small (click)="addNegativeVote(question)">
+              [ngClass]="{'good-score': (quizno+1) > 0, 'no-score': (quizno+1) == 0, 'bad-score': (quizno+1) < 0}">{{(quizno+1)}}</span>
+           <button class="vote-button down-vote" ion-button clear small (click)="nextQuestion(quiz.questions)">
               <ion-icon name="arrow-down"></ion-icon>
-            </button>
+            </button> 
           </ion-col>
 
           <ion-col col-10>
             <ion-row class="question-details">
               <ion-col col-12>
-                <h2 class="question-text" (click)="openAnswers(question)">{{ question.question }}</h2>
+                <h2 class="question-text" (click)="openAnswers(quiz.questions)">{{ quiz.questions.question }}</h2>
               </ion-col>
-              <ion-item text-wrap *ngFor="let option of question.options; let op=index" [ngStyle]="{'border-bottom':'1px solid #dedede', 'color':'#FFF'}">
+              <ion-item text-wrap *ngFor="let option of quiz.questions.options; let op=index" [ngStyle]="{'border-bottom':'1px solid #dedede', 'color':'#FFF'}">
                 <!--     -->
                 <!-- <ion-col col-4 class="votes-details" *ngFor="let option of question.options; let op=index">
 -->
-                <div *ngIf="option.isanswer" class="div-true" (click) = "selected_option(i, op)">
+                <div *ngIf="option.isanswer" class="div-true" (click) = "selected_option(quizno-1, op)">
                 
                   {{option.option}}
  
                 </div>
-                <div *ngIf="!option.isanswer" class="div-false" (click) = "selected_option(i, op)">
+                <div *ngIf="!option.isanswer" class="div-false" (click) = "selected_option(quizno-1, op)">
               
                   {{option.option}}
  
@@ -88,7 +88,7 @@
 
               <ion-col col-12 class="actions-details">
                 <button class="delete-button" ion-button small round clear icon-only color="danger"
-                  (click)="delete_question(question.id)">
+                  (click)="delete_question(quizno-1)">
                   <ion-icon name="ios-trash-outline"></ion-icon>
                 </button>
               </ion-col>
@@ -100,60 +100,14 @@
 
       </ion-item>
     </ion-list>
-    <!-- -->
-    <!--
-        <ion-row>
-          <ion-col class="votes-col" col-2>
-            <button class="vote-button up-vote" ion-button clear small (click)= "addPositiveVote(question)">
-              <ion-icon name="arrow-up"></ion-icon>
-            </button>
-            <span class="question-score" [ngClass]="{'good-score': (i+1) > 0, 'no-score': (i+1) == 0, 'bad-score': (i+1) < 0}">{{(i+1)}}</span>
-            <button class="vote-button down-vote" ion-button clear small (click)= "addNegativeVote(question)">
-              <ion-icon name="arrow-down"></ion-icon>
-            </button>
-          </ion-col>
-          <ion-col col-10>
-            <ion-row class="question-details">
-              <ion-col col-12>
-                <h2 class="question-text" (click)="openAnswers(question)">{{ question.question }}</h2>
-              </ion-col>
-              <ion-col col-4 class="votes-details">
-              
-                <ion-item [ngStyle]="{'width':'max-content'}" *ngFor="let option of question.options; let op=index">
-          
-          <ion-label text-left>{{option.option}}
-          </ion-label>
-
-         
-           
-            <ion-checkbox slot="end" [(ngModel)]="option.isanswer"></ion-checkbox>
-          </button>
-
-     
-
-        </ion-item>
-
-              </ion-col>
-            
-              <ion-col col-4 class="actions-details">
-                <button class="delete-button" ion-button small round clear icon-only color="danger" (click)="delete(question.id)">
-                  <ion-icon name="ios-trash-outline"></ion-icon>
-                </button>
-              </ion-col>
-            </ion-row>
-          </ion-col>
-        </ion-row>
-      </ion-item>
-    </ion-list>
-
-    -->
+ 
   </div>
 </ion-content>
 
 <ion-footer>
   <ion-toolbar>
-    <button ion-button block (click)="createQuestionModal()" color="ask">
-      <b>Have a Question? Ask!</b>
+    <button ion-button block (click)="nextQuestion()" color="ask">
+      <b>Next Question</b>
     </button>
   </ion-toolbar>
 </ion-footer>
