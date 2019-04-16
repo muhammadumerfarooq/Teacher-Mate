@@ -1,30 +1,31 @@
-page-homes,
-.trips {
-	.card {
-    border-radius: 1rem;
-     
-	}
-  .trip {
-    overflow: hidden;
-    
-    .background {
-      background-size: 100% auto;
-      background-position: center;
+page-home {
+  .trips {
+    .card {
+      border-radius: 1rem;
 
-      .background-filter {
-        
-        height: 16rem;
-      //  background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.65));
+    }
 
-        .align-bottom {
-          width: 100%;
+    .trip {
+      overflow: hidden;
 
-          h6 {
-            margin-top: 0;
+      .background {
+        background-size: 100% auto;
+        background-position: center;
+
+        .background-filter {
+
+          height: 16rem;
+          //  background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.65));
+
+          .align-bottom {
+            width: 100%;
+
+            h6 {
+              margin-top: 0;
+            }
           }
         }
       }
     }
   }
 }
-

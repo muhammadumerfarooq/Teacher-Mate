@@ -65,12 +65,14 @@ export class NotificationsServiceProvider {
          });
 
          this.Allnotifications.snapshotChanges().forEach(snap=>{
+           
            this.Notifications = new Array<notify>();
            snap.forEach(snapshot=>{
+             
              if (snapshot.payload.doc.exists){
               
                let tempnotify: notify = snapshot.payload.doc.data() as notify;
-               if (tempnotify.useremail != this.homeservice.userprofile.useremail){
+               if (tempnotify.useremail != this.profileservice.useremail){// this.homeservice.userprofile.useremail){
                  this.findimgurl(tempnotify);
                this.Notifications.push(tempnotify);
               }

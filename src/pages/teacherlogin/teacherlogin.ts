@@ -91,7 +91,7 @@ if (this.afauth.auth.currentUser != null || this.afauth.auth.currentUser != unde
      
 
       for (let i=0;i<res.length;i++){
-        debugger
+        
       if (res[i] !=undefined &&  res[i].id == tcredts.email){
     
         

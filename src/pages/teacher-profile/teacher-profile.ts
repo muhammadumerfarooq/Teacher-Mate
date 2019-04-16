@@ -40,7 +40,7 @@ export class TeacherProfilePage {
     notifydata.classname = this.myclass.classname;
     notifydata.classteacher = this.myclass.teacheremail;
     notifydata.userurl = this.myclass.imgurl;
-    notifydata.publisheddate = new Date().toString();
+    notifydata.publisheddate = new Date().getTime().toString();
     notifydata.message = this.profileservice.username + ' requested to add in classroom ';
     notifydata.commentby.email = this.profileservice.useremail;
     notifydata.commentby.name = this.profileservice.username;

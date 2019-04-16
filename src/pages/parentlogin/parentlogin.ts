@@ -79,7 +79,7 @@ console.log(this.parentsarray);
 this.parentsarray.subscribe(res=>{
   console.log(res);
   for (let i=0;i<res.length;i++){   
-    debugger
+    
     if (res[i] !=undefined &&  res[i].id == this.parent_email){
     
         

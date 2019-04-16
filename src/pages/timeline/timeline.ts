@@ -33,7 +33,19 @@ export class TimelinePage {
         // this.navCtrl.pop();
         console.log(this.navCtrl.getViews());
 
-        this.navCtrl.push('LoginmenuPage');
+     //   this.navCtrl.push('LoginmenuPage');
+
+        var modalPage = this.modalctrl.create('LoginmenuPage');
+        modalPage.onDidDismiss(data=>{
+         if (data == true)
+         {
+           
+          // this.viewCtrl.dismiss(true);
+         }
+       });
+        modalPage.present();
+
+        
         this.navCtrl.setRoot('HomePage');
         // this.takePicture(0);
       }

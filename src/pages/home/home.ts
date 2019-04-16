@@ -7,7 +7,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { HomeServiceProvider } from '../../providers/home-service/home-service';
 
 // import {OnInit} from '@angular/core';
-import { FCM } from '@ionic-native/fcm';
+// import { FCM } from '@ionic-native/fcm';
 import { ProfileServiceProvider, profile } from '../../providers/profile-service/profile-service';
 import { TeachersServiceProvider } from '../../providers/teachers-service/teachers-service';
 
@@ -25,7 +25,7 @@ export class HomePage implements OnInit {
   }
 
 
-  constructor(private teacherclass:TeachersServiceProvider,private modalCtrl: ModalController,private profileservice :ProfileServiceProvider,private fcm: FCM, public homeservice: HomeServiceProvider, public afAuth: AngularFireAuth, public alertctrl: AlertController, public toastctrl: ToastController, public modalctrl: ModalController, public platform: Platform, public actionsheetCtrl: ActionSheetController, private storage: Storage, public nav: NavController, public popoverCtrl: PopoverController) {
+  constructor(private teacherclass:TeachersServiceProvider,private modalCtrl: ModalController,private profileservice :ProfileServiceProvider, public homeservice: HomeServiceProvider, public afAuth: AngularFireAuth, public alertctrl: AlertController, public toastctrl: ToastController, public modalctrl: ModalController, public platform: Platform, public actionsheetCtrl: ActionSheetController, private storage: Storage, public nav: NavController, public popoverCtrl: PopoverController) {
     console.log(this.homeservice.searchname);
    // this.presentCustomModal();
     /// this.searchuser.name = this.homeservice.searchname; 
@@ -335,6 +335,3 @@ sendrequest(){
   // }
 
 }
-/* ********************
-    Custom modal 
-********************* */
