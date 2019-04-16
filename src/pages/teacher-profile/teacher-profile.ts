@@ -22,7 +22,7 @@ export class TeacherProfilePage {
 
   myclass:classroom = new classroom();
 
-  constructor(private alertctrl:AlertController,private profileservice:ProfileServiceProvider,private notifyservice:NotificationsServiceProvider,public navCtrl: NavController, public navParams: NavParams, private viewctrl:ViewController) {
+  constructor(private alertCtrl:AlertController,private alertctrl:AlertController,private profileservice:ProfileServiceProvider,private notifyservice:NotificationsServiceProvider,public navCtrl: NavController, public navParams: NavParams, private viewctrl:ViewController) {
     this.myclass = this.navParams.get('myclass');
 
 
@@ -36,27 +36,48 @@ export class TeacherProfilePage {
     this.viewctrl.dismiss('back');
   }
   inviteparent(){
-    let notifydata: notify = new notify();
-    notifydata.classname = this.myclass.classname;
-    notifydata.classteacher = this.myclass.teacheremail;
-    notifydata.userurl = this.myclass.imgurl;
-    notifydata.publisheddate = new Date().getTime().toString();
-    notifydata.message = this.profileservice.username + ' requested to add in classroom ';
-    notifydata.commentby.email = this.profileservice.useremail;
-    notifydata.commentby.name = this.profileservice.username;
-    notifydata.classid = this.myclass.classid;
-    notifydata.useremail = this.profileservice.useremail;
-    
-    this.notifyservice.insertnotification(notifydata).then(val=>{
-      if (val == 'done')
-      this.presentAlert('Request Send Successfully!','');
-      else{
-        this.presentAlert('Request Sending Failed!','');
-      }
-    }).catch(err=>{
-      this.presentAlert('Request Sending Failed!','');
 
+    let confirm = this.alertCtrl.create({
+      title: 'Send Request',
+      message: 'Send Request For Classroom Joining? ',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+            console.log('No clicked');
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            let notifydata: notify = new notify();
+            notifydata.classname = this.myclass.classname;
+            notifydata.classteacher = this.myclass.teacheremail;
+            notifydata.userurl = this.myclass.imgurl;
+            notifydata.publisheddate = new Date().getTime().toString();
+            notifydata.message = this.profileservice.username + ' requested to add in classroom ';
+            notifydata.commentby.email = this.profileservice.useremail;
+            notifydata.commentby.name = this.profileservice.username;
+            notifydata.classid = this.myclass.classid;
+            notifydata.useremail = this.profileservice.useremail;
+            
+            this.notifyservice.insertnotification(notifydata).then(val=>{
+              if (val == 'done')
+              this.presentAlert('Request Send Successfully!','');
+              else{
+                this.presentAlert('Request Sending Failed!','');
+              }
+            }).catch(err=>{
+              this.presentAlert('Request Sending Failed!','');
+        
+            });
+          }
+        }
+      ]
     });
+    confirm.present();
+
+   
 
   }
 

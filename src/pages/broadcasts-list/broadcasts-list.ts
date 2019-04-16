@@ -88,7 +88,7 @@ export class BroadcastsListPage {
     //
     // Both players are capable of both live and archived playback though:
     // for your own app: try both and make your own decision on which player to use when.
-    if (broadcast.type === 'live' && window['bambuser'] && window['bambuser']['player']) {
+  /*  if (broadcast.type === 'live' && window['bambuser'] && window['bambuser']['player']) {
       // Push native player page onto the navigation stack
       // it does not render correctly in a modal
       //
@@ -100,7 +100,7 @@ export class BroadcastsListPage {
         autoplay: true,
       });
 
-    } else {
+    } else {  */
       // Open js player page in a modal window
       // and instruct it to play the selected broadcast
       const playerModal = this.modalCtrl.create('JavaScriptPlayerPage', {
@@ -110,7 +110,7 @@ export class BroadcastsListPage {
       });
       playerModal.present();
     }
-  }
+ // }
 
   ionViewWillLeave() {
      console.log('leaving broadcast list');

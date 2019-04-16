@@ -20,7 +20,7 @@ import { NotificationsServiceProvider, notify } from '../../providers/notificati
 })
 export class SendRequestPage {
 
-  constructor(private notifyservice: NotificationsServiceProvider,private alertctrl:AlertController,private modalCtrl: ModalController, private loaderservice: LoaderserviceProvider, private teacherservice: TeachersServiceProvider, private profileservice: ProfileServiceProvider, public navCtrl: NavController, public navParams: NavParams, private viewctrl: ViewController) {
+  constructor(private alertCtrl:AlertController,private notifyservice: NotificationsServiceProvider,private alertctrl:AlertController,private modalCtrl: ModalController, private loaderservice: LoaderserviceProvider, private teacherservice: TeachersServiceProvider, private profileservice: ProfileServiceProvider, public navCtrl: NavController, public navParams: NavParams, private viewctrl: ViewController) {
     this.loaderservice.loading = this.loaderservice.loadingCtrl.create({
 
       content: `
@@ -54,27 +54,45 @@ export class SendRequestPage {
   }
 
   sendrequest(myclass: classroom) {
-    let notifydata: notify = new notify();
-    notifydata.classname = myclass.classname;
-    notifydata.classteacher = myclass.teacheremail;
-    notifydata.userurl = myclass.imgurl;
-    notifydata.publisheddate = new Date().getTime().toString();
-    notifydata.message = this.profileservice.username + ' requested to add in classroom ';
-    notifydata.commentby.email = this.profileservice.useremail;
-    notifydata.commentby.name = this.profileservice.username;
-    notifydata.classid = myclass.classid;
-    notifydata.useremail = this.profileservice.useremail;
-
-    this.notifyservice.insertnotification(notifydata).then(val => {
-      if (val == 'done')
-        this.presentAlert('Request Send Successfully!', '');
-      else {
-        this.presentAlert('Request Sending Failed!', '');
-      }
-    }).catch(err => {
-      this.presentAlert('Request Sending Failed!', '');
-
+    let confirm = this.alertCtrl.create({
+      title: 'Send Request',
+      message: 'Send Request For Classroom Joining? ',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+            console.log('No clicked');
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            let notifydata: notify = new notify();
+            notifydata.classname = myclass.classname;
+            notifydata.classteacher = myclass.teacheremail;
+            notifydata.userurl = myclass.imgurl;
+            notifydata.publisheddate = new Date().getTime().toString();
+            notifydata.message = this.profileservice.username + ' requested to add in classroom ';
+            notifydata.commentby.email = this.profileservice.useremail;
+            notifydata.commentby.name = this.profileservice.username;
+            notifydata.classid = myclass.classid;
+            notifydata.useremail = this.profileservice.useremail;
+            
+            this.notifyservice.insertnotification(notifydata).then(val=>{
+              if (val == 'done')
+              this.presentAlert('Request Send Successfully!','');
+              else{
+                this.presentAlert('Request Sending Failed!','');
+              }
+            }).catch(err=>{
+              this.presentAlert('Request Sending Failed!','');
+        
+            });
+          }
+        }
+      ]
     });
+    confirm.present();
   }
   goToProfileTeacher(myclass: classroom) {
     let modalpage = this.modalCtrl.create('TeacherProfilePage', { myclass: myclass });

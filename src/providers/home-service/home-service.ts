@@ -76,7 +76,7 @@ export class HomeServiceProvider {
   userprofile = new userprofile();
   searchname: string = "";
 
-  constructor(private profileservice: ProfileServiceProvider, public storage: Storage, public afs: AngularFirestore, public afAuth: AngularFireAuth, public loaderservice: LoaderserviceProvider, public alertCtrl: AlertController) {
+  constructor( public storage: Storage, public afs: AngularFirestore, public afAuth: AngularFireAuth, public loaderservice: LoaderserviceProvider, public alertCtrl: AlertController) {
 
 
 
@@ -204,7 +204,7 @@ export class HomeServiceProvider {
       tempclass.imgurl = this.userprofile.imgurl;
       tempclass.backgroundimg = teacherclass.backgroundimg;
       tempclass.classid = id;
-      
+
       try {
 
         const objectclass = Object.assign({}, tempclass);
@@ -244,6 +244,7 @@ export class HomeServiceProvider {
 
 
           if (data.parentsemail != undefined || data.parentsemail != null) {
+            debugger
             let index = data.parentsemail.indexOf(this.afAuth.auth.currentUser.email);
             console.log(index);
             if (index < 0) {

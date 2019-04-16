@@ -27,10 +27,11 @@ export class NotificatonsPage {
   selectednotify(notifications: notify){
     
     let foundfeed: Myfeed = new Myfeed();
+    
     foundfeed = this.findfeed(notifications,foundfeed);
     this.notifyservice.updateobjectnotification(notifications);
-  
-    if (foundfeed.publisheddate != undefined && foundfeed.publisheddate != null){
+  debugger
+    if (foundfeed != null && foundfeed!=undefined && foundfeed.publisheddate != undefined && foundfeed.publisheddate != null){
       var modalPage: any;
 
     if (notifications.message.toString().includes('liked')){
@@ -41,27 +42,7 @@ export class NotificatonsPage {
       modalPage = this.modalCtrl.create('PostDetailPage', { Myfeed: foundfeed, 'commentedtime': notifications.publisheddate });
 
     }
-    else if (notifications.message.toString().includes('requested')){
-      let confirm = this.alertCtrl.create({
-        title: 'Add In Classroom',
-        message: 'Are you sure you want to add '+ notifications.commentby.name +' in classroom?',
-        buttons: [
-          {
-            text: 'No',
-            handler: () => {
-              console.log('No clicked');
-            }
-          },
-          {
-            text: 'Yes',
-            handler: () => {
-              this.homeservice.findclassroom(notifications.classid)
-            }
-          }
-        ]
-      });
-      confirm.present();
-    }
+   
       modalPage.onDidDismiss(data => {
         if (data == true) {
          // this.presentAlert('Success', ' post created');
@@ -74,7 +55,27 @@ export class NotificatonsPage {
       modalPage.present();
   }
 
-  
+   if (notifications.message.toString().includes('requested')){
+    let confirm = this.alertCtrl.create({
+      title: 'Add In Classroom',
+      message: 'Are you sure you want to add '+ notifications.commentby.name +' in classroom?',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+            console.log('No clicked');
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            this.homeservice.findclassroom(notifications.classid)
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
   }
   findfeed(notifications: notify,  foundfeed: Myfeed ){
     
