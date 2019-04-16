@@ -1,41 +1,16 @@
-
- 
-
-<!--
-<div class="navbar">
-  <div class="button">
-    <i class="fa fa-globe"></i>
-    <span class="button__badge">2</span>
-  </div> 
- 
+<div class="stopwatch pt-3">
+  <h1 text-center class="color-white font-lg">
+    {{time}}
+  </h1>
+  <ion-grid>
+    <ion-row text-center class="mt-5">
+      <ion-col class="col-12" *ngIf="!running && time == blankTime">
+        <button class="circle-button circle-button-bg font-md" ion-button (tap)="start()"> start </button>
+      </ion-col>
+      <ion-col class="col-12" *ngIf="running">
+        <button class="circle-button circle-button-bg circle-button-red font-md" ion-button (tap)="stop()">
+          stop</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </div>
--->
-
-<ion-content padding class="trips detail-bg">
-
-<!--
-  <div class="chatbox">
-  <button ion-button class="pull-right" tappable >
-<ion-icon name="chatbubbles"></ion-icon>
- </button>
-</div>
--->
-  <!--list of trips-->
-
-  <div>
-  <div class="trip card" *ngFor="let img of images" tappable margin-bottom (click)="dismiss(img)">
-    <div class="background border-bottom" [ngStyle]="{'background-image': 'url('+ img + ')'}"> 
-      <div class="background-filter rlt">
- 
-        
-      </div>
-   
-    </div>
-
-  </div>
- </div> 
-
-<!-- chat icon -->
- 
-
-</ion-content>

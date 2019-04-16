@@ -9,6 +9,7 @@ import { HomeServiceProvider } from '../../providers/home-service/home-service';
 // import {OnInit} from '@angular/core';
 import { FCM } from '@ionic-native/fcm';
 import { ProfileServiceProvider, profile } from '../../providers/profile-service/profile-service';
+import { TeachersServiceProvider } from '../../providers/teachers-service/teachers-service';
 
 // import { LoaderserviceProvider } from '../../providers/loaderservice/loaderservice';
 
@@ -24,7 +25,7 @@ export class HomePage implements OnInit {
   }
 
 
-  constructor(private modalCtrl: ModalController,private profileservice :ProfileServiceProvider,private fcm: FCM, public homeservice: HomeServiceProvider, public afAuth: AngularFireAuth, public alertctrl: AlertController, public toastctrl: ToastController, public modalctrl: ModalController, public platform: Platform, public actionsheetCtrl: ActionSheetController, private storage: Storage, public nav: NavController, public popoverCtrl: PopoverController) {
+  constructor(private teacherclass:TeachersServiceProvider,private modalCtrl: ModalController,private profileservice :ProfileServiceProvider,private fcm: FCM, public homeservice: HomeServiceProvider, public afAuth: AngularFireAuth, public alertctrl: AlertController, public toastctrl: ToastController, public modalctrl: ModalController, public platform: Platform, public actionsheetCtrl: ActionSheetController, private storage: Storage, public nav: NavController, public popoverCtrl: PopoverController) {
     console.log(this.homeservice.searchname);
    // this.presentCustomModal();
     /// this.searchuser.name = this.homeservice.searchname; 
@@ -310,6 +311,17 @@ export class HomePage implements OnInit {
     customModal.present();
 }
 
+sendrequest(){
+  let customModal = this.modalCtrl.create('SendRequestPage');
+
+  customModal.onDidDismiss((val) => {
+      // Do what you want ...
+      console.log(val);
+  });
+
+  // Present the modal
+  customModal.present();
+}
   // initFCM(){
   //   this.fcm.onNotification().subscribe(data=>{
   //     if (data.wasTapped){

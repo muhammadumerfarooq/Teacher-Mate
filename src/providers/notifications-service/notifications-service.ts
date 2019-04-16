@@ -16,6 +16,10 @@ import { ProfileServiceProvider } from '../profile-service/profile-service';
 export class commentuser{
 name: string;
 email: string;
+constructor (){
+  this.name='';
+  this.email = '';
+}
 }
 
 export class notify {
@@ -28,6 +32,18 @@ seen: string;
 userurl: string;
 message: string;
 useremail: string;
+classid: string;
+constructor(){
+  this.classid = '';
+  this.classname = '';
+  this.classteacher='';
+  this.feedtitle = '';
+  this.commentby= new commentuser()
+  this.publisheddate = '';
+  this.userurl = '';
+  this.useremail = '';
+  this.seen = 'false';
+}
 }
 
 @Injectable()

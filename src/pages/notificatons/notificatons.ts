@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, AlertController } from 'ionic-angular';
 import { NotificationsServiceProvider, notify } from '../../providers/notifications-service/notifications-service';
 import { PostProvider, Myfeed } from '../../providers/post/post';
+import { HomeServiceProvider } from '../../providers/home-service/home-service';
 
 /**
  * Generated class for the NotificatonsPage page.
@@ -17,7 +18,7 @@ import { PostProvider, Myfeed } from '../../providers/post/post';
 })
 export class NotificatonsPage {
 
-  constructor(private modalCtrl:ModalController,private postservice:PostProvider,public navCtrl: NavController, public navParams: NavParams, private notifyservice:NotificationsServiceProvider) {
+  constructor(private homeservice:HomeServiceProvider,private alertCtrl:AlertController,private modalCtrl:ModalController,private postservice:PostProvider,public navCtrl: NavController, public navParams: NavParams, private notifyservice:NotificationsServiceProvider) {
   }
 
   ionViewDidLoad() {
@@ -36,11 +37,31 @@ export class NotificatonsPage {
       modalPage = this.modalCtrl.create('PostDetailPage', { Myfeed: foundfeed, 'likedperson': notifications.useremail });
 
     }
-    if (notifications.message.toString().includes('commented')){
+    else if (notifications.message.toString().includes('commented')){
       modalPage = this.modalCtrl.create('PostDetailPage', { Myfeed: foundfeed, 'commentedtime': notifications.publisheddate });
 
     }
-
+    else if (notifications.message.toString().includes('requested')){
+      let confirm = this.alertCtrl.create({
+        title: 'Add In Classroom',
+        message: 'Are you sure you want to add '+ notifications.commentby.name +' in classroom?',
+        buttons: [
+          {
+            text: 'No',
+            handler: () => {
+              console.log('No clicked');
+            }
+          },
+          {
+            text: 'Yes',
+            handler: () => {
+              this.homeservice.findclassroom(notifications.classid)
+            }
+          }
+        ]
+      });
+      confirm.present();
+    }
       modalPage.onDidDismiss(data => {
         if (data == true) {
          // this.presentAlert('Success', ' post created');

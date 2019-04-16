@@ -56,6 +56,7 @@ export class CreateQuizPage {
 
   quizcolor: Array<colors>;
   mycolor = "#FFF";
+  quiztime = '';
 
   quiztype: string[] = [];
 
@@ -452,9 +453,10 @@ export class CreateQuizPage {
       console.log(start.diff(end, 'weeks'))
       let weekdiff = start.diff(end, 'weeks');
 
-      if (weekdiff < 0) {
-        this.presentAlert('Error', ' Quiz must have Difference of >=1 week between previous Quiz');
+      if (weekdiff <= 0 || weekdiff>1) {
+        this.presentAlert('Error', ' Quiz must have Difference of 1 week between previous Quiz');
         this.mydate = '';
+        this.mydate = null;
       } else {
         this.myquizes.scheduledate = this.mydate;
       }
@@ -471,9 +473,10 @@ export class CreateQuizPage {
 
       let weekdiff = start.diff(end, 'weeks');
 
-      if (weekdiff < 0) {
-        this.presentAlert('Error', ' Quiz must have Difference of >=1 week between previous Quiz');
+      if (weekdiff < 0 || weekdiff >1 ) {
+        this.presentAlert('Error', ' Quiz must have Difference of 1 week between previous Quiz');
         this.mydate = '';
+        this.mydate = null;
       } else {
         this.myquizes.scheduledate = this.mydate;
       }
@@ -493,6 +496,7 @@ export class CreateQuizPage {
 
     this.myquizes.background = value;
     this.mycolor = value;
+   
   }
 
   typeselected(value: string) {
@@ -508,5 +512,25 @@ export class CreateQuizPage {
     this.myquizes.questions[chap].options.splice(op,1);
 
   }
-  
+  setQuiztime(value:string){
+    console.log(value)
+    if (value == null || value == undefined || value == ''){
+      this.quiztime = null;
+    }else{
+    let splitarray =this.quiztime.split(':');
+    console.log(splitarray);
+    this.myquizes.quiztime = splitarray[1]+":"+splitarray[2];
+    }
+  }
+
+  cleardate(){
+    console.log('cancel clicked')
+    this.mydate = null;
+  this.myquizes.scheduledate = '';
+  }
+
+  cleartime(){
+    this.quiztime = null;
+    this.myquizes.quiztime = '';
+  }
 }

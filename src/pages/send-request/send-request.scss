@@ -1,0 +1,20 @@
+page-send-request {
+    img {
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      }
+      ion-buttons button[icon-only].my-style-for-modal {
+        margin: 0 6px;
+        min-width: 36px;
+     }
+     .item-css{
+         border: solid thin $white-b;
+         border-radius: 6.1em;
+     }
+     .query-tag
+		{
+			border: 1px solid $theme-color-2;
+			color: $theme-color-2;
+      background: #FFF;
+      font-size: 1.2em;
+		}
+}

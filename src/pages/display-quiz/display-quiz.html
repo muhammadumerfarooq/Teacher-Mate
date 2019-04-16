@@ -17,7 +17,7 @@
       <ion-icon name="clipboard"></ion-icon>
     </button>
   </div>
-  
+
   <h3 class="search-query">
     <span>Showing: </span>
     <ion-badge class="query-tag">{{ quizinfo.topicname }}</ion-badge>
@@ -25,25 +25,40 @@
   </h3>
 
   <ion-card class="category-concept-card" [style.background-color]="Quiz.background"
-    *ngFor="let Quiz of  quizservice.myquizes"
-    (click)="openDetails(Quiz)">
+    *ngFor="let Quiz of  quizservice.myquizes" (click)="openDetails(Quiz)">
     <ion-card-header>
-      <h2 class="category-title">{{ Quiz.quizname }}</h2>
+
+      <ion-row>
+        <ion-col no-padding col-8>
+          <h2 class="category-title">{{ Quiz.quizname }} </h2>
+        </ion-col>
+        <ion-col no-padding col-4>
+        
+<div *ngIf="Quiz.available" [ngStyle]="{'text-align':'right'}">
+          <ion-badge class="query-tag">READY</ion-badge>
+          </div>
+        </ion-col>
+      </ion-row>
+      
+
+
     </ion-card-header>
     <ion-card-content>
       <p class="category-description">
         {{ Quiz.quizdescription }}
       </p>
+
       <ion-row>
         <ion-col no-padding>
-          <ion-badge class="category-tag"  item-right>
+          <ion-badge class="category-tag" item-right>
             {{Quiz.quiztype }}</ion-badge>
         </ion-col>
         <ion-col no-padding col-2>
-          <button class="delete-button" color="danger" ion-button clear medium (click)="delete_quiz(Quiz);$event.stopPropagation()">
-              <ion-icon name="ios-trash-outline"></ion-icon>
-            </button>
-         </ion-col>
+          <button class="delete-button" color="danger" ion-button clear medium
+            (click)="delete_quiz(Quiz);$event.stopPropagation()">
+            <ion-icon name="ios-trash-outline"></ion-icon>
+          </button>
+        </ion-col>
       </ion-row>
 
 

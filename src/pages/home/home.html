@@ -13,6 +13,10 @@
       <button   ion-button tappable  (click)="joinclassroom()" >
         <ion-icon name="add-circle"  class="button-add" ></ion-icon> 
       </button>
+            <button   ion-button tappable  (click)="sendrequest()" >
+        <ion-icon name="hand"  class="button-add" ></ion-icon> 
+      </button>
+
       </div>
       <div *ngIf = "this.homeservice.searchname == 'teacher'"> 
       <button  ion-button tappable  (click)="classoptions()" >

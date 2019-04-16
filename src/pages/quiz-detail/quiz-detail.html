@@ -12,7 +12,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-row class="category-concept-details" [style.background-color]="myquiz.background">
+  <ion-row padding-top class="category-concept-details" [style.background-color]="myquiz.background">
     <ion-col no-padding col-12>
       <h2 class="category-title">Learn all about {{ myquiz.quizname }}</h2>
     </ion-col>
@@ -21,7 +21,30 @@
         {{ myquiz.quizdescription }}
       </p>
     </ion-col>
+    
+<div class="stopwatch pt-3">
+
+      <ion-col col-12 class="category-title" *ngIf="!running && time == blankTime">
+        <button class="circle-button circle-button-bg font-md" ion-button (tap)="start()"> start </button>
+  
+      <!--           <span text-center class="spanfont">
+    {{time}}
+  </span> -->
+
+      </ion-col>
+  
+      <ion-col col-12 class="category-title" *ngIf="running">
+     
+        <button class="circle-button circle-button-bg circle-button-red font-md" ion-button (tap)="completequiz()">
+          {{time}} </button>
+     
+      </ion-col> 
+
+</div>
+
   </ion-row>
+
+<!--<ion-row class="category-concept-details" [style.background-color]="myquiz.background"> -->
 
   <div *ngIf="myquiz.questions.length == 0">
     <h3 class="questions-call-out">
@@ -33,7 +56,14 @@
     <h3 class="questions-call-out">
       <span> Quiz of </span>
       <ion-badge class="call-out-tag">{{ myquiz.quizname }}</ion-badge>
+      <div *ngIf= "myquiz.quiztype == 'easy'">
       <span class="call-out-explanation"> Take Your Time To Solve IT </span>
+      </div>
+       <div *ngIf= "myquiz.quiztype == 'hard'">
+      <span class="call-out-explanation"> Takes Total Time of  </span>
+            <ion-badge class="call-out-tag">{{myquiz.quiztime}}</ion-badge>
+
+      </div>
     </h3>
 
     <ion-list class="questions-list">
@@ -62,12 +92,12 @@
                 <!--     -->
                 <!-- <ion-col col-4 class="votes-details" *ngFor="let option of question.options; let op=index">
 -->
-                <div *ngIf="option.isanswer" class="div-true" (click) = "selected_option(quizno-1, op)">
+                <div *ngIf="option.isanswer" class="div-true" >
                 
                   {{option.option}}
  
                 </div>
-                <div *ngIf="!option.isanswer" class="div-false" (click) = "selected_option(quizno-1, op)">
+                <div *ngIf="!option.isanswer" class="div-false" >
               
                   {{option.option}}
  

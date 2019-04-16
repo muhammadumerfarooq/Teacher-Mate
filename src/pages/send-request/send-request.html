@@ -1,0 +1,67 @@
+<!--
+  Generated template for the ChatPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<!-- -->
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-buttons left>
+      <button ion-button icon-only (click)="viewctrl_dismiss()" class="my-style-for-modal">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+
+    <!-- <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button> -->
+    <ion-title>
+      <strong> Request For Adding In ClassRoom </strong> 
+    </ion-title>
+    <ion-buttons end> 
+    
+<!--      <button ion-button tappable (click)="presentNotifications($event)">
+        <ion-icon name="notifications"></ion-icon> 
+      </button>
+      <button ion-button tappable (click)="goToAccount()">
+        <ion-icon name="cog"></ion-icon>
+      </button> -->
+
+     <!-- <button ion-button tappable  (click)="createclassroom()" >
+        <ion-icon name="add-circle"  class="button-add" ></ion-icon> 
+      </button>
+       --> 
+       <!-- <button ion-button tappable class="chat-button" (click) = "chatpage()">
+        <ion-icon name="chatbubbles"></ion-icon>
+        <span class="button__badge">4</span>
+       </button>
+       -->
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+ 
+
+
+<ion-content padding-top>
+  <ion-list>
+    <ion-item-sliding #sliding *ngFor="let teacher of this.teacherservice.teacherclass">
+      <ion-item class="item-css" (click)="sendrequest(teacher)">
+        <ion-avatar item-start>
+          <img [src]="teacher.imgurl" (click) = "goToProfileTeacher(teacher)">
+        </ion-avatar>
+        <h2>
+        
+                  <ion-badge class="query-tag"> {{ teacher.classname }}  </ion-badge>
+
+<span ion-text color="light">({{ teacher.teacheremail }})</span></h2>
+      </ion-item>
+    <!--  <ion-item-options side="right">
+        <button ion-button color="primary" (click)="goToProfileTeacher(teacher)">
+          <ion-icon name="person"></ion-icon>
+          Profile
+        </button>
+      </ion-item-options> -->
+    </ion-item-sliding>
+  </ion-list>
+</ion-content>

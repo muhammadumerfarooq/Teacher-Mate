@@ -1,0 +1,61 @@
+<ion-header>
+  <ion-navbar no-border-bottom color="primary">
+    <ion-title> Student Detail </ion-title>
+    <ion-buttons left>
+      <button ion-button icon-only (click)="viewctrl_dismiss()" class="my-style-for-modal">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content class="content">
+<ion-card class = "card-css">
+  <div margin-top *ngIf= "myclass!=null || myclass !=undefined" >
+    <div margin-top class="profile-picture big-profile-picture">
+      <img [src]="myclass.imgurl">
+    </div>
+   <!-- <h2 class="profile-name dark">{{studentprofile.name}} </h2>
+    <h2 class="profile-name dark">{{studentprofile.parentemail}} (parent)</h2>
+    -->
+<h3 class="search-query">
+    <span> Teacher Email:  </span>
+    <ion-badge class="query-tag"> {{myclass.teacheremail}}</ion-badge>
+    <span class="query-explanation"> </span>
+  </h3>
+
+
+<h3 class="search-query">
+    <span> Class Name: </span>
+    <ion-badge class="query-tag"> {{myclass.classname}} </ion-badge>
+    <span class="query-explanation"> </span>
+  </h3>
+<h3 class="search-query">
+    <span> Subject: </span>
+    <ion-badge class="query-tag"> {{myclass.subject}} </ion-badge>
+    <span class="query-explanation"> </span>
+  </h3>
+<h3 class="search-query">
+    <span> Class Section: </span>
+    <ion-badge class="query-tag"> {{myclass.section}} </ion-badge>
+    <span class="query-explanation"> </span>
+  </h3>
+    <button ion-button icon-start block color="dark" class="Updatebtn" tappable (click)="inviteparent()">
+      <ion-icon name="log-in"></ion-icon>
+      Request For Invitation
+    </button>
+
+  </div>
+<!--  <div *ngIf = "studentprofile==undefined" >
+  Your child info is not added, try to add it in menu option
+  </div>
+-->
+    <div *ngIf = "!myclass">
+    <h3 class="search-query">
+    <span> No Class Info try to add using </span>
+    <ion-badge class="query-tag"> MENU OPTION</ion-badge>
+    <span class="query-explanation"> </span>
+  </h3>
+  </div>
+</ion-card>
+
+</ion-content>

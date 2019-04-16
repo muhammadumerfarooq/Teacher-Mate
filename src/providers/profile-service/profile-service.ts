@@ -41,7 +41,7 @@ export class ProfileServiceProvider {
       this.storage.get('user').then(occ => {
         this.useroccupation = occ;
         if (occ == 'parent') {
-          this.user = 'parents';
+          this.user = 'parent';
         } else {
           this.user = 'teacher';
         }

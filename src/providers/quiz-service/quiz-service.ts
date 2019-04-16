@@ -7,6 +7,7 @@ import {
 import { LoaderserviceProvider } from '../loaderservice/loaderservice';
 import { ClassServiceProvider } from '../class-service/class-service';
 import { DateTime } from 'ionic-angular/umd';
+import moment from 'moment';
 
 export class OptionsAnswer {
   option: string;
@@ -30,6 +31,7 @@ export class Options {
 }
 
 export class Quiz {
+  quiztime: string;
   quizname: string;
   quizdescription: string;
   quiztype: string;
@@ -40,20 +42,23 @@ export class Quiz {
   creationdate: string;
   scheduledate: string;
   background: string;
+  available: boolean;
   constructor() {
     this.background = '';
     this.scheduledate = '';
-
+    this.available = false;
     this.questions = new Array<Question>();
     this.classname = "";
     this.classteacher = "";
     this.syllabusid = "";
     this.creationdate = new Date().toString();
+    this.quiztime = '';
   }
 
 }
 
 export class QuizAnswer {
+  quiztime: string;
   quizname: string;
   quizdescription: string;
   quiztype: string;
@@ -64,6 +69,7 @@ export class QuizAnswer {
   creationdate: string;
   scheduledate: string;
   background: string;
+  quiztaken: string;
   constructor() {
     this.background = '';
     this.scheduledate = '';
@@ -72,6 +78,8 @@ export class QuizAnswer {
     this.classteacher = "";
     this.syllabusid = "";
     this.creationdate = new Date().toString();
+    this.quiztime = '';
+    this.quiztaken = '';
   }
 
 }
@@ -169,48 +177,65 @@ export class QuizServiceProvider {
                 quiz.quizname = coursetemp.quizname;
                 quiz.quiztype = coursetemp.quiztype;
                 quiz.syllabusid = coursetemp.syllabusid;
+                quiz.quiztime = coursetemp.quiztime
 
-                while (i > -1) {
+                /// available or not 
 
-                  let j = 0;
-                  let op = 0;
+                let start = moment(new Date(), "YYYY-MM-DD");
 
-                  if (coursetemp.questions[i] != null && coursetemp.questions[i] != undefined) {
-                    let tempques: Question = new Question();
-                    tempques.question = coursetemp.questions[i].question;
+                let end = moment(coursetemp.scheduledate, "YYYY-MM-DD");
 
-                    quiz.questions.push(tempques);
+                console.log(start.diff(end, 'minutes'))
+                console.log(start.diff(end, 'hours'))
+                console.log(start.diff(end, 'days'))
+                console.log(start.diff(end, 'weeks'))
 
-
-                    // quiz.questions[qu] = (tempques);
-
-
-                    while (j > -1) {
-                      if (coursetemp.questions[i].options[j] != null && coursetemp.questions[i].options[j] != undefined) {
-
-                        let option: Options = new Options();
-
-                        option.isanswer = coursetemp.questions[i].options[j].isanswer;
-                        option.option = coursetemp.questions[i].options[j].option;
-                        quiz.questions[qu].options.push(option);
-
-                        op++;
-
-                      } else {
-                        break;
-                      }
-                      j++;
-                    }
-                    qu++;
-
-                    console.log(this.myquizes);
-                  }
-                  else {
-                    break;
-                  }
-
-                  i++;
+                if (start.diff(end, 'weeks')<1 || start.diff(end, 'weeks') == 0 ){
+                  quiz.available = true;
                 }
+                  ////
+                  while (i > -1) {
+
+                    let j = 0;
+                    let op = 0;
+
+                    if (coursetemp.questions[i] != null && coursetemp.questions[i] != undefined) {
+                      let tempques: Question = new Question();
+                      tempques.question = coursetemp.questions[i].question;
+
+                      quiz.questions.push(tempques);
+
+
+                      // quiz.questions[qu] = (tempques);
+
+
+                      while (j > -1) {
+                        if (coursetemp.questions[i].options[j] != null && coursetemp.questions[i].options[j] != undefined) {
+
+                          let option: Options = new Options();
+
+                          option.isanswer = coursetemp.questions[i].options[j].isanswer;
+                          option.option = coursetemp.questions[i].options[j].option;
+                          quiz.questions[qu].options.push(option);
+
+                          op++;
+
+                        } else {
+                          break;
+                        }
+                        j++;
+                      }
+                      qu++;
+
+                      console.log(this.myquizes);
+                    }
+                    else {
+                      break;
+                    }
+
+                    i++;
+                  }
+                  
                 this.myquizes.push(quiz);
               }
             }
@@ -344,6 +369,7 @@ export class QuizServiceProvider {
   }
 
   quizes_datediff() {
+
     this.Dates = new Array<string>();
     for (let i = 0; i < this.myquizes.length; i++) {
       let date = new Datediff();

@@ -10,6 +10,7 @@ import { isThisMinute } from 'date-fns';
  * Ionic pages and navigation.
  */
 export class SingleQuiz {
+  quiztime:string;
   quizno : number;
   quizname: string;
   quizdescription: string;
@@ -22,6 +23,7 @@ export class SingleQuiz {
   scheduledate: string;
   background: string;
   constructor() {
+    this.quiztime = '';
     this.quizno = 0;
     this.background = '';
     this.scheduledate = '';
@@ -38,10 +40,19 @@ export class SingleQuiz {
   templateUrl: 'quiz-detail.html',
 })
 export class QuizDetailPage {
+  
   myquiz: Quiz;
   quiz: SingleQuiz;
   quizno : number = 0;
 
+  public timeBegan = null
+  public timeStopped:any = null
+  public stoppedDuration:any = 0
+  public started = null
+  public running = false
+  public blankTime = "00:00"
+  public time = "00:00"
+  
   constructor(private alertCtrl:AlertController, private viewctrl: ViewController, public navCtrl: NavController, public navParams: NavParams, private quizservice: QuizServiceProvider) {
     this.myquiz = new Quiz();
     this.myquiz = this.navParams.get('myquiz');
@@ -56,6 +67,7 @@ export class QuizDetailPage {
     this.quiz.quizname = this.myquiz.quizname
     this.quiz.quiztype = this.myquiz.quiztype
     this.quiz.syllabusid = this.myquiz.syllabusid
+    this.quiz.quiztime = this.myquiz.quiztime
 
   if (this.myquiz.questions.length>0){
     let myquestion: QuestionAnswer = new QuestionAnswer();
@@ -72,8 +84,9 @@ export class QuizDetailPage {
       myquestion.options.push(myoption)
       
     }
+    
     this.quiz.questions = myquestion;
-    this.quizno++;
+ //   this.quizno++;
   }
 
   }
@@ -84,6 +97,59 @@ export class QuizDetailPage {
   viewctrl_dismiss() {
     this.viewctrl.dismiss();
   }
+
+  start() {
+    if(this.running) return;
+    if (this.timeBegan === null) {
+        this.reset();
+        this.timeBegan = new Date();
+    }
+    if (this.timeStopped !== null) {
+      let newStoppedDuration:any = (+new Date() - this.timeStopped)
+      this.stoppedDuration = this.stoppedDuration + newStoppedDuration;
+    }
+    this.started = setInterval(this.clockRunning.bind(this), 10);
+      this.running = true;
+    }
+    stop() {
+      this.running = false;
+      this.timeStopped = new Date();
+      clearInterval(this.started);
+   }
+    reset() {
+      this.running = false;
+      clearInterval(this.started);
+      this.stoppedDuration = 0;
+      this.timeBegan = null;
+      this.timeStopped = null;
+      this.time = this.blankTime;
+    }
+    zeroPrefix(num, digit) {
+      let zero = '';
+      for(let i = 0; i < digit; i++) {
+        zero += '0';
+      }
+      return (zero + num).slice(-digit);
+    }
+    clockRunning(){
+      let currentTime:any = new Date()
+      let timeElapsed:any = new Date(currentTime - this.timeBegan - this.stoppedDuration)
+      let hour = timeElapsed.getUTCHours()
+      let min = timeElapsed.getUTCMinutes()
+      let sec = timeElapsed.getUTCSeconds()
+      let ms = timeElapsed.getUTCMilliseconds();
+    this.time =
+  //    this.zeroPrefix(hour, 2) + ":" +
+      this.zeroPrefix(min, 2) + ":" +
+      this.zeroPrefix(sec, 2) ; // + "." ;
+      if (this.time == this.myquiz.quiztime){
+        clearInterval(this.started); // interval closed
+        
+      }
+    //  this.zeroPrefix(ms, 3);
+    };
+    
+
 /*
   selected_option(ques: number, op: number){
     // for (let i=0;i<   this.myanswers.questions[ques].options.length;i++){
@@ -180,8 +246,8 @@ export class QuizDetailPage {
    }
 
    nextQuestion(){
-    if (this.quizno+1<this.myquiz.questions.length){
-
+    if (this.quizno>0 && this.quizno +1 <this.myquiz.questions.length){
+      this.quizno ++;
       let myquestion: QuestionAnswer = new QuestionAnswer();
       myquestion.question = this.myquiz.questions[this.quizno].question;
 
@@ -198,7 +264,7 @@ export class QuizDetailPage {
       }
     //  this.quiz = new SingleQuiz();
       this.quiz.questions = myquestion;
-      this.quizno++;
+//      this.quizno++;
 
     }else{
       this.presentAlert('No more Questions ', ' :) ');
@@ -207,7 +273,7 @@ export class QuizDetailPage {
 
    backQuestion(){
     
-    if (this.quizno - 1<this.myquiz.questions.length){
+    if ( this.quizno-1 > 0 && this.quizno - 1<this.myquiz.questions.length){
       this.quizno -- ;
       let myquestion: QuestionAnswer = new QuestionAnswer();
       myquestion.question = this.myquiz.questions[this.quizno].question;
@@ -228,5 +294,27 @@ export class QuizDetailPage {
     }else{
       this.presentAlert('No more Questions ', ' :) ');
     }
+   }
+
+   completequiz(){
+    let confirm = this.alertCtrl.create({
+      title: 'End Quiz',
+      message: 'Are you sure you want to End this Quiz?',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+            console.log('No clicked');
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            clearInterval(this.started);
+          }
+        }
+      ]
+    });
+    confirm.present();
    }
 }
