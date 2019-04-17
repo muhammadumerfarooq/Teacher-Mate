@@ -8,9 +8,6 @@ import { LoginmenuPage } from './loginmenu';
   ],
   imports: [
     IonicPageModule.forChild(LoginmenuPage),
-  ],
-  exports: [
-    LoginmenuPage
   ]
 })
 export class LoginmenuPageModule {}

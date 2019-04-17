@@ -8,6 +8,7 @@ import { PostProvider, Myfeed } from '../../providers/post/post';
 import { HomeServiceProvider } from '../../providers/home-service/home-service';
 import { NativeAudio } from '@ionic-native/native-audio';
 import { ClassServiceProvider } from '../../providers/class-service/class-service';
+import { HomePage } from '../home/home';
 /**
  * Generated class for the TimelinePage page.
  *
@@ -23,31 +24,22 @@ import { ClassServiceProvider } from '../../providers/class-service/class-servic
 export class TimelinePage {
   photos = [];
 
-  constructor(private classservice:ClassServiceProvider,public popoverCtrl: PopoverController ,private homeservice: HomeServiceProvider, private modalctrl: ModalController, private post: PostProvider, private camera: Camera, private alertctrl: AlertController, private cropservice: Crop, private imagepicker: ImagePicker, public navCtrl: NavController, public navParams: NavParams, public afauth: AngularFireAuth) {
+  constructor(private classservice: ClassServiceProvider, public popoverCtrl: PopoverController, private homeservice: HomeServiceProvider, private modalctrl: ModalController, private post: PostProvider, private camera: Camera, private alertctrl: AlertController, private cropservice: Crop, private imagepicker: ImagePicker, public navCtrl: NavController, public navParams: NavParams, public afauth: AngularFireAuth) {
+
 
     this.afauth.auth.onAuthStateChanged(user => {
 
       console.log(user);
       if (user == null) {
-        console.log(user + " " + this.navCtrl);
-        // this.navCtrl.pop();
-        console.log(this.navCtrl.getViews());
 
-     //   this.navCtrl.push('LoginmenuPage');
+        // let page = this.navCtrl.getViews()
+        //   .map(view => view).reverse()
+        //   .find(view => view.id == 'HomePage');
 
-        var modalPage = this.modalctrl.create('LoginmenuPage');
-        modalPage.onDidDismiss(data=>{
-         if (data == true)
-         {
-           
-          // this.viewCtrl.dismiss(true);
-         }
-       });
-        modalPage.present();
-
-        
-        this.navCtrl.setRoot('HomePage');
-        // this.takePicture(0);
+  
+   
+     //   this.navCtrl.setRoot(HomePage);
+     //   this.navCtrl.popToRoot();
       }
     });
 
@@ -60,15 +52,14 @@ export class TimelinePage {
   }
   chatpage() {
 
-    
+
     var modalPage = this.modalctrl.create('ChatPage');
-    modalPage.onDidDismiss(data=>{
-     if (data == true)
-     {
-       console.log(data+" parentsignup ")
-      // this.viewCtrl.dismiss(true);
-     }
-   });
+    modalPage.onDidDismiss(data => {
+      if (data == true) {
+        console.log(data + " parentsignup ")
+        // this.viewCtrl.dismiss(true);
+      }
+    });
     modalPage.present();
 
   }
@@ -117,14 +108,14 @@ export class TimelinePage {
 
   }
   goToDetail(feed: Myfeed) {
-    
-    
+
+
     var modalPage = this.modalctrl.create('PostDetailPage', { Myfeed: feed });
     modalPage.onDidDismiss(data => {
       if (data == true) {
-       // this.presentAlert('Success', ' post created');
+        // this.presentAlert('Success', ' post created');
       } else if (data == false) {
-      //  this.presentAlert('Error', ' post not created');
+        //  this.presentAlert('Error', ' post not created');
       } else if (data == 'back') {
 
       }
@@ -139,11 +130,11 @@ export class TimelinePage {
       ev: myEvent
     });
   }
-  feedoption(feed: Myfeed, myEvent){
+  feedoption(feed: Myfeed, myEvent) {
     console.log();
-    let popover = this.popoverCtrl.create('FeedNotifyPage', { feed: feed});
-   console.log(myEvent)
-    popover.present({ev: myEvent});
-  
+    let popover = this.popoverCtrl.create('FeedNotifyPage', { feed: feed });
+    console.log(myEvent)
+    popover.present({ ev: myEvent });
+
   }
 }

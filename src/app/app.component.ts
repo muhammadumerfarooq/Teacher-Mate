@@ -185,7 +185,11 @@ export class MyApp {
   }
 
   logout() {
-       
+
+  
+    if (this.nav.length() > 1){
+    this.nav.popTo(HomePage);
+    }
     this.storage.clear().then(val=>{
     this.afauth.auth.signOut();
     }).catch(err=>{

@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { ViewController } from 'ionic-angular/navigation/view-controller';
 // import { TimelinePage } from '../timeline/timeline';
 
 /**
@@ -24,5 +26,7 @@ export class TabsPage {
 
   constructor(navParams: NavParams) {
     this.mySelectedIndex = navParams.data.tabIndex || 0;
+
+
   }
 }

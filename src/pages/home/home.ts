@@ -25,37 +25,41 @@ export class HomePage implements OnInit {
   }
 
 
-  constructor(private teacherclass:TeachersServiceProvider,private modalCtrl: ModalController,private profileservice :ProfileServiceProvider, public homeservice: HomeServiceProvider, public afAuth: AngularFireAuth, public alertctrl: AlertController, public toastctrl: ToastController, public modalctrl: ModalController, public platform: Platform, public actionsheetCtrl: ActionSheetController, private storage: Storage, public nav: NavController, public popoverCtrl: PopoverController) {
+  constructor(private viewctrl:ViewController,private teacherclass:TeachersServiceProvider,private modalCtrl: ModalController,private profileservice :ProfileServiceProvider, public homeservice: HomeServiceProvider, public afAuth: AngularFireAuth, public alertctrl: AlertController, public toastctrl: ToastController, public modalctrl: ModalController, public platform: Platform, public actionsheetCtrl: ActionSheetController, private storage: Storage, public nav: NavController, public popoverCtrl: PopoverController) {
     console.log(this.homeservice.searchname);
    // this.presentCustomModal();
     /// this.searchuser.name = this.homeservice.searchname; 
-
-  }
-
-  ngOnInit() {
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
     this.afAuth.auth.onAuthStateChanged(user => {
 
       console.log(user);
 
       if (user == undefined) {
         console.log('go to login');
+
+        
+       
         var modalPage = this.modalCtrl.create('LoginmenuPage');
+        console.log('opening modal');
         modalPage.onDidDismiss(data=>{
           if (data == true)
           {
-            console.log(data+" login menu ");
-          //  this.navCtrl.popToRoot();
+            console.log(data+" login menu home ");
+         //   this.viewctrl.dismiss();
           }
         });
+        
         modalPage.present();
 
-     //   this.nav.push('LoginmenuPage')
 
       }
 
     });
+  }
+
+  ngOnInit() {
+    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+    //Add 'implements OnInit' to the class.
+   
     // console.log(this.fcm);
 
     //   this.initFCM();
@@ -98,7 +102,7 @@ export class HomePage implements OnInit {
     this.storage.set('classroom', classname).then(()=>{
       this.storage.set('classteacher', classteacher).then(()=>{
         
-        this.nav.setRoot('TabsPage')
+        this.nav.push('TabsPage')
       });
     });
 
@@ -270,12 +274,18 @@ export class HomePage implements OnInit {
               if (res == 'error') {
                 this.presentAlert('Error', 'Cannot Create Classroom');
               } else {
-                this.nav.push('TimelinePage');
+           //     this.nav.push('TimelinePage');
 
                 this.homeservice.getchatusers(classname, teacherclass.teachername);
-                this.storage.set('classroom', classname);
-                this.storage.set('classteacher',  teacherclass.teachername);
-                this.nav.setRoot('TabsPage')
+                this.storage.set('classroom', classname).then(()=>{
+                  this.storage.set('classteacher',  teacherclass.teachername).then(()=>{
+                    this.nav.push('TabsPage')
+                  });
+
+                });
+              
+              
+
               }
 
             }).catch(err => {

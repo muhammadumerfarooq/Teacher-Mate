@@ -25,6 +25,7 @@ export class LoginmenuPage {
    
    }
 
+
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginmenuPage');
   }
@@ -34,11 +35,11 @@ export class LoginmenuPage {
 
     var modalPage = this.modalCtrl.create('TeacherloginPage');
     modalPage.onDidDismiss(data=>{
+      
       if (data == true)
       {
         console.log(data+" login menu ")
-      //  this.navCtrl.popToRoot();
-      this.viewctrl.dismiss('back');
+      this.viewctrl.dismiss(true);
       }
     });
     modalPage.present();
@@ -47,11 +48,11 @@ export class LoginmenuPage {
   parentaccount(){
     var modalPage = this.modalCtrl.create('ParentloginPage');
     modalPage.onDidDismiss(data=>{
+      
       if (data == true)
       {
         console.log(data+" login menu ");
-       // this.navCtrl.popToRoot();
-        this.viewctrl.dismiss('back');
+        this.viewctrl.dismiss(true);
       }
     });
     modalPage.present();
