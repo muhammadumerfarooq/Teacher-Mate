@@ -53,7 +53,7 @@
 </div>
 -->
   <!--list of trips-->
-  <div *ngIf="this.homeservice.classfound && emailverified">
+  <div *ngIf="this.homeservice.classfound && this.homeservice.emailVerified">
     <div class="trip card" *ngFor="let myclass of this.homeservice.myclassroom" tappable
       (click)="viewClassroom(myclass.classname, myclass.teacheremail)" margin-bottom>
       <div class="background border-bottom" [ngStyle]="{'background-image': 'url(' + myclass.backgroundimg+ ')'}">
@@ -98,14 +98,14 @@
       </div>
     </div>
   </div>
-  <div *ngIf="!this.homeservice.classfound && emailverified"
+  <div *ngIf="!this.homeservice.classfound && this.homeservice.emailVerified"
     [ngStyle]="{'margin-top':'inherit', 'align-items': 'center', 'justify-content': 'center', 'text-align': 'center'}">
 
     <ion-icon name="sad" [ngStyle]="{'font-size': '50px'}"></ion-icon>
     <p [ngStyle]="{'font-size': '10px'}">no class found </p>
   </div>
 
-  <div class="scroll-content" *ngIf="!emailverified">
+  <div class="scroll-content" *ngIf="!this.homeservice.emailVerified">
 
 
 

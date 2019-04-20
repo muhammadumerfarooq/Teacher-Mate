@@ -30,8 +30,21 @@ export class HomePage implements OnInit {
 
   constructor(private afs:AngularFirestore,private loader:LoaderserviceProvider,private viewctrl:ViewController,private teacherclass:TeachersServiceProvider,private modalCtrl: ModalController, public homeservice: HomeServiceProvider, public afAuth: AngularFireAuth, public alertctrl: AlertController, public toastctrl: ToastController, public modalctrl: ModalController, public platform: Platform, public actionsheetCtrl: ActionSheetController, private storage: Storage, public nav: NavController, public popoverCtrl: PopoverController) {
     console.log(this.homeservice.searchname);
-  
+
+    
     this.afAuth.auth.onAuthStateChanged(user => {
+
+      this.loader.loading = this.loader.loadingCtrl.create({
+
+        content: `
+          <div class="custom-spinner-container">
+            <div class="custom-spinner-box"> loading... </div>
+          </div>`,
+        duration: 500
+      });
+    
+    
+      this.loader.loading.present().then(() => {
 
       console.log(user);
 
@@ -48,7 +61,7 @@ export class HomePage implements OnInit {
         console.log('go to login');
 
         
-       
+       this.storage.clear();
         var modalPage = this.modalCtrl.create('LoginmenuPage');
         console.log('opening modal');
         modalPage.onDidDismiss(data=>{
@@ -65,6 +78,7 @@ export class HomePage implements OnInit {
       }
 
     });
+  });
   }
 
   ngOnInit() {
@@ -390,26 +404,31 @@ login() {
 
 
   this.loader.loading.present().then(() => {
+    debugger
     this.afs.doc<any>('teachers/' + this.homeservice.useremail).snapshotChanges().take(1).forEach(snap => {
 
       if (snap.payload.exists) {
 
-        this.storage.set('user', 'teacher').then(res => {
-          this.storage.set('email', this.homeservice.useremail).then(res => {
+        // this.storage.set('user', 'teacher').then(res => {
+        //   this.storage.set('email', this.homeservice.useremail).then(res => {
 
-            this.homeservice.storageSub.next('added-user');
+           // this.homeservice.storageSub.next('added-user');
 
 
             this.afAuth.auth.signInWithEmailAndPassword(this.homeservice.useremail, this.homeservice.userpassword).then(() => {
-              debugger
+              
               this.emailVerified = this.afAuth.auth.currentUser.emailVerified;
               if (this.emailVerified == false){
                 this.presentAlert('Email Not Verified', ' Make Sure to Open Your Mail For Verification' );
-                this.loader.dismissloading();
+       //         this.loader.dismissloading();
 
               }else{
                 this.presentAlert('Email Verified Successfully', '' );
-              this.loader.dismissloading();
+                this.emailVerified = true;
+                this.storage.set('verified',true).then(()=>{
+                  this.homeservice.storageSub.next('verified');
+                })
+     //         this.loader.dismissloading();
               }
 
 
@@ -419,10 +438,10 @@ login() {
               this.storage.clear().then(() => {
                 this.homeservice.storageSub.next('removed-all');
 
-                this.loader.dismissloading();
+           //     this.loader.dismissloading();
                 this.presentAlert('Login Failed ', err);
               }).catch(() => {
-                this.loader.dismissloading();
+         //       this.loader.dismissloading();
                 this.presentAlert('Login Failed ', err);
               })
 
@@ -430,15 +449,15 @@ login() {
             // this.emailverified=true;
             // this.loader.dismissloading();
             // this.viewCtrl.dismiss(true);
-          }).catch(err => {
+        //   }).catch(err => {
 
-            this.loader.dismissloading();
-            this.presentAlert('Login Failed ', err);
-          });
-        }).catch(err => {
-          this.loader.dismissloading();
-          this.presentAlert('Login Failed ', err);
-        });
+        //     this.loader.dismissloading();
+        //     this.presentAlert('Login Failed ', err);
+        //   });
+        // }).catch(err => {
+        //   this.loader.dismissloading();
+        //   this.presentAlert('Login Failed ', err);
+        // });
       }
     })
 

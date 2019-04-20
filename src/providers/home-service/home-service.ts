@@ -88,6 +88,7 @@ export class HomeServiceProvider {
   classroom: string;
   classteacher: string;
   userpassword: string = '';
+  emailVerified: boolean = false;
   constructor(public storage: Storage, public afs: AngularFirestore, public afAuth: AngularFireAuth, public loaderservice: LoaderserviceProvider, public alertCtrl: AlertController) {
 
 
@@ -103,12 +104,21 @@ export class HomeServiceProvider {
       } else if (data == 'removed-all') {
 
       }
+      else if (data == 'verified') {
+        debugger
+        this.storage.get('verified').then(val => {
+          this.emailVerified = val;
+
+        });
+      }
       else if (data == 'added-user') {
+        
         this.storage.get('email').then(val => {
 
           this.useremail = val;
 
           this.storage.get('password').then(val => {
+            
             this.userpassword = val;
           });
           this.storage.get('user').then(occ => {
@@ -224,6 +234,16 @@ export class HomeServiceProvider {
       this.useremail = val;
 
 
+      this.storage.get('password').then(val => {
+        
+        this.userpassword = val;
+      });
+
+      this.storage.get('verified').then(val => {
+        
+        this.emailVerified = val;
+      });
+      
       this.storage.get('user').then(occ => {
 
         this.useroccupation = occ;

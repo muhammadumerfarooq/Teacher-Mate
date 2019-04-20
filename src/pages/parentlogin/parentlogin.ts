@@ -80,10 +80,15 @@ duration: 500
                
                   this.emailverified = this.afauth.auth.currentUser.emailVerified;
                   if (this.emailverified == false){
-                    this.loader.dismissloading();
+               //     this.loader.dismissloading();
   
                   }else{
-                  this.loader.dismissloading();
+
+
+                    this.storage.set('verified', true).then(()=>{
+                      this.homeservice.storageSub.next('verified');
+                    });
+                 // this.loader.dismissloading();
                   this.viewCtrl.dismiss(true);
                   }
 
@@ -149,14 +154,31 @@ duration: 500
           
         this.emailverified = this.afauth.auth.currentUser.emailVerified;
         if (this.emailverified == false){
-          this.loader.dismissloading();
+     //     this.loader.dismissloading();
 
         }else{
-        this.loader.dismissloading();
+          this.storage.set('verified', true).then(()=>{
+            this.homeservice.storageSub.next('verified');
+          });      
+          
+          //this.loader.dismissloading();
         this.viewCtrl.dismiss(true);
         }
-          
-    //    this.viewCtrl.dismiss(true);
+
+      }else if (data.email != undefined || data.email != null){
+        this.parent_email = data.email;
+        this.parent_password = data.password
+        this.emailverified = this.afauth.auth.currentUser.emailVerified;
+        if (this.emailverified == false) {
+   //       this.loader.dismissloading();
+
+        } else {
+                    this.storage.set('verified', true).then(()=>{
+                      this.homeservice.storageSub.next('verified');
+                    });
+     //     this.loader.dismissloading();
+          this.viewCtrl.dismiss(true);
+        }
       }
     });
     modalPage.present();

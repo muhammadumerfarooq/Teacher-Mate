@@ -85,10 +85,14 @@ export class TeacherloginPage {
                   debugger
                   this.emailverified = this.afauth.auth.currentUser.emailVerified;
                   if (this.emailverified == false) {
-                    this.loader.dismissloading();
+  //                  this.loader.dismissloading();
 
                   } else {
-                    this.loader.dismissloading();
+                    this.storage.set('verified', true).then(()=>{
+                      this.homeservice.storageSub.next('verified');
+                    });
+
+    //                this.loader.dismissloading();
                     this.viewCtrl.dismiss(true);
                   }
 
@@ -99,10 +103,10 @@ export class TeacherloginPage {
                   this.storage.clear().then(() => {
                     this.homeservice.storageSub.next('removed-all');
 
-                    this.loader.dismissloading();
+      //              this.loader.dismissloading();
                     this.presentAlert('Login Failed ', err);
                   }).catch(() => {
-                    this.loader.dismissloading();
+        //            this.loader.dismissloading();
                     this.presentAlert('Login Failed ', err);
                   })
 
@@ -111,16 +115,16 @@ export class TeacherloginPage {
                 // this.loader.dismissloading();
                 // this.viewCtrl.dismiss(true);
               }).catch(err => {
-                this.loader.dismissloading();
+             //   this.loader.dismissloading();
                 this.presentAlert('Login Failed ', err);
               });
             }).catch(err => {
 
-              this.loader.dismissloading();
+           //   this.loader.dismissloading();
               this.presentAlert('Login Failed ', err);
             });
           }).catch(err => {
-            this.loader.dismissloading();
+          //  this.loader.dismissloading();
             this.presentAlert('Login Failed ', err);
           });
 
@@ -144,13 +148,30 @@ export class TeacherloginPage {
       if (data == true) {
         this.emailverified = this.afauth.auth.currentUser.emailVerified;
         if (this.emailverified == false) {
-          this.loader.dismissloading();
+//          this.loader.dismissloading();
 
         } else {
-          this.loader.dismissloading();
+                    this.storage.set('verified', true).then(()=>{
+                      this.homeservice.storageSub.next('verified');
+                    });
+      //    this.loader.dismissloading();
           this.viewCtrl.dismiss(true);
         }
 
+      }else if (data.email != undefined || data.email != null){
+        this.teacher_email = data.email;
+        this.teacher_password = data.password
+        this.emailverified = this.afauth.auth.currentUser.emailVerified;
+        if (this.emailverified == false) {
+  //        this.loader.dismissloading();
+
+        } else {
+                    this.storage.set('verified', true).then(()=>{
+                      this.homeservice.storageSub.next('verified');
+                    });
+        //  this.loader.dismissloading();
+          this.viewCtrl.dismiss(true);
+        }
       }
     });
     modalPage.present();

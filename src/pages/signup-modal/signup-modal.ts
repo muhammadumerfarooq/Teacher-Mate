@@ -4,6 +4,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { LoaderserviceProvider } from '../../providers/loaderservice/loaderservice';
 import { SignupServiceProvider } from '../../providers/signup-service/signup-service';
 import { Storage } from '@ionic/storage';
+import { HomeServiceProvider } from '../../providers/home-service/home-service';
 
 
 /**
@@ -22,7 +23,7 @@ import { Storage } from '@ionic/storage';
 export class SignupModalPage {
 
   person: string = '';
-  constructor(public storage: Storage,public viewCtrl:ViewController, public loaderservice:LoaderserviceProvider,public signupservice:SignupServiceProvider ,public alertCtrl :AlertController, public afauth:AngularFireAuth, public navCtrl: NavController, public navParams: NavParams) {
+  constructor(private homeservice:HomeServiceProvider,public storage: Storage,public viewCtrl:ViewController, public loaderservice:LoaderserviceProvider,public signupservice:SignupServiceProvider ,public alertCtrl :AlertController, public afauth:AngularFireAuth, public navCtrl: NavController, public navParams: NavParams) {
     this.person = this.navParams.get('person');
 
   }
@@ -50,7 +51,20 @@ export class SignupModalPage {
       console.log(val);
       this.afauth.auth.createUserWithEmailAndPassword(this.email, this.password).then(val=>{
         this.storage.set('user','parent');
-        this.viewCtrl.dismiss(true);
+        this.storage.set('email',this.email).then(()=>{
+          this.storage.set('password',this.password).then(()=>{
+            this.homeservice.storageSub.next('added-user');
+
+            let info = {
+              email:this.email,
+              password: this.password,
+            }
+            this.viewCtrl.dismiss(info);
+          });
+
+        });
+        
+
       }).catch(()=>{
         this.viewCtrl.dismiss(true);
         this.presentAlert('Account not created ','Failed');
@@ -64,7 +78,19 @@ export class SignupModalPage {
       console.log(val);
       this.afauth.auth.createUserWithEmailAndPassword(this.email, this.password).then(val=>{
         this.storage.set('user','teacher');
-        this.viewCtrl.dismiss(true);
+        this.storage.set('email',this.email).then(()=>{
+          debugger
+          this.storage.set('password',this.password).then(()=>{
+            this.homeservice.storageSub.next('added-user');
+            let info = {
+              email:this.email,
+              password: this.password,
+            }
+            this.viewCtrl.dismiss(info);
+          });
+
+        });
+      
       }).catch(()=>{ 
         this.presentAlert('Account not created ','Failed');
         this.viewCtrl.dismiss(true);
