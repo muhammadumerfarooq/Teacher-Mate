@@ -40,7 +40,7 @@ export class DisplayQuizPage {
 
   openDetails(myquiz: Quiz) {
     console.log(myquiz);
-    debugger
+    
 if (this.homeservice.user == 'parent'  && myquiz.available == true){
   var modalPage = this.modalctrl.create('TakeQuizPage', { myquiz: myquiz });
   modalPage.onDidDismiss(data => {

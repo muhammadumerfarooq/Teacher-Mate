@@ -233,7 +233,7 @@ export class AddCoursesPage {
             this.mycourses.Chapters[chap].Topics[top].subtopics[i].filestatus = 'error';
             this.files.set(this.mycourses.Chapters[chap].Topics[top].subtopics[i].filename, 'error');
             this.presentAlert(' Uplaoding ', ' Failed ');
-            debugger
+            
 
           });
 

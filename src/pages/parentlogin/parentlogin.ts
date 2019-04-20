@@ -65,20 +65,25 @@ export class ParentloginPage {
 duration: 500
     });
     this.loader.loading.present().then(() => {
-      debugger
+      
       this.afs.doc<any>('parents/' + this.parent_email).snapshotChanges().take(1).forEach(snap => {
        
           if (snap.payload.exists) {
             this.storage.set('user', 'parent').then(res => {
               this.storage.set('email', this.parent_email).then(res => {
-debugger
+
                 this.homeservice.storageSub.next('added-user');
 
                 this.afauth.auth.signInWithEmailAndPassword(this.parent_email, this.parent_password).then(() => {
+               
                   this.emailverified = this.afauth.auth.currentUser.emailVerified;
-
-           //       this.loader.dismissloading();
+                  if (this.emailverified == false){
+                    this.loader.dismissloading();
+  
+                  }else{
+                  this.loader.dismissloading();
                   this.viewCtrl.dismiss(true);
+                  }
 
 
 

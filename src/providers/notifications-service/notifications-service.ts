@@ -59,7 +59,7 @@ export class NotificationsServiceProvider {
       this.localstorage.get('classroom').then(v => {
         let classname = v;
 */
-debugger
+
         this.afs.collection<notify>('notifications', ref => {
           return ref.where('classname', '==', this.homeservice.classroom).where('classteacher', '==',  this.homeservice.classteacher).where('seen', '==', 'false');
         }).snapshotChanges().forEach(snap => {

@@ -72,9 +72,9 @@ found: boolean = false;
         {
           text: 'Yes',
           handler: () => {
-            debugger
+            
             this.requestservice.findrequest().then(res=>{
-              debugger
+              
               if (res=='found'){
                 
                 this.presentAlert('Request Is Already Send To Teacher', '');

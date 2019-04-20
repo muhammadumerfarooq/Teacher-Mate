@@ -331,7 +331,7 @@ export class QuizServiceProvider {
             resolve('done');
           }).catch(err => {
             this.loaderservice.dismissloading();
-            debugger
+            
             reject('error');
           });
 
@@ -365,7 +365,7 @@ export class QuizServiceProvider {
             resolve('done');
           }).catch(err => {
             this.loaderservice.dismissloading();
-            debugger
+            
             reject('error');
           });
 

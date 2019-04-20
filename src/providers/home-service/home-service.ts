@@ -229,7 +229,7 @@ export class HomeServiceProvider {
         } else {
           this.user = 'teachers';
         }
-        debugger
+        
         this.afs.doc<profile>(this.user + "/" + this.useremail).snapshotChanges().take(1).forEach(snap => {
           if (snap.payload.exists) {
             let userinfo: profile = snap.payload.data();
@@ -244,7 +244,7 @@ export class HomeServiceProvider {
             , ref => {
               return ref.where("parentsemail", "array-contains", this.useremail); //.orderBy("teacheremail");
             });
-          debugger
+          
           this.classroomdoc.snapshotChanges().forEach(snap => {
 
             this.myclassroom = new Array<classroom>();
@@ -284,7 +284,7 @@ export class HomeServiceProvider {
               let myposts: classroom = snapshot.payload.doc.data() as classroom;
 
               let j = 0;
-              debugger
+              
               myposts.parentsemail = [];
               
               while (j > -1) {
@@ -600,7 +600,6 @@ export class HomeServiceProvider {
     this.chatusers = [];
 
     this.myclassroom.forEach(element => {
-      debugger
       if (element.classname == classname && element.teacheremail == teacheremail) {
 
         element.parentsemail.forEach(ele => {

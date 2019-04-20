@@ -53,12 +53,12 @@ export class ProfileServiceProvider {
       }
       else if (data == 'added-user') {
         this.storage.get('email').then(val => {
-          debugger
+          
           this.useremail = val;
 
 
           this.storage.get('user').then(occ => {
-            debugger
+            
             this.useroccupation = occ;
             if (occ == 'parent') {
               this.user = 'parent';
