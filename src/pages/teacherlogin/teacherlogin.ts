@@ -136,8 +136,15 @@ export class TeacherloginPage {
     var modalPage = this.modalctrl.create('SignupModalPage', { person: person });
     modalPage.onDidDismiss(data => {
       if (data == true) {
-        console.log(data + " teachersingup ")
+        this.emailverified = this.afauth.auth.currentUser.emailVerified;
+        if (this.emailverified == false){
+          this.loader.dismissloading();
+
+        }else{
+        this.loader.dismissloading();
         this.viewCtrl.dismiss(true);
+        }
+        
       }
     });
     modalPage.present();

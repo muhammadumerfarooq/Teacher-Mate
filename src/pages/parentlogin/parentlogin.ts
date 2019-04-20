@@ -139,7 +139,17 @@ duration: 500
     modalPage.onDidDismiss(data => {
       if (data == true) {
         console.log(data + " parentsignup ")
+          
+        this.emailverified = this.afauth.auth.currentUser.emailVerified;
+        if (this.emailverified == false){
+          this.loader.dismissloading();
+
+        }else{
+        this.loader.dismissloading();
         this.viewCtrl.dismiss(true);
+        }
+          
+    //    this.viewCtrl.dismiss(true);
       }
     });
     modalPage.present();
