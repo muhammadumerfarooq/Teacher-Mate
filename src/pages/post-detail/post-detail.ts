@@ -4,7 +4,7 @@ import { post, comments, likes } from '../create-post/create-post';
 import { HomeServiceProvider } from '../../providers/home-service/home-service';
 import { PostProvider, Myfeed } from '../../providers/post/post';
 import { notify } from '../../providers/notifications-service/notifications-service';
-import { ProfileServiceProvider } from '../../providers/profile-service/profile-service';
+// import { ProfileServiceProvider } from '../../providers/profile-service/profile-service';
 
 /**
  * Generated class for the PostDetailPage page.
@@ -26,7 +26,7 @@ export class PostDetailPage {
   newcomment: string = '';
   commenttime: string = '';
   likedperson: string = '';
-  constructor(private profileservice:ProfileServiceProvider,private alertctrl: AlertController, private postservice: PostProvider, private homeservice: HomeServiceProvider, public navCtrl: NavController, public navParams: NavParams, private viewctrl: ViewController) {
+  constructor(private alertctrl: AlertController, private postservice: PostProvider, private homeservice: HomeServiceProvider, public navCtrl: NavController, public navParams: NavParams, private viewctrl: ViewController) {
     this.mypost = this.navParams.get('Myfeed');
     this.commenttime = this.navParams.get('commentedtime');
     this.likedperson = this.navParams.get('likedperson');
@@ -163,7 +163,7 @@ export class PostDetailPage {
   }
 
   findimgurlcomment(comment:comments) {
-    this.profileservice.allparents.forEach(parents => {
+    this.homeservice.allparents.forEach(parents => {
    if ( comment.useremail==parents.useremail){
     comment.useremail = parents.imgurl; 
     return comment;
@@ -171,7 +171,7 @@ export class PostDetailPage {
    
     });
 
-    this.profileservice.allteachers.forEach(teachers => {
+    this.homeservice.allteachers.forEach(teachers => {
       if ( comment.useremail==teachers.useremail){
        comment.useremail = teachers.imgurl; 
        return comment;
@@ -182,7 +182,7 @@ export class PostDetailPage {
   }
 
   findimgurllike(like:likes) {
-    this.profileservice.allparents.forEach(parents => {
+    this.homeservice.allparents.forEach(parents => {
    if ( like.useremail==parents.useremail){
     like.userurl = parents.imgurl; 
     return like;
@@ -190,7 +190,7 @@ export class PostDetailPage {
    
     });
 
-    this.profileservice.allteachers.forEach(teachers => {
+    this.homeservice.allteachers.forEach(teachers => {
       if ( like.useremail==teachers.useremail){
         like.userurl = teachers.imgurl; 
        return like;

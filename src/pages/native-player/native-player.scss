@@ -11,7 +11,9 @@
     .nav-decor {
       background-color: transparent !important;
     }
-  
+    .content{
+      background: url("../assets/img/bg.jpg") no-repeat;
+    }
     /**
      * For debugging: a semi-transparent <body>
      * Uncomment to illustrate whether or not the ionic app is transparent,

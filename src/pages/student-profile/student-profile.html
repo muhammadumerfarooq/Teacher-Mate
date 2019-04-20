@@ -57,8 +57,8 @@
             StudentName: {{studentprofile.name}}
           </h2>
           <span ion-text color="light">
-            
-            <ion-item class="item-ion" [hidden]="!studentprofile.parentemail">
+
+            <ion-item class="item-ion"  [ngStyle]="{'background':'transparent'}" [hidden]="!studentprofile.parentemail">
               <ion-avatar item-start>
                 <img [src]="selectedparent.imgurl">
               </ion-avatar>
@@ -81,31 +81,29 @@
 
       <div class="div-input">
 
-        <ion-input class="input-box" type="text" placeholder="Enter Student Name" [(ngModel)]="studentprofile.name" name="text">
+        <ion-input class="input-box" type="text" placeholder="Enter Student Name" [(ngModel)]="studentprofile.name"
+          name="text">
         </ion-input>
 
         <button ion-button icon-only block class="submitbtn" (click)="updatestudent()">
           Add Student
         </button>
       </div>
-      <ion-list>
 
-        <ion-item-sliding #sliding *ngFor="let parent of this.profileservice.allparents"
-          [hidden]="this.user == 'parent'">
-          <ion-item class="item-ion" (click)="parentprofile(parent)">
-            <ion-avatar item-start>
-              <img [src]="parent.imgurl">
-            </ion-avatar>
-            <h2>{{ parent.useremail }} <span ion-text color="primary">({{ parent.user }})</span></h2>
-          </ion-item>
-          <ion-item-options side="right">
-            <button ion-button color="primary">
-              <ion-icon name="person"></ion-icon>
-              Profile
-            </button>
-          </ion-item-options>
-        </ion-item-sliding>
-      </ion-list>
+<ion-scroll style="width:100%;height:20vh" scrollY="true">
+        <ion-list class="scroll-content" [hidden]="this.user == 'parent'" scroll = "true">
+
+       
+            <ion-item *ngFor = "let parent of this.homeservice.allparents" class="item-ion" (click)="parentprofile(parent)">
+              <ion-avatar item-start>
+                <img [src]="parent.imgurl">
+              </ion-avatar>
+              <h2>{{ parent.useremail }} <span ion-text color="primary">({{ parent.user }})</span></h2>
+            </ion-item>
+
+    
+        </ion-list>
+      </ion-scroll>
     </ion-card>
   </ion-toolbar>
 

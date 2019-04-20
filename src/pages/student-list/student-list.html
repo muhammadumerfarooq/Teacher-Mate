@@ -17,22 +17,22 @@
       <ion-icon name="menu"></ion-icon>
     </button> -->
     <ion-title>
-      <strong> Students List (Choose Your Child) </strong> 
+      <strong> Students List (Choose Your Child) </strong>
     </ion-title>
-    <ion-buttons end> 
-    
-<!--      <button ion-button tappable (click)="presentNotifications($event)">
+    <ion-buttons end>
+
+      <!--      <button ion-button tappable (click)="presentNotifications($event)">
         <ion-icon name="notifications"></ion-icon> 
       </button>
       <button ion-button tappable (click)="goToAccount()">
         <ion-icon name="cog"></ion-icon>
       </button> -->
 
-     <!-- <button ion-button tappable  (click)="createclassroom()" >
+      <!-- <button ion-button tappable  (click)="createclassroom()" >
         <ion-icon name="add-circle"  class="button-add" ></ion-icon> 
       </button>
-       --> 
-       <!-- <button ion-button tappable class="chat-button" (click) = "chatpage()">
+       -->
+      <!-- <button ion-button tappable class="chat-button" (click) = "chatpage()">
         <ion-icon name="chatbubbles"></ion-icon>
         <span class="button__badge">4</span>
        </button>
@@ -40,27 +40,23 @@
     </ion-buttons>
   </ion-navbar>
 </ion-header>
- 
+
 
 
 <ion-content padding-top>
   <ion-list>
-    <ion-item-sliding #sliding *ngFor="let student of studentservice.allstudents" [hidden] ="studentservice.allstudents.length == 0">
-      <ion-item (click)="studentDetail(student)">
+    <ion-item-sliding #sliding *ngFor="let student of studentservice.allstudents"
+      [hidden]="studentservice.allstudents.length == 0">
+      <ion-item class="item-ion" (click)="studentDetail(student)">
         <ion-avatar item-start>
           <img [src]="student.userurl">
         </ion-avatar>
-        <h2>{{ student.name }} <span ion-text color="primary">  ( Student of Class {{ student.classname }})</span></h2>
+        <h2>{{ student.name }} <span ion-text color="primary"> ( Student of Class {{ student.classname }})</span></h2>
       </ion-item>
-      <ion-item-options side="right">
-        <button ion-button color="primary" (click)="studentProfile(student)">
-          <ion-icon name="person"></ion-icon>
-          Profile
-        </button>
-      </ion-item-options>
+
     </ion-item-sliding>
   </ion-list>
-    <div class="chatbox">
+  <div class="chatbox">
     <button ion-button class="pull-right" color="secondary" tappable (click)="student_add()">
       <ion-icon name="person-add"></ion-icon>
     </button>

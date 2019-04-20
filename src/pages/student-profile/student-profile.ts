@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { CameraOptions, Camera } from '@ionic-native/camera';
 import { student, StudentProvider } from '../../providers/student/student';
-import { ProfileServiceProvider } from '../../providers/profile-service/profile-service';
-import { userprofile } from '../../providers/home-service/home-service';
+// import { ProfileServiceProvider } from '../../providers/profile-service/profile-service';
+import { userprofile, HomeServiceProvider } from '../../providers/home-service/home-service';
 import { ViewController } from 'ionic-angular/navigation/view-controller';
 import { LoaderserviceProvider } from '../../providers/loaderservice/loaderservice';
 import { Storage } from '@ionic/storage';
+
 /**
  * Generated class for the StudentProfilePage page.
  *
@@ -28,7 +29,7 @@ export class StudentProfilePage {
   user: String = '';
   studentprofile: student = new student();
 
-  constructor(private studentservice: StudentProvider, private loader: LoaderserviceProvider, private storage: Storage, private viewctrl: ViewController, private profileservice: ProfileServiceProvider, private camera: Camera, public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController) {
+  constructor(private homeservice:HomeServiceProvider,private studentservice: StudentProvider, private loader: LoaderserviceProvider, private storage: Storage, private viewctrl: ViewController, private camera: Camera, public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController) {
     this.studentprofile = new student();
 
    // this.studentprofile = this.navParams.get('studentprofile');

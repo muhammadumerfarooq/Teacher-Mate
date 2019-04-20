@@ -10,7 +10,8 @@ import { File } from '@ionic-native/file';
 import { FileChooser } from '@ionic-native/file-chooser';
 import { FileOpener } from '@ionic-native/file-opener';
 import { FilePath } from '@ionic-native/file-path';
-import { ProfileServiceProvider } from '../profile-service/profile-service';
+import { HomeServiceProvider } from '../home-service/home-service';
+// import { ProfileServiceProvider } from '../profile-service/profile-service';
 
 
 export class Myfeed {
@@ -40,7 +41,7 @@ export class PostProvider {
   teacheremail: string = '';
   classname: string = '';
 
-  constructor(private profileservice: ProfileServiceProvider,private fileChooser: FileChooser, private filePath: FilePath, private fileservice: File, private notifyservice: NotificationsServiceProvider, private loader: LoaderserviceProvider, private afs: AngularFirestore, private localstorage: Storage) {
+  constructor(private homeservice: HomeServiceProvider,private fileChooser: FileChooser, private filePath: FilePath, private fileservice: File, private notifyservice: NotificationsServiceProvider, private loader: LoaderserviceProvider, private afs: AngularFirestore, private localstorage: Storage) {
 
 
 
@@ -437,7 +438,7 @@ export class PostProvider {
 
   findimgurlcomment(comment:comments) {
     
-    this.profileservice.allparents.forEach(parents => {
+    this.homeservice.allparents.forEach(parents => {
    if ( comment.useremail==parents.useremail){
     comment.userurl = parents.imgurl; 
     return comment;
@@ -445,7 +446,7 @@ export class PostProvider {
    
     });
 
-    this.profileservice.allteachers.forEach(teachers => {
+    this.homeservice.allteachers.forEach(teachers => {
       if ( comment.useremail==teachers.useremail){
        comment.userurl = teachers.imgurl; 
        return comment;
@@ -456,7 +457,7 @@ export class PostProvider {
   }
 
   findimgurllike(like:likes) {
-    this.profileservice.allparents.forEach(parents => {
+    this.homeservice.allparents.forEach(parents => {
    if ( like.useremail==parents.useremail){
     like.userurl = parents.imgurl; 
     return like;
@@ -464,7 +465,7 @@ export class PostProvider {
    
     });
 
-    this.profileservice.allteachers.forEach(teachers => {
+    this.homeservice.allteachers.forEach(teachers => {
       if ( like.useremail==teachers.useremail){
         like.userurl = teachers.imgurl; 
        return like;
@@ -477,7 +478,7 @@ export class PostProvider {
   findimgurl(post:Myfeed) {
 
 
-    this.profileservice.allteachers.forEach(teachers => {
+    this.homeservice.allteachers.forEach(teachers => {
       if ( post.teacheremail==teachers.useremail){
         post.userurl = teachers.imgurl; 
        return post;

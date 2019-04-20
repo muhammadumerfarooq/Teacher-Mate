@@ -18,7 +18,7 @@ import { HomeServiceProvider } from '../../providers/home-service/home-service';
 })
 export class NotificatonsPage {
 
-  constructor(private homeservice:HomeServiceProvider,private alertCtrl:AlertController,private modalCtrl:ModalController,private postservice:PostProvider,public navCtrl: NavController, public navParams: NavParams, private notifyservice:NotificationsServiceProvider) {
+  constructor(private alertctrl:AlertController,private homeservice:HomeServiceProvider,private alertCtrl:AlertController,private modalCtrl:ModalController,private postservice:PostProvider,public navCtrl: NavController, public navParams: NavParams, private notifyservice:NotificationsServiceProvider) {
   }
 
   ionViewDidLoad() {
@@ -30,7 +30,7 @@ export class NotificatonsPage {
     
     foundfeed = this.findfeed(notifications,foundfeed);
     this.notifyservice.updateobjectnotification(notifications);
-  debugger
+  
     if (foundfeed != null && foundfeed!=undefined && foundfeed.publisheddate != undefined && foundfeed.publisheddate != null){
       var modalPage: any;
 
@@ -69,13 +69,37 @@ export class NotificatonsPage {
         {
           text: 'Yes',
           handler: () => {
-            this.homeservice.findclassroom(notifications.classid)
+
+            this.homeservice.addparent(notifications.useremail,notifications.classid).then(res=>{
+              if (res=='added'){
+                this.presentAlert('User '+notifications.useremail+ ' Added in Class','');
+              }else if (res=='notfound'){
+                this.presentAlert('User '+notifications.useremail+ 'Account Not Exists ','');
+
+              }else{
+                this.presentAlert('User '+notifications.useremail+ 'Account Not Exists ','');
+
+              }
+            }).catch(err=>{
+              this.presentAlert('User '+notifications.useremail+ 'Account Not Exists ','');
+
+            })
           }
         }
       ]
     });
     confirm.present();
   }
+  }
+
+  presentAlert(alerttitle, alertsub) {
+    let alert = this.alertctrl.create({
+      title: alerttitle,
+      subTitle: alertsub,
+      buttons: ['OK']
+    });
+    alert.present();
+
   }
   findfeed(notifications: notify,  foundfeed: Myfeed ){
     

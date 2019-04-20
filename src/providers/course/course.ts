@@ -6,13 +6,15 @@ import {
  // AngularFirestoreDocument
 } from "angularfire2/firestore";
 import { LoaderserviceProvider } from '../loaderservice/loaderservice';
-import { Storage } from '@ionic/storage';
-import { ClassServiceProvider } from '../class-service/class-service';
+// import { Storage } from '@ionic/storage';
+// import { ClassServiceProvider } from '../class-service/class-service';
 import { FileChooser } from '@ionic-native/file-chooser';
 import { FileOpener } from '@ionic-native/file-opener';
 import { FilePath } from '@ionic-native/file-path';
 import { storage } from 'firebase';
 import { File } from '@ionic-native/file';
+// import { ProfileServiceProvider } from '../profile-service/profile-service';
+import { HomeServiceProvider } from '../home-service/home-service';
 
 /*
   Generated class for the CourseProvider provider.
@@ -86,10 +88,10 @@ export class CourseProvider {
   
   allcourses: Array<Courses> = [];
 
-  constructor( private fileservice: File,private fileChooser: FileChooser, private filePath: FilePath, private fileOpener: FileOpener,private afs:AngularFirestore, private classervice: ClassServiceProvider, private loaderservice:LoaderserviceProvider) {
+  constructor( private homeservice:HomeServiceProvider,private fileservice: File,private fileChooser: FileChooser, private filePath: FilePath, private fileOpener: FileOpener,private afs:AngularFirestore,private loaderservice:LoaderserviceProvider) {
    this.afs.collection<Courses>('courses', ref=>{
      
-     return ref.where("classname","==",classervice.classname).where("classteacher","==",classervice.classteacher);
+     return ref.where("classname","==",this.homeservice.classroom).where("classteacher","==",this.homeservice.classteacher);
    }).snapshotChanges().forEach(snap=>{
      this.allcourses = new Array<Courses>(); 
 

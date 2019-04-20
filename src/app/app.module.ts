@@ -38,6 +38,7 @@ import { FileTransfer } from '@ionic-native/file-transfer';
 import { DocumentViewer } from '@ionic-native/document-viewer';
 import { QuizServiceProvider } from '../providers/quiz-service/quiz-service';
 import { TeachersServiceProvider } from '../providers/teachers-service/teachers-service';
+import { RequestServiceProvider } from '../providers/request-service/request-service';
 
 // import { TeacherloginPage } from '../pages/teacherlogin/teacherlogin';
 // import { ParentloginPage } from '../pages/parentlogin/parentlogin';
@@ -108,7 +109,8 @@ export const firebaseConfig = {
     CourseProvider,
     ClassServiceProvider,
     QuizServiceProvider,
-    TeachersServiceProvider
+    TeachersServiceProvider,
+    RequestServiceProvider
   ]
 })
 export class AppModule {}

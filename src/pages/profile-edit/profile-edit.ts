@@ -48,27 +48,29 @@ export class ProfileEditPage {
              
         console.log(data)
         let base64Image = 'data:image/jpg;base64,' + data;
-        this.storage.get('user').then(val=>{   
+        
           let user = '';
           let email = '';
           
-          console.log(val);
-          if (val == 'teacher'){
+        
+          if (this.homeservice.user == 'teacher'){
               user = 'teachers';
-          }else if (val == 'parent'){
+          }else if (this.homeservice.user == 'parent'){
               user = 'parents';
           }
-          this.storage.get('email').then(v  =>{
+        
             
-            email = v;
-            this.profileservice.editprofile(user,email,base64Image);
-          }).catch((err)=>{  this.presentAlert('error',err)});
-        }).catch((err)=>{  this.presentAlert('error',err)});
-       
+            email = this.homeservice.useremail;
+            this.profileservice.editprofile(user,email,base64Image).then(res=>{
+              this.presentAlert('Proile Updated Successfull! ','' );
 
-      }).catch(err=>{
-        this.presentAlert('error',err);
-      })
+            }).catch(err=>{
+              this.presentAlert('Error! ','profile not updated' );
+
+            });
+        }).catch(err=>{
+          this.homeservice.user
+        })   
     }
     catch(exception ){
       this.presentAlert('error',exception);

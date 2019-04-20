@@ -4,6 +4,10 @@ page-student-profile{
       margin: 0 6px;
       min-width: 36px;
    }
+   
+   .scroll-content {
+    overflow-y: hidden;
+  }
       .content{
           background: url("../assets/img/bg.jpg") no-repeat; 
       }
@@ -156,8 +160,10 @@ page-student-profile{
               }
       }
   .item-ion{
+    margin-bottom: 1%;
     border: solid thin gray;
     border-radius: 1.2em;
+    background: transparent;
   }
   
 }

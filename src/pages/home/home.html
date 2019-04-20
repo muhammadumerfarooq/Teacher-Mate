@@ -9,7 +9,7 @@
     </ion-title>
     <ion-buttons end> 
    
-      <div *ngIf = "this.homeservice.searchname == 'parent'">
+      <div *ngIf = "this.homeservice.user == 'parents'">
       <button   ion-button tappable  (click)="joinclassroom()" >
         <ion-icon name="add-circle"  class="button-add" ></ion-icon> 
       </button>
@@ -18,7 +18,7 @@
       </button>
 
       </div>
-      <div *ngIf = "this.homeservice.searchname == 'teacher'"> 
+      <div *ngIf = "this.homeservice.user == 'teachers'"> 
       <button  ion-button tappable  (click)="classoptions()" >
         <ion-icon name="arrow-dropdown-circle"  class="button-add" ></ion-icon> 
       </button>

@@ -5,9 +5,11 @@ import {
   // AngularFirestoreDocument
 } from "angularfire2/firestore";
 import { LoaderserviceProvider } from '../loaderservice/loaderservice';
-import { ClassServiceProvider } from '../class-service/class-service';
-import { DateTime } from 'ionic-angular/umd';
+// import { ClassServiceProvider } from '../class-service/class-service';
+// import { DateTime } from 'ionic-angular/umd';
 import moment from 'moment';
+// import { ProfileServiceProvider } from '../profile-service/profile-service';
+import { HomeServiceProvider } from '../home-service/home-service';
 
 export class OptionsAnswer {
   option: string;
@@ -43,7 +45,9 @@ export class Quiz {
   scheduledate: string;
   background: string;
   available: boolean;
+  onweek: string;
   constructor() {
+    this.onweek = '';
     this.background = '';
     this.scheduledate = '';
     this.available = false;
@@ -53,6 +57,7 @@ export class Quiz {
     this.syllabusid = "";
     this.creationdate = new Date().toString();
     this.quiztime = '';
+    
   }
 
 }
@@ -128,10 +133,10 @@ export class QuizServiceProvider {
 
   Dates: Array<string> = new Array<string>();
   myquizes: Array<Quiz> = new Array<Quiz>();
-  constructor(private afs: AngularFirestore, private classservice: ClassServiceProvider, private loaderservice: LoaderserviceProvider) {
+  constructor(private afs: AngularFirestore, private homeservice: HomeServiceProvider, private loaderservice: LoaderserviceProvider) {
 
     this.afs.collection<Quiz>('quizes', ref => {
-      return ref.where('classname', '==', this.classservice.classname).where('classteacher', '==', this.classservice.classteacher);
+      return ref.where('classname', '==', this.homeservice.classroom).where('classteacher', '==', this.homeservice.classteacher);
     });
   }
   getquiz(syllid: string) {
@@ -152,7 +157,7 @@ export class QuizServiceProvider {
 
 
         this.afs.collection<Quiz>('quizes', ref => {
-          return ref.where('classname', '==', this.classservice.classname).where('classteacher', '==', this.classservice.classteacher);
+          return ref.where('classname', '==', this.homeservice.classroom).where('classteacher', '==', this.homeservice.classteacher);
         }).snapshotChanges().forEach(snap => {
 
           this.myquizes = new Array<Quiz>();
@@ -192,6 +197,8 @@ export class QuizServiceProvider {
 
                 if (start.diff(end, 'weeks')<1 || start.diff(end, 'weeks') == 0 ){
                   quiz.available = true;
+                }else{
+                  quiz.onweek = start.diff(end, 'weeks').toString();
                 }
                   ////
                   while (i > -1) {
@@ -249,8 +256,8 @@ export class QuizServiceProvider {
   }
 
   insert_Quiz(quizes: Quiz) {
-    quizes.classname = this.classservice.classname;
-    quizes.classteacher = this.classservice.classteacher;
+    quizes.classname = this.homeservice.classroom;
+    quizes.classteacher = this.homeservice.classteacher;
 
     return new Promise((resolve, reject) => {
 

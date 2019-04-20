@@ -8,7 +8,7 @@ import { HomeServiceProvider } from '../../providers/home-service/home-service';
 
 // import {OnInit} from '@angular/core';
 // import { FCM } from '@ionic-native/fcm';
-import { ProfileServiceProvider, profile } from '../../providers/profile-service/profile-service';
+// import { ProfileServiceProvider, profile } from '../../providers/profile-service/profile-service';
 import { TeachersServiceProvider } from '../../providers/teachers-service/teachers-service';
 
 // import { LoaderserviceProvider } from '../../providers/loaderservice/loaderservice';
@@ -25,7 +25,7 @@ export class HomePage implements OnInit {
   }
 
 
-  constructor(private viewctrl:ViewController,private teacherclass:TeachersServiceProvider,private modalCtrl: ModalController,private profileservice :ProfileServiceProvider, public homeservice: HomeServiceProvider, public afAuth: AngularFireAuth, public alertctrl: AlertController, public toastctrl: ToastController, public modalctrl: ModalController, public platform: Platform, public actionsheetCtrl: ActionSheetController, private storage: Storage, public nav: NavController, public popoverCtrl: PopoverController) {
+  constructor(private viewctrl:ViewController,private teacherclass:TeachersServiceProvider,private modalCtrl: ModalController, public homeservice: HomeServiceProvider, public afAuth: AngularFireAuth, public alertctrl: AlertController, public toastctrl: ToastController, public modalctrl: ModalController, public platform: Platform, public actionsheetCtrl: ActionSheetController, private storage: Storage, public nav: NavController, public popoverCtrl: PopoverController) {
     console.log(this.homeservice.searchname);
    // this.presentCustomModal();
     /// this.searchuser.name = this.homeservice.searchname; 
@@ -33,7 +33,7 @@ export class HomePage implements OnInit {
 
       console.log(user);
 
-      if (user == undefined) {
+      if (user == undefined || user == null) {
         console.log('go to login');
 
         
@@ -101,7 +101,8 @@ export class HomePage implements OnInit {
     this.homeservice.getchatusers(classname, classteacher);
     this.storage.set('classroom', classname).then(()=>{
       this.storage.set('classteacher', classteacher).then(()=>{
-        
+        this.homeservice.storageSub.next('class-added');
+
         this.nav.push('TabsPage')
       });
     });
@@ -279,6 +280,8 @@ export class HomePage implements OnInit {
                 this.homeservice.getchatusers(classname, teacherclass.teachername);
                 this.storage.set('classroom', classname).then(()=>{
                   this.storage.set('classteacher',  teacherclass.teachername).then(()=>{
+                    this.homeservice.storageSub.next('class-added');
+
                     this.nav.push('TabsPage')
                   });
 

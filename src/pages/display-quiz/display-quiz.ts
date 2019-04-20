@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, ModalController, AlertController } from 'ionic-angular';
 import { QuizServiceProvider, Quiz } from '../../providers/quiz-service/quiz-service';
-import { ClassServiceProvider } from '../../providers/class-service/class-service';
-import { ProfileServiceProvider } from '../../providers/profile-service/profile-service';
+import { HomeServiceProvider } from '../../providers/home-service/home-service';
+// import { ClassServiceProvider } from '../../providers/class-service/class-service';
+// import { ProfileServiceProvider } from '../../providers/profile-service/profile-service';
 
 /**
  * Generated class for the DisplayQuizPage page.
@@ -23,7 +24,7 @@ export class DisplayQuizPage {
     courseid: '',
     topicname: ''
   }
-  constructor(private profileservice:ProfileServiceProvider,private alertctrl: AlertController, private modalctrl: ModalController, private viewctrl: ViewController, public navCtrl: NavController, public navParams: NavParams, private quizservice: QuizServiceProvider) {
+  constructor(private homeservice:HomeServiceProvider,private alertctrl: AlertController, private modalctrl: ModalController, private viewctrl: ViewController, public navCtrl: NavController, public navParams: NavParams, private quizservice: QuizServiceProvider) {
     this.quizinfo = this.navParams.get('quizinfo');
 
     this.quizservice.getquiz(this.quizinfo.topicname);
@@ -40,7 +41,7 @@ export class DisplayQuizPage {
   openDetails(myquiz: Quiz) {
     console.log(myquiz);
     debugger
-if (this.profileservice.user == 'parent'){
+if (this.homeservice.user == 'parent'  && myquiz.available == true){
   var modalPage = this.modalctrl.create('TakeQuizPage', { myquiz: myquiz });
   modalPage.onDidDismiss(data => {
     if (data == true) {
@@ -50,7 +51,10 @@ if (this.profileservice.user == 'parent'){
 
   });
   modalPage.present();
-}else if (this.profileservice.user == 'teacher') {
+}else if (this.homeservice.user == 'parent'  && myquiz.available == false){
+  this.presentAlert('Quiz is not Available In This Week','')
+}
+  else if (this.homeservice.user == 'teacher') {
    modalPage = this.modalctrl.create('QuizDetailPage', { myquiz: myquiz });
   modalPage.onDidDismiss(data => {
     if (data == true) {

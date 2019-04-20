@@ -12,6 +12,8 @@ import { File } from '@ionic-native/file';
 import { Platform } from 'ionic-angular/platform/platform';
 import { DocumentViewer } from '@ionic-native/document-viewer';
 import { ViewController } from 'ionic-angular/navigation/view-controller';
+import { HomeServiceProvider } from '../../providers/home-service/home-service';
+// import { ProfileServiceProvider } from '../../providers/profile-service/profile-service';
 /**
  * Generated class for the AddCoursesPage page.
  *
@@ -34,7 +36,7 @@ export class AddCoursesPage {
   mycourses: Courses = new Courses();
   files = new Map();
 
-  constructor(private modalctrl:ModalController,private documentview: DocumentViewer,private filetransfer:FileTransfer,private file:File,private plateform: Platform,private fileChooser: FileChooser, private filePath: FilePath, private alertctrl: AlertController, private fileOpener: FileOpener, private courseservice: CourseProvider, private classprovider: ClassServiceProvider, public navCtrl: NavController, public navParams: NavParams,  private viewctrl: ViewController) {
+  constructor(private homeservice:HomeServiceProvider,private modalctrl:ModalController,private documentview: DocumentViewer,private filetransfer:FileTransfer,private file:File,private plateform: Platform,private fileChooser: FileChooser, private filePath: FilePath, private alertctrl: AlertController, private fileOpener: FileOpener, private courseservice: CourseProvider, private classprovider: ClassServiceProvider, public navCtrl: NavController, public navParams: NavParams,  private viewctrl: ViewController) {
        
 
     // this.topics.push({'value':''});
@@ -125,8 +127,8 @@ export class AddCoursesPage {
 
   addSyllabus() {
     this.mycourses.creationdate = new Date().getTime().toString();
-    this.mycourses.classteacher = this.classprovider.classteacher;
-    this.mycourses.classname = this.classprovider.classname;
+    this.mycourses.classteacher = this.homeservice.classteacher; //this.classprovider.classteacher;
+    this.mycourses.classname = this.homeservice.classroom; //this.classprovider.classname;
 
 //    this.courseservice.insert_course(this.mycourses)
 

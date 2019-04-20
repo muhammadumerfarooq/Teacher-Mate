@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, ModalController, AlertController } from 'ionic-angular';
 import { TeachersServiceProvider } from '../../providers/teachers-service/teachers-service';
-import { ProfileServiceProvider } from '../../providers/profile-service/profile-service';
+// import { ProfileServiceProvider } from '../../providers/profile-service/profile-service';
 import { LoaderserviceProvider } from '../../providers/loaderservice/loaderservice';
-import { classroom } from '../../providers/home-service/home-service';
+import { classroom, HomeServiceProvider } from '../../providers/home-service/home-service';
 import { NotificationsServiceProvider, notify } from '../../providers/notifications-service/notifications-service';
+import { RequestServiceProvider } from '../../providers/request-service/request-service';
+
 
 /**
  * Generated class for the SendRequestPage page.
@@ -19,8 +21,10 @@ import { NotificationsServiceProvider, notify } from '../../providers/notificati
   templateUrl: 'send-request.html',
 })
 export class SendRequestPage {
+found: boolean = false;
 
-  constructor(private alertCtrl:AlertController,private notifyservice: NotificationsServiceProvider,private alertctrl:AlertController,private modalCtrl: ModalController, private loaderservice: LoaderserviceProvider, private teacherservice: TeachersServiceProvider, private profileservice: ProfileServiceProvider, public navCtrl: NavController, public navParams: NavParams, private viewctrl: ViewController) {
+  constructor(private homeservice:HomeServiceProvider,private requestservice:RequestServiceProvider,private alertCtrl:AlertController,private notifyservice: NotificationsServiceProvider,private alertctrl:AlertController,private modalCtrl: ModalController, private loaderservice: LoaderserviceProvider, private teacherservice: TeachersServiceProvider, 
+     public navCtrl: NavController, public navParams: NavParams, private viewctrl: ViewController) {
     this.loaderservice.loading = this.loaderservice.loadingCtrl.create({
 
       content: `
@@ -34,16 +38,17 @@ export class SendRequestPage {
 
       this.loaderservice.loading.present().then(() => {
         for (let i = 0; i < this.teacherservice.teacherclass.length; i++) {
-          for (let j = 0; j < this.profileservice.allteachers.length; j++) {
+          for (let j = 0; j < this.homeservice.allteachers.length; j++) {
 
-            if (this.teacherservice.teacherclass[i].teacheremail == this.profileservice.allteachers[j].useremail) {
-              this.teacherservice.teacherclass[i].imgurl = this.profileservice.allteachers[j].imgurl;
+            if (this.teacherservice.teacherclass[i].teacheremail == this.homeservice.allteachers[j].useremail) {
+              this.teacherservice.teacherclass[i].imgurl = this.homeservice.allteachers[j].imgurl;
               break;
             }
           }
         }
       });
     });
+  
   }
 
   ionViewDidLoad() {
@@ -67,27 +72,45 @@ export class SendRequestPage {
         {
           text: 'Yes',
           handler: () => {
-            let notifydata: notify = new notify();
-            notifydata.classname = myclass.classname;
-            notifydata.classteacher = myclass.teacheremail;
-            notifydata.userurl = myclass.imgurl;
-            notifydata.publisheddate = new Date().getTime().toString();
-            notifydata.message = this.profileservice.username + ' requested to add in classroom ';
-            notifydata.commentby.email = this.profileservice.useremail;
-            notifydata.commentby.name = this.profileservice.username;
-            notifydata.classid = myclass.classid;
-            notifydata.useremail = this.profileservice.useremail;
-            
-            this.notifyservice.insertnotification(notifydata).then(val=>{
-              if (val == 'done')
-              this.presentAlert('Request Send Successfully!','');
-              else{
-                this.presentAlert('Request Sending Failed!','');
+            debugger
+            this.requestservice.findrequest().then(res=>{
+              debugger
+              if (res=='found'){
+                
+                this.presentAlert('Request Is Already Send To Teacher', '');
+
+                this.found = false;
+              }else{
+              this.found = true;
+              this.presentAlert('Request Is Already Send To Teacher', '');
+
+
               }
             }).catch(err=>{
-              this.presentAlert('Request Sending Failed!','');
-        
+              let notifydata: notify = new notify();
+                notifydata.classname = myclass.classname;
+                notifydata.classteacher = myclass.teacheremail;
+                notifydata.userurl = myclass.imgurl;
+                notifydata.publisheddate = new Date().getTime().toString();
+                notifydata.message =  ' requested to add in classroom ';
+                notifydata.commentby.email = this.homeservice.useremail;
+                notifydata.commentby.name = this.homeservice.username;
+                notifydata.classid = myclass.classid;
+                notifydata.useremail = this.homeservice.useremail;
+                
+                this.notifyservice.insertnotification(notifydata).then(val=>{
+                  if (val == 'done')
+                  this.presentAlert('Request Send Successfully!','');
+                  else{
+                    this.presentAlert('Request Sending Failed!','');
+                  }
+                }).catch(err=>{
+                  this.presentAlert('Request Sending Failed!','');
+            
+                });
             });
+            
+           
           }
         }
       ]

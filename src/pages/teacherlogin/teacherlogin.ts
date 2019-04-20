@@ -6,6 +6,8 @@ import { LoginserviceProvider } from '../../providers/loginservice/loginservice'
 import { Storage } from '@ionic/storage';
 import { AngularFirestore, PersistenceSettingsToken } from 'angularfire2/firestore';
 import { Observable } from 'rxjs';
+import { HomeServiceProvider } from '../../providers/home-service/home-service';
+// import { ProfileServiceProvider } from '../../providers/profile-service/profile-service';
 /**
  * Generated class for the TeacherloginPage page.
  *
@@ -22,22 +24,23 @@ import { Observable } from 'rxjs';
 
 export class TeacherloginPage {
 
-   
-     teacher_email: string= "";
-     teacher_password: string= "";
-     emailverified: boolean = false;
-     teachersarray: Observable<any[]>;
-  constructor(public afs:AngularFirestore,public storage:Storage, public modalctrl: ModalController, public viewCtrl:ViewController, public loginprovider: LoginserviceProvider, public alertCtrl: AlertController, public loader: LoaderserviceProvider, public navCtrl: NavController, public navParams: NavParams, public afauth: AngularFireAuth) {
-   
 
-if (this.afauth.auth.currentUser != null || this.afauth.auth.currentUser != undefined){
-    if (this.afauth.auth.currentUser.emailVerified ){
+  teacher_email: string = "";
+  teacher_password: string = "";
+  emailverified: boolean = false;
+  teachersarray: Observable<any[]>;
+
+  constructor(private homeservice: HomeServiceProvider, public afs: AngularFirestore, public storage: Storage, public modalctrl: ModalController, public viewCtrl: ViewController, public loginprovider: LoginserviceProvider, public alertCtrl: AlertController, public loader: LoaderserviceProvider, public navCtrl: NavController, public navParams: NavParams, public afauth: AngularFireAuth) {
+
+
+    if (this.afauth.auth.currentUser != null || this.afauth.auth.currentUser != undefined) {
+      if (this.afauth.auth.currentUser.emailVerified) {
+        this.emailverified = true;
+      }
+    } else {
       this.emailverified = true;
     }
-  }else {
-    this.emailverified = true;
   }
-} 
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad TeacherloginPage');
@@ -53,186 +56,109 @@ if (this.afauth.auth.currentUser != null || this.afauth.auth.currentUser != unde
 
   }
 
-  login(){
+  login() {
     this.teachersarray = new Observable<any[]>();
-    let tcredts = {
-      email: this.teacher_email,
-      password: this.teacher_password
-    }
+
     this.loader.loading = this.loader.loadingCtrl.create({
-          
+
       content: `
         <div class="custom-spinner-container">
           <div class="custom-spinner-box"> loading... </div>
         </div>`,
-
+      duration: 500
     });
 
 
-    this.loader.loading.present().then(()=>{
-      this.teachersarray =  this.afs.collection<any>('teachers').snapshotChanges().take(1).map(actions => {
-        return actions.map(action => {
-         
-         console.log(action.payload.doc.id);
-         
-            if (action.payload.doc.id == tcredts.email){
-              console.log(tcredts.email)
-              const data = action.payload.doc.data();
-              const id = action.payload.doc.id;
-            return { id, ...data };
-            }
-        });
-     
-    })
-    console.log(this.teachersarray);
-    this.teachersarray.subscribe(res=>{
-  //    console.log(res , tcredts.email);
-     
-     
+    this.loader.loading.present().then(() => {
+      this.afs.doc<any>('teachers/' + this.teacher_email).snapshotChanges().take(1).forEach(snap => {
 
-      for (let i=0;i<res.length;i++){
-        
-      if (res[i] !=undefined &&  res[i].id == tcredts.email){
-    
-        
-        console.log(this.afauth.auth.currentUser);
-    //    if (this.afauth.auth.currentUser!= undefined && this.afauth.auth.currentUser!= null && this.afauth.auth.currentUser.emailVerified){
-         
-         this.storage.set('user', 'teacher').then(res=>{
-          this.storage.set('email',tcredts.email).then(res=>{
-            
-            this.afauth.auth.signInWithEmailAndPassword(tcredts.email,tcredts.password).then(()=>{
-              this.emailverified=this.afauth.auth.currentUser.emailVerified;
-              this.loader.dismissloading();
-              this.viewCtrl.dismiss(true);
+        if (snap.payload.exists) {
 
-             
+          this.storage.set('user', 'teacher').then(res => {
+            this.storage.set('email', this.teacher_email).then(res => {
 
-         
+              this.homeservice.storageSub.next('added-user');
 
-            }).catch(err=>{
-              this.storage.clear().then(()=>{
+
+              this.afauth.auth.signInWithEmailAndPassword(this.teacher_email, this.teacher_password).then(() => {
+                this.emailverified = this.afauth.auth.currentUser.emailVerified;
                 this.loader.dismissloading();
-                this.presentAlert('Login Failed ',err);
-              }).catch(()=>{
-                this.loader.dismissloading();
-                this.presentAlert('Login Failed ',err);
+                this.viewCtrl.dismiss(true);
+
+
+
+
+
+              }).catch(err => {
+                this.storage.clear().then(() => {
+                  this.homeservice.storageSub.next('removed-all');
+
+                  this.loader.dismissloading();
+                  this.presentAlert('Login Failed ', err);
+                }).catch(() => {
+                  this.loader.dismissloading();
+                  this.presentAlert('Login Failed ', err);
+                })
+
               })
+              // this.emailverified=true;
+              // this.loader.dismissloading();
+              // this.viewCtrl.dismiss(true);
+            }).catch(err => {
 
-            })
-            this.emailverified=true;
-            this.loader.dismissloading();
-            this.viewCtrl.dismiss(true);
-          }).catch(err=>{
-            
-            this.loader.dismissloading();
-            this.presentAlert('Login Failed ',err);
-          });
-        }).catch(err=>{
-          this.loader.dismissloading();
-          this.presentAlert('Login Failed ',err);
-        });
-     
-       /* else{
-          this.storage.set('user', 'teacher').then(res=>{
-            this.storage.set('email',tcredts.email).then(res=>{
-             
-              this.afauth.auth.signInWithEmailAndPassword(tcredts.email,tcredts.password).then(res=> {
-              
-                this.emailverified=false;
-
-                this.storage.clear().then(()=>{
-                  this.loader.dismissloading();
-                  this.viewCtrl.dismiss(true);
-                }).catch((err)=>{
-                  this.loader.dismissloading();
-                  this.presentAlert('Login Failed ',err);
-                });
-  
-
-              }).catch((err=>{
-                this.loader.dismissloading();
-                this.presentAlert('Login Failed ',err);
-              }));
-              
               this.loader.dismissloading();
-              this.viewCtrl.dismiss(true);
-            }).catch(err=>{
-              
-              this.loader.dismissloading();
-              this.presentAlert('Login Failed ',err);
+              this.presentAlert('Login Failed ', err);
             });
-          }).catch(err=>{
+          }).catch(err => {
             this.loader.dismissloading();
-            this.presentAlert('Login Failed ',err);
+            this.presentAlert('Login Failed ', err);
           });
         }
-      */
-  
-    }
-    /*else{
-      
-      this.loader.dismissloading();
-      this.presentAlert('Login Failed ',' Username not found ');
-      break;
+      })
 
-    }
-    */
-    //else{
-  //    this.loader.dismissloading();
-    //  this.presentAlert(' login failed ',' no account found with this email address ')
-   // }
+
+
+    });
 
   }
-if (res.length == 0){
-  this.loader.dismissloading();
-  this.presentAlert(' login failed ',' no account found with this email address ')
-}
-          });
+  googlelogin() {
 
-  
-  });
 
-}
-  googlelogin(){
- 
-    
   }
 
-  register(){
+  register() {
     var person = 'Teacher';
-    var modalPage = this.modalctrl.create('SignupModalPage',{person: person});
-    modalPage.onDidDismiss(data=>{
-      if (data == true)
-      {
-        console.log(data+" teachersingup ")
+    var modalPage = this.modalctrl.create('SignupModalPage', { person: person });
+    modalPage.onDidDismiss(data => {
+      if (data == true) {
+        console.log(data + " teachersingup ")
         this.viewCtrl.dismiss(true);
       }
     });
     modalPage.present();
   }
-  
-  sendverification(){
-    this.afauth.auth.currentUser.sendEmailVerification().then(()=>{
-      this.presentAlert('Verification Link Send ','Successfully');
-     
-    }).catch(err=>{
+
+  sendverification() {
+    this.afauth.auth.currentUser.sendEmailVerification().then(() => {
+      this.presentAlert('Verification Link Send ', 'Successfully');
+
+    }).catch(err => {
       console.log(err);
-      
-      this.presentAlert('Verificaton Email Sending ',' Failed ');
+
+      this.presentAlert('Verificaton Email Sending ', ' Failed ');
     });
   }
 
-  verified(){
-   /* this.afauth.auth.onAuthStateChanged(user=>{
-      if (user && user.emailVerified){
-         this.emailverified = true;
-          this.navCtrl.popToRoot();
-      }else{
-        this.presentAlert('Email verification ', ' Failed');
-      }
-    })
-    */
+  verified() {
+    /* this.afauth.auth.onAuthStateChanged(user=>{
+       if (user && user.emailVerified){
+          this.emailverified = true;
+           this.navCtrl.popToRoot();
+       }else{
+         this.presentAlert('Email verification ', ' Failed');
+       }
+     })
+     */
     this.login();
     // if (this.afauth.auth.currentUser.emailVerified ){
     //   this.emailverified = true;

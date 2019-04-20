@@ -43,21 +43,16 @@
  
 
 
-<ion-content padding-top>
+<ion-content padding-top class="content">
   <ion-list>
-    <ion-item-sliding #sliding *ngFor="let friend of friends | async">
-      <ion-item (click)="goToChatRoom(friend)">
+    <ion-item-sliding [ngStyle]="{'background':'transparent'}" #sliding *ngFor="let friend of friends | async">
+      <ion-item class="item-ion" (click)="goToChatRoom(friend)">
         <ion-avatar item-start>
           <img [src]="friend.userurl">
         </ion-avatar>
         <h2>{{ friend.id }} <span ion-text color="primary">({{ friend.user }})</span></h2>
       </ion-item>
-      <ion-item-options side="right">
-        <button ion-button color="primary" (click)="goToProfileFriend(sliding, friend)">
-          <ion-icon name="person"></ion-icon>
-          Profile
-        </button>
-      </ion-item-options>
+   
     </ion-item-sliding>
   </ion-list>
 </ion-content>

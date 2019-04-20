@@ -7,8 +7,8 @@ import 'rxjs/add/operator/map';
 import { of } from 'rxjs';
 import { LoaderserviceProvider } from '../loaderservice/loaderservice';
 import { Storage } from '@ionic/storage';
-import { chats, userprofile } from '../home-service/home-service';
-import { ProfileServiceProvider } from '../profile-service/profile-service';
+import { chats, userprofile, HomeServiceProvider } from '../home-service/home-service';
+// import { ProfileServiceProvider } from '../profile-service/profile-service';
 
 /*
   Generated class for the ChatServiceProvider provider.
@@ -21,7 +21,7 @@ export class ChatServiceProvider {
 
   teachers: AngularFirestoreCollection<any>; 
   parents: AngularFirestoreCollection<any>;
-  constructor(private profileservice:ProfileServiceProvider,public storage:Storage,public afauth:AngularFireAuth, public afs: AngularFirestore, public loaderservice:LoaderserviceProvider) {
+  constructor(private homeservice:HomeServiceProvider,public storage:Storage,public afauth:AngularFireAuth, public afs: AngularFirestore, public loaderservice:LoaderserviceProvider) {
 
     
     this.teachers =  this.afs.collection('/teachers');
@@ -32,7 +32,7 @@ export class ChatServiceProvider {
   teacherimgurl(email:string): userprofile {
     let profile: userprofile = new userprofile();
 
-    this.profileservice.allteachers.forEach(teacher=>{
+    this.homeservice.allteachers.forEach(teacher=>{
       if (email == teacher.useremail){
         profile = teacher;
         return profile;
@@ -44,7 +44,7 @@ export class ChatServiceProvider {
   parentimgurl(email:string): userprofile {
     
     let profile: userprofile = new userprofile();
-    this.profileservice.allparents.forEach(parent=>{
+    this.homeservice.allparents.forEach(parent=>{
       if (email == parent.useremail){
         profile = parent;
         return profile;

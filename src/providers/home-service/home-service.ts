@@ -12,7 +12,8 @@ import {
 } from "angularfire2/firestore";
 import { LoaderserviceProvider } from '../loaderservice/loaderservice';
 import { Storage } from '@ionic/storage';
-import { ProfileServiceProvider, profile } from '../profile-service/profile-service';
+import { profile } from '../profile-service/profile-service';
+import { Subject, Observable } from 'rxjs';
 
 
 /*
@@ -75,110 +76,294 @@ export class HomeServiceProvider {
   classfound: boolean = false;
   userprofile = new userprofile();
   searchname: string = "";
-
-  constructor( public storage: Storage, public afs: AngularFirestore, public afAuth: AngularFireAuth, public loaderservice: LoaderserviceProvider, public alertCtrl: AlertController) {
-
+  public storageSub = new Subject<string>();
 
 
-    this.afAuth.auth.onAuthStateChanged(user => {
-      if (user != undefined) {
+  username: string = '';
+  useremail: string = '';
+  useroccupation: string = '';
+  user: string = '';
+  allparents = Array<userprofile>();
+  allteachers = Array<userprofile>();
+  classroom: string;
+  classteacher: string;
+  constructor(public storage: Storage, public afs: AngularFirestore, public afAuth: AngularFireAuth, public loaderservice: LoaderserviceProvider, public alertCtrl: AlertController) {
 
 
-        this.storage.get('user').then((val) => {
+    this.watchStorage().subscribe((data: string) => {
 
-          if (val == 'parent') {
-            this.searchname = 'parent';
-            this.classroomdoc = this.afs.collection<classroom>('classroom'
-              , ref => {
-                return ref.where("parentsemail", "array-contains", user.email); //.orderBy("teacheremail");
-              });
-            // console.log('in user');
-            this.classroomdoc.valueChanges().subscribe(snap => {
-              this.myclassroom = new Array<classroom>();
-              snap.forEach(snapshot => {
-
-                console.log(snapshot);
-                this.classfound = true;
-                let myposts: classroom = snapshot;
-
-                if (myposts.parentsemail.length == undefined || myposts.parentsemail.length == 0) {
-                  myposts.parentsemail = new Array<string>();
-                }
-
-                this.myclassroom.push(snapshot);
-              });
-            });
-          } else if (val == 'teacher') {
-            this.searchname = 'teacher';
-            this.classroomdoc = this.afs.collection<classroom>('classroom'
-              , ref => {
-                return ref.where("teacheremail", "==", user.email); //.orderBy("teacheremail");
-              });
-            // console.log('in user');
-            this.classroomdoc.valueChanges().subscribe(snap => {
-              this.myclassroom = new Array<classroom>();
-              snap.forEach(snapshot => {
-                console.log(snapshot);
-                this.classfound = true;
-                let myposts: classroom = snapshot;
-
-                if (myposts.parentsemail.length == undefined || myposts.parentsemail.length == 0) {
-                  myposts.parentsemail = new Array<string>();
-                }
-
-                this.myclassroom.push(myposts);
-              });
-            });
-          } else {
-
-          }
-
-        }).catch((err) => {
-          console.log(err)
+      if (data == 'class-added') {
+        this.storage.get('classroom').then(res => {
+          this.classroom = res;
         });
+        this.storage.get('classteacher').then(res => {
+          this.classteacher = res;
+        })
+      } else if (data == 'removed-all') {
 
+      }
+      else if (data == 'added-user') {
         this.storage.get('email').then(val => {
-          let useremail = val;
-          let user = '';
+
+          this.useremail = val;
+
 
           this.storage.get('user').then(occ => {
 
+            this.useroccupation = occ;
             if (occ == 'parent') {
-              user = 'parents';
+              this.user = 'parents';
             } else {
-              user = 'teachers';
+              this.user = 'teachers';
+            }
+            //   this.homeservice.storageSub.next(true);
+
+            if (this.user == 'parents') {
+              this.searchname = this.user;
+              this.classroomdoc = this.afs.collection<classroom>('classroom'
+                , ref => {
+                  return ref.where("parentsemail", "array-contains", this.useremail); //.orderBy("teacheremail");
+                });
+              this.classroomdoc.snapshotChanges().subscribe(snap => {
+                this.myclassroom = new Array<classroom>();
+                snap.forEach(snapshot => {
+
+                  console.log(snapshot);
+                  this.classfound = true;
+                  let myposts: classroom = snapshot.payload.doc.data() as classroom;
+
+
+                  let j = 0;
+                  myposts.parentsemail = [];
+                  while (j > -1) {
+                    if (snapshot.payload.doc.data().parentsemail != undefined && snapshot.payload.doc.data().parentsemail[j] != undefined) {
+                      myposts.parentsemail.push(snapshot.payload.doc.data().parentsemail[j])
+                    } else {
+                      break;
+                    }
+                    j++;
+                  }
+                  
+
+                  this.myclassroom.push(myposts);
+                });
+              });
+            } else if (this.user == 'teachers') {
+              this.searchname = this.user;
+              this.classroomdoc = this.afs.collection<classroom>('classroom'
+                , ref => {
+                  return ref.where("teacheremail", "==", this.useremail); //.orderBy("teacheremail");
+                });
+              // console.log('in user');
+              this.classroomdoc.snapshotChanges().forEach(snap => {
+                this.myclassroom = new Array<classroom>();
+                snap.forEach(snapshot => {
+                  console.log(snapshot);
+                  this.classfound = true;
+                  let myposts: classroom = snapshot.payload.doc.data() as classroom;
+
+
+                  let j = 0;
+                  myposts.parentsemail = [];
+                  while (j > -1) {
+                    if (snapshot.payload.doc.data().parentsemail != undefined && snapshot.payload.doc.data().parentsemail[j] != undefined) {
+                      myposts.parentsemail.push(snapshot.payload.doc.data().parentsemail[j])
+                    } else {
+                      break;
+                    }
+                    j++;
+                  }
+
+
+                  this.myclassroom.push(myposts);
+                });
+              });
             }
 
-            /* this.profileservice.getprofile(user , useremail ).then(res =>{
-               if (res != 'error'){
-                 debugger
-                 let tempprofile = new profile();
-                 tempprofile = res as profile;
-                 this.userprofile.imgurl = tempprofile.imgurl;
-                 this.userprofile.username = tempprofile.username;
-                 this.userprofile.user = tempprofile.user;
-                 this.userprofile.useremail = useremail;
-               }
-             }).catch(err=>{
-       
-             });
-             */
-            this.afs.doc<profile>(user + "/" + useremail).snapshotChanges().forEach(snap => {
+            if (this.user != undefined && this.user != '') {
+              this.afs.doc<profile>(this.user + "/" + this.useremail).snapshotChanges().forEach(snap => {
+                if (snap.payload.exists) {
+                  let tempprofile = new profile();
+                  tempprofile = snap.payload.data() as profile;
+                  this.userprofile.imgurl = tempprofile.imgurl;
+                  this.userprofile.username = tempprofile.username;
+                  this.userprofile.user = tempprofile.user;
+                  this.userprofile.useremail = this.useremail;
+                }
+              })
+            }
+            this.afs.doc<profile>(this.user + "/" + this.useremail).snapshotChanges().take(1).forEach(snap => {
               if (snap.payload.exists) {
-                let tempprofile = new profile();
-                tempprofile = snap.payload.data() as profile;
-                this.userprofile.imgurl = tempprofile.imgurl;
-                this.userprofile.username = tempprofile.username;
-                this.userprofile.user = tempprofile.user;
-                this.userprofile.useremail = useremail;
+                let userinfo: profile = snap.payload.data();
+                this.username = userinfo.username;
               }
-            })
+            });
+
+
+
           });
         });
       }
+
+
+
     });
 
+    this.storage.get('classroom').then(res => {
+      this.classroom = res;
+    });
+    this.storage.get('classteacher').then(res => {
+      this.classteacher = res;
+    })
+
+    this.storage.get('email').then(val => {
+
+      this.useremail = val;
+
+
+      this.storage.get('user').then(occ => {
+
+        this.useroccupation = occ;
+        if (occ == 'parent') {
+          this.user = 'parents';
+        } else {
+          this.user = 'teachers';
+        }
+        debugger
+        this.afs.doc<profile>(this.user + "/" + this.useremail).snapshotChanges().take(1).forEach(snap => {
+          if (snap.payload.exists) {
+            let userinfo: profile = snap.payload.data();
+            this.username = userinfo.username;
+
+          }
+        });
+
+        if (this.user == 'parents') {
+          this.searchname = this.user;
+          this.classroomdoc = this.afs.collection<classroom>('classroom'
+            , ref => {
+              return ref.where("parentsemail", "array-contains", this.useremail); //.orderBy("teacheremail");
+            });
+          debugger
+          this.classroomdoc.snapshotChanges().forEach(snap => {
+
+            this.myclassroom = new Array<classroom>();
+            snap.forEach(snapshot => {
+
+              console.log(snapshot);
+              let myposts: classroom = snapshot.payload.doc.data() as classroom;
+
+              let j = 0;
+              myposts.parentsemail = [];
+              while (j > -1) {
+                if (snapshot.payload.doc.data().parentsemail != undefined && snapshot.payload.doc.data().parentsemail[j] != undefined) {
+                  myposts.parentsemail.push(snapshot.payload.doc.data().parentsemail[j])
+                } else {
+                  break;
+                }
+                j++;
+              }
+
+              if (myposts.parentsemail.length == undefined || myposts.parentsemail.length == 0) {
+                myposts.parentsemail = new Array<string>();
+              }
+
+              this.myclassroom.push(myposts);
+            });
+          });
+        } else if (this.user == 'teachers') {
+          this.searchname = this.user;
+          this.afs.collection<classroom>('classroom'
+            , ref => {
+              return ref.where("teacheremail", "==", this.useremail); //.orderBy("teacheremail");
+            }).snapshotChanges().forEach(snap => {
+            this.myclassroom = new Array<classroom>();
+            snap.forEach(snapshot => {
+              console.log(snapshot);
+              this.classfound = true;
+              let myposts: classroom = snapshot.payload.doc.data() as classroom;
+
+              let j = 0;
+              debugger
+              myposts.parentsemail = [];
+              
+              while (j > -1) {
+                if (snapshot.payload.doc.data() .parentsemail != undefined && snapshot.payload.doc.data() .parentsemail[j] != undefined) {
+                  myposts.parentsemail.push(snapshot.payload.doc.data() .parentsemail[j])
+                } else {
+                  break;
+                }
+                j++;
+              }
+
+
+              this.myclassroom.push(myposts);
+            });
+          });
+        }
+
+        if (this.user != undefined && this.user != '') {
+          this.afs.doc<profile>(this.user + "/" + this.useremail).snapshotChanges().forEach(snap => {
+            if (snap.payload.exists) {
+              let tempprofile = new profile();
+              tempprofile = snap.payload.data() as profile;
+              this.userprofile.imgurl = tempprofile.imgurl;
+              this.userprofile.username = tempprofile.username;
+              this.userprofile.user = tempprofile.user;
+              this.userprofile.useremail = this.useremail;
+            }
+          })
+        }
+      });
+    });
+
+    this.afs.collection<userprofile>('parents').snapshotChanges().forEach(snap => {
+      this.allparents = new Array<userprofile>();
+      snap.forEach(snapshot => {
+
+
+        if (snapshot.payload.doc.exists) {
+          let parent = new userprofile();
+          parent = snapshot.payload.doc.data() as userprofile;
+          let userprof: userprofile = new userprofile();
+          userprof.imgurl = parent.imgurl;
+          userprof.username = parent.username;
+          userprof.user = parent.user;
+          userprof.useremail = snapshot.payload.doc.id;
+
+          this.allparents.push(userprof);
+        }
+      })
+    })
+
+    this.afs.collection<userprofile>('teachers').snapshotChanges().forEach(snap => {
+      this.allteachers = new Array<userprofile>();
+      snap.forEach(snapshot => {
+
+
+        if (snapshot.payload.doc.exists) {
+          let teacher = new userprofile();
+          teacher = snapshot.payload.doc.data() as userprofile;
+          let userprof: userprofile = new userprofile();
+          userprof.imgurl = teacher.imgurl;
+          userprof.username = teacher.username;
+          userprof.user = teacher.user;
+          userprof.useremail = snapshot.payload.doc.id;
+
+          this.allteachers.push(userprof);
+        }
+      })
+    })
+
   }
+
+
+
+
+  watchStorage(): Observable<any> {
+    return this.storageSub.asObservable();
+  }
+
   presentAlert(alerttitle, alertsub) {
     let alert = this.alertCtrl.create({
       title: alerttitle,
@@ -197,7 +382,7 @@ export class HomeServiceProvider {
 
       let tempclass = new classroom();
       tempclass.teacheremail = teacherclass.email;
-      tempclass.parentsemail = [];
+      tempclass.parentsemail = new Array<string>();
       tempclass.section = teacherclass.section;
       tempclass.subject = teacherclass.subject;
       tempclass.classname = teacherclass.classname;
@@ -231,7 +416,6 @@ export class HomeServiceProvider {
   }
   findclassroom(docid: string) {
     return new Promise((resolve, reject) => {
-      // let id = this.afs.createId();
 
       this.afs.doc<classroom>('classroom/' + docid).get().take(1).subscribe(ref => {
         if (ref.exists) {
@@ -239,12 +423,22 @@ export class HomeServiceProvider {
 
           console.log(ref.data());
 
-          var data: any = ref.data();
+          var data: classroom = ref.data() as classroom;
+          let j = 0;
+          data.parentsemail = [];
+          while (j > 0) {
+            if (ref.data().parentsemail != undefined && ref.data().parentsemail[j] != undefined) {
+              data.parentsemail.push(ref.data().parentsemail[j])
+            } else {
+              break;
+            }
+            j++;
+          }
           console.log(data);
 
 
           if (data.parentsemail != undefined || data.parentsemail != null) {
-            debugger
+
             let index = data.parentsemail.indexOf(this.afAuth.auth.currentUser.email);
             console.log(index);
             if (index < 0) {
@@ -263,16 +457,19 @@ export class HomeServiceProvider {
                   data.parentsemail.push(this.afAuth.auth.currentUser.email)
 
                   let updatedclass = new classroom();
-                  updatedclass.teacheremail = data.email;
-                  updatedclass.parentsemail = [];
+                  updatedclass.teacheremail = data.teacheremail;
+                  updatedclass.parentsemail = data.parentsemail;
                   updatedclass.section = data.section;
                   updatedclass.subject = data.subject;
                   updatedclass.classname = data.classname;
                   updatedclass.imgurl = this.userprofile.imgurl;
-                  updatedclass.backgroundimg = data.backgrounimg;
+                  updatedclass.backgroundimg = data.backgroundimg;
                   updatedclass.classid = docid;
 
-                  this.afs.doc<classroom>('classroom/' + docid).update(updatedclass
+                  const objectclass = Object.assign({}, updatedclass);
+                  objectclass.parentsemail = Object.assign({}, updatedclass.parentsemail);
+
+                  this.afs.doc<classroom>('classroom/' + docid).update(objectclass
                   ).then(() => {
                     resolve('join')
                     this.loaderservice.dismissloading();
@@ -291,55 +488,9 @@ export class HomeServiceProvider {
             }
 
           } else {
-            this.loaderservice.loading = this.loaderservice.loadingCtrl.create({
+            this.loaderservice.dismissloading();
+            resolve('added');
 
-              content: `
-                <div class="custom-spinner-container">
-                  <div class="custom-spinner-box"> loading... </div>
-                </div>`,
-
-            });
-            setTimeout(() => {
-
-              this.loaderservice.loading.present().then(() => {
-
-                let parentsemail: Array<string> = [];
-                parentsemail.push(this.afAuth.auth.currentUser.email);
-
-                data.parentsemail = parentsemail;
-
-                try {
-
-                  let updatedclass = new classroom();
-                  updatedclass.teacheremail = data.email;
-                  updatedclass.parentsemail = [];
-                  updatedclass.section = data.section;
-                  updatedclass.subject = data.subject;
-                  updatedclass.classname = data.classname;
-                  updatedclass.imgurl = this.userprofile.imgurl;
-                  updatedclass.backgroundimg = data.backgrounimg;
-                  updatedclass.classid = docid;
-
-                  this.afs.doc<classroom>('classroom/' + docid).update(updatedclass).then(() => {
-
-                    resolve('join')
-                    this.loaderservice.dismissloading();
-                  }).catch(() => {
-
-                    reject('error')
-                    this.loaderservice.dismissloading();
-                  });
-                }
-                catch (e) {
-                  console.log(e);
-
-                }
-
-              }).catch(() => {
-                reject('error')
-                this.loaderservice.dismissloading();
-              })
-            }, 500);
           }
 
         } else {
@@ -350,12 +501,106 @@ export class HomeServiceProvider {
     });
   }
 
+
+  addparent(parentemail: string, docid: string) {
+    return new Promise((resolve, reject) => {
+      // let id = this.afs.createId();
+
+      this.afs.doc<classroom>('classroom/' + docid).get().take(1).subscribe(ref => {
+        if (ref.exists) {
+
+
+          console.log(ref.data());
+
+          var data: classroom = ref.data() as classroom;
+          let j = 0;
+          data.parentsemail = [];
+          while (j > 0) {
+            if (ref.data().parentsemail != undefined && ref.data().parentsemail[j] != undefined) {
+              data.parentsemail.push(ref.data().parentsemail[j])
+            } else {
+              break;
+            }
+            j++;
+          }
+          console.log(data);
+
+
+          if (data.parentsemail != undefined || data.parentsemail != null) {
+
+            let index = data.parentsemail.indexOf(parentemail);
+            console.log(index);
+            if (index < 0) {
+              this.loaderservice.loading = this.loaderservice.loadingCtrl.create({
+
+                content: `
+                <div class="custom-spinner-container">
+                  <div class="custom-spinner-box"> loading... </div>
+                </div>`,
+
+              });
+              setTimeout(() => {
+
+                this.loaderservice.loading.present().then(() => {
+
+                  data.parentsemail.push(parentemail);
+
+                  let updatedclass = new classroom();
+                  updatedclass.teacheremail = data.teacheremail;
+                  updatedclass.parentsemail = data.parentsemail;
+                  updatedclass.section = data.section;
+                  updatedclass.subject = data.subject;
+                  updatedclass.classname = data.classname;
+                  updatedclass.imgurl = this.userprofile.imgurl;
+                  updatedclass.backgroundimg = data.backgroundimg;
+                  updatedclass.classid = docid;
+
+                  const objectclass = Object.assign({}, updatedclass);
+                  objectclass.parentsemail = Object.assign({}, updatedclass.parentsemail);
+
+
+                  this.afs.doc<classroom>('classroom/' + docid).update(objectclass
+                  ).then(() => {
+
+                    resolve('added')
+                    this.loaderservice.dismissloading();
+                  }).catch((err) => {
+
+                    console.log(err);
+                    reject('error')
+                    this.loaderservice.dismissloading();
+                  });
+
+                }).catch((err) => {
+
+                  console.log(err);
+                  reject('error')
+                  this.loaderservice.dismissloading();
+                })
+              }, 500);
+            }
+
+          } else {
+            this.loaderservice.dismissloading();
+            resolve('added');
+
+          }
+
+        } else {
+
+          resolve('notfound');
+        }
+      });
+    });
+  }
+
+
   getchatusers(classname: string, teacheremail: string) {
 
     this.chatusers = [];
 
     this.myclassroom.forEach(element => {
-
+      debugger
       if (element.classname == classname && element.teacheremail == teacheremail) {
 
         element.parentsemail.forEach(ele => {

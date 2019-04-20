@@ -8,8 +8,8 @@ import { HomeServiceProvider } from '../providers/home-service/home-service';
 import { AngularFireAuth } from 'angularfire2/auth'
 import { App } from 'ionic-angular/components/app/app';
 import { Storage } from '@ionic/storage';
-import { StudentListPage } from '../pages/student-list/student-list';
 import { LoaderserviceProvider } from '../providers/loaderservice/loaderservice';
+//import { ProfileServiceProvider } from '../providers/profile-service/profile-service';
 
 
 export interface MenuItem {
@@ -32,7 +32,7 @@ export class MyApp {
   constructor(private alertctrl:AlertController,private loaderservice:LoaderserviceProvider,private modalctrl:ModalController,private storage:Storage,private homeservice:HomeServiceProvider,private app: App, platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public afauth: AngularFireAuth) {
     platform.ready().then(() => {
       
-   
+    // this.homeservice.storageSub.next('added-user');
 
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -192,6 +192,8 @@ export class MyApp {
     }
     this.storage.clear().then(val=>{
     this.afauth.auth.signOut();
+    this.homeservice.storageSub.next('removed-all');
+
     }).catch(err=>{
 
     });

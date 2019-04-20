@@ -91,10 +91,10 @@ export class TakeQuizPage {
     }
     
     this.quiz.questions = myquestion;
- //   this.quizno++;
+
   }
 
-  /// answers 
+ 
 
   this.myanswers.background = this.myquiz.background
   this.myanswers.classname = this.myquiz.classname
@@ -176,22 +176,20 @@ for (let i=0;i<this.myquiz.questions.length;i++){
       let sec = timeElapsed.getUTCSeconds()
       let ms = timeElapsed.getUTCMilliseconds();
     this.time =
-  //    this.zeroPrefix(hour, 2) + ":" +
+
       this.zeroPrefix(min, 2) + ":" +
       this.zeroPrefix(sec, 2) ; // + "." ;
       if (this.time == this.myquiz.quiztime){
         clearInterval(this.started); // interval closed
         
       }
-    //  this.zeroPrefix(ms, 3);
+   
     };
     
 
 
   selected_option(ques: number, op: number){
-    // for (let i=0;i<   this.myanswers.questions[ques].options.length;i++){
-    //   this.myanswers.questions[ques].options[i].myanswer = false;
-    // }
+  
     console.log(this.myanswers.questions[ques].options[op] + ' '+this.myanswers.questions[ques].options[op].myanswer)
     if (this.myanswers.questions[ques].options[op].myanswer == true)
     this.myanswers.questions[ques].options[op].myanswer = false;
@@ -199,79 +197,7 @@ for (let i=0;i<this.myquiz.questions.length;i++){
     this.myanswers.questions[ques].options[op].myanswer = true;
   }
   
-/*  delete_question(quesid: number){
-    if (quesid<0){
-      this.presentAlert('No Question Selected','');
-    }
-    else{
-    let confirm = this.alertCtrl.create({
-      title: 'Delete question',
-      message: 'Are you sure you want to delete this question?',
-      buttons: [
-        {
-          text: 'No',
-          handler: () => {
-            console.log('No clicked');
-          }
-        },
-        {
-          text: 'Yes',
-          handler: () => {
-         // question delete code here
-         let tempquiz: Quiz = new Quiz();
-         
-         tempquiz.background = this.myquiz.background
-         tempquiz.classname = this.myquiz.classname
-         tempquiz.classteacher = this.myquiz.classteacher
-         tempquiz.creationdate = this.myquiz.creationdate
-         tempquiz.scheduledate = this.myquiz.scheduledate
-         tempquiz.quizdescription = this.myquiz.quizdescription
-         tempquiz.quizname = this.myquiz.quizname
-         tempquiz.quiztype = this.myquiz.quiztype
-         tempquiz.syllabusid = this.myquiz.syllabusid
-     
-         for (let i = 0; i < this.myquiz.questions.length; i++) {
-           if (i ! = quesid){
-           let myquestion: Question = new Question();
-           myquestion.question = this.myquiz.questions[i].question;
-     
-           for (let j = 0; j < this.myquiz.questions[i].options.length; j++) {
-     
-             let myoption : Options = new Options();
-     
-             myoption.isanswer =this.myquiz.questions[i].options[j].isanswer
-             myoption.option =this.myquiz.questions[i].options[j].option
-     
-             myquestion.options.push(myoption)
-             
-           }
-     
-           tempquiz.questions.push(myquestion);}
-         }
-    
-         
-         this.quizservice.delete_question(tempquiz).then(res=>{
-           if (res=='done')
-           {
-            this.myquiz = tempquiz;
-            tempquiz = null;
-            this.presentAlert('Question Deleted ', 'Successfully')
-            this.quiz.questions = new Question();
-            this.backQuestion();
-           }else{
-            this.presentAlert('Error! ', ' Question Not Deleted')
-           }
-         }).catch(err=>{
-          this.presentAlert('Error! ', ' Question Not Deleted')
-         });
-          }
-        }
-      ]
-    });
-    confirm.present();
-  }
-  }
- */
+
   presentAlert(alerttitle, alertsub) {
     let alert = this.alertCtrl.create({
       title: alerttitle,
@@ -299,9 +225,8 @@ for (let i=0;i<this.myquiz.questions.length;i++){
         myquestion.options.push(myoption)
         
       }
-    //  this.quiz = new SingleQuiz();
+
       this.quiz.questions = myquestion;
-//      this.quizno++;
 
     }else{
       this.presentAlert('No more Questions ', ' :) ');

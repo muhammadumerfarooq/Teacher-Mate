@@ -55,7 +55,9 @@ export class ChatpublicPage {
               this.pushNewMsg(res[i]);
             }
           }
-          this.chatService.receivemessage(this.collectionid, this.user.toUserId, this.toUser.toUserId);
+          this.chatService.receivemessage(this.collectionid, this.user.toUserId, this.toUser.toUserId).then(val=>{
+            this.scrollToBottom();
+          });
         });
       });
 
@@ -125,7 +127,7 @@ export class ChatpublicPage {
     let newMsg: ChatMessage = {
       messageId: Date.now().toString(),
       userId: this.user.toUserId,
-      userName: this.user.toUserName,
+      userName: this.homeservice.username,
       userAvatar: this.homeservice.userprofile.imgurl,
       toUserId: this.toUser.toUserId,
       time: new Date(), //.getTime().toString(),
