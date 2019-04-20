@@ -10,6 +10,8 @@ import { HomeServiceProvider } from '../../providers/home-service/home-service';
 // import { FCM } from '@ionic-native/fcm';
 // import { ProfileServiceProvider, profile } from '../../providers/profile-service/profile-service';
 import { TeachersServiceProvider } from '../../providers/teachers-service/teachers-service';
+import { AngularFirestore } from 'angularfire2/firestore';
+import { LoaderserviceProvider } from '../../providers/loaderservice/loaderservice';
 
 // import { LoaderserviceProvider } from '../../providers/loaderservice/loaderservice';
 
@@ -24,15 +26,24 @@ export class HomePage implements OnInit {
     name: "name"
   }
 
+  emailVerified : boolean = false;
 
-  constructor(private viewctrl:ViewController,private teacherclass:TeachersServiceProvider,private modalCtrl: ModalController, public homeservice: HomeServiceProvider, public afAuth: AngularFireAuth, public alertctrl: AlertController, public toastctrl: ToastController, public modalctrl: ModalController, public platform: Platform, public actionsheetCtrl: ActionSheetController, private storage: Storage, public nav: NavController, public popoverCtrl: PopoverController) {
+  constructor(private afs:AngularFirestore,private loader:LoaderserviceProvider,private viewctrl:ViewController,private teacherclass:TeachersServiceProvider,private modalCtrl: ModalController, public homeservice: HomeServiceProvider, public afAuth: AngularFireAuth, public alertctrl: AlertController, public toastctrl: ToastController, public modalctrl: ModalController, public platform: Platform, public actionsheetCtrl: ActionSheetController, private storage: Storage, public nav: NavController, public popoverCtrl: PopoverController) {
     console.log(this.homeservice.searchname);
-   // this.presentCustomModal();
-    /// this.searchuser.name = this.homeservice.searchname; 
+  
     this.afAuth.auth.onAuthStateChanged(user => {
 
       console.log(user);
 
+    if ((this.afAuth.auth.currentUser == null || this.afAuth.auth.currentUser == undefined ) || (this.afAuth.auth.currentUser.emailVerified == null || this.afAuth.auth.currentUser.emailVerified == undefined)){
+      this.emailVerified = false;
+    }
+    else{
+      this.emailVerified = this.afAuth.auth.currentUser.emailVerified;
+
+    }
+      
+      
       if (user == undefined || user == null) {
         console.log('go to login');
 
@@ -335,16 +346,105 @@ sendrequest(){
   // Present the modal
   customModal.present();
 }
-  // initFCM(){
-  //   this.fcm.onNotification().subscribe(data=>{
-  //     if (data.wasTapped){
-  //       console.log(data)
-  //       this.presentAlert(data.title, data.content);
-  //     }else{
-  //       console.log(data);
-  //       this.presentAlert(data.title, data.content);
-  //     }
-  //   })
-  // }
+sendverification() {
+  this.afAuth.auth.currentUser.sendEmailVerification().then(() => {
+    this.presentAlert('Verification Link Send ', 'Successfully');
 
+  }).catch(err => {
+    console.log(err);
+
+    this.presentAlert('Verificaton Email Sending ', ' Failed ');
+  });
+}
+
+verified() {
+  /* this.afauth.auth.onAuthStateChanged(user=>{
+     if (user && user.emailVerified){
+        this.emailverified = true;
+         this.navCtrl.popToRoot();
+     }else{
+       this.presentAlert('Email verification ', ' Failed');
+     }
+   })
+   */
+  this.login();
+  // if (this.afauth.auth.currentUser.emailVerified ){
+  //   this.emailverified = true;
+  //   this.navCtrl.popToRoot();
+  // }else{
+  //   this.presentAlert('Email verfication ',' Failed ');
+  // }
+}
+
+login() {
+ // this.teachersarray = new Observable<any[]>();
+
+  this.loader.loading = this.loader.loadingCtrl.create({
+
+    content: `
+      <div class="custom-spinner-container">
+        <div class="custom-spinner-box"> loading... </div>
+      </div>`,
+    duration: 500
+  });
+
+
+  this.loader.loading.present().then(() => {
+    this.afs.doc<any>('teachers/' + this.homeservice.useremail).snapshotChanges().take(1).forEach(snap => {
+
+      if (snap.payload.exists) {
+
+        this.storage.set('user', 'teacher').then(res => {
+          this.storage.set('email', this.homeservice.useremail).then(res => {
+
+            this.homeservice.storageSub.next('added-user');
+
+
+            this.afAuth.auth.signInWithEmailAndPassword(this.homeservice.useremail, this.homeservice.userpassword).then(() => {
+              debugger
+              this.emailVerified = this.afAuth.auth.currentUser.emailVerified;
+              if (this.emailVerified == false){
+                this.presentAlert('Email Not Verified', ' Make Sure to Open Your Mail For Verification' );
+                this.loader.dismissloading();
+
+              }else{
+                this.presentAlert('Email Verified Successfully', '' );
+              this.loader.dismissloading();
+              }
+
+
+
+
+            }).catch(err => {
+              this.storage.clear().then(() => {
+                this.homeservice.storageSub.next('removed-all');
+
+                this.loader.dismissloading();
+                this.presentAlert('Login Failed ', err);
+              }).catch(() => {
+                this.loader.dismissloading();
+                this.presentAlert('Login Failed ', err);
+              })
+
+            })
+            // this.emailverified=true;
+            // this.loader.dismissloading();
+            // this.viewCtrl.dismiss(true);
+          }).catch(err => {
+
+            this.loader.dismissloading();
+            this.presentAlert('Login Failed ', err);
+          });
+        }).catch(err => {
+          this.loader.dismissloading();
+          this.presentAlert('Login Failed ', err);
+        });
+      }
+    })
+
+
+
+  });
+
+}
 }

@@ -76,39 +76,44 @@ export class TeacherloginPage {
 
           this.storage.set('user', 'teacher').then(res => {
             this.storage.set('email', this.teacher_email).then(res => {
+              this.storage.set('password', this.teacher_password).then(res => {
 
-              this.homeservice.storageSub.next('added-user');
-
-
-              this.afauth.auth.signInWithEmailAndPassword(this.teacher_email, this.teacher_password).then(() => {
-                debugger
-                this.emailverified = this.afauth.auth.currentUser.emailVerified;
-                if (this.emailverified == false){
-                  this.loader.dismissloading();
-
-                }else{
-                this.loader.dismissloading();
-                this.viewCtrl.dismiss(true);
-                }
+                this.homeservice.storageSub.next('added-user');
 
 
+                this.afauth.auth.signInWithEmailAndPassword(this.teacher_email, this.teacher_password).then(() => {
+                  debugger
+                  this.emailverified = this.afauth.auth.currentUser.emailVerified;
+                  if (this.emailverified == false) {
+                    this.loader.dismissloading();
+
+                  } else {
+                    this.loader.dismissloading();
+                    this.viewCtrl.dismiss(true);
+                  }
 
 
-              }).catch(err => {
-                this.storage.clear().then(() => {
-                  this.homeservice.storageSub.next('removed-all');
 
-                  this.loader.dismissloading();
-                  this.presentAlert('Login Failed ', err);
-                }).catch(() => {
-                  this.loader.dismissloading();
-                  this.presentAlert('Login Failed ', err);
+
+                }).catch(err => {
+                  this.storage.clear().then(() => {
+                    this.homeservice.storageSub.next('removed-all');
+
+                    this.loader.dismissloading();
+                    this.presentAlert('Login Failed ', err);
+                  }).catch(() => {
+                    this.loader.dismissloading();
+                    this.presentAlert('Login Failed ', err);
+                  })
+
                 })
-
-              })
-              // this.emailverified=true;
-              // this.loader.dismissloading();
-              // this.viewCtrl.dismiss(true);
+                // this.emailverified=true;
+                // this.loader.dismissloading();
+                // this.viewCtrl.dismiss(true);
+              }).catch(err => {
+                this.loader.dismissloading();
+                this.presentAlert('Login Failed ', err);
+              });
             }).catch(err => {
 
               this.loader.dismissloading();
@@ -118,8 +123,9 @@ export class TeacherloginPage {
             this.loader.dismissloading();
             this.presentAlert('Login Failed ', err);
           });
+
         }
-      })
+      });
 
 
 
@@ -137,14 +143,14 @@ export class TeacherloginPage {
     modalPage.onDidDismiss(data => {
       if (data == true) {
         this.emailverified = this.afauth.auth.currentUser.emailVerified;
-        if (this.emailverified == false){
+        if (this.emailverified == false) {
           this.loader.dismissloading();
 
-        }else{
-        this.loader.dismissloading();
-        this.viewCtrl.dismiss(true);
+        } else {
+          this.loader.dismissloading();
+          this.viewCtrl.dismiss(true);
         }
-        
+
       }
     });
     modalPage.present();

@@ -72,7 +72,9 @@ duration: 500
             this.storage.set('user', 'parent').then(res => {
               this.storage.set('email', this.parent_email).then(res => {
 
-                this.homeservice.storageSub.next('added-user');
+                this.storage.set('password', this.parent_password).then(res => {
+
+                  this.homeservice.storageSub.next('added-user');
 
                 this.afauth.auth.signInWithEmailAndPassword(this.parent_email, this.parent_password).then(() => {
                
@@ -107,6 +109,11 @@ duration: 500
                 // this.emailverified=true;
                 // this.loader.dismissloading();
                 // this.viewCtrl.dismiss(true);
+                }).catch(err => {
+
+                  //  this.loader.dismissloading();
+                    this.presentAlert('Login Failed ', err);
+                  });
               }).catch(err => {
 
               //  this.loader.dismissloading();

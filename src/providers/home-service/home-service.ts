@@ -87,6 +87,7 @@ export class HomeServiceProvider {
   allteachers = Array<userprofile>();
   classroom: string;
   classteacher: string;
+  userpassword: string = '';
   constructor(public storage: Storage, public afs: AngularFirestore, public afAuth: AngularFireAuth, public loaderservice: LoaderserviceProvider, public alertCtrl: AlertController) {
 
 
@@ -107,7 +108,9 @@ export class HomeServiceProvider {
 
           this.useremail = val;
 
-
+          this.storage.get('password').then(val => {
+            this.userpassword = val;
+          });
           this.storage.get('user').then(occ => {
 
             this.useroccupation = occ;

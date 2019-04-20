@@ -7,21 +7,21 @@
     <ion-title>
       <strong>My </strong> Classrooms
     </ion-title>
-    <ion-buttons end> 
-   
-      <div *ngIf = "this.homeservice.user == 'parents'">
-      <button   ion-button tappable  (click)="joinclassroom()" >
-        <ion-icon name="add-circle"  class="button-add" ></ion-icon> 
-      </button>
-            <button   ion-button tappable  (click)="sendrequest()" >
-        <ion-icon name="hand"  class="button-add" ></ion-icon> 
-      </button>
+    <ion-buttons end>
+
+      <div *ngIf="this.homeservice.user == 'parents'">
+        <button ion-button tappable (click)="joinclassroom()">
+          <ion-icon name="add-circle" class="button-add"></ion-icon>
+        </button>
+        <button ion-button tappable (click)="sendrequest()">
+          <ion-icon name="hand" class="button-add"></ion-icon>
+        </button>
 
       </div>
-      <div *ngIf = "this.homeservice.user == 'teachers'"> 
-      <button  ion-button tappable  (click)="classoptions()" >
-        <ion-icon name="arrow-dropdown-circle"  class="button-add" ></ion-icon> 
-      </button>
+      <div *ngIf="this.homeservice.user == 'teachers'">
+        <button ion-button tappable (click)="classoptions()">
+          <ion-icon name="arrow-dropdown-circle" class="button-add"></ion-icon>
+        </button>
       </div>
       <!-- 
        <button ion-button tappable class="chat-button" (click)="chatroom()" >
@@ -31,7 +31,7 @@
     </ion-buttons>
   </ion-navbar>
 </ion-header>
- 
+
 
 <!--
 <div class="navbar">
@@ -45,7 +45,7 @@
 
 <ion-content padding class="trips detail-bg">
 
-<!--
+  <!--
   <div class="chatbox">
   <button ion-button class="pull-right" tappable >
 <ion-icon name="chatbubbles"></ion-icon>
@@ -53,58 +53,84 @@
 </div>
 -->
   <!--list of trips-->
-  <div *ngIf="this.homeservice.classfound">
-  <div class="trip card" *ngFor="let myclass of this.homeservice.myclassroom" tappable (click)="viewClassroom(myclass.classname, myclass.teacheremail)" margin-bottom>
-    <div class="background border-bottom" [ngStyle]="{'background-image': 'url(' + myclass.backgroundimg+ ')'}"> 
-      <div class="background-filter rlt">
-        <div class="align-bottom" padding-left padding-right>
-          <h6 class="pull-top text-white" padding-top ion-text>{{myclass.classname}}</h6>
-                    <h6 class="pull-top text-white"  ion-text>{{myclass.section}}</h6>
-        <h6 class="pull-top text-white"  ion-text>{{myclass.email}}</h6>
-  
-      <!--    <div class="clear"></div> -->
-        </div>
-      <!--   <div class="align-bottom padding-la primary-lg"> -->
-           <ion-toolbar class="profile">
+  <div *ngIf="this.homeservice.classfound && emailverified">
+    <div class="trip card" *ngFor="let myclass of this.homeservice.myclassroom" tappable
+      (click)="viewClassroom(myclass.classname, myclass.teacheremail)" margin-bottom>
+      <div class="background border-bottom" [ngStyle]="{'background-image': 'url(' + myclass.backgroundimg+ ')'}">
+        <div class="background-filter rlt">
+          <div class="align-bottom" padding-left padding-right>
+            <h6 class="pull-top text-white" padding-top ion-text>{{myclass.classname}}</h6>
+            <h6 class="pull-top text-white" ion-text>{{myclass.section}}</h6>
+            <h6 class="pull-top text-white" ion-text>{{myclass.email}}</h6>
 
-             <ion-grid>
-               <ion-row>
+            <!--    <div class="clear"></div> -->
+          </div>
+          <!--   <div class="align-bottom padding-la primary-lg"> -->
+          <ion-toolbar class="profile">
+
+            <ion-grid>
+              <ion-row>
                 <ion-col col-4>
                   <div class="user-avatar">
-                     <img [src]="myclass.imgurl">
-                  </div> 
-         
+                    <img [src]="myclass.imgurl">
+                  </div>
+
                 </ion-col>
-         
-               </ion-row>
 
-        
-              </ion-grid>
+              </ion-row>
 
-           </ion-toolbar>
-    
-      <!--  </div> -->
-        
+
+            </ion-grid>
+
+          </ion-toolbar>
+
+          <!--  </div> -->
+
+        </div>
+
       </div>
-   
-    </div>
-   
-    <div class="padding-sm primary-bg">
-     <ion-icon name="" class="text-white"></ion-icon> 
-      <span ion-text class="text-white"></span>
-      <span class="pull-left" ion-text color="light">
-      <strong>Members</strong>  <span ion-text  class="text-green bold">50% OFF</span></span>
+
+      <div class="padding-sm primary-bg">
+        <ion-icon name="" class="text-white"></ion-icon>
+        <span ion-text class="text-white"></span>
+        <span class="pull-left" ion-text color="light">
+          <strong>Members</strong> <span ion-text class="text-green bold">50% OFF</span></span>
+      </div>
     </div>
   </div>
- </div> 
- <div *ngIf = "!this.homeservice.classfound"
-  [ngStyle]="{'margin-top':'inherit', 'align-items': 'center', 'justify-content': 'center', 'text-align': 'center'}" >
-    
-   <ion-icon name="sad" [ngStyle]="{'font-size': '50px'}"></ion-icon>
-   <p [ngStyle]="{'font-size': '10px'}">no class found </p>
- </div>
- 
-<!-- chat icon -->
- 
+  <div *ngIf="!this.homeservice.classfound && emailverified"
+    [ngStyle]="{'margin-top':'inherit', 'align-items': 'center', 'justify-content': 'center', 'text-align': 'center'}">
+
+    <ion-icon name="sad" [ngStyle]="{'font-size': '50px'}"></ion-icon>
+    <p [ngStyle]="{'font-size': '10px'}">no class found </p>
+  </div>
+
+  <div class="scroll-content" *ngIf="!emailverified">
+
+
+
+    <!-- Logo -->
+
+
+    <div text-center class="animated fadeInDownverify">
+      <div class="logo"></div>
+      <h2 ion-text class="text-primary">
+        <strong>Verify </strong> your Account
+      </h2>
+      <div text-center margin-top>
+        <span ion-text color="secondary" tappable (click)="sendverification()"> <strong>Send Verfication
+            Link</strong></span>
+      </div>
+      <div [ngStyle]="{'padding-top':'30px'}">
+        <span padding-top ion-text color="primary" tappable (click)="verified()"> <strong>Verified?</strong></span>
+      </div>
+    </div>
+
+
+  </div>
+
+
+  <!-- chat icon -->
+
 
 </ion-content>
