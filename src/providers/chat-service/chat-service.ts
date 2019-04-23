@@ -19,21 +19,21 @@ import { chats, userprofile, HomeServiceProvider } from '../home-service/home-se
 @Injectable()
 export class ChatServiceProvider {
 
-  teachers: AngularFirestoreCollection<any>; 
+  teachers: AngularFirestoreCollection<any>;
   parents: AngularFirestoreCollection<any>;
-  constructor(private homeservice:HomeServiceProvider,public storage:Storage,public afauth:AngularFireAuth, public afs: AngularFirestore, public loaderservice:LoaderserviceProvider) {
+  constructor(private homeservice: HomeServiceProvider, public storage: Storage, public afauth: AngularFireAuth, public afs: AngularFirestore, public loaderservice: LoaderserviceProvider) {
 
-    
-    this.teachers =  this.afs.collection('/teachers');
+
+    this.teachers = this.afs.collection('/teachers');
     this.parents = this.afs.collection('/parents')
     console.log('Hello ChatServiceProvider Provider');
   }
 
-  teacherimgurl(email:string): userprofile {
+  teacherimgurl(email: string): userprofile {
     let profile: userprofile = new userprofile();
 
-    this.homeservice.allteachers.forEach(teacher=>{
-      if (email == teacher.useremail){
+    this.homeservice.allteachers.forEach(teacher => {
+      if (email == teacher.useremail) {
         profile = teacher;
         return profile;
       }
@@ -41,129 +41,232 @@ export class ChatServiceProvider {
     return profile;
   }
 
-  parentimgurl(email:string): userprofile {
-    
+  parentimgurl(email: string): userprofile {
+
     let profile: userprofile = new userprofile();
-    this.homeservice.allparents.forEach(parent=>{
-      if (email == parent.useremail){
+    this.homeservice.allparents.forEach(parent => {
+      if (email == parent.useremail) {
         profile = parent;
         return profile;
       }
     });
     return profile;
   }
-  getall(chatusers: chats[]): Observable<any[]> {
-  //  console.log('in chat service')
-  
-  this.loaderservice.loading = this.loaderservice.loadingCtrl.create({
-          
-    content: `
+  // Observable<any[]>
+  getall(chatusers: chats[]) {
+    //  console.log('in chat service')
+    return new Promise((resolve, reject) => {
+
+
+      this.loaderservice.loading = this.loaderservice.loadingCtrl.create({
+
+        content: `
       <div class="custom-spinner-container">
         <div class="custom-spinner-box"> loading... </div>
       </div>`,
-
-  });
-  let friends: Array<any> = [];
-  this.storage.get('user').then((val) => {
-    if (val == 'parent'){ 
-console.log(val, chatusers);
-
-      this.loaderservice.loading.present().then(res=> {
-        setTimeout(() => {
-
-  this.teachers.snapshotChanges().forEach(snap=>{
-    if (snap.length>0){
-    snap.forEach(snapshot=>{
-      
-      
-      chatusers.forEach(element => {
-       if( element.useremail == snapshot.payload.doc.id){
-
-      
-        let teacherprofile: userprofile  = new userprofile();
-        teacherprofile = this.teacherimgurl(snapshot.payload.doc.id);
-
-        let data={
-          id: snapshot.payload.doc.id,
-          user: 'teacher',
-          userurl:teacherprofile.imgurl
-        };
-        friends.push(data);
-        
-       }
+        duration: 1500
       });
-    
-    });
-  }
-  });
-this.loaderservice.loading.dismiss();
-}, 1500 );
-return (of(friends));
-});
-    }else if (val == 'teacher'){
-        this.loaderservice.loading.present().then(res=> {
+      let friends: Array<any>[] = [];
+      this.loaderservice.loading.present().then(res => {
         setTimeout(() => {
-          
-  this.teachers.snapshotChanges().forEach(snap=>{
-    if (snap.length>0){
-    snap.forEach(snapshot=>{
-      
-      
-      chatusers.forEach(element => {
-       if( element.useremail == snapshot.payload.doc.id && element.useremail != this.afauth.auth.currentUser.email ){
+          /*
        
-        let teacherprofile: userprofile  = new userprofile();
-        teacherprofile = this.teacherimgurl(snapshot.payload.doc.id);
-        let data={
-          id: snapshot.payload.doc.id,
-          user: 'teacher',
-          userurl: teacherprofile.imgurl
-        };
-        friends.push(data);
-        
-       }
-      });
-    
-    });
-  }
-  });
- // console.log('res')
-    this.parents.snapshotChanges().forEach(snap=>{
-      snap.forEach(snapshot=>{
-       console.log(snapshot.payload.doc.id, chatusers)
-       chatusers.forEach(element => {
-         
-        if( element.useremail == snapshot.payload.doc.id ){
-        
-          let parentprofile: userprofile  = new userprofile();
-          parentprofile = this.parentimgurl(snapshot.payload.doc.id);
-        
-         let data={
-           id: snapshot.payload.doc.id,
-           user: 'parent',
-           userurl: parentprofile.imgurl
-         };
-         friends.push(data);
-         
-        }
+         this.storage.get('user').then((val) => {
+           if (val == 'parent'){ 
+       console.log(val, chatusers);
+       
+             this.loaderservice.loading.present().then(res=> {
+               setTimeout(() => {
+       
+         this.teachers.snapshotChanges().forEach(snap=>{
+           if (snap.length>0){
+           snap.forEach(snapshot=>{
+             
+             
+             chatusers.forEach(element => {
+              if( element.useremail == snapshot.payload.doc.id){
+       
+             
+               let teacherprofile: userprofile  = new userprofile();
+               teacherprofile = this.teacherimgurl(snapshot.payload.doc.id);
+       
+               let data={
+                 id: snapshot.payload.doc.id,
+                 user: 'teacher',
+                 userurl:teacherprofile.imgurl
+               };
+               friends.push(data);
+               
+              }
+             });
+           
+           });
+         }
+         });
+       this.loaderservice.loading.dismiss();
+       }, 1500 );
+       return (of(friends));
        });
-        
-      });  
-})
+           }else if (val == 'teacher'){
+               this.loaderservice.loading.present().then(res=> {
+               setTimeout(() => {
+                 
+         this.teachers.snapshotChanges().forEach(snap=>{
+           if (snap.length>0){
+           snap.forEach(snapshot=>{
+             
+             
+             chatusers.forEach(element => {
+              if( element.useremail == snapshot.payload.doc.id && element.useremail != this.afauth.auth.currentUser.email ){
+              
+               let teacherprofile: userprofile  = new userprofile();
+               teacherprofile = this.teacherimgurl(snapshot.payload.doc.id);
+               let data={
+                 id: snapshot.payload.doc.id,
+                 user: 'teacher',
+                 userurl: teacherprofile.imgurl
+               };
+               friends.push(data);
+               
+              }
+             });
+           
+           });
+         }
+         });
+         */
 
-// console.log('async')
+          // console.log('res')
+          if (this.homeservice.user == "parents") {
 
-this.loaderservice.loading.dismiss();
-}, 1500 );
-return (of(friends));
-})
-    }
-  });
+
+            let teachersize = this.parents.get.length;
+
+            this.teachers.get().forEach(snap => {
+              friends = [];
+              teachersize = snap.docs.length;
+
+              snap.forEach(snapshot => {
+                console.log(snapshot.id, chatusers)
+
+                chatusers.forEach(element => {
+                  if (element.useremail == snapshot.id) {
+
+                    let teacherprofile: userprofile = new userprofile();
+                    teacherprofile = this.teacherimgurl(snapshot.id);
+
+                    let data: any = {
+                      id: snapshot.id,
+                      user: 'teacher',
+                      userurl: teacherprofile.imgurl
+                    };
+                    if (data.id != this.homeservice.useremail) {
+                      friends.push(data);
+
+                    }
+                    //   size --;
+                  }
+                });
+                teachersize--;
+                if (teachersize == 0) {
+                  return resolve((friends))
     
- console.log('friends');
-return (of(friends));
+                }
+              });
+            })
+          
+          }
+
+          else if (this.homeservice.user == "teachers") {
+
+            let parentsize = this.parents.get.length;
+            let teachersize = this.teachers.get.length;
+
+            this.teachers.get().forEach(snap => {
+              friends = [];
+              teachersize = snap.docs.length;
+
+              snap.forEach(snapshot => {
+
+
+                console.log(snapshot.id, chatusers)
+                chatusers.forEach(element => {
+
+                  if (element.useremail == snapshot.id) {
+
+                    let teacherprofile: userprofile = new userprofile();
+                    teacherprofile = this.teacherimgurl(snapshot.id);
+
+                    let data: any = {
+                      id: snapshot.id,
+                      user: 'teacher',
+                      userurl: teacherprofile.imgurl
+                    };
+                    friends.push(data);
+                    //   size --;
+                  }
+                });
+                teachersize--;
+
+              });
+              //  return resolve((friends))
+            })
+
+            this.parents.get().forEach(snap => {
+              friends = [];
+              //console.log(this.parents.get.length)
+              //console.log(snap.docs.length)
+              parentsize = snap.docs.length;
+
+              snap.forEach(snapshot => {
+                console.log(snapshot.id, chatusers)
+                chatusers.forEach(element => {
+
+                  if (element.useremail == snapshot.id) {
+
+                    let parentprofile: userprofile = new userprofile();
+                    parentprofile = this.parentimgurl(snapshot.id);
+
+                    let data: any = {
+                      id: snapshot.id,
+                      user: 'parent',
+                      userurl: parentprofile.imgurl
+                    };
+                    if (this.homeservice.useremail != data.id) {
+                      friends.push(data);
+                    }
+
+                    //   size --;
+                  }
+                });
+                parentsize--;
+if (parentsize == 0){
+  return resolve((friends))
 
 }
+              });
+              // return resolve((friends))
+            })
 
-  
+            
+          }
+
+
+          // console.log('async')
+
+          //   this.loaderservice.loading.dismiss();
+
+        }, 1200);
+
+        //   return new Promise((friends));
+      })
+      console.log('friends');
+
+
+    });
+  }
+
+
+
+
 }

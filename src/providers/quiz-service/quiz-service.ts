@@ -46,7 +46,9 @@ export class Quiz {
   background: string;
   available: boolean;
   onweek: string;
+  attempted:boolean;
   constructor() {
+    this.attempted = false;
     this.onweek = '';
     this.background = '';
     this.scheduledate = '';
@@ -74,8 +76,15 @@ export class QuizAnswer {
   creationdate: string;
   scheduledate: string;
   background: string;
-  quiztaken: string;
+//  quiztaken: string;
+  attempted : boolean;
+  useremail: string;
+  score: number;
+
   constructor() {
+
+    this.useremail = '';
+    this.attempted = false;
     this.background = '';
     this.scheduledate = '';
     this.questions = new Array<QuestionAnswer>();
@@ -84,7 +93,7 @@ export class QuizAnswer {
     this.syllabusid = "";
     this.creationdate = new Date().toString();
     this.quiztime = '';
-    this.quiztaken = '';
+    this.score = 0;
   }
 
 }
@@ -183,18 +192,17 @@ export class QuizServiceProvider {
                 quiz.quiztype = coursetemp.quiztype;
                 quiz.syllabusid = coursetemp.syllabusid;
                 quiz.quiztime = coursetemp.quiztime
-
+                quiz.attempted = coursetemp.attempted;
                 /// available or not 
 
-                let start = moment(new Date(), "YYYY-MM-DD");
-
-                let end = moment(coursetemp.scheduledate, "YYYY-MM-DD");
+                let end = moment(new Date(), "YYYY-MM-DD");
+                // coursetemp.scheduledate = "2019-04-13";
+                let start = moment(coursetemp.scheduledate, "YYYY-MM-DD");
 
                 console.log(start.diff(end, 'minutes'))
                 console.log(start.diff(end, 'hours'))
                 console.log(start.diff(end, 'days'))
                 console.log(start.diff(end, 'weeks'))
-
                 if (start.diff(end, 'weeks')<1 || start.diff(end, 'weeks') == 0 ){
                   quiz.available = true;
                 }else{

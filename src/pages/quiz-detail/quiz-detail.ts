@@ -15,7 +15,7 @@ export class SingleQuiz {
   quizname: string;
   quizdescription: string;
   quiztype: string;
-  questions: Question;
+  questions: QuestionAnswer;
   classname: string;
   classteacher: string;
   syllabusid: string;
@@ -27,7 +27,7 @@ export class SingleQuiz {
     this.quizno = 0;
     this.background = '';
     this.scheduledate = '';
-    this.questions = new Question();
+    this.questions = new QuestionAnswer();
     this.classname = "";
     this.classteacher = "";
     this.syllabusid = "";
@@ -219,7 +219,7 @@ export class QuizDetailPage {
             this.myquiz = tempquiz;
             tempquiz = null;
             this.presentAlert('Question Deleted ', 'Successfully')
-            this.quiz.questions = new Question();
+            this.quiz.questions = new QuestionAnswer();
             this.backQuestion();
            }else{
             this.presentAlert('Error! ', ' Question Not Deleted')
@@ -311,6 +311,7 @@ export class QuizDetailPage {
           text: 'Yes',
           handler: () => {
             clearInterval(this.started);
+            this.reset();
           }
         }
       ]

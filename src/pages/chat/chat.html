@@ -45,7 +45,7 @@
 
 <ion-content padding-top class="content">
   <ion-list>
-    <ion-item-sliding [ngStyle]="{'background':'transparent'}" #sliding *ngFor="let friend of friends | async">
+    <ion-item-sliding [ngStyle]="{'background':'transparent'}" #sliding *ngFor="let friend of friends ">
       <ion-item class="item-ion" (click)="goToChatRoom(friend)">
         <ion-avatar item-start>
           <img [src]="friend.userurl">

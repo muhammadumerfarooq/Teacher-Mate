@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, ViewController } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth'
 import { AngularFirestore } from 'angularfire2/firestore';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { ChatServiceProvider } from '../../providers/chat-service/chat-service';
 import { ChatpublicServiceProvider } from '../../providers/chatpublic-service/chatpublic-service';
 import { HomeServiceProvider } from '../../providers/home-service/home-service';
@@ -23,15 +23,22 @@ export class ChatPage {
 
   user: string = '';
   toUser : {toUserId: string, toUserName: string};
-  friends: Observable<any[]>;
+  friends: Array<any>[] = []; //Observable<any[]>;
   constructor(public viewctrl:ViewController,private modalctrl:ModalController,private storage: Storage, private homeservice :HomeServiceProvider,private chatpublicservice: ChatpublicServiceProvider,public chatservice:ChatServiceProvider, public afauth:AngularFireAuth, public afs: AngularFirestore, public navCtrl: NavController, public navParams: NavParams) {
     
-    this.friends = this.chatservice.getall(this.homeservice.chatusers);
-    
-    this.friends.subscribe(res=>{
-      console.log(res);
+    this.chatservice.getall(this.homeservice.chatusers).then((res: Array<any>[]) =>{
       
-    })
+if (res !=null && res !=undefined){
+      console.log(res);
+      res.forEach(element => {
+        this.friends.push(element);
+      });
+    }
+    }).catch(err=>{
+      console.log(err);
+    });
+    
+    
     this.storage.get('user').then(v=>{
       
       if (v=='parent'){
@@ -52,11 +59,12 @@ export class ChatPage {
 
   goToChatRoom(friend: any) {
     console.log(friend);
-    this.storage.get('user').then(val=>{
+    
+    let val = this.homeservice.user;
       let user = "";
-      if (val == 'parent'){
+      if (val == 'parents'){
         user = 'parent';
-      }else if (val == 'teacher'){
+      }else if (val == 'teachers'){
         user = 'teacher'
       }
       this.chatpublicservice.findfriendcol(friend,user ).then(res=>{
@@ -87,7 +95,7 @@ export class ChatPage {
     
       });
   
-    })
+    
     
     
    // this.navCtrl.push('ChatRoomPage', {friend});

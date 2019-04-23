@@ -43,7 +43,7 @@ export class ChatpublicPage {
     this.chatService.getUserInfo()
       .then((res) => {
         this.user = res
-
+     //   this.chatService.msgList = [];  
         this.chatService.getallmessages(this.collectionid).then(res => {
           console.log(res);
           

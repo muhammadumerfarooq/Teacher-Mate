@@ -79,7 +79,7 @@ export class SignupModalPage {
       this.afauth.auth.createUserWithEmailAndPassword(this.email, this.password).then(val=>{
         this.storage.set('user','teacher');
         this.storage.set('email',this.email).then(()=>{
-          debugger
+          
           this.storage.set('password',this.password).then(()=>{
             this.homeservice.storageSub.next('added-user');
             let info = {

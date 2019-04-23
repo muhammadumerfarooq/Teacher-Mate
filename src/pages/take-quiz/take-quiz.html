@@ -11,6 +11,7 @@
   </ion-navbar>
 </ion-header>
 
+
 <ion-content class="content">
   <ion-row padding-top class="category-concept-details" [style.background-color]="myquiz.background">
     <ion-col no-padding col-12>
@@ -64,6 +65,11 @@
             <ion-badge class="call-out-tag">{{myquiz.quiztime}}</ion-badge>
 
       </div>
+       <div *ngIf= "myanwers.attempted">
+      <span class="call-out-explanation"> Takes Total Time of  </span>
+            <ion-badge class="call-out-tag">ATTEMPTED</ion-badge>
+
+      </div>
     </h3>
 
     <ion-list class="questions-list">
@@ -102,6 +108,7 @@
                   {{option.option}}
  
                 </div>
+                
                 <!--  <ion-label text-wrap >{{option.option}}
                   </ion-label>
 

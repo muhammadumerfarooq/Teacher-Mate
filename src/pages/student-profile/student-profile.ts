@@ -43,71 +43,82 @@ export class StudentProfilePage {
     <div class="custom-spinner-container">
       <div class="custom-spinner-box"> loading... </div>
     </div>`,
-
+duration: 800
     });
     setTimeout(() => {
       this.loader.loading.present().then(() => {
 
 
-        this.storage.get('user').then(user => {
-          if (user == 'parent') {
-            this.user = 'parent';
-            this.storage.get('email').then(email => {
-              this.studentprofile.parentemail = email;
-              
-              // getting class name and teacher
-              this.storage.get('classroom').then(classname => {
-                
-                this.studentprofile.classname = classname;
-                this.storage.get('classteacher').then(classteacher => {
-                  
-                  this.studentprofile.classteacher = classteacher;
-                  this.loader.dismissloading();
-                }).catch(() => {
-                  
-                  this.loader.dismissloading();
-                });
+       // this.storage.get('user').then(user => {
 
-              }).catch(() => {
+          if (this.homeservice.user == 'parents') {
+            this.user = 'parent';
+      //      this.storage.get('email').then(email => {
+      
+              this.studentprofile.parentemail = this.homeservice.useremail;
+              this.homeservice.allparents.forEach(snap=>{
+               if(snap.useremail == this.homeservice.useremail)
+               {  
+                 this.selectedparent.username = snap.username;
+                 this.selectedparent.imgurl = snap.imgurl;
+                 this.selectedparent.user = snap.user;
+                 this.selectedparent.useremail = snap.useremail;
+               }
+              })
+              // getting class name and teacher
+             // this.storage.get('classroom').then(classname => {
                 
-                this.loader.dismissloading();
-              });
+                this.studentprofile.classname = this.homeservice.classroom;
+          //    this.storage.get('classteacher').then(classteacher => {
+                  
+                  this.studentprofile.classteacher = this.homeservice.classteacher;
+               //   this.loader.dismissloading();
+
+              //   }).catch(() => {
+                  
+              //     this.loader.dismissloading();
+              //   });
+
+              // }).catch(() => {
+                
+              //   this.loader.dismissloading();
+              // });
 
               // this.loader.dismissloading();
-            }).catch(() => {
-              this.loader.dismissloading();
-            })
+            // }).catch(() => {
+            //   this.loader.dismissloading();
+            // })
 
 
 
           } else {
             this.user = 'teacher';
             // getting class name and teacher
-            this.storage.get('classroom').then(classname => {
+          //  this.storage.get('classroom').then(classname => {
               
-              this.studentprofile.classname = classname;
-              this.storage.get('classteacher').then(classteacher => {
+           //   this.studentprofile.classname = classname;
+          //    this.storage.get('classteacher').then(classteacher => {
                 
-                this.studentprofile.classteacher = classteacher;
-                this.loader.dismissloading();
-              }).catch(() => {
+                this.studentprofile.classteacher = this.homeservice.classteacher;
+           //     this.loader.dismissloading();
+            //   }).catch(() => {
                 
-                this.loader.dismissloading();
-              });
+            //     this.loader.dismissloading();
+            //   });
 
-            }).catch(() => {
+            // }).catch(() => {
               
-              this.loader.dismissloading();
-            });
+            //   this.loader.dismissloading();
+            // });
 
 
             //  this.loader.dismissloading();
           }
 
 
-        }).catch(() => {
-          this.loader.dismissloading();
-        });
+        // }).catch(() => {
+        //   this.loader.dismissloading();
+        // });
       });
     }, 1000);
   }

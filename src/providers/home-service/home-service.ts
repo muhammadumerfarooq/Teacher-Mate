@@ -105,20 +105,20 @@ export class HomeServiceProvider {
 
       }
       else if (data == 'verified') {
-        debugger
+
         this.storage.get('verified').then(val => {
           this.emailVerified = val;
 
         });
       }
       else if (data == 'added-user') {
-        
+
         this.storage.get('email').then(val => {
 
           this.useremail = val;
 
           this.storage.get('password').then(val => {
-            
+
             this.userpassword = val;
           });
           this.storage.get('user').then(occ => {
@@ -133,16 +133,11 @@ export class HomeServiceProvider {
 
             if (this.user == 'parents') {
               this.searchname = this.user;
-              this.classroomdoc = this.afs.collection<classroom>('classroom'
-                , ref => {
-                  return ref.where("parentsemail", "array-contains", this.useremail); //.orderBy("teacheremail");
-                });
-              this.classroomdoc.snapshotChanges().subscribe(snap => {
+              this.afs.collection<classroom>('classroom').snapshotChanges().subscribe(snap => {
                 this.myclassroom = new Array<classroom>();
                 snap.forEach(snapshot => {
 
                   console.log(snapshot);
-                  this.classfound = true;
                   let myposts: classroom = snapshot.payload.doc.data() as classroom;
 
 
@@ -156,9 +151,13 @@ export class HomeServiceProvider {
                     }
                     j++;
                   }
-                  
 
-                  this.myclassroom.push(myposts);
+                  if (myposts.parentsemail.indexOf(this.useremail)>-1) {
+                    this.myclassroom.push(myposts);
+                    this.classfound = true;
+
+
+                  }
                 });
               });
             } else if (this.user == 'teachers') {
@@ -172,7 +171,9 @@ export class HomeServiceProvider {
                 this.myclassroom = new Array<classroom>();
                 snap.forEach(snapshot => {
                   console.log(snapshot);
+
                   this.classfound = true;
+
                   let myposts: classroom = snapshot.payload.doc.data() as classroom;
 
 
@@ -230,30 +231,30 @@ export class HomeServiceProvider {
     })
 
     this.storage.get('email').then(val => {
-
+      
       this.useremail = val;
 
 
       this.storage.get('password').then(val => {
-        
+      //  debugger
         this.userpassword = val;
       });
 
       this.storage.get('verified').then(val => {
-        
+      //  debugger
         this.emailVerified = val;
       });
-      
-      this.storage.get('user').then(occ => {
 
+      this.storage.get('user').then(occ => {
         this.useroccupation = occ;
         if (occ == 'parent') {
           this.user = 'parents';
         } else {
           this.user = 'teachers';
         }
-        
+
         this.afs.doc<profile>(this.user + "/" + this.useremail).snapshotChanges().take(1).forEach(snap => {
+
           if (snap.payload.exists) {
             let userinfo: profile = snap.payload.data();
             this.username = userinfo.username;
@@ -263,16 +264,11 @@ export class HomeServiceProvider {
 
         if (this.user == 'parents') {
           this.searchname = this.user;
-          this.classroomdoc = this.afs.collection<classroom>('classroom'
-            , ref => {
-              return ref.where("parentsemail", "array-contains", this.useremail); //.orderBy("teacheremail");
-            });
           
-          this.classroomdoc.snapshotChanges().forEach(snap => {
+          this.afs.collection<classroom>('classroom').snapshotChanges().forEach(snap => {
 
             this.myclassroom = new Array<classroom>();
             snap.forEach(snapshot => {
-
               console.log(snapshot);
               let myposts: classroom = snapshot.payload.doc.data() as classroom;
 
@@ -290,8 +286,13 @@ export class HomeServiceProvider {
               if (myposts.parentsemail.length == undefined || myposts.parentsemail.length == 0) {
                 myposts.parentsemail = new Array<string>();
               }
+              
+              if (myposts.parentsemail.indexOf(this.useremail)>-1){
+                this.myclassroom.push(myposts);
+                this.classfound = true;
+                console.log(this.emailVerified)
 
-              this.myclassroom.push(myposts);
+              }
             });
           });
         } else if (this.user == 'teachers') {
@@ -300,29 +301,29 @@ export class HomeServiceProvider {
             , ref => {
               return ref.where("teacheremail", "==", this.useremail); //.orderBy("teacheremail");
             }).snapshotChanges().forEach(snap => {
-            this.myclassroom = new Array<classroom>();
-            snap.forEach(snapshot => {
-              console.log(snapshot);
-              this.classfound = true;
-              let myposts: classroom = snapshot.payload.doc.data() as classroom;
+              this.myclassroom = new Array<classroom>();
+              snap.forEach(snapshot => {
+                console.log(snapshot);
+                this.classfound = true;
+                let myposts: classroom = snapshot.payload.doc.data() as classroom;
 
-              let j = 0;
-              
-              myposts.parentsemail = [];
-              
-              while (j > -1) {
-                if (snapshot.payload.doc.data() .parentsemail != undefined && snapshot.payload.doc.data() .parentsemail[j] != undefined) {
-                  myposts.parentsemail.push(snapshot.payload.doc.data() .parentsemail[j])
-                } else {
-                  break;
+                let j = 0;
+
+                myposts.parentsemail = [];
+
+                while (j > -1) {
+                  if (snapshot.payload.doc.data().parentsemail != undefined && snapshot.payload.doc.data().parentsemail[j] != undefined) {
+                    myposts.parentsemail.push(snapshot.payload.doc.data().parentsemail[j])
+                  } else {
+                    break;
+                  }
+                  j++;
                 }
-                j++;
-              }
 
 
-              this.myclassroom.push(myposts);
+                this.myclassroom.push(myposts);
+              });
             });
-          });
         }
 
         if (this.user != undefined && this.user != '') {
@@ -405,8 +406,8 @@ export class HomeServiceProvider {
 
       let tempclass = new classroom();
       tempclass.teacheremail = teacherclass.email;
-      tempclass.parentsemail = new Array<string>();
-      tempclass.section = teacherclass.section;
+      tempclass.parentsemail = [],
+        tempclass.section = teacherclass.section;
       tempclass.subject = teacherclass.subject;
       tempclass.classname = teacherclass.classname;
       tempclass.imgurl = this.userprofile.imgurl;
@@ -449,7 +450,7 @@ export class HomeServiceProvider {
           var data: classroom = ref.data() as classroom;
           let j = 0;
           data.parentsemail = [];
-          while (j > 0) {
+          while (j > -1) {
             if (ref.data().parentsemail != undefined && ref.data().parentsemail[j] != undefined) {
               data.parentsemail.push(ref.data().parentsemail[j])
             } else {
@@ -538,7 +539,7 @@ export class HomeServiceProvider {
           var data: classroom = ref.data() as classroom;
           let j = 0;
           data.parentsemail = [];
-          while (j > 0) {
+          while (j > -1) {
             if (ref.data().parentsemail != undefined && ref.data().parentsemail[j] != undefined) {
               data.parentsemail.push(ref.data().parentsemail[j])
             } else {
@@ -626,11 +627,15 @@ export class HomeServiceProvider {
       if (element.classname == classname && element.teacheremail == teacheremail) {
 
         element.parentsemail.forEach(ele => {
+     
+          if(ele != this.useremail && this.user != 'parents'){
           let val: chats = {
             useremail: ele,
             user: 'parent'
           };
+          
           this.chatusers.push(val);
+        }
         });
 
       }

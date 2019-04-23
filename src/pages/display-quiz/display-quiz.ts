@@ -28,7 +28,7 @@ export class DisplayQuizPage {
     this.quizinfo = this.navParams.get('quizinfo');
 
     this.quizservice.getquiz(this.quizinfo.topicname);
-
+  //  this.quizservice.myquizes[0].attempted
   }
 
   ionViewDidLoad() {
@@ -41,7 +41,7 @@ export class DisplayQuizPage {
   openDetails(myquiz: Quiz) {
     console.log(myquiz);
     
-if (this.homeservice.user == 'parent'  && myquiz.available == true){
+if (this.homeservice.user == 'parents'  && myquiz.available == true){
   var modalPage = this.modalctrl.create('TakeQuizPage', { myquiz: myquiz });
   modalPage.onDidDismiss(data => {
     if (data == true) {
@@ -51,10 +51,10 @@ if (this.homeservice.user == 'parent'  && myquiz.available == true){
 
   });
   modalPage.present();
-}else if (this.homeservice.user == 'parent'  && myquiz.available == false){
+}else if (this.homeservice.user == 'parents'  && myquiz.available == false){
   this.presentAlert('Quiz is not Available In This Week','')
 }
-  else if (this.homeservice.user == 'teacher') {
+  else if (this.homeservice.user == 'teachers') {
    modalPage = this.modalctrl.create('QuizDetailPage', { myquiz: myquiz });
   modalPage.onDidDismiss(data => {
     if (data == true) {

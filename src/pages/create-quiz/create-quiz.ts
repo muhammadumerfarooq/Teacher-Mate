@@ -180,14 +180,14 @@ export class CreateQuizPage {
 
   setDate() {
     this.quizservice.quizes_datediff();
-debugger
+
     let lastdate = '';
     if (this.quizservice.Dates.length > 0) {
       lastdate = this.quizservice.Dates[this.quizservice.Dates.length - 1];
 
-      var start = moment(lastdate, "YYYY-MM-DD");
+      var start = moment(this.mydate, "YYYY-MM-DD");
 
-      var end = moment(this.mydate, "YYYY-MM-DD");
+      var end = moment(lastdate, "YYYY-MM-DD");
 
       console.log(start.diff(end, 'minutes'))
       console.log(start.diff(end, 'hours'))

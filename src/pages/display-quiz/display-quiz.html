@@ -33,17 +33,24 @@
           <h2 class="category-title">{{ Quiz.quizname }} </h2>
         </ion-col>
         <ion-col no-padding col-4>
-        
-<div *ngIf="Quiz.available" [ngStyle]="{'text-align':'right'}">
-          <ion-badge class="query-tag">READY</ion-badge>
+
+          
+          <div *ngIf="Quiz.available" [ngStyle]="{'text-align':'right'}">
+            <ion-badge class="query-tag">READY</ion-badge>
           </div>
+
+<!--          <div *ngIf="!Quiz.attempted && Quiz.available" [ngStyle]="{'text-align':'right'}">
+            <ion-badge class="query-tag">READY -- NOT ATTEMPTED</ion-badge>
+          </div>
+-->
           <div *ngIf="!Quiz.available" [ngStyle]="{'text-align':'right'}">
-          <ion-badge class="query-tag">WEEK-{{Quiz.onweek}}</ion-badge>
+            <ion-badge class="query-tag">WEEK-{{Quiz.onweek}}</ion-badge>
           </div>
+
         </ion-col>
 
       </ion-row>
-      
+
 
 
     </ion-card-header>

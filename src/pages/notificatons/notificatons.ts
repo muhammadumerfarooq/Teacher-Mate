@@ -73,6 +73,7 @@ export class NotificatonsPage {
             this.homeservice.addparent(notifications.useremail,notifications.classid).then(res=>{
               if (res=='added'){
                 this.presentAlert('User '+notifications.useremail+ ' Added in Class','');
+                this.homeservice.getchatusers(this.homeservice.classroom, this.homeservice.classteacher);
               }else if (res=='notfound'){
                 this.presentAlert('User '+notifications.useremail+ 'Account Not Exists ','');
 

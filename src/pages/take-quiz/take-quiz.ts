@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, AlertController, Option } from 'ionic-angular';
 import { QuizServiceProvider, Quiz, QuestionAnswer, OptionsAnswer, QuizAnswer, Question, Options } from '../../providers/quiz-service/quiz-service';
 import { isThisMinute } from 'date-fns';
+import { AnswerServiceProvider } from '../../providers/answer-service/answer-service';
 
 /**
  * Generated class for the TakeQuizPage page.
@@ -16,19 +17,21 @@ export class SingleQuiz {
   quizname: string;
   quizdescription: string;
   quiztype: string;
-  questions: Question;
+  questions: QuestionAnswer;
   classname: string;
   classteacher: string;
   syllabusid: string;
   creationdate: string;
   scheduledate: string;
   background: string;
+  attempted:boolean;
   constructor() {
+    this.attempted= false;
     this.quiztime = '';
     this.quizno = 0;
     this.background = '';
     this.scheduledate = '';
-    this.questions = new Question();
+    this.questions = new QuestionAnswer();
     this.classname = "";
     this.classteacher = "";
     this.syllabusid = "";
@@ -56,7 +59,7 @@ export class TakeQuizPage {
   public time = "00:00"
   public myanswers: QuizAnswer;
 
-  constructor(private alertCtrl:AlertController, private viewctrl: ViewController, public navCtrl: NavController, public navParams: NavParams, private quizservice: QuizServiceProvider) {
+  constructor(private answerservice:AnswerServiceProvider,private alertCtrl:AlertController, private viewctrl: ViewController, public navCtrl: NavController, public navParams: NavParams, private quizservice: QuizServiceProvider) {
    
     this.myanswers = new QuizAnswer();
     this.myquiz = new Quiz();
@@ -73,6 +76,7 @@ export class TakeQuizPage {
     this.quiz.quiztype = this.myquiz.quiztype
     this.quiz.syllabusid = this.myquiz.syllabusid
     this.quiz.quiztime = this.myquiz.quiztime
+    this.quiz.attempted = this.myquiz.attempted;
 
   if (this.myquiz.questions.length>0){
     let myquestion: QuestionAnswer = new QuestionAnswer();
@@ -106,6 +110,7 @@ export class TakeQuizPage {
   this.myanswers.quiztype = this.myquiz.quiztype
   this.myanswers.syllabusid = this.myquiz.syllabusid
   this.myanswers.quiztime = this.myquiz.quiztime
+  this.myanswers.attempted = this.myquiz.attempted;
 
 for (let i=0;i<this.myquiz.questions.length;i++){
   
@@ -136,17 +141,54 @@ for (let i=0;i<this.myquiz.questions.length;i++){
   }
 
   start() {
-    if(this.running) return;
-    if (this.timeBegan === null) {
-        this.reset();
-        this.timeBegan = new Date();
+    if (this.myanswers.attempted == true)
+    {
+      let confirm = this.alertCtrl.create({
+        title: 'Take Quiz Again',
+        message: 'Are you sure you want to Take this Quiz Again?',
+        buttons: [
+          {
+            text: 'No',
+            handler: () => {
+              console.log('No clicked');
+            }
+          },
+          {
+            text: 'Yes',
+            handler: () => {
+              /// quiz again 
+
+              if(this.running) return;
+              if (this.timeBegan === null) {
+                  this.reset();
+                  this.timeBegan = new Date();
+              }
+              if (this.timeStopped !== null) {
+                let newStoppedDuration:any = (+new Date() - this.timeStopped)
+                this.stoppedDuration = this.stoppedDuration + newStoppedDuration;
+              }
+              this.started = setInterval(this.clockRunning.bind(this), 10);
+                this.running = true;
+
+            }
+          }
+        ]
+      });
+      confirm.present();
+    }else{
+      if(this.running) return;
+      if (this.timeBegan === null) {
+          this.reset();
+          this.timeBegan = new Date();
+      }
+      if (this.timeStopped !== null) {
+        let newStoppedDuration:any = (+new Date() - this.timeStopped)
+        this.stoppedDuration = this.stoppedDuration + newStoppedDuration;
+      }
+      this.started = setInterval(this.clockRunning.bind(this), 10);
+        this.running = true;
     }
-    if (this.timeStopped !== null) {
-      let newStoppedDuration:any = (+new Date() - this.timeStopped)
-      this.stoppedDuration = this.stoppedDuration + newStoppedDuration;
-    }
-    this.started = setInterval(this.clockRunning.bind(this), 10);
-      this.running = true;
+   
     }
     stop() {
       this.running = false;
@@ -190,11 +232,17 @@ for (let i=0;i<this.myquiz.questions.length;i++){
 
   selected_option(ques: number, op: number){
   
-    console.log(this.myanswers.questions[ques].options[op] + ' '+this.myanswers.questions[ques].options[op].myanswer)
-    if (this.myanswers.questions[ques].options[op].myanswer == true)
-    this.myanswers.questions[ques].options[op].myanswer = false;
-    else
+    console.log(this.quiz.questions.options[op].option + ' '+this.quiz.questions.options[op].myanswer)
+    if (this.quiz.questions.options[op].myanswer == true) {
+      this.myanswers.questions[ques].options[op].myanswer = false;
+      this.quiz.questions.options[op].myanswer = false;
+      
+    }
+    else{
+    this.quiz.questions.options[op].myanswer = true;
     this.myanswers.questions[ques].options[op].myanswer = true;
+
+    }
   }
   
 
@@ -258,10 +306,11 @@ for (let i=0;i<this.myquiz.questions.length;i++){
     }
    }
 
+ 
    completequiz(){
     let confirm = this.alertCtrl.create({
-      title: 'Delete question',
-      message: 'Are you sure you want to delete this question?',
+      title: 'End Quiz',
+      message: 'Are you sure you want to End this Quiz?',
       buttons: [
         {
           text: 'No',
@@ -272,12 +321,32 @@ for (let i=0;i<this.myquiz.questions.length;i++){
         {
           text: 'Yes',
           handler: () => {
+            this.calculating_score();
             clearInterval(this.started);
-            
+            this.reset();
+            this.myanswers.attempted = true;
+            this.presentAlert('You Scored '+this.myanswers.score ,' out of '+this.myanswers.questions.length);
+            this.answerservice.insert_Answer(this.myanswers).then(res=>{
+
+              this.presentAlert('Your Quiz is Saved','');
+            }).catch(err=>{
+              this.presentAlert('Error Saving Quiz',' ');
+            });
           }
         }
       ]
     });
     confirm.present();
+   }
+
+   calculating_score(){
+    this.myanswers.score  = 0;
+     this.myanswers.questions.forEach(quest=>{
+      quest.options.forEach(opt=>{
+        if (opt.isanswer == true && opt.myanswer == true){
+          this.myanswers.score ++;
+        }
+      })
+     })
    }
 }

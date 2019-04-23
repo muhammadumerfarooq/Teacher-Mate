@@ -82,7 +82,7 @@ export class TeacherloginPage {
 
 
                 this.afauth.auth.signInWithEmailAndPassword(this.teacher_email, this.teacher_password).then(() => {
-                  debugger
+                  
                   this.emailverified = this.afauth.auth.currentUser.emailVerified;
                   if (this.emailverified == false) {
   //                  this.loader.dismissloading();

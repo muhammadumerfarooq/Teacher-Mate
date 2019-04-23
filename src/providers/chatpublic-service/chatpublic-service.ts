@@ -54,8 +54,8 @@ export class ChatpublicServiceProvider {
     this.Allfriends = this.afs.collection('/chatroom');
 
   }
-
   receivemessage(colid: string, friendname: string, userid: string ) {
+  
   return new Promise((resolve,reject)=>{
      setTimeout(() => {
        
@@ -66,7 +66,7 @@ export class ChatpublicServiceProvider {
       return ref.where('toUserId','==',friendname)
     }).snapshotChanges().forEach(snap=>{
       snap.forEach(snapshot=>{
-        if (this.msgList.indexOf(snapshot.payload.doc.data())){
+        if (this.msgList.indexOf(snapshot.payload.doc.data() as ChatMessage)){
          // chatlist.push(snapshot.payload.doc.data());
         
          console.log( snapshot.payload.doc.data())
@@ -75,7 +75,7 @@ export class ChatpublicServiceProvider {
        let index = this.getMsgIndexById(snapshot.payload.doc.data().messageId);
        if (index == -1) {
         snapshot.payload.doc.data().status = 'success';
-         this.pushNewMsg( snapshot.payload.doc.data(), userid , friendname);
+         this.pushNewMsg( snapshot.payload.doc.data() as ChatMessage, userid , friendname);
        }
 
         }
@@ -251,6 +251,7 @@ getUserInfo(): Promise<UserInfo> {
 }
 
 getallmessages(colid:string): Promise<any[]>{
+  this.msgList = [];
   this.loaderservice.loading = this.loaderservice.loadingCtrl.create({
           
     content: `
@@ -268,16 +269,21 @@ getallmessages(colid:string): Promise<any[]>{
    
   this.afs.collection<ChatMessage>('/'+colid, ref=>{
     return ref.orderBy('time','asc');
-  }).snapshotChanges().take(1).forEach(snap=>{
+  }).get().take(1).forEach(snap=>{
+    console.log(snap.docs.length)
     snap.forEach(snapshot=>{
-      
-      messages.push(snapshot.payload.doc.data());
+
+
+      let tempchat:ChatMessage = snapshot.data() as ChatMessage;
+      messages.push(tempchat);
 
     })
-  }).then(val=>{
     console.log('in getall');
     resolve(messages);
   })
+ // .then(val=>{
+
+ // })
 
   this.loaderservice.loading.dismiss();
 }, 1500);

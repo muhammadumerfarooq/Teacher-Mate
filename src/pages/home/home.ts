@@ -21,17 +21,17 @@ import { LoaderserviceProvider } from '../../providers/loaderservice/loaderservi
 })
 export class HomePage implements OnInit {
 
-  images :  String[] = [];
+  images: String[] = [];
   public searchuser = {
     name: "name"
   }
 
-  emailVerified : boolean = false;
+  emailVerified: boolean = false;
 
-  constructor(private afs:AngularFirestore,private loader:LoaderserviceProvider,private viewctrl:ViewController,private teacherclass:TeachersServiceProvider,private modalCtrl: ModalController, public homeservice: HomeServiceProvider, public afAuth: AngularFireAuth, public alertctrl: AlertController, public toastctrl: ToastController, public modalctrl: ModalController, public platform: Platform, public actionsheetCtrl: ActionSheetController, private storage: Storage, public nav: NavController, public popoverCtrl: PopoverController) {
+  constructor(private afs: AngularFirestore, private loader: LoaderserviceProvider, private viewctrl: ViewController, private teacherclass: TeachersServiceProvider, private modalCtrl: ModalController, public homeservice: HomeServiceProvider, public afAuth: AngularFireAuth, public alertctrl: AlertController, public toastctrl: ToastController, public modalctrl: ModalController, public platform: Platform, public actionsheetCtrl: ActionSheetController, private storage: Storage, public nav: NavController, public popoverCtrl: PopoverController) {
     console.log(this.homeservice.searchname);
 
-    
+
     this.afAuth.auth.onAuthStateChanged(user => {
 
       this.loader.loading = this.loader.loadingCtrl.create({
@@ -42,49 +42,75 @@ export class HomePage implements OnInit {
           </div>`,
         duration: 500
       });
-    
-    
+
+
       this.loader.loading.present().then(() => {
 
-      console.log(user);
+        console.log(user);
 
-    if ((this.afAuth.auth.currentUser == null || this.afAuth.auth.currentUser == undefined ) || (this.afAuth.auth.currentUser.emailVerified == null || this.afAuth.auth.currentUser.emailVerified == undefined)){
-      this.emailVerified = false;
-    }
-    else{
-      this.emailVerified = this.afAuth.auth.currentUser.emailVerified;
-
-    }
-      
-      
-      if (user == undefined || user == null) {
-        console.log('go to login');
-
-        
-       this.storage.clear();
-        var modalPage = this.modalCtrl.create('LoginmenuPage');
-        console.log('opening modal');
-        modalPage.onDidDismiss(data=>{
-          if (data == true)
-          {
-            console.log(data+" login menu home ");
-         //   this.viewctrl.dismiss();
+        if ((this.afAuth.auth.currentUser == null || this.afAuth.auth.currentUser == undefined) || (this.afAuth.auth.currentUser.emailVerified == null || this.afAuth.auth.currentUser.emailVerified == undefined)) {
+          this.emailVerified = false;
+        }
+        else {
+          if (this.homeservice.useremail == null || this.homeservice.useremail == undefined) {
+            this.homeservice.useremail = this.afAuth.auth.currentUser.email;
           }
-        });
-        
-        modalPage.present();
+          if (this.homeservice.emailVerified == null || this.homeservice.emailVerified == undefined || this.homeservice.emailVerified == false) {
+            this.homeservice.emailVerified = this.afAuth.auth.currentUser.emailVerified;
+          }
+
+          this.emailVerified = this.afAuth.auth.currentUser.emailVerified;
+          if (this.homeservice.userprofile.useremail == null || this.homeservice.userprofile.useremail == undefined) {
+     
+              console.log('go to login');
+      
+              
+             this.storage.clear();
+              var callmodalPage = this.modalCtrl.create('LoginmenuPage');
+              console.log('opening modal');
+              callmodalPage.onDidDismiss(data=>{
+                if (data == true)
+                {
+                  console.log(data+" login menu home ");
+               //   this.viewctrl.dismiss();
+                }
+              });
+              
+              callmodalPage.present();
+      
+      
+      
+          }
+        }
 
 
-      }
+        if (user == undefined || user == null) {
+          console.log('go to login');
 
+
+          this.storage.clear();
+          var modalPage = this.modalCtrl.create('LoginmenuPage');
+          console.log('opening modal');
+          modalPage.onDidDismiss(data => {
+            if (data == true) {
+              console.log(data + " login menu home ");
+              //   this.viewctrl.dismiss();
+            }
+          });
+
+          modalPage.present();
+
+
+        }
+
+      });
     });
-  });
   }
 
   ngOnInit() {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
-   
+
     // console.log(this.fcm);
 
     //   this.initFCM();
@@ -93,9 +119,9 @@ export class HomePage implements OnInit {
   ionViewWillEnter() {
     // this.search.pickup = "Rio de Janeiro, Brazil";
     // this.search.dropOff = "Same as pickup";
-    
-    
-    
+
+
+
   }
 
   // go to result page
@@ -124,8 +150,8 @@ export class HomePage implements OnInit {
 
   viewClassroom(classname: any, classteacher: any) {
     this.homeservice.getchatusers(classname, classteacher);
-    this.storage.set('classroom', classname).then(()=>{
-      this.storage.set('classteacher', classteacher).then(()=>{
+    this.storage.set('classroom', classname).then(() => {
+      this.storage.set('classteacher', classteacher).then(() => {
         this.homeservice.storageSub.next('class-added');
 
         this.nav.push('TabsPage')
@@ -276,7 +302,7 @@ export class HomePage implements OnInit {
             } else {
               section = data.section;
             }
-            
+
 
             this.images.push('assets/img/trip/thumb/brown.jpg');
             this.images.push('assets/img/trip/thumb/brushes.jpg');
@@ -286,7 +312,7 @@ export class HomePage implements OnInit {
             this.images.push('assets/img/trip/thumb/ltblue.jpg');
             this.images.push('assets/img/trip/thumb/beakers.jpg');
 
-            const randid = Math.floor(Math.random() * 6); 
+            const randid = Math.floor(Math.random() * 6);
             let teacherclass = {
               email: this.afAuth.auth.currentUser.email,
               classname: classname,
@@ -300,19 +326,19 @@ export class HomePage implements OnInit {
               if (res == 'error') {
                 this.presentAlert('Error', 'Cannot Create Classroom');
               } else {
-           //     this.nav.push('TimelinePage');
+                //     this.nav.push('TimelinePage');
 
                 this.homeservice.getchatusers(classname, teacherclass.teachername);
-                this.storage.set('classroom', classname).then(()=>{
-                  this.storage.set('classteacher',  teacherclass.teachername).then(()=>{
+                this.storage.set('classroom', classname).then(() => {
+                  this.storage.set('classteacher', teacherclass.teachername).then(() => {
                     this.homeservice.storageSub.next('class-added');
 
                     this.nav.push('TabsPage')
                   });
 
                 });
-              
-              
+
+
 
               }
 
@@ -341,129 +367,130 @@ export class HomePage implements OnInit {
     let customModal = this.modalCtrl.create('CustomModalPage');
 
     customModal.onDidDismiss((val) => {
-        // Do what you want ...
-        console.log(val);
+      // Do what you want ...
+      console.log(val);
     });
 
     // Present the modal
     customModal.present();
-}
+  }
 
-sendrequest(){
-  let customModal = this.modalCtrl.create('SendRequestPage');
+  sendrequest() {
+    let customModal = this.modalCtrl.create('SendRequestPage');
 
-  customModal.onDidDismiss((val) => {
+    customModal.onDidDismiss((val) => {
       // Do what you want ...
       console.log(val);
-  });
+    });
 
-  // Present the modal
-  customModal.present();
-}
-sendverification() {
-  this.afAuth.auth.currentUser.sendEmailVerification().then(() => {
-    this.presentAlert('Verification Link Send ', 'Successfully');
+    // Present the modal
+    customModal.present();
+  }
+  sendverification() {
+    this.afAuth.auth.currentUser.sendEmailVerification().then(() => {
+      this.presentAlert('Verification Link Send ', 'Successfully');
 
-  }).catch(err => {
-    console.log(err);
+    }).catch(err => {
+      console.log(err);
 
-    this.presentAlert('Verificaton Email Sending ', ' Failed ');
-  });
-}
+      this.presentAlert('Verificaton Email Sending ', ' Failed ');
+    });
+  }
 
-verified() {
-  /* this.afauth.auth.onAuthStateChanged(user=>{
-     if (user && user.emailVerified){
-        this.emailverified = true;
-         this.navCtrl.popToRoot();
-     }else{
-       this.presentAlert('Email verification ', ' Failed');
-     }
-   })
-   */
-  this.login();
-  // if (this.afauth.auth.currentUser.emailVerified ){
-  //   this.emailverified = true;
-  //   this.navCtrl.popToRoot();
-  // }else{
-  //   this.presentAlert('Email verfication ',' Failed ');
-  // }
-}
+  verified() {
+    /* this.afauth.auth.onAuthStateChanged(user=>{
+       if (user && user.emailVerified){
+          this.emailverified = true;
+           this.navCtrl.popToRoot();
+       }else{
+         this.presentAlert('Email verification ', ' Failed');
+       }
+     })
+     */
+    this.login();
+    // if (this.afauth.auth.currentUser.emailVerified ){
+    //   this.emailverified = true;
+    //   this.navCtrl.popToRoot();
+    // }else{
+    //   this.presentAlert('Email verfication ',' Failed ');
+    // }
+  }
 
-login() {
- // this.teachersarray = new Observable<any[]>();
+  login() {
+    // this.teachersarray = new Observable<any[]>();
 
-  this.loader.loading = this.loader.loadingCtrl.create({
+    this.loader.loading = this.loader.loadingCtrl.create({
 
-    content: `
+      content: `
       <div class="custom-spinner-container">
         <div class="custom-spinner-box"> loading... </div>
       </div>`,
-    duration: 500
-  });
+      duration: 500
+    });
 
 
-  this.loader.loading.present().then(() => {
-    debugger
-    this.afs.doc<any>('teachers/' + this.homeservice.useremail).snapshotChanges().take(1).forEach(snap => {
+    this.loader.loading.present().then(() => {
 
-      if (snap.payload.exists) {
+      this.afs.doc<any>('teachers/' + this.homeservice.useremail).snapshotChanges().take(1).forEach(snap => {
 
-        // this.storage.set('user', 'teacher').then(res => {
-        //   this.storage.set('email', this.homeservice.useremail).then(res => {
+        if (snap.payload.exists) {
 
-           // this.homeservice.storageSub.next('added-user');
+          // this.storage.set('user', 'teacher').then(res => {
+          //   this.storage.set('email', this.homeservice.useremail).then(res => {
 
-
-            this.afAuth.auth.signInWithEmailAndPassword(this.homeservice.useremail, this.homeservice.userpassword).then(() => {
-              
-              this.emailVerified = this.afAuth.auth.currentUser.emailVerified;
-              if (this.emailVerified == false){
-                this.presentAlert('Email Not Verified', ' Make Sure to Open Your Mail For Verification' );
-       //         this.loader.dismissloading();
-
-              }else{
-                this.presentAlert('Email Verified Successfully', '' );
-                this.emailVerified = true;
-                this.storage.set('verified',true).then(()=>{
-                  this.homeservice.storageSub.next('verified');
-                })
-     //         this.loader.dismissloading();
-              }
+          // this.homeservice.storageSub.next('added-user');
 
 
+          this.afAuth.auth.signInWithEmailAndPassword(this.homeservice.useremail, this.homeservice.userpassword).then(() => {
 
+            this.emailVerified = this.afAuth.auth.currentUser.emailVerified;
+             
+            if (this.emailVerified == false) {
+              this.presentAlert('Email Not Verified', ' Make Sure to Open Your Mail For Verification');
+              //         this.loader.dismissloading();
 
-            }).catch(err => {
-              this.storage.clear().then(() => {
-                this.homeservice.storageSub.next('removed-all');
-
-           //     this.loader.dismissloading();
-                this.presentAlert('Login Failed ', err);
-              }).catch(() => {
-         //       this.loader.dismissloading();
-                this.presentAlert('Login Failed ', err);
+            } else {
+              this.presentAlert('Email Verified Successfully', '');
+              this.emailVerified = true;
+              this.storage.set('verified', true).then(() => {
+                this.homeservice.storageSub.next('verified');
               })
+              //         this.loader.dismissloading();
+            }
 
+
+
+
+          }).catch(err => {
+            this.storage.clear().then(() => {
+              this.homeservice.storageSub.next('removed-all');
+
+              //     this.loader.dismissloading();
+              this.presentAlert('Login Failed ', err);
+            }).catch(() => {
+              //       this.loader.dismissloading();
+              this.presentAlert('Login Failed ', err);
             })
-            // this.emailverified=true;
-            // this.loader.dismissloading();
-            // this.viewCtrl.dismiss(true);
-        //   }).catch(err => {
 
-        //     this.loader.dismissloading();
-        //     this.presentAlert('Login Failed ', err);
-        //   });
-        // }).catch(err => {
-        //   this.loader.dismissloading();
-        //   this.presentAlert('Login Failed ', err);
-        // });
-      }
-    })
+          })
+          // this.emailverified=true;
+          // this.loader.dismissloading();
+          // this.viewCtrl.dismiss(true);
+          //   }).catch(err => {
+
+          //     this.loader.dismissloading();
+          //     this.presentAlert('Login Failed ', err);
+          //   });
+          // }).catch(err => {
+          //   this.loader.dismissloading();
+          //   this.presentAlert('Login Failed ', err);
+          // });
+        }
+      })
 
 
 
-  });
+    });
 
-}
+  }
 }
