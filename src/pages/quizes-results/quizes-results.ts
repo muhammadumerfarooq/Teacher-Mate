@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, ModalController } from 'ionic-angular';
-import { AnswerServiceProvider } from '../../providers/answer-service/answer-service';
-import { StudentProvider, student } from '../../providers/student/student';
-import { HomeServiceProvider } from '../../providers/home-service/home-service';
 import { LoaderserviceProvider } from '../../providers/loaderservice/loaderservice';
+import { student, StudentProvider } from '../../providers/student/student';
+import { HomeServiceProvider } from '../../providers/home-service/home-service';
+import { AnswerServiceProvider } from '../../providers/answer-service/answer-service';
 
 /**
- * Generated class for the TakenQuizesPage page.
+ * Generated class for the QuizesResultsPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -14,11 +14,12 @@ import { LoaderserviceProvider } from '../../providers/loaderservice/loaderservi
 
 @IonicPage()
 @Component({
-  selector: 'page-taken-quizes',
-  templateUrl: 'taken-quizes.html',
+  selector: 'page-quizes-results',
+  templateUrl: 'quizes-results.html',
 })
-export class TakenQuizesPage {
+export class QuizesResultsPage {
 
+  
   studentslist: Array<student> = [];
 
   answerslist: Array<any>= []; 
@@ -31,7 +32,7 @@ export class TakenQuizesPage {
 
   }> = []; */
 
-  constructor(private viewCtrl:ViewController,private modalctrl:ModalController,private viewctrl:ViewController,private loaderservice: LoaderserviceProvider, private student_service: StudentProvider, private homeservice: HomeServiceProvider, public navCtrl: NavController, public navParams: NavParams, private answers_service: AnswerServiceProvider) {
+  constructor(private modalctrl:ModalController,private viewctrl:ViewController,private loaderservice: LoaderserviceProvider, private student_service: StudentProvider, private homeservice: HomeServiceProvider, public navCtrl: NavController, public navParams: NavParams, private answers_service: AnswerServiceProvider) {
     this.studentslist = new Array<student>();
 
 
@@ -55,7 +56,7 @@ export class TakenQuizesPage {
     this.student_service.allstudents.forEach(student => {
       this.answers_service.allanswers.forEach(answer => {
 
-        if (student.classteacher == answer.classteacher && student.classname == answer.classname && student.parentemail == this.homeservice.useremail) {
+        if (student.classteacher == answer.classteacher && student.classname == answer.classname) {
           let answers = {
             score: 0,
             total: 0,
@@ -63,7 +64,6 @@ export class TakenQuizesPage {
             creationdate: '',
             syllabusid:''
           }
-
           answers.creationdate = answer.creationdate;
           answers.imgurl = student.userurl;
           answers.score = answer.score;
@@ -82,7 +82,6 @@ export class TakenQuizesPage {
   viewctrl_dismiss(){
     this.viewctrl.dismiss();
   }
-
   quizResults(answer:any){
     this.answers_service.allanswers.forEach(result=>{
       if(result.classteacher == answer.classteacher && result.classname == answer.classname && result.useremail == result.useremail){
@@ -96,5 +95,6 @@ export class TakenQuizesPage {
         
       }
     })
+    
   }
 }

@@ -76,13 +76,13 @@ export class QuizAnswer {
   creationdate: string;
   scheduledate: string;
   background: string;
-//  quiztaken: string;
+  quiztimetaken: string;
   attempted : boolean;
   useremail: string;
   score: number;
 
   constructor() {
-
+    this.quiztimetaken = '';
     this.useremail = '';
     this.attempted = false;
     this.background = '';

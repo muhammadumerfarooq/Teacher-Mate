@@ -321,8 +321,10 @@ for (let i=0;i<this.myquiz.questions.length;i++){
         {
           text: 'Yes',
           handler: () => {
-            this.calculating_score();
             clearInterval(this.started);
+
+            this.myanswers.quiztimetaken = this.time;
+            this.calculating_score();
             this.reset();
             this.myanswers.attempted = true;
             this.presentAlert('You Scored '+this.myanswers.score ,' out of '+this.myanswers.questions.length);

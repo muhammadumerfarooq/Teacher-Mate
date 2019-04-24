@@ -12,6 +12,7 @@ import moment from 'moment';
 // import { ProfileServiceProvider } from '../profile-service/profile-service';
 import { HomeServiceProvider } from '../home-service/home-service';
 import { QuizAnswer, QuestionAnswer, OptionsAnswer } from '../quiz-service/quiz-service';
+import { StudentProvider } from '../student/student';
 
 
 /*
@@ -55,6 +56,7 @@ export class AnswerServiceProvider {
             quiz.quiztime = coursetemp.quiztime
             quiz.attempted = coursetemp.attempted;
             quiz.useremail = coursetemp.useremail;
+            quiz.score = coursetemp.score;
             /// available or not 
 
 
