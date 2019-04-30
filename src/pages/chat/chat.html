@@ -17,7 +17,7 @@
       <ion-icon name="menu"></ion-icon>
     </button> -->
     <ion-title>
-      <strong> Chats ({{user}}) </strong> 
+      <strong> Chats ({{this.homeservice.user}}) </strong> 
     </ion-title>
     <ion-buttons end> 
     
@@ -44,7 +44,7 @@
 
 
 <ion-content padding-top class="content">
-  <ion-list>
+  <ion-list [hidden]="this.friends.length == 0">
     <ion-item-sliding [ngStyle]="{'background':'transparent'}" #sliding *ngFor="let friend of friends ">
       <ion-item class="item-ion" (click)="goToChatRoom(friend)">
         <ion-avatar item-start>
@@ -55,4 +55,14 @@
    
     </ion-item-sliding>
   </ion-list>
+  <div *ngIf = " this.friends.length == 0 "
+    [ngStyle]="{'margin-top':'inherit', 'align-items': 'center', 'justify-content': 'center', 'text-align': 'center'}">
+
+<button [ngStyle]="{'background':'transparent'}" (click)="findchats()">
+    <ion-icon name="refresh" [ngStyle]="{'font-size': '50px'}"></ion-icon>
+</button>
+    <p [ngStyle]="{'font-size': '15px'}">No Parent Found </p>
+  </div>
+
+
 </ion-content>

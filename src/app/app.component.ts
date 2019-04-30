@@ -41,7 +41,7 @@ export class MyApp {
       this.storage.set('classroom','');
       this.storage.set('classteacher','');
       
-      this.storage.get('user').then(val=>{
+    /*  this.storage.get('user').then(val=>{
         if (val=='parent'){
           this.appMenuItems = [
             {title: 'Home', component: 'HomePage', icon: 'home'},
@@ -60,7 +60,7 @@ export class MyApp {
 
           ];
         }
-      })
+      })*/
     
       this.homeservice.userprofile.imgurl;
       this.homeservice.userprofile.username;
@@ -79,14 +79,42 @@ export class MyApp {
    // this.nav.setRoot(page.component);
    if (page.component == 'HomePage'){
     this.nav.setRoot(HomePage);
-   }else if (page.component == 'AddStudent'){
+    this.storage.set('classroom','').then(()=>{
+      this.storage.set('classteacher','').then(()=>{
+        this.homeservice.storageSub.next('removed-class');
+
+      });
+    });
+
+
+   }else if (page.component == 'QuizResults'){
+    
+    modalPage = this.modalctrl.create('TakenQuizesPage');
+    modalPage.onDidDismiss(data=>{
+
+
+
+     if (data == true)
+     {
+       console.log(data+" chat page ")
+
+     }
+
+   });
+    modalPage.present();
+   }
+   
+   else if (page.component == 'AddStudent'){
     
      modalPage = this.modalctrl.create('StudentProfilePage');
      modalPage.onDidDismiss(data=>{
+
+
+
       if (data == true)
       {
         console.log(data+" chat page ")
-       // this.viewCtrl.dismiss(true);
+
       }
  
     });

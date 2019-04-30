@@ -46,23 +46,32 @@ export class classroom {
   teacheremail: string;
   classname: string;
   section: string;
-  subject: string;
+  // subject: string;
   parentsemail: Array<string>
   imgurl: string;
   backgroundimg: string;
   classid: string;
-
+  teachername:string;
   constructor() {
     this.teacheremail = '';
     this.classname = '';
     this.section = '';
-    this.subject = '';
+    // this.subject = '';
     this.parentsemail = new Array<string>();
     this.imgurl = '';
     this.backgroundimg = '';
     this.classid = '';
+    this.teachername = '';
   }
 }
+
+export interface MenuItem {
+  title: string;
+  component: any;
+  icon: string;
+}
+
+
 @Injectable()
 export class HomeServiceProvider {
   chatusers: Array<chats> = [];
@@ -89,6 +98,8 @@ export class HomeServiceProvider {
   classteacher: string;
   userpassword: string = '';
   emailVerified: boolean = false;
+  appMenuItems: Array<MenuItem>;
+
   constructor(public storage: Storage, public afs: AngularFirestore, public afAuth: AngularFireAuth, public loaderservice: LoaderserviceProvider, public alertCtrl: AlertController) {
 
 
@@ -100,9 +111,56 @@ export class HomeServiceProvider {
         });
         this.storage.get('classteacher').then(res => {
           this.classteacher = res;
-        })
-      } else if (data == 'removed-all') {
+        });
 
+        if (this.user=='parents'){
+          this.appMenuItems = [
+            {title: 'Home', component: 'HomePage', icon: 'home'},
+            {title: 'Students List', component: 'StudentListPage', icon: 'people'},
+            {title: 'Your Child', component: 'AddStudent', icon: 'person'},
+            {title: 'Courses Info', component: 'CourseInfo', icon: 'paper'},
+            {title: 'Quizes Results', component: 'QuizResults', icon: 'book'},
+          ];
+        }else{
+          this.appMenuItems = [
+            {title: 'Home', component: 'HomePage', icon: 'home'},
+            {title: 'Students List', component: 'StudentListPage', icon: 'people'},
+            {title: 'Add Student', component: 'AddStudent', icon: 'person-add'},
+            {title: 'Courses Info', component: 'CourseInfo', icon: 'paper'},
+            {title: 'Add Courses', component: 'AddCoursesPage', icon: 'create'},
+          ];
+        }
+
+
+      } else if (data == 'removed-all') {
+        if (this.user=='parents'){
+          this.appMenuItems = [
+            {title: 'Home', component: 'HomePage', icon: 'home'},
+           
+            {title: 'Your Child', component: 'AddStudent', icon: 'person'},
+         
+          ];
+        }else{
+          this.appMenuItems = [
+            {title: 'Home', component: 'HomePage', icon: 'home'},
+
+          ];
+        }
+      }
+      else if (data =='removed-class'){
+        if (this.user=='parents'){
+          this.appMenuItems = [
+            {title: 'Home', component: 'HomePage', icon: 'home'},
+           
+            {title: 'Your Child', component: 'AddStudent', icon: 'person'},
+         
+          ];
+        }else{
+          this.appMenuItems = [
+            {title: 'Home', component: 'HomePage', icon: 'home'},
+
+          ];
+        }
       }
       else if (data == 'verified') {
 
@@ -252,6 +310,20 @@ export class HomeServiceProvider {
         } else {
           this.user = 'teachers';
         }
+
+        if (this.user=='parents'){
+          this.appMenuItems = [
+            {title: 'Home', component: 'HomePage', icon: 'home'},
+            {title: 'Your Child', component: 'AddStudent', icon: 'person'},
+    
+          ];
+        }else{
+          this.appMenuItems = [
+            {title: 'Home', component: 'HomePage', icon: 'home'},
+
+          ];
+        }
+
 
         this.afs.doc<profile>(this.user + "/" + this.useremail).snapshotChanges().take(1).forEach(snap => {
 
@@ -408,12 +480,13 @@ export class HomeServiceProvider {
       tempclass.teacheremail = teacherclass.email;
       tempclass.parentsemail = [],
         tempclass.section = teacherclass.section;
-      tempclass.subject = teacherclass.subject;
+      // tempclass.subject = teacherclass.subject;
       tempclass.classname = teacherclass.classname;
       tempclass.imgurl = this.userprofile.imgurl;
       tempclass.backgroundimg = teacherclass.backgroundimg;
       tempclass.classid = id;
-
+      tempclass.teachername = teacherclass.teachername;
+      
       try {
 
         const objectclass = Object.assign({}, tempclass);
@@ -484,11 +557,12 @@ export class HomeServiceProvider {
                   updatedclass.teacheremail = data.teacheremail;
                   updatedclass.parentsemail = data.parentsemail;
                   updatedclass.section = data.section;
-                  updatedclass.subject = data.subject;
+                  // updatedclass.subject = data.subject;
                   updatedclass.classname = data.classname;
                   updatedclass.imgurl = this.userprofile.imgurl;
                   updatedclass.backgroundimg = data.backgroundimg;
                   updatedclass.classid = docid;
+                  updatedclass.teachername = data.teachername;
 
                   const objectclass = Object.assign({}, updatedclass);
                   objectclass.parentsemail = Object.assign({}, updatedclass.parentsemail);
@@ -573,11 +647,12 @@ export class HomeServiceProvider {
                   updatedclass.teacheremail = data.teacheremail;
                   updatedclass.parentsemail = data.parentsemail;
                   updatedclass.section = data.section;
-                  updatedclass.subject = data.subject;
+                  // updatedclass.subject = data.subject;
                   updatedclass.classname = data.classname;
                   updatedclass.imgurl = this.userprofile.imgurl;
                   updatedclass.backgroundimg = data.backgroundimg;
                   updatedclass.classid = docid;
+                  updatedclass.teachername = data.teachername;
 
                   const objectclass = Object.assign({}, updatedclass);
                   objectclass.parentsemail = Object.assign({}, updatedclass.parentsemail);

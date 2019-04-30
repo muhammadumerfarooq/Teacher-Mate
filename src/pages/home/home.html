@@ -56,12 +56,13 @@
   <div *ngIf="this.homeservice.classfound && this.homeservice.emailVerified">
     <div class="trip card" *ngFor="let myclass of this.homeservice.myclassroom" tappable
       (click)="viewClassroom(myclass.classname, myclass.teacheremail)" margin-bottom>
-      <div class="background border-bottom" [ngStyle]="{'background-image': 'url(' + myclass.backgroundimg+ ')'}">
+      <div class="background border-bottom" [style.background-color]="myclass.backgroundimg">
+        <!--[ngStyle]="{'background-image': 'url(' + myclass.backgroundimg+ ')'}">-->
         <div class="background-filter rlt">
           <div class="align-bottom" padding-left padding-right>
             <h6 class="pull-top text-white" padding-top ion-text>{{myclass.classname}}</h6>
             <h6 class="pull-top text-white" ion-text>{{myclass.section}}</h6>
-            <h6 class="pull-top text-white" ion-text>{{myclass.email}}</h6>
+            <h6 class="pull-top text-white" ion-text>{{myclass.teachername}}</h6>
 
             <!--    <div class="clear"></div> -->
           </div>
@@ -73,7 +74,9 @@
                 <ion-col col-4>
                   <div class="user-avatar">
                     <img [src]="myclass.imgurl">
+
                   </div>
+
 
                 </ion-col>
 
@@ -90,12 +93,12 @@
 
       </div>
 
-      <div class="padding-sm primary-bg">
+      <!-- <div class="padding-sm"  [ngStyle]="{'color':'#fff'}" [style.background-color]="myclass.backgroundimg">
         <ion-icon name="" class="text-white"></ion-icon>
         <span ion-text class="text-white"></span>
         <span class="pull-left" ion-text color="light">
           <strong>Members</strong> <span ion-text class="text-green bold">50% OFF</span></span>
-      </div>
+      </div> -->
     </div>
   </div>
   <div *ngIf="!this.homeservice.classfound && this.homeservice.emailVerified"

@@ -1,4 +1,4 @@
-import { Component, ViewContainerRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, AlertController } from 'ionic-angular';
 import { QuizServiceProvider, Quiz, Question, Options } from '../../providers/quiz-service/quiz-service';
 import moment from 'moment';

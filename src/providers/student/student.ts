@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { LoaderserviceProvider } from '../loaderservice/loaderservice';
 import { storage } from 'firebase';
-import { userprofile } from '../home-service/home-service';
+import { HomeServiceProvider } from '../home-service/home-service';
 
 /*
   Generated class for the StudentProvider provider.
@@ -32,8 +32,9 @@ export class student {
 export class StudentProvider {
 
   allstudents = Array<student>();
+  class_students= Array<student>();
 
-  constructor(private afs: AngularFirestore, private loaderservice: LoaderserviceProvider) {
+  constructor(private homeservice:HomeServiceProvider,private afs: AngularFirestore, private loaderservice: LoaderserviceProvider) {
 
     this.afs.collection('students').snapshotChanges().forEach(snap => {
       this.allstudents = new Array<student>();
@@ -48,20 +49,42 @@ export class StudentProvider {
 
 
   }
- /* insertstudent(studentdata: student) {
+  getstudents(){
 
     return new Promise((resolve, reject) => {
-      const objectclass = Object.assign({}, studentdata);
 
-      this.afs.collection('students').doc(studentdata.createdate).set({ objectclass }).then(() => {
-        return resolve('done')
-      }).catch(err => {
-        return reject('error');
+
+      this.loaderservice.loading = this.loaderservice.loadingCtrl.create({
+
+        content: `
+                <div class="custom-spinner-container">
+                  <div class="custom-spinner-box"> loading... </div>
+                </div>`,
+duration: 500
       });
+        this.loaderservice.loading.present().then(() => {
+        
+       
+    this.afs.collection('students', ref=>{
+     return ref.where('classname','==',this.homeservice.classroom)
+    }).snapshotChanges().take(1).forEach(snap => {
+//      this.allstudents = new Array<student>();
+        this.class_students = new Array<student>();
+      snap.forEach(snapshot => {
+        if (snapshot.payload.doc.exists) {
+          let studentdata: student = snapshot.payload.doc.data() as student;
+          this.class_students.push(studentdata);
+          
+        }
+      })
     });
+  });
+
+});
+
 
   }
-*/
+ 
   insertstudent(studentdata: student, imguri: string) {
     
     return new Promise((resolve, reject) => {

@@ -40,7 +40,7 @@
   <ion-content color="primary">
 
     <ion-list class="user-list">
-      <button ion-item menuClose class="text-1x" *ngFor="let menuItem of appMenuItems" (click)="openPage(menuItem)">
+      <button ion-item menuClose class="text-1x" *ngFor="let menuItem of homeservice.appMenuItems" (click)="openPage(menuItem)">
         <ion-icon item-left [name]="menuItem.icon" color="primary"></ion-icon>
         <span ion-text color="primary">{{menuItem.title}}</span>
       </button>

@@ -45,8 +45,8 @@
 
 <ion-content padding-top>
   <ion-list>
-    <ion-item-sliding #sliding *ngFor="let student of studentservice.allstudents"
-      [hidden]="studentservice.allstudents.length == 0">
+    <ion-item-sliding #sliding *ngFor="let student of studentservice.class_students"
+      [hidden]="studentservice.class_students.length == 0">
       <ion-item class="item-ion" (click)="studentDetail(student)">
         <ion-avatar item-start>
           <img [src]="student.userurl">
@@ -56,6 +56,15 @@
 
     </ion-item-sliding>
   </ion-list>
+   <div *ngIf="studentservice.class_students.length == 0" [hidden]="studentservice.class_students.length > 0"
+    [ngStyle]="{'margin-top':'inherit', 'align-items': 'center', 'justify-content': 'center', 'text-align': 'center'}">
+
+<button [ngStyle]="{'background':'transparent'}">
+    <ion-icon name="refresh" [ngStyle]="{'font-size': '50px'}"></ion-icon>
+</button>
+    <p [ngStyle]="{'font-size': '15px'}">No Students Are Added</p>
+  </div>
+  
   <div class="chatbox">
     <button ion-button class="pull-right" color="secondary" tappable (click)="student_add()">
       <ion-icon name="person-add"></ion-icon>

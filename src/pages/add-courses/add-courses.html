@@ -122,7 +122,7 @@
 
       </button>
       -
-        <button ion-button clear margin-right item-end icon-only>
+        <button ion-button clear margin-right item-end icon-only (click)="deletechap(chap)">
           <!-- here -->
           <ion-icon name="trash"></ion-icon>
         </button>
@@ -146,7 +146,7 @@
             <ion-icon name="document"></ion-icon>
           </button>
 
-          <button ion-button clear margin-right item-end icon-only>
+          <button ion-button clear margin-right item-end icon-only (click)="deletetopic(chap,top)">
             <!-- here -->
             <ion-icon name="trash"></ion-icon>
           </button>
@@ -187,9 +187,17 @@
     <button ion-button (click)="addSubtopic()">SubTopics</button>
 -->
     <div class="divclass">
-      <span ion-text margin-left color="secondary" tappable (click)="addChapter()"><strong>Chapters</strong></span>
+   <!--   <span ion-text margin-left color="secondary" tappable (click)="addChapter()"><strong>Chapters</strong></span>
+-->
+<h3 class="search-query">
+    <span></span>
+    <ion-badge class="query-tag" (click)="addChapter()" margin-left > Chapters </ion-badge>
+        <ion-badge class="query-tag" (click)="addTopics()" margin-left> Topics </ion-badge>
 
-      <span ion-text margin-left color="secondary" tappable (click)="addTopics()"><strong>Topics</strong></span>
+    <span class="query-explanation"> </span>
+  </h3>
+ <!--     <span ion-text margin-left color="secondary" tappable (click)="addTopics()"><strong>Topics</strong></span>
+-->
 
 <!--      <span ion-text margin-left color="secondary" tappable (click)="addSubtopic()"><strong>SubTopics</strong></span> -->
 

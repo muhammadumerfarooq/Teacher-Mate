@@ -36,8 +36,8 @@ export class AddCoursesPage {
   mycourses: Courses = new Courses();
   files = new Map();
 
-  constructor(private homeservice:HomeServiceProvider,private modalctrl:ModalController,private documentview: DocumentViewer,private filetransfer:FileTransfer,private file:File,private plateform: Platform,private fileChooser: FileChooser, private filePath: FilePath, private alertctrl: AlertController, private fileOpener: FileOpener, private courseservice: CourseProvider, private classprovider: ClassServiceProvider, public navCtrl: NavController, public navParams: NavParams,  private viewctrl: ViewController) {
-       
+  constructor(private alertCtrl:AlertController,private homeservice: HomeServiceProvider, private modalctrl: ModalController, private documentview: DocumentViewer, private filetransfer: FileTransfer, private file: File, private plateform: Platform, private fileChooser: FileChooser, private filePath: FilePath, private alertctrl: AlertController, private fileOpener: FileOpener, private courseservice: CourseProvider, private classprovider: ClassServiceProvider, public navCtrl: NavController, public navParams: NavParams, private viewctrl: ViewController) {
+
 
     // this.topics.push({'value':''});
     //  this.mycourses.Chapters.push(new Chapters);
@@ -92,32 +92,35 @@ export class AddCoursesPage {
     this.mycourses.Chapters.push(new Chapters());
 
   }
- /* addSubtopic() {
-    let chapterindex = this.mycourses.Chapters.length;
-    let topindex = this.mycourses.Chapters[chapterindex - 1].Topics.length;
-
-
-    this.mycourses.Chapters[chapterindex - 1].Topics[topindex - 1].subtopics.push(new Subtopics);
-
-    let index = this.mycourses.Chapters[chapterindex - 1].Topics[topindex - 1].subtopics.length;
-
-    this.mycourses.Chapters[chapterindex - 1].Topics[topindex - 1].subtopics[index - 1].value = '';
-
-    console.log(this.mycourses.Chapters)
-    // console.log(this.anArray);
-    //  this.anArray.push({'value':''});
-  }
-*/
+  /* addSubtopic() {
+     let chapterindex = this.mycourses.Chapters.length;
+     let topindex = this.mycourses.Chapters[chapterindex - 1].Topics.length;
+ 
+ 
+     this.mycourses.Chapters[chapterindex - 1].Topics[topindex - 1].subtopics.push(new Subtopics);
+ 
+     let index = this.mycourses.Chapters[chapterindex - 1].Topics[topindex - 1].subtopics.length;
+ 
+     this.mycourses.Chapters[chapterindex - 1].Topics[topindex - 1].subtopics[index - 1].value = '';
+ 
+     console.log(this.mycourses.Chapters)
+     // console.log(this.anArray);
+     //  this.anArray.push({'value':''});
+   }
+ */
   addTopics() {
 
     let chapterindex = this.mycourses.Chapters.length;
+    if ((chapterindex - 1) >= 0) {
+      this.mycourses.Chapters[chapterindex - 1].Topics.push(new Topics());
+      let topindex = this.mycourses.Chapters[chapterindex - 1].Topics.length;
+      this.mycourses.Chapters[chapterindex - 1].Topics[topindex - 1].value = '';
 
-    this.mycourses.Chapters[chapterindex - 1].Topics.push(new Topics());
-    let topindex = this.mycourses.Chapters[chapterindex - 1].Topics.length;
-    this.mycourses.Chapters[chapterindex - 1].Topics[topindex - 1].value = '';
-
-    console.log(this.mycourses.Chapters)
-
+      console.log(this.mycourses.Chapters)
+    }
+    else {
+      this.presentAlert('First Add Chapter', '');
+    }
 
   }
 
@@ -130,9 +133,9 @@ export class AddCoursesPage {
     this.mycourses.classteacher = this.homeservice.classteacher; //this.classprovider.classteacher;
     this.mycourses.classname = this.homeservice.classroom; //this.classprovider.classname;
 
-//    this.courseservice.insert_course(this.mycourses)
+    //    this.courseservice.insert_course(this.mycourses)
 
-    
+
     var modalPage = this.modalctrl.create('CourseDetailsPage', { mycourses: this.mycourses });
     modalPage.onDidDismiss(data => {
       if (data == true) {
@@ -140,7 +143,7 @@ export class AddCoursesPage {
 
       } else if (data == false) {
         this.presentAlert('Error', ' courses not added ');
-      } 
+      }
     });
     modalPage.present();
   }
@@ -164,17 +167,17 @@ export class AddCoursesPage {
           this.mycourses.Chapters[chap].Topics[top].filetext = this.getfileext(resolvedFilePath);
           this.courseservice.uploadfiletopic(resolvedFilePath, this.mycourses.Chapters[chap].Topics[top].filename, this.mycourses.Chapters[chap].Topics[top].filetext, this.mycourses.Chapters[chap].Topics[top].filetype).then((val) => {
             let value: string = val.toString();
-            if (value=='error'){
+            if (value == 'error') {
               this.mycourses.Chapters[chap].Topics[top].fileurl = '';
-              this.mycourses.Chapters[chap].Topics[top].filestatus = 'error';              
+              this.mycourses.Chapters[chap].Topics[top].filestatus = 'error';
               this.files.set(this.mycourses.Chapters[chap].Topics[top].filename, 'error');
               this.presentAlert(' Uplaoding ', ' Failed ');
 
-            }else{
-            this.mycourses.Chapters[chap].Topics[top].fileurl = value;
-            this.mycourses.Chapters[chap].Topics[top].filestatus = 'uploaded';
-            this.files.set(this.mycourses.Chapters[chap].Topics[top].filename, value);
-            this.presentAlert(' Uploaded ', 'Successfully');
+            } else {
+              this.mycourses.Chapters[chap].Topics[top].fileurl = value;
+              this.mycourses.Chapters[chap].Topics[top].filestatus = 'uploaded';
+              this.files.set(this.mycourses.Chapters[chap].Topics[top].filename, value);
+              this.presentAlert(' Uploaded ', 'Successfully');
             }
           }).catch(err => {
             this.presentAlert('Error ', err.toString());
@@ -182,7 +185,7 @@ export class AddCoursesPage {
             this.mycourses.Chapters[chap].Topics[top].filestatus = 'error';
             this.files.set(this.mycourses.Chapters[chap].Topics[top].filename, 'error');
             this.presentAlert(' Uplaoding ', ' Failed ');
-            
+
           });
         }
         else {
@@ -197,60 +200,60 @@ export class AddCoursesPage {
       alert(JSON.stringify(err));
     });
   }
-/*
-  openfile_subtopic(chap, top, i) {
-    this.fileChooser.open().then(file => {
-      this.filePath.resolveNativePath(file).then(resolvedFilePath => {
-
+  /*
+    openfile_subtopic(chap, top, i) {
+      this.fileChooser.open().then(file => {
+        this.filePath.resolveNativePath(file).then(resolvedFilePath => {
   
-        this.mycourses.Chapters[chap].Topics[top].subtopics[i].filename = this.getfilename(resolvedFilePath);
-        this.mycourses.Chapters[chap].Topics[top].subtopics[i].filepath = resolvedFilePath;
-        this.mycourses.Chapters[chap].Topics[top].subtopics[i].filetype = this.getfiletype(resolvedFilePath);
-
-        let result = this.files.get(this.mycourses.Chapters[chap].Topics[top].subtopics[i].filename);
-
-        if (result == '' || result == undefined || result == null || result == 'error') {
-
-          this.mycourses.Chapters[chap].Topics[top].subtopics[i].filetext = this.getfileext(resolvedFilePath);
-          this.courseservice.uploadfiletopic(resolvedFilePath, this.mycourses.Chapters[chap].Topics[top].subtopics[i].filename, this.mycourses.Chapters[chap].Topics[top].subtopics[i].filetext, this.mycourses.Chapters[chap].Topics[top].subtopics[i].filetype).then((val) => {
-            let value: string = val.toString();
-
-            if (value=='error'){
-            this.mycourses.Chapters[chap].Topics[top].subtopics[i].filestatus = 'error';
-            this.files.set(this.mycourses.Chapters[chap].Topics[top].subtopics[i].filename, 'error');
-            this.presentAlert(' Uplaoding ', ' Failed ');
-            this.mycourses.Chapters[chap].Topics[top].subtopics[i].fileurl = '';
-            }else{
-              this.mycourses.Chapters[chap].Topics[top].subtopics[i].fileurl = value;
-              this.mycourses.Chapters[chap].Topics[top].subtopics[i].filestatus = 'uploaded';
-              this.files.set(this.mycourses.Chapters[chap].Topics[top].subtopics[i].filename, 'uploaded');
-              this.presentAlert(' Uploaded ', 'Successfully');
-
-            }
-          }).catch(err => {
-            this.presentAlert('Error ', err.toString());
-            this.mycourses.Chapters[chap].Topics[top].subtopics[i].fileurl = '';
-            this.mycourses.Chapters[chap].Topics[top].subtopics[i].filestatus = 'error';
-            this.files.set(this.mycourses.Chapters[chap].Topics[top].subtopics[i].filename, 'error');
-            this.presentAlert(' Uplaoding ', ' Failed ');
-            
-
-          });
-
-        }
-        else {
-          this.mycourses.Chapters[chap].Topics[top].subtopics[i].fileurl = result;
-          this.mycourses.Chapters[chap].Topics[top].subtopics[i].filestatus = 'uploaded';
-          this.presentAlert(' Uploaded ', 'Successfully');
-        }
+    
+          this.mycourses.Chapters[chap].Topics[top].subtopics[i].filename = this.getfilename(resolvedFilePath);
+          this.mycourses.Chapters[chap].Topics[top].subtopics[i].filepath = resolvedFilePath;
+          this.mycourses.Chapters[chap].Topics[top].subtopics[i].filetype = this.getfiletype(resolvedFilePath);
+  
+          let result = this.files.get(this.mycourses.Chapters[chap].Topics[top].subtopics[i].filename);
+  
+          if (result == '' || result == undefined || result == null || result == 'error') {
+  
+            this.mycourses.Chapters[chap].Topics[top].subtopics[i].filetext = this.getfileext(resolvedFilePath);
+            this.courseservice.uploadfiletopic(resolvedFilePath, this.mycourses.Chapters[chap].Topics[top].subtopics[i].filename, this.mycourses.Chapters[chap].Topics[top].subtopics[i].filetext, this.mycourses.Chapters[chap].Topics[top].subtopics[i].filetype).then((val) => {
+              let value: string = val.toString();
+  
+              if (value=='error'){
+              this.mycourses.Chapters[chap].Topics[top].subtopics[i].filestatus = 'error';
+              this.files.set(this.mycourses.Chapters[chap].Topics[top].subtopics[i].filename, 'error');
+              this.presentAlert(' Uplaoding ', ' Failed ');
+              this.mycourses.Chapters[chap].Topics[top].subtopics[i].fileurl = '';
+              }else{
+                this.mycourses.Chapters[chap].Topics[top].subtopics[i].fileurl = value;
+                this.mycourses.Chapters[chap].Topics[top].subtopics[i].filestatus = 'uploaded';
+                this.files.set(this.mycourses.Chapters[chap].Topics[top].subtopics[i].filename, 'uploaded');
+                this.presentAlert(' Uploaded ', 'Successfully');
+  
+              }
+            }).catch(err => {
+              this.presentAlert('Error ', err.toString());
+              this.mycourses.Chapters[chap].Topics[top].subtopics[i].fileurl = '';
+              this.mycourses.Chapters[chap].Topics[top].subtopics[i].filestatus = 'error';
+              this.files.set(this.mycourses.Chapters[chap].Topics[top].subtopics[i].filename, 'error');
+              this.presentAlert(' Uplaoding ', ' Failed ');
+              
+  
+            });
+  
+          }
+          else {
+            this.mycourses.Chapters[chap].Topics[top].subtopics[i].fileurl = result;
+            this.mycourses.Chapters[chap].Topics[top].subtopics[i].filestatus = 'uploaded';
+            this.presentAlert(' Uploaded ', 'Successfully');
+          }
+        }).catch(err => {
+          alert(JSON.stringify(err));
+        });
       }).catch(err => {
         alert(JSON.stringify(err));
       });
-    }).catch(err => {
-      alert(JSON.stringify(err));
-    });
-  }
-*/
+    }
+  */
   getfilename(filestring) {
 
     let file
@@ -282,52 +285,106 @@ export class AddCoursesPage {
     alert.present();
 
   }
-  downaloadAndOpenfile(filename:string, fileurl:string, filetype: string){
-let path = null;
-if (this.plateform.is('ios') ){
-  path = this.file.documentsDirectory;
-}else{
-  path = this.file.externalApplicationStorageDirectory;
-}
-const transfer = this.filetransfer.create();
-transfer.download(fileurl, path+filename+'.'+filetype).then(entry=>{
- // this.presentAlert('file path ',path+'myfile.'+filetype);
- // let url = entry.toURL();
-  
-  let fileMIMEType=this.getMIMEtype(filetype);
+  downaloadAndOpenfile(filename: string, fileurl: string, filetype: string) {
+    let path = null;
+    if (this.plateform.is('ios')) {
+      path = this.file.documentsDirectory;
+    } else {
+      path = this.file.externalApplicationStorageDirectory;
+    }
+    const transfer = this.filetransfer.create();
+    transfer.download(fileurl, path + filename + '.' + filetype).then(entry => {
+      // this.presentAlert('file path ',path+'myfile.'+filetype);
+      // let url = entry.toURL();
 
-  this.fileOpener.open(path+filename+'.'+filetype, fileMIMEType).then(file => {
- //   alert(file);
+      let fileMIMEType = this.getMIMEtype(filetype);
 
- //   alert("It worked!")
-  }).catch(err => {
-    alert(JSON.stringify(err));
-  });
-});
-//   this.documentview.viewDocument(url,'application/'+filetype,{});
-// }).catch(err=>{
-//   this.presentAlert('Error ',err);
-// });
+      this.fileOpener.open(path + filename + '.' + filetype, fileMIMEType).then(file => {
+        //   alert(file);
+
+        //   alert("It worked!")
+      }).catch(err => {
+        alert(JSON.stringify(err));
+      });
+    });
+    //   this.documentview.viewDocument(url,'application/'+filetype,{});
+    // }).catch(err=>{
+    //   this.presentAlert('Error ',err);
+    // });
 
   }
 
-  
-getMIMEtype(extn){
-  let ext=extn.toLowerCase();
-  let MIMETypes={
-    'txt' :'text/plain',
-    'docx':'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-    'doc' : 'application/msword',
-    'pdf' : 'application/pdf',
-    'jpg' : 'image/jpeg',
-    'bmp' : 'image/bmp',
-    'png' : 'image/png',
-    'xls' : 'application/vnd.ms-excel',
-    'xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    'rtf' : 'application/rtf',
-    'ppt' : 'application/vnd.ms-powerpoint',
-    'pptx': 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+
+  getMIMEtype(extn) {
+    let ext = extn.toLowerCase();
+    let MIMETypes = {
+      'txt': 'text/plain',
+      'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'doc': 'application/msword',
+      'pdf': 'application/pdf',
+      'jpg': 'image/jpeg',
+      'bmp': 'image/bmp',
+      'png': 'image/png',
+      'xls': 'application/vnd.ms-excel',
+      'xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      'rtf': 'application/rtf',
+      'ppt': 'application/vnd.ms-powerpoint',
+      'pptx': 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+    }
+    return MIMETypes[ext];
   }
-  return MIMETypes[ext];
-}
+  deletechap(chapindex: number) {
+    let confirm = this.alertCtrl.create({
+      title: 'Delete Topic',
+      message: 'Are you sure you want to Delete this Topic From Syllabus?',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+            console.log('No clicked');
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            this.mycourses.Chapters.splice(chapindex,1);
+
+            
+              this.presentAlert('Chapter Deleted', '');
+
+           
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
+
+  deletetopic(chapindex: number, topicindex:number) {
+    let confirm = this.alertCtrl.create({
+      title: 'Delete Topic',
+      message: 'Are you sure you want to Delete this Topic From Syllabus?',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+            console.log('No clicked');
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            this.mycourses.Chapters[chapindex].Topics.splice(topicindex,1);
+
+            
+              this.presentAlert('Topic Deleted', '');
+
+           
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
+
 }

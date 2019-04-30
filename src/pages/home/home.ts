@@ -8,12 +8,14 @@ import { HomeServiceProvider } from '../../providers/home-service/home-service';
 
 // import {OnInit} from '@angular/core';
 // import { FCM } from '@ionic-native/fcm';
-// import { ProfileServiceProvider, profile } from '../../providers/profile-service/profile-service';
+ import { ProfileServiceProvider } from '../../providers/profile-service/profile-service';
 import { TeachersServiceProvider } from '../../providers/teachers-service/teachers-service';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { LoaderserviceProvider } from '../../providers/loaderservice/loaderservice';
 
 // import { LoaderserviceProvider } from '../../providers/loaderservice/loaderservice';
+
+
 
 @Component({
   selector: 'page-home',
@@ -28,7 +30,7 @@ export class HomePage implements OnInit {
 
   emailVerified: boolean = false;
 
-  constructor(private afs: AngularFirestore, private loader: LoaderserviceProvider, private viewctrl: ViewController, private teacherclass: TeachersServiceProvider, private modalCtrl: ModalController, public homeservice: HomeServiceProvider, public afAuth: AngularFireAuth, public alertctrl: AlertController, public toastctrl: ToastController, public modalctrl: ModalController, public platform: Platform, public actionsheetCtrl: ActionSheetController, private storage: Storage, public nav: NavController, public popoverCtrl: PopoverController) {
+  constructor(private profileservice:ProfileServiceProvider,private afs: AngularFirestore, private loader: LoaderserviceProvider, private viewctrl: ViewController, private teacherclass: TeachersServiceProvider, private modalCtrl: ModalController, public homeservice: HomeServiceProvider, public afAuth: AngularFireAuth, public alertctrl: AlertController, public toastctrl: ToastController, public modalctrl: ModalController, public platform: Platform, public actionsheetCtrl: ActionSheetController, private storage: Storage, public nav: NavController, public popoverCtrl: PopoverController) {
     console.log(this.homeservice.searchname);
 
 
@@ -263,11 +265,6 @@ export class HomePage implements OnInit {
           name: 'section',
           placeholder: 'section name',
           type: 'name'
-        },
-        {
-          name: 'subject',
-          placeholder: 'subject name',
-          type: 'name'
         }
       ],
       buttons: [
@@ -291,11 +288,11 @@ export class HomePage implements OnInit {
               classname = data.classname;
             }
 
-            if (data.subject == '') {
-              subject = data.subject;
-            } else {
-              subject = data.subject;
-            }
+            // if (data.subject == '') {
+            //   subject = data.subject;
+            // } else {
+            //   subject = data.subject;
+            // }
 
             if (data.section == '') {
               section = data.section;
@@ -303,23 +300,36 @@ export class HomePage implements OnInit {
               section = data.section;
             }
 
+            let quizcolor: Array<string> =  new Array<string>();
+            
+        
+            quizcolor.push('#78BD83');
+            quizcolor.push('#F08D45');
+            quizcolor.push('#E829BA');
+            quizcolor.push('#16CEE0');
+            quizcolor.push('#CEBF0A');
+            quizcolor.push('#432B9C');
+            quizcolor.push('#DF9FD6');
+            quizcolor.push( '#3285C2');
+            quizcolor.push('#B5E61B');
+            quizcolor.push('#D70EFF');
+            
+            // this.images.push('assets/img/trip/thumb/brown.jpg');
+            // this.images.push('assets/img/trip/thumb/brushes.jpg');
+            // this.images.push('assets/img/trip/thumb/deepteal.jpg');
+            // this.images.push('assets/img/trip/thumb/light.jpg');
+            // this.images.push('assets/img/trip/thumb/tree.jpg');
+            // this.images.push('assets/img/trip/thumb/ltblue.jpg');
+            // this.images.push('assets/img/trip/thumb/beakers.jpg');
 
-            this.images.push('assets/img/trip/thumb/brown.jpg');
-            this.images.push('assets/img/trip/thumb/brushes.jpg');
-            this.images.push('assets/img/trip/thumb/deepteal.jpg');
-            this.images.push('assets/img/trip/thumb/light.jpg');
-            this.images.push('assets/img/trip/thumb/tree.jpg');
-            this.images.push('assets/img/trip/thumb/ltblue.jpg');
-            this.images.push('assets/img/trip/thumb/beakers.jpg');
-
-            const randid = Math.floor(Math.random() * 6);
+            const randid = Math.floor(Math.random() * 4);
             let teacherclass = {
               email: this.afAuth.auth.currentUser.email,
               classname: classname,
               section: section,
-              subject: subject,
-              teachername: this.afAuth.auth.currentUser.email,
-              backgroundimg: this.images[randid]
+              // subject: subject,
+              teachername: this.homeservice.username,
+              backgroundimg: quizcolor[randid]
             };
 
             this.homeservice.addclassroom(teacherclass).then(res => {
@@ -343,7 +353,7 @@ export class HomePage implements OnInit {
               }
 
             }).catch(err => {
-              this.presentAlert('Error', 'Cannot Create Classroom');
+              this.presentAlert('Error', 'Cannot Create Classroom'+ err);
             });
 
 

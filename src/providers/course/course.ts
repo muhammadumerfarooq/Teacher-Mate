@@ -42,24 +42,7 @@ export class Topics {
 
    }
  }
- /* export class Subtopics{
-   value:string;
-   fileurl: string;
-   filename:string;
-   filetext:string;
-   filetype:string;
-  filepath:string;
-  filestatus:string;
-   constructor(){
-     this.value = '';
-     this.filename = '';
-     this.filepath='';
-     this.filetext= '';
-     this.filetype='';
-     this.fileurl='';
-     this.filestatus = '';
-   }
- }*/
+
  export class Courses {
   creationdate: string;
   Chapters:Array<Chapters>;
@@ -87,6 +70,7 @@ export class Topics {
 export class CourseProvider {
   
   allcourses: Array<Courses> = [];
+  coursesdropdown: Array<Boolean> = [];
 
   constructor( private homeservice:HomeServiceProvider,private fileservice: File,private fileChooser: FileChooser, private filePath: FilePath, private fileOpener: FileOpener,private afs:AngularFirestore,private loaderservice:LoaderserviceProvider) {
    this.afs.collection<Courses>('courses', ref=>{
@@ -94,6 +78,7 @@ export class CourseProvider {
      return ref.where("classname","==",this.homeservice.classroom).where("classteacher","==",this.homeservice.classteacher);
    }).snapshotChanges().forEach(snap=>{
      this.allcourses = new Array<Courses>(); 
+     this.coursesdropdown = new Array<Boolean>();
 
      snap.forEach(snapshot=>{
       
@@ -136,6 +121,7 @@ export class CourseProvider {
 
 
           this.allcourses.push(courses);
+          this.coursesdropdown.push(false);
        }
      })
    })
@@ -143,7 +129,127 @@ export class CourseProvider {
    
   }
 
+  getcourses(){
+
+    this.loaderservice.loading = this.loaderservice.loadingCtrl.create({
+      
+      content: `
+        <div class="custom-spinner-container">
+          <div class="custom-spinner-box"> loading... </div>
+        </div>`,
+duration: 500
+    });
+
+   
+      this.loaderservice.loading.present().then(()=>{
+          
+
+    this.afs.collection<Courses>('courses', ref=>{
+     
+      return ref.where("classname","==",this.homeservice.classroom).where("classteacher","==",this.homeservice.classteacher);
+    }).snapshotChanges().take(1).forEach(snap=>{
+      this.allcourses = new Array<Courses>(); 
+      this.coursesdropdown = new Array<Boolean>();
+      snap.forEach(snapshot=>{
+       
+        if (snapshot.payload.doc.exists){
+          console.log(snapshot.payload.doc.data() as Courses)
+          let tempcourse: Courses = snapshot.payload.doc.data() as Courses;
+          let courses: Courses =new  Courses();
+ 
+          courses.classname = tempcourse.classname;
+          courses.classteacher = tempcourse.classteacher;
+          courses.creationdate = tempcourse.creationdate;
+ 
+           let i = 0;
+           let chap =0;
+           while (i>-1){
+             if (tempcourse.Chapters[i] != undefined && tempcourse.Chapters[i] != null){
+               courses.Chapters.push( new Chapters());
+               courses.Chapters[chap].value = tempcourse.Chapters[i].value;
+              
+               let top = 0;
+               let j = 0;
+               while (j>-1){
+                 if (tempcourse.Chapters[i].Topics[j]!=null && tempcourse.Chapters[i].Topics[j]!=undefined){
+                   courses.Chapters[chap].Topics.push(new Topics());
+                   courses.Chapters[chap].Topics[top] = tempcourse.Chapters[i].Topics[j]; 
+                   top++;
+                 }
+                 else{
+                   break;
+                 }
+                 j++;
+               }
+               chap++; 
+               
+             }else{
+               break;
+             }
+             i++;
+           }
+ 
+ 
+           this.allcourses.push(courses);
+           this.coursesdropdown.push(false);
+
+        }
+      })
+    })
+  });
+  }
   insert_course(courses: Courses){
+   
+    const course= Object.assign({}, courses);
+    course.Chapters = Object.assign({},course.Chapters);
+    return new Promise((resolve,reject)=>{
+      
+    for (let i=0;i<courses.Chapters.length;i++)
+    {
+      course.Chapters[i] =  Object.assign({},courses.Chapters[i]);
+      
+      course.Chapters[i].Topics =  Object.assign({},courses.Chapters[i].Topics);
+      for (let j=0;j<courses.Chapters[i].Topics.length;j++)
+      {
+        course.Chapters[i].Topics[j] =  Object.assign({},courses.Chapters[i].Topics[j]); 
+  
+      }
+    }
+    this.loaderservice.loading = this.loaderservice.loadingCtrl.create({
+      
+      content: `
+        <div class="custom-spinner-container">
+          <div class="custom-spinner-box"> loading... </div>
+        </div>`,
+
+    });
+
+    setTimeout(() => {
+              
+      this.loaderservice.loading.present().then(()=>{
+       
+           
+        this.afs.collection<Courses>('courses').doc(course.creationdate).set(course).then(res=>{
+          this.loaderservice.dismissloading();
+
+          
+          return resolve('inserted');
+
+        }).catch(err=>{
+          this.loaderservice.dismissloading();
+       
+          
+          return reject('error'); 
+        });
+     
+      })
+     
+    }, 2000);
+  });
+
+  }
+
+  delete_course(courses: Courses){
    
     const course= Object.assign({}, courses);
     course.Chapters = Object.assign({},course.Chapters);
@@ -178,11 +284,11 @@ export class CourseProvider {
       this.loaderservice.loading.present().then(()=>{
        
            
-        this.afs.collection<Courses>('courses').doc(course.creationdate).set(course).then(res=>{
+        this.afs.collection<Courses>('courses').doc(course.creationdate).update(course).then(res=>{
           this.loaderservice.dismissloading();
 
-          
-          return resolve('inserted');
+          this.getcourses();         
+          return resolve('updated');
 
         }).catch(err=>{
           this.loaderservice.dismissloading();
@@ -194,6 +300,43 @@ export class CourseProvider {
       })
      
     }, 2000);
+  });
+
+  }
+
+  delete_all(creationdate:string){
+   return new Promise((resolve,reject)=>{
+     
+    this.loaderservice.loading = this.loaderservice.loadingCtrl.create({
+      
+      content: `
+        <div class="custom-spinner-container">
+          <div class="custom-spinner-box"> loading... </div>
+        </div>`,
+
+    });
+
+    setTimeout(() => {
+              
+      this.loaderservice.loading.present().then(()=>{
+       
+           
+        this.afs.collection<Courses>('courses').doc(creationdate).delete().then(res=>{
+          this.loaderservice.dismissloading();
+
+          this.getcourses();         
+          return resolve('de;eted');
+
+        }).catch(err=>{
+          this.loaderservice.dismissloading();
+       
+          
+          return reject('error'); 
+        });
+     
+      })
+     
+    }, 500);
   });
 
   }

@@ -49,25 +49,49 @@
 </ion-header>
 <ion-content class="content">
   <ion-card class="card-css" [hidden]="this.courseservice.allcourses.length == 0">
-    <ion-list *ngFor="let ch of this.courseservice.allcourses">
-      <ion-item *ngFor="let p of ch.Chapters; let i=index" text-wrap (click)="toggleLevel1('idx'+i)"
-        [ngClass]="{active: isLevel1Shown('idx'+i)}">
+    <ion-list *ngFor="let ch of this.courseservice.allcourses; let courseindex=index">
+      <ion-item *ngFor="let p of ch.Chapters; let i=index" text-wrap (click)="toggleLevel1(courseindex)"
+        [ngClass]="{active: isLevel1Shown(courseindex)}">
 
         <h2 [ngStyle]="{'color':'#4c6df9'}">
      
 
-
-          {{p.value}}
-          <ion-icon color="success" item-right [name]="isLevel1Shown('idx'+i) ? 'arrow-dropdown' : 'arrow-dropright'">
+<h3 class="search-query">
+    <span></span>
+    <ion-badge class="query-tag"  >    {{p.value}} </ion-badge>
+    <span class="query-explanation"> </span>
+     <ion-icon color="success" [ngStyle]="{'color':'#4c6df9', 'margin-left':'15px'}"  item-right [name]="isLevel1Shown('idx'+i) ? 'arrow-dropdown' : 'arrow-dropright'">
           </ion-icon>
+          <div [ngStyle]="{'display':'inline'}" *ngIf="this.homeservice.user == 'teachers'">
+           <button ion-button margin-right clear item-end icon-only (click)="deletechap(courseindex,i)">
+              <!-- here -->
+              <ion-icon name="trash"></ion-icon>
+            </button>
+            </div>
+  </h3>
+
+           
+         
         </h2>
-        <ion-list *ngIf="isLevel1Shown('idx'+i)">
+        <ion-list *ngIf="isLevel1Shown(courseindex)">
           <ion-item *ngFor="let s of p.Topics; let i2=index" text-wrap (click)="toggleLevel2('idx'+i+'idx'+i2)"
             [ngClass]="{active: isLevel2Shown('idx'+i+'idx'+i2)}">
 
 
-            {{s.value}}
+            
+<h3 class="search-query">
+    <span></span>
+    <ion-badge class="query-tag"  >    {{s.value}} </ion-badge>
+    <span class="query-explanation"> </span>
+  </h3>
+            <div [ngStyle]="{'display':'inline'}"  *ngIf="this.homeservice.user == 'teachers'">
 
+            <button ion-button margin-right clear item-end icon-only (click)="deletetopic(courseindex,i, i2)">
+              <!-- here -->
+              <ion-icon name="trash"></ion-icon>
+            </button>
+            </div>
+            
             <button ion-button margin-right clear item-end icon-only (click)="Quiz(ch.creationdate,s.value)" >
               <!-- here -->
               <ion-icon name="clipboard"></ion-icon>
@@ -191,11 +215,19 @@
     <button ion-button (click)="addSubtopic()">SubTopics</button>
 -->  
 <ion-card class="card-css" [hidden] = " this.courseservice.allcourses.length > 0">
-<div *ngIf = " this.courseservice.allcourses.length == 0 ">
+<!-- <div *ngIf = " this.courseservice.allcourses.length == 0 ">
 <p>
 No course Syllabus are added
 </p>
-</div>
+</div> -->
+<div *ngIf = " this.courseservice.allcourses.length == 0 "
+    [ngStyle]="{'margin-top':'inherit', 'align-items': 'center', 'justify-content': 'center', 'text-align': 'center'}">
+
+<button [ngStyle]="{'background':'transparent'}" (click)="findcourses()">
+    <ion-icon name="refresh" [ngStyle]="{'font-size': '50px'}"></ion-icon>
+</button>
+    <p [ngStyle]="{'font-size': '15px'}">No course Syllabus are added</p>
+  </div>
 
 </ion-card>
 <!--    <div class="divclass">

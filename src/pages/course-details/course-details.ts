@@ -118,4 +118,7 @@ export class CourseDetailsPage {
       }
       return MIMETypes[ext];
     }
+    viewctrl_dismiss(){
+      this.viewctrl.dismiss();
+    }
 }

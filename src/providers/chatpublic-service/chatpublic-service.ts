@@ -10,6 +10,7 @@ import { of } from 'rxjs';
 import { teacher } from '../../models/teacher';
 import { Timestamp } from 'rxjs/internal-compatibility';
 import { Time } from '@angular/common';
+import { HomeServiceProvider } from '../home-service/home-service';
 
 /*
   Generated class for the ChatpublicServiceProvider provider.
@@ -48,7 +49,7 @@ export class ChatpublicServiceProvider {
   msgList: ChatMessage[] = [];
   Allfriends: AngularFirestoreCollection<any>; 
   Allmessages: AngularFirestoreCollection<any>;
-  constructor(private events:Events, private afauth:AngularFireAuth, private afs:AngularFirestore, private loaderservice:LoaderserviceProvider) {
+  constructor(private homeservice:HomeServiceProvider,private events:Events, private afauth:AngularFireAuth, private afs:AngularFirestore, private loaderservice:LoaderserviceProvider) {
     console.log('Hello ChatpublicServiceProvider Provider');
 
     this.Allfriends = this.afs.collection('/chatroom');
@@ -131,7 +132,7 @@ export class ChatpublicServiceProvider {
        console.log(parentname, teachername);
        
          this.afs.collection<Chatroom>('/chatroom' , ref=> {
-          return ref.where('parentemail','==',parentname).where('teacheremail','==',teachername);
+          return ref.where('parentemail','==',parentname).where('teacheremail','==',teachername).where('classroom','==',this.homeservice.classroom);
         }).snapshotChanges().forEach(snapshot=> {
             if (snapshot.length == 0){
               const id = this.afs.createId();
@@ -140,7 +141,8 @@ export class ChatpublicServiceProvider {
               this.afs.doc('/chatroom/'+id).set({
                 parentemail: parentname,
                 teacheremail: teachername,
-                colid: colid
+                colid: colid,
+                classroom: this.homeservice.classroom
               });
               console.log(colid)
               resolve(colid);

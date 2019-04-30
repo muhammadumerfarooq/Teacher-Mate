@@ -5,6 +5,32 @@ page-course-info {
       .content{
         background: url("../assets/img/bg.jpg") no-repeat; 
     }
+    .search-query
+    {
+      font-size: 1.4rem;
+     // margin: 12px;
+    //  margin-bottom: 30px;
+      color: $theme-color-3;
+      text-align: left;
+  
+      .query-tag
+      {
+        border: 1px solid #4c6df9;
+        color: #4c6df9;
+        background: #FFF;
+        font-size: 1.2em;
+      }
+      .card-css{
+        border-radius: 1.2em;
+     //   margin-top: 5%;
+        box-shadow: solid thin lightblue;
+        background: transparent;
+    }
+      .query-explanation
+      {
+        font-weight: 300;
+      }
+    }
       .list .item.item-accordion {
         line-height: 38px;
         padding-left: 40px;

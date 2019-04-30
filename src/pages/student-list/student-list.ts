@@ -17,6 +17,8 @@ import { student, StudentProvider } from '../../providers/student/student';
 export class StudentListPage {
 
   constructor(private modalctrl:ModalController ,public viewctrl: ViewController,public navCtrl: NavController, public navParams: NavParams, private studentservice:StudentProvider) {
+  this.studentservice.getstudents();
+
   }
 
   ionViewDidLoad() {
