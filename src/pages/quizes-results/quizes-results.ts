@@ -4,6 +4,7 @@ import { LoaderserviceProvider } from '../../providers/loaderservice/loaderservi
 import { student, StudentProvider } from '../../providers/student/student';
 import { HomeServiceProvider } from '../../providers/home-service/home-service';
 import { AnswerServiceProvider } from '../../providers/answer-service/answer-service';
+import { QuizAnswer } from '../../providers/quiz-service/quiz-service';
 
 /**
  * Generated class for the QuizesResultsPage page.
@@ -19,10 +20,11 @@ import { AnswerServiceProvider } from '../../providers/answer-service/answer-ser
 })
 export class QuizesResultsPage {
 
-  
+
   studentslist: Array<student> = [];
 
-  answerslist: Array<any>= []; 
+  answerslist: Array<any> = [];
+
   /*
   Array<new (Object: any) => {
     score: 0,
@@ -32,8 +34,17 @@ export class QuizesResultsPage {
 
   }> = []; */
 
-  constructor(private modalctrl:ModalController,private viewctrl:ViewController,private loaderservice: LoaderserviceProvider, private student_service: StudentProvider, private homeservice: HomeServiceProvider, public navCtrl: NavController, public navParams: NavParams, private answers_service: AnswerServiceProvider) {
+  constructor(private modalctrl: ModalController, private viewctrl: ViewController, private loaderservice: LoaderserviceProvider, private student_service: StudentProvider, private homeservice: HomeServiceProvider, public navCtrl: NavController, public navParams: NavParams, private answers_service: AnswerServiceProvider) {
     this.studentslist = new Array<student>();
+    if (this.homeservice.user == 'teachers') {
+      this.answers_service.getallanswers().then(() => {
+        this.findstudent();
+      });
+    } else {
+      this.answers_service.getstudentanswers().then(() => {
+        this.findstudent();
+      });
+    }
 
 
   }
@@ -56,20 +67,25 @@ export class QuizesResultsPage {
     this.student_service.allstudents.forEach(student => {
       this.answers_service.allanswers.forEach(answer => {
 
-        if (student.classteacher == answer.classteacher && student.classname == answer.classname) {
+        if (student.parentemail == answer.useremail && student.classteacher == answer.classteacher && student.classname == answer.classname) {
           let answers = {
             score: 0,
             total: 0,
             imgurl: '',
             creationdate: '',
-            syllabusid:''
+            syllabusid: '',
+            classname: '',
+            classteacher: '',
+            useremail: ''
           }
           answers.creationdate = answer.creationdate;
           answers.imgurl = student.userurl;
           answers.score = answer.score;
           answers.total = answer.questions.length;
           answers.syllabusid = answer.syllabusid;
-
+          answers.classname = answer.classname;
+          answers.classteacher = answer.classteacher
+          answers.useremail = answer.useremail
           this.answerslist.push(answers);
         }
       });
@@ -79,22 +95,26 @@ export class QuizesResultsPage {
   async presentLoading(loading) {
     return await loading.present();
   }
-  viewctrl_dismiss(){
+  viewctrl_dismiss() {
     this.viewctrl.dismiss();
   }
-  quizResults(answer:any){
-    this.answers_service.allanswers.forEach(result=>{
-      if(result.classteacher == answer.classteacher && result.classname == answer.classname && result.useremail == result.useremail){
+  quizResults(answer: any) {
+    let sendanswer: QuizAnswer = new QuizAnswer();
 
-        var modalPage = this.modalctrl.create('ResultDetailsPage',{'answers':result});
-        modalPage.onDidDismiss(data=>{
-        
-    
-       });
-        modalPage.present();
-        
+    for (let i = 0; i < this.answers_service.allanswers.length; i++) {
+      if (this.answers_service.allanswers[i].classteacher == this.answers_service.allanswers[i].classteacher &&
+        this.answers_service.allanswers[i].classname == answer.classname && this.answers_service.allanswers[i].useremail == answer.useremail && this.answers_service.allanswers[i].creationdate == answer.creationdate) {
+          sendanswer = this.answers_service.allanswers[i];
+        break;
       }
-    })
-    
+    }
+
+    var modalPage = this.modalctrl.create('ResultDetailsPage', { sendanswer: sendanswer });
+    modalPage.onDidDismiss(data => {
+
+
+    });
+    modalPage.present();
+
   }
 }

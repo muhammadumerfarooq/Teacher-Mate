@@ -260,7 +260,7 @@ getallmessages(colid:string): Promise<any[]>{
       <div class="custom-spinner-container">
         <div class="custom-spinner-box"> loading... </div>
       </div>`,
-
+duration: 1500
   });
   let messages: ChatMessage[] = [];
   return  new Promise((resolve, reject)=>{
@@ -287,7 +287,7 @@ getallmessages(colid:string): Promise<any[]>{
 
  // })
 
-  this.loaderservice.loading.dismiss();
+//  this.loaderservice.loading.dismiss();
 }, 1500);
 
 });

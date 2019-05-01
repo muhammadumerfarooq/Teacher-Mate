@@ -12,8 +12,8 @@ import { AnswerServiceProvider } from '../../providers/answer-service/answer-ser
  */
 
 export class SingleQuiz {
-  quiztime:string;
-  quizno : number;
+  quiztime: string;
+  quizno: number;
   quizname: string;
   quizdescription: string;
   quiztype: string;
@@ -24,9 +24,9 @@ export class SingleQuiz {
   creationdate: string;
   scheduledate: string;
   background: string;
-  attempted:boolean;
+  attempted: boolean;
   constructor() {
-    this.attempted= false;
+    this.attempted = false;
     this.quiztime = '';
     this.quizno = 0;
     this.background = '';
@@ -48,19 +48,19 @@ export class TakeQuizPage {
 
   myquiz: Quiz;
   quiz: SingleQuiz;
-  quizno : number = 0;
+  quizno: number = 0;
 
   public timeBegan = null
-  public timeStopped:any = null
-  public stoppedDuration:any = 0
+  public timeStopped: any = null
+  public stoppedDuration: any = 0
   public started = null
   public running = false
   public blankTime = "00:00"
   public time = "00:00"
   public myanswers: QuizAnswer;
 
-  constructor(private answerservice:AnswerServiceProvider,private alertCtrl:AlertController, private viewctrl: ViewController, public navCtrl: NavController, public navParams: NavParams, private quizservice: QuizServiceProvider) {
-   
+  constructor(private answerservice: AnswerServiceProvider, private alertCtrl: AlertController, private viewctrl: ViewController, public navCtrl: NavController, public navParams: NavParams, private quizservice: QuizServiceProvider) {
+
     this.myanswers = new QuizAnswer();
     this.myquiz = new Quiz();
     this.myquiz = this.navParams.get('myquiz');
@@ -78,57 +78,57 @@ export class TakeQuizPage {
     this.quiz.quiztime = this.myquiz.quiztime
     this.quiz.attempted = this.myquiz.attempted;
 
-  if (this.myquiz.questions.length>0){
-    let myquestion: QuestionAnswer = new QuestionAnswer();
-    myquestion.question = this.myquiz.questions[this.quizno].question;
+    if (this.myquiz.questions.length > 0) {
+      let myquestion: QuestionAnswer = new QuestionAnswer();
+      myquestion.question = this.myquiz.questions[this.quizno].question;
 
-    for (let j = 0; j < this.myquiz.questions[this.quizno].options.length; j++) {
+      for (let j = 0; j < this.myquiz.questions[this.quizno].options.length; j++) {
 
-      let myoption : OptionsAnswer = new OptionsAnswer();
+        let myoption: OptionsAnswer = new OptionsAnswer();
 
-      myoption.isanswer =this.myquiz.questions[this.quizno].options[j].isanswer
-      myoption.myanswer =false;
-      myoption.option =this.myquiz.questions[this.quizno].options[j].option
+        myoption.isanswer = this.myquiz.questions[this.quizno].options[j].isanswer
+        myoption.myanswer = false;
+        myoption.option = this.myquiz.questions[this.quizno].options[j].option
 
-      myquestion.options.push(myoption)
-      
+        myquestion.options.push(myoption)
+
+      }
+
+      this.quiz.questions = myquestion;
+
     }
-    
-    this.quiz.questions = myquestion;
 
-  }
 
- 
 
-  this.myanswers.background = this.myquiz.background
-  this.myanswers.classname = this.myquiz.classname
-  this.myanswers.classteacher = this.myquiz.classteacher
-  this.myanswers.creationdate = this.myquiz.creationdate
-  this.myanswers.scheduledate = this.myquiz.scheduledate
-  this.myanswers.quizdescription = this.myquiz.quizdescription
-  this.myanswers.quizname = this.myquiz.quizname
-  this.myanswers.quiztype = this.myquiz.quiztype
-  this.myanswers.syllabusid = this.myquiz.syllabusid
-  this.myanswers.quiztime = this.myquiz.quiztime
-  this.myanswers.attempted = this.myquiz.attempted;
+    this.myanswers.background = this.myquiz.background
+    this.myanswers.classname = this.myquiz.classname
+    this.myanswers.classteacher = this.myquiz.classteacher
+    this.myanswers.creationdate = this.myquiz.creationdate
+    this.myanswers.scheduledate = this.myquiz.scheduledate
+    this.myanswers.quizdescription = this.myquiz.quizdescription
+    this.myanswers.quizname = this.myquiz.quizname
+    this.myanswers.quiztype = this.myquiz.quiztype
+    this.myanswers.syllabusid = this.myquiz.syllabusid
+    this.myanswers.quiztime = this.myquiz.quiztime
+    this.myanswers.attempted = this.myquiz.attempted;
 
-for (let i=0;i<this.myquiz.questions.length;i++){
-  
-  let myquestion = new QuestionAnswer();
-  myquestion.question = this.myquiz.questions[i].question;
+    for (let i = 0; i < this.myquiz.questions.length; i++) {
 
-  for (let j=0;j<this.myquiz.questions[i].options.length;j++){
+      let myquestion = new QuestionAnswer();
+      myquestion.question = this.myquiz.questions[i].question;
 
-    let myoptions = new OptionsAnswer();
-    myoptions.isanswer = this.myquiz.questions[i].options[j].isanswer;
-    myoptions.option = this.myquiz.questions[i].options[j].option;
-    myoptions.myanswer = false;
+      for (let j = 0; j < this.myquiz.questions[i].options.length; j++) {
 
-    myquestion.options.push(myoptions);
-  }
-  
-  this.myanswers.questions.push(myquestion);
-}
+        let myoptions = new OptionsAnswer();
+        myoptions.isanswer = this.myquiz.questions[i].options[j].isanswer;
+        myoptions.option = this.myquiz.questions[i].options[j].option;
+        myoptions.myanswer = false;
+
+        myquestion.options.push(myoptions);
+      }
+
+      this.myanswers.questions.push(myquestion);
+    }
 
 
   }
@@ -141,8 +141,7 @@ for (let i=0;i<this.myquiz.questions.length;i++){
   }
 
   start() {
-    if (this.myanswers.attempted == true)
-    {
+    if (this.myanswers.attempted == true) {
       let confirm = this.alertCtrl.create({
         title: 'Take Quiz Again',
         message: 'Are you sure you want to Take this Quiz Again?',
@@ -158,93 +157,93 @@ for (let i=0;i<this.myquiz.questions.length;i++){
             handler: () => {
               /// quiz again 
 
-              if(this.running) return;
+              if (this.running) return;
               if (this.timeBegan === null) {
-                  this.reset();
-                  this.timeBegan = new Date();
+                this.reset();
+                this.timeBegan = new Date();
               }
               if (this.timeStopped !== null) {
-                let newStoppedDuration:any = (+new Date() - this.timeStopped)
+                let newStoppedDuration: any = (+new Date() - this.timeStopped)
                 this.stoppedDuration = this.stoppedDuration + newStoppedDuration;
               }
               this.started = setInterval(this.clockRunning.bind(this), 10);
-                this.running = true;
+              this.running = true;
 
             }
           }
         ]
       });
       confirm.present();
-    }else{
-      if(this.running) return;
+    } else {
+      if (this.running) return;
       if (this.timeBegan === null) {
-          this.reset();
-          this.timeBegan = new Date();
+        this.reset();
+        this.timeBegan = new Date();
       }
       if (this.timeStopped !== null) {
-        let newStoppedDuration:any = (+new Date() - this.timeStopped)
+        let newStoppedDuration: any = (+new Date() - this.timeStopped)
         this.stoppedDuration = this.stoppedDuration + newStoppedDuration;
       }
       this.started = setInterval(this.clockRunning.bind(this), 10);
-        this.running = true;
+      this.running = true;
     }
-   
+
+  }
+  stop() {
+    this.running = false;
+    this.timeStopped = new Date();
+    clearInterval(this.started);
+  }
+  reset() {
+    this.running = false;
+    clearInterval(this.started);
+    this.stoppedDuration = 0;
+    this.timeBegan = null;
+    this.timeStopped = null;
+    this.time = this.blankTime;
+  }
+  zeroPrefix(num, digit) {
+    let zero = '';
+    for (let i = 0; i < digit; i++) {
+      zero += '0';
     }
-    stop() {
-      this.running = false;
-      this.timeStopped = new Date();
-      clearInterval(this.started);
-   }
-    reset() {
-      this.running = false;
-      clearInterval(this.started);
-      this.stoppedDuration = 0;
-      this.timeBegan = null;
-      this.timeStopped = null;
-      this.time = this.blankTime;
-    }
-    zeroPrefix(num, digit) {
-      let zero = '';
-      for(let i = 0; i < digit; i++) {
-        zero += '0';
-      }
-      return (zero + num).slice(-digit);
-    }
-    clockRunning(){
-      let currentTime:any = new Date()
-      let timeElapsed:any = new Date(currentTime - this.timeBegan - this.stoppedDuration)
-      let hour = timeElapsed.getUTCHours()
-      let min = timeElapsed.getUTCMinutes()
-      let sec = timeElapsed.getUTCSeconds()
-      let ms = timeElapsed.getUTCMilliseconds();
+    return (zero + num).slice(-digit);
+  }
+  clockRunning() {
+    let currentTime: any = new Date()
+    let timeElapsed: any = new Date(currentTime - this.timeBegan - this.stoppedDuration)
+    let hour = timeElapsed.getUTCHours()
+    let min = timeElapsed.getUTCMinutes()
+    let sec = timeElapsed.getUTCSeconds()
+    let ms = timeElapsed.getUTCMilliseconds();
     this.time =
 
       this.zeroPrefix(min, 2) + ":" +
-      this.zeroPrefix(sec, 2) ; // + "." ;
-      if (this.time == this.myquiz.quiztime){
-        clearInterval(this.started); // interval closed
-        
-      }
-   
-    };
-    
+      this.zeroPrefix(sec, 2); // + "." ;
+    if (this.time == this.myquiz.quiztime) {
+      clearInterval(this.started); // interval closed
+
+    }
+
+  };
 
 
-  selected_option(ques: number, op: number){
-  
-    console.log(this.quiz.questions.options[op].option + ' '+this.quiz.questions.options[op].myanswer)
+
+  selected_option(ques: number, op: number) {
+
+    console.log(this.quiz.questions.options[op].option + ' ' + this.quiz.questions.options[op].myanswer)
     if (this.quiz.questions.options[op].myanswer == true) {
       this.myanswers.questions[ques].options[op].myanswer = false;
       this.quiz.questions.options[op].myanswer = false;
-      
+
     }
-    else{
-    this.quiz.questions.options[op].myanswer = true;
-    this.myanswers.questions[ques].options[op].myanswer = true;
+    else {
+      this.quiz.questions.options[op].myanswer = true;
+      this.myanswers.questions[ques].options[op].myanswer = true;
 
     }
   }
-  
+
 
   presentAlert(alerttitle, alertsub) {
     let alert = this.alertCtrl.create({
@@ -253,61 +252,68 @@ for (let i=0;i<this.myquiz.questions.length;i++){
       buttons: ['OK']
     });
     alert.present();
-   
-   }
 
-   nextQuestion(){
-    if (this.quizno>0 && this.quizno +1 <this.myquiz.questions.length){
-      this.quizno ++;
+  }
+
+  nextQuestion() {
+    if (this.quizno >= 0 && (this.quizno + 1) < this.myquiz.questions.length) {
+      this.quizno++;
       let myquestion: QuestionAnswer = new QuestionAnswer();
       myquestion.question = this.myquiz.questions[this.quizno].question;
 
       for (let j = 0; j < this.myquiz.questions[this.quizno].options.length; j++) {
 
-        let myoption : OptionsAnswer = new OptionsAnswer();
+        let myoption: OptionsAnswer = new OptionsAnswer();
 
-        myoption.isanswer =this.myquiz.questions[this.quizno].options[j].isanswer
-        myoption.myanswer =false;
-        myoption.option =this.myquiz.questions[this.quizno].options[j].option
+        myoption.isanswer = this.myquiz.questions[this.quizno].options[j].isanswer
+        myoption.myanswer = false;
+        myoption.option = this.myquiz.questions[this.quizno].options[j].option
+
+       if ( this.myanswers.questions[this.quizno].options[j].myanswer ==  true){
+        myoption.myanswer = true;
+       }
 
         myquestion.options.push(myoption)
-        
+
       }
 
       this.quiz.questions = myquestion;
 
-    }else{
+    } else {
       this.presentAlert('No more Questions ', ' :) ');
     }
-   }
+  }
 
-   backQuestion(){
-    
-    if ( this.quizno-1 > 0 && this.quizno - 1<this.myquiz.questions.length){
-      this.quizno -- ;
+  backQuestion() {
+
+    if (this.quizno - 1 >= 0 && (this.quizno - 1) < this.myquiz.questions.length) {
+      this.quizno--;
       let myquestion: QuestionAnswer = new QuestionAnswer();
       myquestion.question = this.myquiz.questions[this.quizno].question;
 
       for (let j = 0; j < this.myquiz.questions[this.quizno].options.length; j++) {
 
-        let myoption : OptionsAnswer = new OptionsAnswer();
+        let myoption: OptionsAnswer = new OptionsAnswer();
 
-        myoption.isanswer =this.myquiz.questions[this.quizno].options[j].isanswer
-        myoption.myanswer =false;
-        myoption.option =this.myquiz.questions[this.quizno].options[j].option
+        myoption.isanswer = this.myquiz.questions[this.quizno].options[j].isanswer
+        myoption.myanswer = false;
+        myoption.option = this.myquiz.questions[this.quizno].options[j].option
 
+        if ( this.myanswers.questions[this.quizno].options[j].myanswer ==  true){
+          myoption.myanswer = true;
+         }
         myquestion.options.push(myoption)
-        
+
       }
       this.quiz.questions = myquestion;
 
-    }else{
+    } else {
       this.presentAlert('No more Questions ', ' :) ');
     }
-   }
+  }
 
- 
-   completequiz(){
+
+  completequiz() {
     let confirm = this.alertCtrl.create({
       title: 'End Quiz',
       message: 'Are you sure you want to End this Quiz?',
@@ -327,28 +333,29 @@ for (let i=0;i<this.myquiz.questions.length;i++){
             this.calculating_score();
             this.reset();
             this.myanswers.attempted = true;
-            this.presentAlert('You Scored '+this.myanswers.score ,' out of '+this.myanswers.questions.length);
-            this.answerservice.insert_Answer(this.myanswers).then(res=>{
+            this.myanswers.creationdate = new Date().toString();
+            this.presentAlert('You Scored ' + this.myanswers.score, ' out of ' + this.myanswers.questions.length);
+            this.answerservice.insert_Answer(this.myanswers).then(res => {
 
-              this.presentAlert('Your Quiz is Saved','');
-            }).catch(err=>{
-              this.presentAlert('Error Saving Quiz',' ');
+              this.presentAlert('Your Quiz is Saved', '');
+            }).catch(err => {
+              this.presentAlert('Error Saving Quiz', ' ');
             });
           }
         }
       ]
     });
     confirm.present();
-   }
+  }
 
-   calculating_score(){
-    this.myanswers.score  = 0;
-     this.myanswers.questions.forEach(quest=>{
-      quest.options.forEach(opt=>{
-        if (opt.isanswer == true && opt.myanswer == true){
-          this.myanswers.score ++;
+  calculating_score() {
+    this.myanswers.score = 0;
+    this.myanswers.questions.forEach(quest => {
+      quest.options.forEach(opt => {
+        if (opt.isanswer == true && opt.myanswer == true) {
+          this.myanswers.score++;
         }
       })
-     })
-   }
+    })
+  }
 }

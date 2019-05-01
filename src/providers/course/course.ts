@@ -73,7 +73,7 @@ export class CourseProvider {
   coursesdropdown: Array<Boolean> = [];
 
   constructor( private homeservice:HomeServiceProvider,private fileservice: File,private fileChooser: FileChooser, private filePath: FilePath, private fileOpener: FileOpener,private afs:AngularFirestore,private loaderservice:LoaderserviceProvider) {
-   this.afs.collection<Courses>('courses', ref=>{
+  /* this.afs.collection<Courses>('courses', ref=>{
      
      return ref.where("classname","==",this.homeservice.classroom).where("classteacher","==",this.homeservice.classteacher);
    }).snapshotChanges().forEach(snap=>{
@@ -124,7 +124,7 @@ export class CourseProvider {
           this.coursesdropdown.push(false);
        }
      })
-   })
+   })*/
 
    
   }

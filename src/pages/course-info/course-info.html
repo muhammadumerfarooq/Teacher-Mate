@@ -84,20 +84,20 @@
     <ion-badge class="query-tag"  >    {{s.value}} </ion-badge>
     <span class="query-explanation"> </span>
   </h3>
-            <div [ngStyle]="{'display':'inline'}"  *ngIf="this.homeservice.user == 'teachers'">
+            <div [ngStyle]="{'display':'inline', 'margin':'0px'}" item-end *ngIf="this.homeservice.user == 'teachers'">
 
-            <button ion-button margin-right clear item-end icon-only (click)="deletetopic(courseindex,i, i2)">
+            <button ion-button  clear item-end icon-only (click)="deletetopic(courseindex,i, i2);$event.stopPropagation()">
               <!-- here -->
               <ion-icon name="trash"></ion-icon>
             </button>
             </div>
             
-            <button ion-button margin-right clear item-end icon-only (click)="Quiz(ch.creationdate,s.value)" >
+            <button ion-button margin-right clear item-end icon-only (click)="Quiz(ch.creationdate,s.value);$event.stopPropagation()" >
               <!-- here -->
               <ion-icon name="clipboard"></ion-icon>
             </button>
 
-            <button ion-button margin-right clear item-end icon-only (click)="downaloadAndOpenfile(s.filename, s.fileurl, s.filetype)">
+            <button ion-button margin-right clear item-end icon-only (click)="downaloadAndOpenfile(s.filename, s.fileurl, s.filetype);$event.stopPropagation()">
               <!-- here -->
               <ion-icon name="cloud-done"></ion-icon>
             </button>

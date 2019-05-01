@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, AlertController, Option } from 'ionic-angular';
 import { QuizServiceProvider, Quiz, QuestionAnswer, OptionsAnswer, QuizAnswer, Question, Options } from '../../providers/quiz-service/quiz-service';
-import { isThisMinute } from 'date-fns';
 
 /**
  * Generated class for the QuizDetailPage page.
@@ -246,7 +245,7 @@ export class QuizDetailPage {
    }
 
    nextQuestion(){
-    if (this.quizno>0 && this.quizno +1 <this.myquiz.questions.length){
+    if (this.quizno>= 0 && this.quizno +1 <this.myquiz.questions.length){
       this.quizno ++;
       let myquestion: QuestionAnswer = new QuestionAnswer();
       myquestion.question = this.myquiz.questions[this.quizno].question;
@@ -273,7 +272,7 @@ export class QuizDetailPage {
 
    backQuestion(){
     
-    if ( this.quizno-1 > 0 && this.quizno - 1<this.myquiz.questions.length){
+    if ( this.quizno-1 >= 0 && this.quizno - 1<this.myquiz.questions.length){
       this.quizno -- ;
       let myquestion: QuestionAnswer = new QuestionAnswer();
       myquestion.question = this.myquiz.questions[this.quizno].question;

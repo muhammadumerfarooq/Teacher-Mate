@@ -10,6 +10,7 @@ import { LoaderserviceProvider } from '../loaderservice/loaderservice';
 import moment from 'moment';
 // import { ProfileServiceProvider } from '../profile-service/profile-service';
 import { HomeServiceProvider } from '../home-service/home-service';
+import { AnswerServiceProvider } from '../answer-service/answer-service';
 
 export class OptionsAnswer {
   option: string;
@@ -142,7 +143,7 @@ export class QuizServiceProvider {
 
   Dates: Array<string> = new Array<string>();
   myquizes: Array<Quiz> = new Array<Quiz>();
-  constructor(private afs: AngularFirestore, private homeservice: HomeServiceProvider, private loaderservice: LoaderserviceProvider) {
+  constructor(private answerservice:AnswerServiceProvider,private afs: AngularFirestore, private homeservice: HomeServiceProvider, private loaderservice: LoaderserviceProvider) {
 
     this.afs.collection<Quiz>('quizes', ref => {
       return ref.where('classname', '==', this.homeservice.classroom).where('classteacher', '==', this.homeservice.classteacher);
@@ -150,116 +151,242 @@ export class QuizServiceProvider {
   }
   getquiz(syllid: string) {
 
+if (this.homeservice.user == 'parents'){
+  this.answerservice.getstudentanswers().then((res)=>{
+    if (res=='done'){
+      this.loaderservice.loading = this.loaderservice.loadingCtrl.create({
 
-    this.loaderservice.loading = this.loaderservice.loadingCtrl.create({
-
-      content: `
-        <div class="custom-spinner-container">
-          <div class="custom-spinner-box"> loading... </div>
-        </div>`,
-      duration: 1500
-    });
-
-    setTimeout(() => {
-
-      this.loaderservice.loading.present().then(() => {
-
-
-        this.afs.collection<Quiz>('quizes', ref => {
-          return ref.where('classname', '==', this.homeservice.classroom).where('classteacher', '==', this.homeservice.classteacher);
-        }).snapshotChanges().forEach(snap => {
-
-          this.myquizes = new Array<Quiz>();
-
-          snap.forEach(snapshot => {
-
-            if (snapshot.payload.doc.exists) {
-              const coursetemp = snapshot.payload.doc.data() as Quiz;
-
-              if (coursetemp.syllabusid == syllid) {
-
-
-                let i = 0;
-                let qu = 0;
-                let quiz: Quiz = new Quiz();
-                quiz.background = coursetemp.background;
-                quiz.classname = coursetemp.classname;
-                quiz.classteacher = coursetemp.classteacher;
-                quiz.creationdate = coursetemp.creationdate;
-                quiz.scheduledate = coursetemp.scheduledate;
-                quiz.quizdescription = coursetemp.quizdescription;
-                quiz.quizname = coursetemp.quizname;
-                quiz.quiztype = coursetemp.quiztype;
-                quiz.syllabusid = coursetemp.syllabusid;
-                quiz.quiztime = coursetemp.quiztime
-                quiz.attempted = coursetemp.attempted;
-                /// available or not 
-
-                let end = moment(new Date(), "YYYY-MM-DD");
-                // coursetemp.scheduledate = "2019-04-13";
-                let start = moment(coursetemp.scheduledate, "YYYY-MM-DD");
-
-                console.log(start.diff(end, 'minutes'))
-                console.log(start.diff(end, 'hours'))
-                console.log(start.diff(end, 'days'))
-                console.log(start.diff(end, 'weeks'))
-                if (start.diff(end, 'weeks')<1 || start.diff(end, 'weeks') == 0 ){
-                  quiz.available = true;
-                }else{
-                  quiz.onweek = start.diff(end, 'weeks').toString();
-                }
-                  ////
-                  while (i > -1) {
-
-                    let j = 0;
-                    let op = 0;
-
-                    if (coursetemp.questions[i] != null && coursetemp.questions[i] != undefined) {
-                      let tempques: Question = new Question();
-                      tempques.question = coursetemp.questions[i].question;
-
-                      quiz.questions.push(tempques);
-
-
-                      // quiz.questions[qu] = (tempques);
-
-
-                      while (j > -1) {
-                        if (coursetemp.questions[i].options[j] != null && coursetemp.questions[i].options[j] != undefined) {
-
-                          let option: Options = new Options();
-
-                          option.isanswer = coursetemp.questions[i].options[j].isanswer;
-                          option.option = coursetemp.questions[i].options[j].option;
-                          quiz.questions[qu].options.push(option);
-
-                          op++;
-
-                        } else {
-                          break;
-                        }
-                        j++;
-                      }
-                      qu++;
-
-                      console.log(this.myquizes);
-                    }
-                    else {
-                      break;
-                    }
-
-                    i++;
-                  }
+        content: `
+          <div class="custom-spinner-container">
+            <div class="custom-spinner-box"> loading... </div>
+          </div>`,
+        duration: 1500
+      });
+  
+      setTimeout(() => {
+  
+        this.loaderservice.loading.present().then(() => {
+  
+  
+          this.afs.collection<Quiz>('quizes', ref => {
+            return ref.where('classname', '==', this.homeservice.classroom).where('classteacher', '==', this.homeservice.classteacher);
+          }).snapshotChanges().forEach(snap => {
+  
+            this.myquizes = new Array<Quiz>();
+  
+            snap.forEach(snapshot => {
+  
+              if (snapshot.payload.doc.exists) {
+                const coursetemp = snapshot.payload.doc.data() as Quiz;
+  
+                if (coursetemp.syllabusid == syllid) {
+  
+  
+                  let i = 0;
+                  let qu = 0;
+                  let quiz: Quiz = new Quiz();
                   
-                this.myquizes.push(quiz);
+                  quiz.background = coursetemp.background;
+                  quiz.classname = coursetemp.classname;
+                  quiz.classteacher = coursetemp.classteacher;
+                  quiz.creationdate = coursetemp.creationdate;
+                  quiz.scheduledate = coursetemp.scheduledate;
+                  quiz.quizdescription = coursetemp.quizdescription;
+                  quiz.quizname = coursetemp.quizname;
+                  quiz.quiztype = coursetemp.quiztype;
+                  quiz.syllabusid = coursetemp.syllabusid;
+                  quiz.quiztime = coursetemp.quiztime
+                  this.answerservice.allanswers.forEach(myans => {
+                    console.log(myans)
+                    if (myans.classname == quiz.classname && myans.classteacher == quiz.classteacher
+                      && myans.syllabusid == quiz.syllabusid && myans.scheduledate == quiz.scheduledate){
+                        quiz.attempted = true;
+                      }
+                  });
+                  quiz.attempted = coursetemp.attempted;
+                  /// available or not 
+  
+                  let end = moment(new Date(), "YYYY-MM-DD");
+                  // coursetemp.scheduledate = "2019-04-13";
+                  let start = moment(coursetemp.scheduledate, "YYYY-MM-DD");
+  
+                  console.log(start.diff(end, 'minutes'))
+                  console.log(start.diff(end, 'hours'))
+                  console.log(start.diff(end, 'days'))
+                  console.log(start.diff(end, 'weeks'))
+                  if (start.diff(end, 'weeks')<1 || start.diff(end, 'weeks') == 0 ){
+                    quiz.available = true;
+                  }else{
+                    quiz.onweek = start.diff(end, 'weeks').toString();
+                  }
+                    ////
+                    while (i > -1) {
+  
+                      let j = 0;
+                      let op = 0;
+  
+                      if (coursetemp.questions[i] != null && coursetemp.questions[i] != undefined) {
+                        let tempques: Question = new Question();
+                        tempques.question = coursetemp.questions[i].question;
+  
+                        quiz.questions.push(tempques);
+  
+  
+                        // quiz.questions[qu] = (tempques);
+  
+  
+                        while (j > -1) {
+                          if (coursetemp.questions[i].options[j] != null && coursetemp.questions[i].options[j] != undefined) {
+  
+                            let option: Options = new Options();
+  
+                            option.isanswer = coursetemp.questions[i].options[j].isanswer;
+                            option.option = coursetemp.questions[i].options[j].option;
+                            quiz.questions[qu].options.push(option);
+  
+                            op++;
+  
+                          } else {
+                            break;
+                          }
+                          j++;
+                        }
+                        qu++;
+  
+                        console.log(this.myquizes);
+                      }
+                      else {
+                        break;
+                      }
+  
+                      i++;
+                    }
+                    
+                  this.myquizes.push(quiz);
+                }
               }
+            })
+          });
+        })
+  
+      }, 1500)
+  
+  
+    }
+  });
+}else{
+  this.loaderservice.loading = this.loaderservice.loadingCtrl.create({
+
+    content: `
+      <div class="custom-spinner-container">
+        <div class="custom-spinner-box"> loading... </div>
+      </div>`,
+    duration: 1500
+  });
+
+  setTimeout(() => {
+
+    this.loaderservice.loading.present().then(() => {
+
+
+      this.afs.collection<Quiz>('quizes', ref => {
+        return ref.where('classname', '==', this.homeservice.classroom).where('classteacher', '==', this.homeservice.classteacher);
+      }).snapshotChanges().take(1).forEach(snap => {
+
+        this.myquizes = new Array<Quiz>();
+
+        snap.forEach(snapshot => {
+
+          if (snapshot.payload.doc.exists) {
+            const coursetemp = snapshot.payload.doc.data() as Quiz;
+
+            if (coursetemp.syllabusid == syllid) {
+
+
+              let i = 0;
+              let qu = 0;
+              let quiz: Quiz = new Quiz();
+              quiz.background = coursetemp.background;
+              quiz.classname = coursetemp.classname;
+              quiz.classteacher = coursetemp.classteacher;
+              quiz.creationdate = coursetemp.creationdate;
+              quiz.scheduledate = coursetemp.scheduledate;
+              quiz.quizdescription = coursetemp.quizdescription;
+              quiz.quizname = coursetemp.quizname;
+              quiz.quiztype = coursetemp.quiztype;
+              quiz.syllabusid = coursetemp.syllabusid;
+              quiz.quiztime = coursetemp.quiztime
+              
+              quiz.attempted = coursetemp.attempted;
+              /// available or not 
+
+              let end = moment(new Date(), "YYYY-MM-DD");
+              // coursetemp.scheduledate = "2019-04-13";
+              let start = moment(coursetemp.scheduledate, "YYYY-MM-DD");
+
+              console.log(start.diff(end, 'minutes'))
+              console.log(start.diff(end, 'hours'))
+              console.log(start.diff(end, 'days'))
+              console.log(start.diff(end, 'weeks'))
+              if (start.diff(end, 'weeks')<1 || start.diff(end, 'weeks') == 0 ){
+                quiz.available = true;
+              }else{
+                quiz.onweek = start.diff(end, 'weeks').toString();
+              }
+                ////
+                while (i > -1) {
+
+                  let j = 0;
+                  let op = 0;
+
+                  if (coursetemp.questions[i] != null && coursetemp.questions[i] != undefined) {
+                    let tempques: Question = new Question();
+                    tempques.question = coursetemp.questions[i].question;
+
+                    quiz.questions.push(tempques);
+
+
+                    // quiz.questions[qu] = (tempques);
+
+
+                    while (j > -1) {
+                      if (coursetemp.questions[i].options[j] != null && coursetemp.questions[i].options[j] != undefined) {
+
+                        let option: Options = new Options();
+
+                        option.isanswer = coursetemp.questions[i].options[j].isanswer;
+                        option.option = coursetemp.questions[i].options[j].option;
+                        quiz.questions[qu].options.push(option);
+
+                        op++;
+
+                      } else {
+                        break;
+                      }
+                      j++;
+                    }
+                    qu++;
+
+                    console.log(this.myquizes);
+                  }
+                  else {
+                    break;
+                  }
+
+                  i++;
+                }
+                
+              this.myquizes.push(quiz);
             }
-          })
-        });
-      })
+          }
+        })
+      });
+    })
 
-    }, 1500)
+  }, 1500)
 
+
+}
 
   }
 

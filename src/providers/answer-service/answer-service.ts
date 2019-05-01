@@ -13,6 +13,7 @@ import moment from 'moment';
 import { HomeServiceProvider } from '../home-service/home-service';
 import { QuizAnswer, QuestionAnswer, OptionsAnswer } from '../quiz-service/quiz-service';
 import { StudentProvider } from '../student/student';
+import { resolveDefinition } from '@angular/core/src/view/util';
 
 
 /*
@@ -27,87 +28,211 @@ export class AnswerServiceProvider {
 
 
   quizanswers: Array<QuizAnswer> = new Array<QuizAnswer>();
-  allanswers:  Array<QuizAnswer> = new Array<QuizAnswer>();
+  allanswers: Array<QuizAnswer> = new Array<QuizAnswer>();
   constructor(private afs: AngularFirestore, private homeservice: HomeServiceProvider, private loaderservice: LoaderserviceProvider) {
 
+  }
+  async presentLoading(loading) {
+    return await loading.present();
+  }
+
+  async getstudentanswers() {
+    
+    const loading = await this.loaderservice.loadingCtrl.create({
+      content: `
+    <div class="custom-spinner-container">
+      <div class="custom-spinner-box"> loading... </div>
+    </div>`,
+      duration: 1500
+    });
+
+    this.presentLoading(loading);
+
+return new Promise((resolve,reject)=>{
+  
     this.afs.collection<QuizAnswer>('answers', ref => {
-      return ref.where('classname', '==', this.homeservice.classroom).where('classteacher', '==', this.homeservice.classteacher).where('useremail','==',this.homeservice.useremail);
-    }).snapshotChanges().forEach(snap => {
+      return ref.where('classname', '==', this.homeservice.classroom).where('classteacher', '==', this.homeservice.classteacher).where('useremail', '==', this.homeservice.useremail);
+    }).snapshotChanges().take(1).forEach(snap => {
 
       this.allanswers = new Array<QuizAnswer>();
+      let snaplength = snap.length;
 
       snap.forEach(snapshot => {
 
         if (snapshot.payload.doc.exists) {
           const coursetemp = snapshot.payload.doc.data() as QuizAnswer;
 
-            let i = 0;
-            let qu = 0;
-            let quiz: QuizAnswer = new QuizAnswer();
-            quiz.background = coursetemp.background;
-            quiz.classname = coursetemp.classname;
-            quiz.classteacher = coursetemp.classteacher;
-            quiz.creationdate = coursetemp.creationdate;
-            quiz.scheduledate = coursetemp.scheduledate;
-            quiz.quizdescription = coursetemp.quizdescription;
-            quiz.quizname = coursetemp.quizname;
-            quiz.quiztype = coursetemp.quiztype;
-            quiz.syllabusid = coursetemp.syllabusid;
-            quiz.quiztime = coursetemp.quiztime
-            quiz.attempted = coursetemp.attempted;
-            quiz.useremail = coursetemp.useremail;
-            quiz.score = coursetemp.score;
-            /// available or not 
+          let i = 0;
+          let qu = 0;
+          let quiz: QuizAnswer = new QuizAnswer();
+          quiz.background = coursetemp.background;
+          quiz.classname = coursetemp.classname;
+          quiz.classteacher = coursetemp.classteacher;
+          quiz.creationdate = coursetemp.creationdate;
+          quiz.scheduledate = coursetemp.scheduledate;
+          quiz.quizdescription = coursetemp.quizdescription;
+          quiz.quizname = coursetemp.quizname;
+          quiz.quiztype = coursetemp.quiztype;
+          quiz.syllabusid = coursetemp.syllabusid;
+          quiz.quiztime = coursetemp.quiztime
+          quiz.attempted = coursetemp.attempted;
+          quiz.useremail = coursetemp.useremail;
+          quiz.score = coursetemp.score;
+          /// available or not 
 
 
-              ////
-              while (i > -1) {
+          ////
+          while (i > -1) {
 
-                let j = 0;
-                let op = 0;
+            let j = 0;
+            let op = 0;
 
-                if (coursetemp.questions[i] != null && coursetemp.questions[i] != undefined) {
-                  let tempques: QuestionAnswer = new QuestionAnswer();
-                  tempques.question = coursetemp.questions[i].question;
+            if (coursetemp.questions[i] != null && coursetemp.questions[i] != undefined) {
+              let tempques: QuestionAnswer = new QuestionAnswer();
+              tempques.question = coursetemp.questions[i].question;
 
-                  quiz.questions.push(tempques);
-
-
-                  // quiz.questions[qu] = (tempques);
+              quiz.questions.push(tempques);
 
 
-                  while (j > -1) {
-                    if (coursetemp.questions[i].options[j] != null && coursetemp.questions[i].options[j] != undefined) {
+              // quiz.questions[qu] = (tempques);
 
-                      let option: OptionsAnswer = new OptionsAnswer();
 
-                      option.isanswer = coursetemp.questions[i].options[j].isanswer;
-                      option.option = coursetemp.questions[i].options[j].option;
-                      quiz.questions[qu].options.push(option);
+              while (j > -1) {
+                if (coursetemp.questions[i].options[j] != null && coursetemp.questions[i].options[j] != undefined) {
 
-                      op++;
+                  let option: OptionsAnswer = new OptionsAnswer();
 
-                    } else {
-                      break;
-                    }
-                    j++;
-                  }
-                  qu++;
+                  option.isanswer = coursetemp.questions[i].options[j].isanswer;
+                  option.option = coursetemp.questions[i].options[j].option;
+                  quiz.questions[qu].options.push(option);
 
-                  console.log(this.quizanswers);
-                }
-                else {
+                  op++;
+
+                } else {
                   break;
                 }
-
-                i++;
+                j++;
               }
-              
-            this.allanswers.push(quiz);
-          
+              qu++;
+
+              console.log(this.quizanswers);
+            }
+            else {
+              break;
+            }
+
+            i++;
+          }
+          snaplength--;
+          this.allanswers.push(quiz);
+if(snaplength<=0){
+return resolve('done');
+}
         }
       })
     });
+
+  })
+  }
+
+  
+ async getallanswers() {
+    const loading = await this.loaderservice.loadingCtrl.create({
+      content: `
+    <div class="custom-spinner-container">
+      <div class="custom-spinner-box"> loading... </div>
+    </div>`,
+      duration: 1500
+    });
+
+    this.presentLoading(loading);
+
+return new Promise((resolve,reject)=>{
+  
+    this.afs.collection<QuizAnswer>('answers', ref => {
+      return ref.where('classname', '==', this.homeservice.classroom).where('classteacher', '==', this.homeservice.classteacher).where('classname', '==', this.homeservice.classroom);
+    }).snapshotChanges().take(1).forEach(snap => {
+
+      this.allanswers = new Array<QuizAnswer>();
+      let snaplength = snap.length;
+      
+      snap.forEach(snapshot => {
+
+        if (snapshot.payload.doc.exists) {
+          const coursetemp = snapshot.payload.doc.data() as QuizAnswer;
+
+          let i = 0;
+          let qu = 0;
+          let quiz: QuizAnswer = new QuizAnswer();
+          quiz.background = coursetemp.background;
+          quiz.classname = coursetemp.classname;
+          quiz.classteacher = coursetemp.classteacher;
+          quiz.creationdate = coursetemp.creationdate;
+          quiz.scheduledate = coursetemp.scheduledate;
+          quiz.quizdescription = coursetemp.quizdescription;
+          quiz.quizname = coursetemp.quizname;
+          quiz.quiztype = coursetemp.quiztype;
+          quiz.syllabusid = coursetemp.syllabusid;
+          quiz.quiztime = coursetemp.quiztime
+          quiz.attempted = coursetemp.attempted;
+          quiz.useremail = coursetemp.useremail;
+          quiz.score = coursetemp.score;
+          /// available or not 
+
+
+          ////
+          while (i > -1) {
+
+            let j = 0;
+            let op = 0;
+
+            if (coursetemp.questions[i] != null && coursetemp.questions[i] != undefined) {
+              let tempques: QuestionAnswer = new QuestionAnswer();
+              tempques.question = coursetemp.questions[i].question;
+
+              quiz.questions.push(tempques);
+
+
+              // quiz.questions[qu] = (tempques);
+
+
+              while (j > -1) {
+                if (coursetemp.questions[i].options[j] != null && coursetemp.questions[i].options[j] != undefined) {
+
+                  let option: OptionsAnswer = new OptionsAnswer();
+
+                  option.isanswer = coursetemp.questions[i].options[j].isanswer;
+                  option.option = coursetemp.questions[i].options[j].option;
+                  quiz.questions[qu].options.push(option);
+
+                  op++;
+
+                } else {
+                  break;
+                }
+                j++;
+              }
+              qu++;
+
+              console.log(this.quizanswers);
+            }
+            else {
+              break;
+            }
+
+            i++;
+          }
+
+          this.allanswers.push(quiz);
+snaplength--;
+if (snaplength<=0){
+resolve('done');
+}
+        }
+      })
+    });
+
+  })
   }
   getanswer(syllid: string) {
 
@@ -120,18 +245,19 @@ export class AnswerServiceProvider {
         </div>`,
       duration: 1500
     });
-
+return new Promise((resolve,reject)=>{
+  
     setTimeout(() => {
 
       this.loaderservice.loading.present().then(() => {
 
 
         this.afs.collection<QuizAnswer>('answers', ref => {
-          return ref.where('classname', '==', this.homeservice.classroom).where('classteacher', '==', this.homeservice.classteacher).where('syllabusid','==',syllid);
+          return ref.where('classname', '==', this.homeservice.classroom).where('classteacher', '==', this.homeservice.classteacher).where('syllabusid', '==', syllid);
         }).snapshotChanges().forEach(snap => {
 
           this.quizanswers = new Array<QuizAnswer>();
-
+          let snaplength = snap.length;
           snap.forEach(snapshot => {
 
             if (snapshot.payload.doc.exists) {
@@ -158,50 +284,56 @@ export class AnswerServiceProvider {
                 /// available or not 
 
 
-                  ////
-                  while (i > -1) {
+                ////
+                while (i > -1) {
 
-                    let j = 0;
-                    let op = 0;
+                  let j = 0;
+                  let op = 0;
 
-                    if (coursetemp.questions[i] != null && coursetemp.questions[i] != undefined) {
-                      let tempques: QuestionAnswer = new QuestionAnswer();
-                      tempques.question = coursetemp.questions[i].question;
+                  if (coursetemp.questions[i] != null && coursetemp.questions[i] != undefined) {
+                    let tempques: QuestionAnswer = new QuestionAnswer();
+                    tempques.question = coursetemp.questions[i].question;
 
-                      quiz.questions.push(tempques);
-
-
-                      // quiz.questions[qu] = (tempques);
+                    quiz.questions.push(tempques);
 
 
-                      while (j > -1) {
-                        if (coursetemp.questions[i].options[j] != null && coursetemp.questions[i].options[j] != undefined) {
+                    // quiz.questions[qu] = (tempques);
 
-                          let option: OptionsAnswer = new OptionsAnswer();
 
-                          option.isanswer = coursetemp.questions[i].options[j].isanswer;
-                          option.option = coursetemp.questions[i].options[j].option;
-                          quiz.questions[qu].options.push(option);
+                    while (j > -1) {
+                      if (coursetemp.questions[i].options[j] != null && coursetemp.questions[i].options[j] != undefined) {
 
-                          op++;
+                        let option: OptionsAnswer = new OptionsAnswer();
 
-                        } else {
-                          break;
-                        }
-                        j++;
+                        option.isanswer = coursetemp.questions[i].options[j].isanswer;
+                        option.option = coursetemp.questions[i].options[j].option;
+                        quiz.questions[qu].options.push(option);
+
+                        op++;
+
+                      } else {
+                        break;
                       }
-                      qu++;
-
-                      console.log(this.quizanswers);
+                      j++;
                     }
-                    else {
-                      break;
-                    }
+                    qu++;
 
-                    i++;
+                    console.log(this.quizanswers);
                   }
-                  
+                  else {
+                    break;
+                  }
+
+                  i++;
+                }
+                snaplength--;
+                
                 this.quizanswers.push(quiz);
+                if (snaplength<=0){
+                 resolve('done'); 
+                }
+              }else{
+                snaplength--;
               }
             }
           })
@@ -210,6 +342,7 @@ export class AnswerServiceProvider {
 
     }, 1500)
 
+  })
 
   }
 
@@ -217,7 +350,7 @@ export class AnswerServiceProvider {
     answer.classname = this.homeservice.classroom;
     answer.classteacher = this.homeservice.classteacher;
     answer.useremail = this.homeservice.useremail;
-    
+
     return new Promise((resolve, reject) => {
 
       this.loaderservice.loading = this.loaderservice.loadingCtrl.create({
@@ -226,7 +359,7 @@ export class AnswerServiceProvider {
         <div class="custom-spinner-container">
           <div class="custom-spinner-box"> loading... </div>
         </div>`,
-duration: 1000
+        duration: 1000
       });
 
       setTimeout(() => {
@@ -243,12 +376,14 @@ duration: 1000
             }
           }
 
-          this.afs.collection<QuizAnswer>('answers').doc(answer.creationdate).set(quizans).then(() => {
+          this.afs.collection<QuizAnswer>('answers').doc(answer.creationdate).set(quizans).then((res) => {
 
-         //   this.loaderservice.dismissloading();
+            console.log(res);
+            
+            //   this.loaderservice.dismissloading();
             resolve('done');
           }).catch(err => {
-          //  this.loaderservice.dismissloading();
+            //  this.loaderservice.dismissloading();
             reject('error');
           });
 
@@ -290,7 +425,7 @@ duration: 1000
             resolve('done');
           }).catch(err => {
             this.loaderservice.dismissloading();
-            
+
             reject('error');
           });
 
@@ -324,7 +459,7 @@ duration: 1000
             resolve('done');
           }).catch(err => {
             this.loaderservice.dismissloading();
-            
+
             reject('error');
           });
 

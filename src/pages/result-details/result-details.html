@@ -12,39 +12,35 @@
 </ion-header>
 
 <ion-content class="content">
-  <ion-row padding-top class="category-concept-details" [style.background-color]="myquiz.background">
+  <ion-row padding-top class="category-concept-details" [style.background-color]="quiz.background">
     <ion-col no-padding col-12>
-      <h2 class="category-title">Learn all about {{ myquiz.quizname }}</h2>
+      <h2 class="category-title">Learn all about {{ quiz.quizname }}</h2>
     </ion-col>
     <ion-col no-padding col-12>
       <p class="category-description">
-        {{ myquiz.quizdescription }}
+        {{ quiz.quizdescription }}
       </p>
     </ion-col>
-    
-<div class="stopwatch pt-3">
+
+
+    <div class="stopwatch pt-3">
 
       <ion-col col-12 class="category-title" *ngIf="!running && time == blankTime">
-        <button class="circle-button circle-button-bg font-md" ion-button > {{myquiz.quiztimetaken}} </button>
-  
-      <!--           <span text-center class="spanfont">
+        <button class="circle-button circle-button-bg font-md" ion-button> {{quiz.score}}/{{myquiz.questions.length}}
+        </button>
+
+        <!--           <span text-center class="spanfont">
     {{time}}
   </span> -->
 
       </ion-col>
-  
-   <!--   <ion-col col-12 class="category-title" *ngIf="running">
-     
-        <button class="circle-button circle-button-bg circle-button-red font-md" ion-button (tap)="completequiz()">
-          {{myquiz.quiztimetaken}} </button>
-     
-      </ion-col>  
--->
-</div>
+
+
+    </div>
 
   </ion-row>
 
-<!--<ion-row class="category-concept-details" [style.background-color]="myquiz.background"> -->
+  <!--<ion-row class="category-concept-details" [style.background-color]="myquiz.background"> -->
 
   <div *ngIf="myquiz.questions.length == 0">
     <h3 class="questions-call-out">
@@ -55,32 +51,32 @@
   <div *ngIf="myquiz.questions.length > 0">
     <h3 class="questions-call-out">
       <span> Quiz of </span>
-      <ion-badge class="call-out-tag">{{ myquiz.quizname }}</ion-badge>
-      <div *ngIf= "myquiz.quiztype == 'easy'">
-      <span class="call-out-explanation"> Take Your Time To Solve IT </span>
+      <ion-badge class="call-out-tag">{{ quiz.quizname }}</ion-badge>
+      <div *ngIf="myquiz.quiztype == 'easy'">
+        <span class="call-out-explanation"> Take Your Time To Solve IT </span>
       </div>
-       <div *ngIf= "myquiz.quiztype == 'hard'">
-      <span class="call-out-explanation"> Takes Total Time of  </span>
-            <ion-badge class="call-out-tag">{{myquiz.quiztime}}</ion-badge>
+      <div *ngIf="myquiz.quiztype == 'hard'">
+        <span class="call-out-explanation"> Takes Total Time of </span>
+        <ion-badge class="call-out-tag">{{quiz.quiztime}}</ion-badge>
 
       </div>
     </h3>
 
     <ion-list class="questions-list">
 
-      <ion-item class="question-item" >
+      <ion-item class="question-item">
 
 
         <ion-row>
           <ion-col class="votes-col" col-2>
             <button class="vote-button up-vote" ion-button clear small (click)="backQuestion(quiz.questions)">
               <ion-icon name="arrow-up"></ion-icon>
-            </button> 
+            </button>
             <span class="question-score"
               [ngClass]="{'good-score': (quizno+1) > 0, 'no-score': (quizno+1) == 0, 'bad-score': (quizno+1) < 0}">{{(quizno+1)}}</span>
-           <button class="vote-button down-vote" ion-button clear small (click)="nextQuestion(quiz.questions)">
+            <button class="vote-button down-vote" ion-button clear small (click)="nextQuestion(quiz.questions)">
               <ion-icon name="arrow-down"></ion-icon>
-            </button> 
+            </button>
           </ion-col>
 
           <ion-col col-10>
@@ -88,19 +84,25 @@
               <ion-col col-12>
                 <h2 class="question-text" (click)="openAnswers(quiz.questions)">{{ quiz.questions.question }}</h2>
               </ion-col>
-              <ion-item text-wrap *ngFor="let option of quiz.questions.options; let op=index" [ngStyle]="{'border-bottom':'1px solid #dedede', 'color':'#FFF'}">
+              <ion-item text-wrap *ngFor="let option of quiz.questions.options; let op=index"
+                [ngStyle]="{'border-bottom':'1px solid #dedede', 'color':'#FFF'}">
                 <!--     -->
                 <!-- <ion-col col-4 class="votes-details" *ngFor="let option of question.options; let op=index">
 -->
-                <div *ngIf="option.isanswer" class="div-true" >
-                
+                <div *ngIf="option.isanswer && option.myanswer" class="div-true">
+
                   {{option.option}}
- 
+
                 </div>
-                <div *ngIf="!option.isanswer" class="div-false" >
-              
+                <div *ngIf="!option.isanswer && option.myanswer" class="div-false">
+
                   {{option.option}}
- 
+
+                </div>
+                <div *ngIf="option.isanswer && !option.myanswer" class="div-true">
+
+                  {{option.option}}
+
                 </div>
                 <!--  <ion-label text-wrap >{{option.option}}
                   </ion-label>
@@ -115,13 +117,20 @@
                 <!-- 
                 </ion-col>-->
               </ion-item>
-
-              <ion-col col-12 class="actions-details">
-                <button class="delete-button" ion-button small round clear icon-only color="danger"
-                  (click)="delete_question(quizno-1)">
-                  <ion-icon name="ios-trash-outline"></ion-icon>
-                </button>
-              </ion-col>
+              <div [ngStyle] = "{'display':'contents'}" *ngIf="quiz.questions.options">
+                <ion-col col-12 class="actions-details">
+                  <button class="delete-button" ion-button small round clear icon-only color="danger">
+                    <ion-icon name="close"></ion-icon>
+                  </button>
+                </ion-col>
+              </div>
+              <div  [ngStyle] = "{'display':'contents'}" *ngIf="!quiz.questions.options">
+                <ion-col col-12 class="actions-details">
+                  <button class="delete-button" ion-button small round clear icon-only color="danger">
+                    <ion-icon name="checkmark"></ion-icon>
+                  </button>
+                </ion-col>
+              </div>
             </ion-row>
           </ion-col>
 
@@ -130,7 +139,7 @@
 
       </ion-item>
     </ion-list>
- 
+
   </div>
 </ion-content>
 

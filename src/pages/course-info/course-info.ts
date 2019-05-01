@@ -39,7 +39,9 @@ export class CourseInfoPage {
   files = new Map();
 
   constructor(private alertCtrl: AlertController, private homeservice: HomeServiceProvider, private class_service: ClassServiceProvider, private modalctrl: ModalController, private documentview: DocumentViewer, private filetransfer: FileTransfer, private file: File, private plateform: Platform, private fileChooser: FileChooser, private filePath: FilePath, private alertctrl: AlertController, private fileOpener: FileOpener, private courseservice: CourseProvider, public navCtrl: NavController, public navParams: NavParams, private viewctrl: ViewController) {
-console.log(this.homeservice.user)
+    console.log(this.homeservice.user)
+    this.courseservice.getcourses();
+
   }
 
   ionViewDidLoad() {
@@ -72,7 +74,7 @@ console.log(this.homeservice.user)
 
   isLevel1Shown(idx) {
     return this.courseservice.coursesdropdown[idx];
-   // return this.showLevel1 === idx;
+    // return this.showLevel1 === idx;
   };
 
   isLevel2Shown(idx) {

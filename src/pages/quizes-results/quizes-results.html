@@ -46,9 +46,9 @@
 <ion-content padding-top class="content">
   <ion-list>
     <ion-item-sliding #sliding *ngFor="let answer of this.answerslist" class="item-css" >
-      <ion-item class="item-css" (click)="sendrequest(teacher)">
+      <ion-item class="item-css" (click) = "quizResults(answer);$event.stopPropagation()">
         <ion-avatar item-start>
-          <img [src]="answer.imgurl" (click) = "quizResults(answer);$event.stopPropagation()">
+          <img [src]="answer.imgurl" >
         </ion-avatar>
         <h2>
         

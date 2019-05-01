@@ -12,7 +12,7 @@
 </ion-header>
 
 <ion-content class="content">
-  <div class="chatbox">
+  <div *ngIf ="this.homeservice.user == 'teachers'" class="chatbox">
     <button ion-button class="pull-right" color="secondary" tappable (click)="create_quiz()">
       <ion-icon name="clipboard"></ion-icon>
     </button>
@@ -34,16 +34,18 @@
         </ion-col>
         <ion-col no-padding col-4>
 
-          
-          <div *ngIf="Quiz.available" [ngStyle]="{'text-align':'right'}">
+
+          <div *ngIf="Quiz.available && !Quiz.attempted" [ngStyle]="{'text-align':'right'}">
             <ion-badge class="query-tag">READY</ion-badge>
           </div>
-
-<!--          <div *ngIf="!Quiz.attempted && Quiz.available" [ngStyle]="{'text-align':'right'}">
+          <div *ngIf="Quiz.attempted" [ngStyle]="{'text-align':'right'}">
+            <ion-badge class="query-tag">ATTEMPTED</ion-badge>
+          </div>
+          <!--          <div *ngIf="!Quiz.attempted && Quiz.available" [ngStyle]="{'text-align':'right'}">
             <ion-badge class="query-tag">READY -- NOT ATTEMPTED</ion-badge>
           </div>
 -->
-          <div *ngIf="!Quiz.available" [ngStyle]="{'text-align':'right'}">
+          <div *ngIf="!Quiz.available && !Quiz.attempted" [ngStyle]="{'text-align':'right'}">
             <ion-badge class="query-tag">WEEK-{{Quiz.onweek}}</ion-badge>
           </div>
 
@@ -64,12 +66,14 @@
           <ion-badge class="category-tag" item-right>
             {{Quiz.quiztype }}</ion-badge>
         </ion-col>
-        <ion-col no-padding col-2>
-          <button class="delete-button" color="danger" ion-button clear medium
-            (click)="delete_quiz(Quiz);$event.stopPropagation()">
-            <ion-icon name="ios-trash-outline"></ion-icon>
-          </button>
-        </ion-col>
+        <div *ngIf="this.homeservice.user == 'teachers'">
+          <ion-col no-padding col-2>
+            <button class="delete-button" color="danger" ion-button clear medium
+              (click)="delete_quiz(Quiz);$event.stopPropagation()">
+              <ion-icon name="ios-trash-outline"></ion-icon>
+            </button>
+          </ion-col>
+        </div>
       </ion-row>
 
 

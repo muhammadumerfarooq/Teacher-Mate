@@ -128,6 +128,7 @@ export class HomeServiceProvider {
             {title: 'Add Student', component: 'AddStudent', icon: 'person-add'},
             {title: 'Courses Info', component: 'CourseInfo', icon: 'paper'},
             {title: 'Add Courses', component: 'AddCoursesPage', icon: 'create'},
+            {title: 'Quizes Results', component: 'QuizResults', icon: 'book'},
           ];
         }
 
@@ -714,12 +715,15 @@ export class HomeServiceProvider {
         });
 
       }
+      if (element.classname == classname){
       let val: chats = {
         useremail: element.teacheremail,
         user: 'teacher'
       };
       this.chatusers.push(val);
+    }
     });
+    
   }
 
 }

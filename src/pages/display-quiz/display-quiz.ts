@@ -82,18 +82,38 @@ if (this.homeservice.user == 'parents'  && myquiz.available == true){
 
 
   delete_quiz(deletequiz: Quiz) {
-    this.quizservice.deleteQuiz(deletequiz).then(res => {
-      if (res == 'done') {
-        this.presentAlert('Quiz Deleted Successfully', 'Successfully');
-
-      } else {
-        this.presentAlert('Error! ', 'Quiz Not Deleted');
-
-      }
-
-    }).catch(err => {
-
+    let confirm = this.alertctrl.create({
+      title: 'Delete Quiz',
+      message: 'Are you sure you want to Delete this Quiz?',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+            console.log('No clicked');
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            this.quizservice.deleteQuiz(deletequiz).then(res => {
+              if (res == 'done') {
+                this.presentAlert('Quiz Deleted Successfully', 'Successfully');
+        
+              } else {
+                this.presentAlert('Error! ', 'Quiz Not Deleted');
+        
+              }
+        
+            }).catch(err => {
+        
+            });
+          }
+        }
+      ]
     });
+    confirm.present();
+
+   
   }
 
   presentAlert(alerttitle, alertsub) {
