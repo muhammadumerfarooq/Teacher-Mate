@@ -104,6 +104,8 @@ return new Promise((resolve,reject)=>{
 
                   option.isanswer = coursetemp.questions[i].options[j].isanswer;
                   option.option = coursetemp.questions[i].options[j].option;
+                  option.myanswer = coursetemp.questions[i].options[j].myanswer;
+
                   quiz.questions[qu].options.push(option);
 
                   op++;
@@ -203,6 +205,8 @@ return new Promise((resolve,reject)=>{
 
                   option.isanswer = coursetemp.questions[i].options[j].isanswer;
                   option.option = coursetemp.questions[i].options[j].option;
+                  option.myanswer = coursetemp.questions[i].options[j].myanswer;
+                  
                   quiz.questions[qu].options.push(option);
 
                   op++;
@@ -307,6 +311,8 @@ return new Promise((resolve,reject)=>{
 
                         option.isanswer = coursetemp.questions[i].options[j].isanswer;
                         option.option = coursetemp.questions[i].options[j].option;
+                        option.myanswer = coursetemp.questions[i].options[j].myanswer;
+                  
                         quiz.questions[qu].options.push(option);
 
                         op++;

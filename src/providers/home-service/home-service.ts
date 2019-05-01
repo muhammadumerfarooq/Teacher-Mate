@@ -117,7 +117,7 @@ export class HomeServiceProvider {
           this.appMenuItems = [
             {title: 'Home', component: 'HomePage', icon: 'home'},
             {title: 'Students List', component: 'StudentListPage', icon: 'people'},
-            {title: 'Your Child', component: 'AddStudent', icon: 'person'},
+            {title: 'Your Child', component: 'YourChild', icon: 'person'},
             {title: 'Courses Info', component: 'CourseInfo', icon: 'paper'},
             {title: 'Quizes Results', component: 'QuizResults', icon: 'book'},
           ];
@@ -138,7 +138,7 @@ export class HomeServiceProvider {
           this.appMenuItems = [
             {title: 'Home', component: 'HomePage', icon: 'home'},
            
-            {title: 'Your Child', component: 'AddStudent', icon: 'person'},
+            {title: 'Your Child', component: 'YourChild', icon: 'person'},
          
           ];
         }else{
@@ -153,7 +153,7 @@ export class HomeServiceProvider {
           this.appMenuItems = [
             {title: 'Home', component: 'HomePage', icon: 'home'},
            
-            {title: 'Your Child', component: 'AddStudent', icon: 'person'},
+            {title: 'Your Child', component: 'YourChild', icon: 'person'},
          
           ];
         }else{
@@ -315,7 +315,7 @@ export class HomeServiceProvider {
         if (this.user=='parents'){
           this.appMenuItems = [
             {title: 'Home', component: 'HomePage', icon: 'home'},
-            {title: 'Your Child', component: 'AddStudent', icon: 'person'},
+            {title: 'Your Child', component: 'YourChild', icon: 'person'},
     
           ];
         }else{

@@ -33,8 +33,9 @@ export class StudentProvider {
 
   allstudents = Array<student>();
   class_students= Array<student>();
-
+  parentchild = new student();
   constructor(private homeservice:HomeServiceProvider,private afs: AngularFirestore, private loaderservice: LoaderserviceProvider) {
+    this.parentchild = new student();
 
     this.afs.collection('students').snapshotChanges().forEach(snap => {
       this.allstudents = new Array<student>();
@@ -48,6 +49,39 @@ export class StudentProvider {
     });
 
 
+  }
+  getspecificstudent(){
+    return new Promise((resolve, reject) => {
+
+
+      this.loaderservice.loading = this.loaderservice.loadingCtrl.create({
+
+        content: `
+                <div class="custom-spinner-container">
+                  <div class="custom-spinner-box"> loading... </div>
+                </div>`,
+duration: 1000
+      });
+        this.loaderservice.loading.present().then(() => {
+        
+       
+    this.afs.collection('students', ref=>{
+     return ref.where('classname','==',this.homeservice.classroom).where('parentemail','==',this.homeservice.useremail).where('classteacher','==',this.homeservice.classteacher);
+    }).snapshotChanges().take(1).forEach(snap => {
+//      this.allstudents = new Array<student>();
+        this.class_students = new Array<student>();
+      snap.forEach(snapshot => {
+        if (snapshot.payload.doc.exists) {
+          let studentdata: student = snapshot.payload.doc.data() as student;
+          this.parentchild = studentdata;
+          return resolve('done');
+        }
+      })
+    });
+  });
+
+});
+ 
   }
   getstudents(){
 
@@ -66,7 +100,7 @@ duration: 500
         
        
     this.afs.collection('students', ref=>{
-     return ref.where('classname','==',this.homeservice.classroom)
+     return ref.where('classname','==',this.homeservice.classroom).where('classteacher','==',this.homeservice.classteacher);
     }).snapshotChanges().take(1).forEach(snap => {
 //      this.allstudents = new Array<student>();
         this.class_students = new Array<student>();

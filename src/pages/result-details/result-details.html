@@ -26,12 +26,10 @@
     <div class="stopwatch pt-3">
 
       <ion-col col-12 class="category-title" *ngIf="!running && time == blankTime">
-        <button class="circle-button circle-button-bg font-md" ion-button> {{quiz.score}}/{{myquiz.questions.length}}
-        </button>
+        <span class="circle-button circle-button-bg font-md" ion-button> {{quiz.score}}/{{myquiz.questions.length}}
+        </span>
 
-        <!--           <span text-center class="spanfont">
-    {{time}}
-  </span> -->
+     
 
       </ion-col>
 
@@ -104,6 +102,11 @@
                   {{option.option}}
 
                 </div>
+                <div *ngIf="!option.isanswer && !option.myanswer" class="div-nutral">
+
+                  {{option.option}}
+
+                </div>
                 <!--  <ion-label text-wrap >{{option.option}}
                   </ion-label>
 
@@ -117,16 +120,16 @@
                 <!-- 
                 </ion-col>-->
               </ion-item>
-              <div [ngStyle] = "{'display':'contents'}" *ngIf="quiz.questions.options">
+              <div [ngStyle] = "{'display':'contents'}" *ngIf="!quiz.questions.answer">
                 <ion-col col-12 class="actions-details">
                   <button class="delete-button" ion-button small round clear icon-only color="danger">
                     <ion-icon name="close"></ion-icon>
                   </button>
                 </ion-col>
               </div>
-              <div  [ngStyle] = "{'display':'contents'}" *ngIf="!quiz.questions.options">
+              <div  [ngStyle] = "{'display':'contents'}" *ngIf="quiz.questions.answer">
                 <ion-col col-12 class="actions-details">
-                  <button class="delete-button" ion-button small round clear icon-only color="danger">
+                  <button class="delete-button" ion-button small round clear icon-only color="primary">
                     <ion-icon name="checkmark"></ion-icon>
                   </button>
                 </ion-col>

@@ -100,7 +100,7 @@ export class ResultDetailsPage {
         myoption.isanswer = this.myquiz.questions[this.quizno].options[j].isanswer
         myoption.myanswer = this.myquiz.questions[this.quizno].options[j].myanswer;
         myoption.option = this.myquiz.questions[this.quizno].options[j].option
-        if (myoption.isanswer == myoption.myanswer) {
+        if (myoption.isanswer == true &&  myoption.myanswer == true) {
           myquestion.answer = true;
         }
         myquestion.options.push(myoption)
@@ -132,7 +132,7 @@ export class ResultDetailsPage {
   }
 
   nextQuestion() {
-    if (this.quizno > 0 && this.quizno + 1 < this.myquiz.questions.length) {
+    if (this.quizno >= 0 && this.quizno + 1 < this.myquiz.questions.length) {
       this.quizno++;
       let myquestion: QuestionAnswer = new QuestionAnswer();
       myquestion.question = this.myquiz.questions[this.quizno].question;
@@ -144,6 +144,10 @@ export class ResultDetailsPage {
         myoption.isanswer = this.myquiz.questions[this.quizno].options[j].isanswer
         myoption.myanswer = this.myquiz.questions[this.quizno].options[j].myanswer;
         myoption.option = this.myquiz.questions[this.quizno].options[j].option
+
+        if (myoption.isanswer == true &&  myoption.myanswer == true) {
+          myquestion.answer = true;
+        }
 
         myquestion.options.push(myoption)
 
@@ -159,7 +163,7 @@ export class ResultDetailsPage {
 
   backQuestion() {
 
-    if (this.quizno - 1 > 0 && this.quizno - 1 < this.myquiz.questions.length) {
+    if (this.quizno - 1 >= 0 && this.quizno - 1 < this.myquiz.questions.length) {
       this.quizno--;
       let myquestion: QuestionAnswer = new QuestionAnswer();
       myquestion.question = this.myquiz.questions[this.quizno].question;
@@ -172,6 +176,10 @@ export class ResultDetailsPage {
         myoption.myanswer = this.myquiz.questions[this.quizno].options[j].myanswer;
         myoption.option = this.myquiz.questions[this.quizno].options[j].option
 
+        if (myoption.isanswer == true &&  myoption.myanswer == true) {
+          myquestion.answer = true;
+        }
+        
         myquestion.options.push(myoption)
 
       }

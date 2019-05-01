@@ -196,6 +196,8 @@ if (this.homeservice.user == 'parents'){
                   quiz.quiztype = coursetemp.quiztype;
                   quiz.syllabusid = coursetemp.syllabusid;
                   quiz.quiztime = coursetemp.quiztime
+                  quiz.attempted = coursetemp.attempted;
+
                   this.answerservice.allanswers.forEach(myans => {
                     console.log(myans)
                     if (myans.classname == quiz.classname && myans.classteacher == quiz.classteacher
@@ -203,7 +205,6 @@ if (this.homeservice.user == 'parents'){
                         quiz.attempted = true;
                       }
                   });
-                  quiz.attempted = coursetemp.attempted;
                   /// available or not 
   
                   let end = moment(new Date(), "YYYY-MM-DD");

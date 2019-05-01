@@ -182,7 +182,7 @@ duration: 800
   }
 
   updatestudent() {
-    this.studentprofile.datecreation = new Date().getTime().toString();
+    this.studentprofile.datecreation = new Date().toString();
 
     this.studentservice.insertstudent(this.studentprofile, this.base64Image).then(() => {
       this.presentAlert('Student added ', 'Successfully');

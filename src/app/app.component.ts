@@ -9,6 +9,8 @@ import { AngularFireAuth } from 'angularfire2/auth'
 import { App } from 'ionic-angular/components/app/app';
 import { Storage } from '@ionic/storage';
 import { LoaderserviceProvider } from '../providers/loaderservice/loaderservice';
+import { StudentProvider, student } from '../providers/student/student';
+
 //import { ProfileServiceProvider } from '../providers/profile-service/profile-service';
 
 
@@ -29,7 +31,7 @@ export class MyApp {
   appMenuItems: Array<MenuItem>;
 
   
-  constructor(private alertctrl:AlertController,private loaderservice:LoaderserviceProvider,private modalctrl:ModalController,private storage:Storage,private homeservice:HomeServiceProvider,private app: App, platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public afauth: AngularFireAuth) {
+  constructor(private studentservice:StudentProvider,private alertctrl:AlertController,private loaderservice:LoaderserviceProvider,private modalctrl:ModalController,private storage:Storage,private homeservice:HomeServiceProvider,private app: App, platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public afauth: AngularFireAuth) {
     platform.ready().then(() => {
       
     // this.homeservice.storageSub.next('added-user');
@@ -46,7 +48,7 @@ export class MyApp {
           this.appMenuItems = [
             {title: 'Home', component: 'HomePage', icon: 'home'},
             {title: 'Students List', component: 'StudentListPage', icon: 'people'},
-            {title: 'Your Child', component: 'AddStudent', icon: 'person'},
+            {title: 'Your Child', component: 'YourChild', icon: 'person'},
             {title: 'Courses Info', component: 'CourseInfo', icon: 'paper'},
             {title: 'Take Quiz', component: 'TakeQuiz', icon: 'paper'},
           ];
@@ -120,6 +122,20 @@ export class MyApp {
     });
      modalPage.present();
     }
+
+    else if (page.component == 'YourChild'){
+    
+      this.studentservice.getspecificstudent().then(res=>{
+        if (res=='done'){
+          let studentprofile: student = this.studentservice.parentchild;
+          modalPage = this.modalctrl.create('StudentDetailPage',{studentprofile:studentprofile});
+    
+          modalPage.present();
+        
+        }
+      });
+     }
+    
     else if (page.component == 'CourseInfo'){
     
       this.loaderservice.loading = this.loaderservice.loadingCtrl.create({

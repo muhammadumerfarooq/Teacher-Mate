@@ -299,9 +299,9 @@ export class TakeQuizPage {
         myoption.myanswer = false;
         myoption.option = this.myquiz.questions[this.quizno].options[j].option
 
-        if ( this.myanswers.questions[this.quizno].options[j].myanswer ==  true){
-          myoption.myanswer = true;
-         }
+               if ( this.myanswers.questions[this.quizno].options[j].myanswer ==  true){
+        myoption.myanswer = true;
+       }
         myquestion.options.push(myoption)
 
       }
