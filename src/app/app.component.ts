@@ -91,7 +91,7 @@ export class MyApp {
 
    }else if (page.component == 'QuizResults'){
     
-    modalPage = this.modalctrl.create('QuizesResultsPage');
+    modalPage = this.modalctrl.create('CreateStudentResultPage');//this.modalctrl.create('QuizesResultsPage');
     modalPage.onDidDismiss(data=>{
 
 

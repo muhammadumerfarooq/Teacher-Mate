@@ -1,0 +1,110 @@
+page-create-student-result {
+    body {
+        cursor: url('https://ionicframework.com/img/finger.png'), auto;
+      }
+      .content{
+        background: url("../assets/img/bg.jpg") no-repeat; 
+    }
+    .search-query
+	{
+		font-size: 1.4rem;
+		margin: 12px;
+		margin-bottom: 30px;
+		color: $theme-color-3;
+		text-align: center;
+
+		.query-tag
+		{
+			border: 1px solid #4c6df9;
+			color: #4c6df9;
+      background: #FFF;
+      font-size: 1.2em;
+		}
+    .card-css{
+      border-radius: 1.2em;
+      margin-top: 5%;
+      box-shadow: solid thin lightblue;
+      background: transparent;
+  }
+		.query-explanation
+		{
+			font-weight: 300;
+		}
+  }
+
+.btn-inc
+{
+  border: solid thin #4c6df9;
+}
+  .result-query
+	{
+		font-size: 1.4rem;
+	
+		color: $theme-color-3;
+		text-align: left;
+
+		.query-tag
+		{
+			border: 1px solid #4c6df9;
+			color: #4c6df9;
+      background: #FFF;
+      font-size: 1.2em;
+		}
+    .card-css{
+      border-radius: 1.2em;
+      margin-top: 5%;
+      box-shadow: solid thin lightblue;
+      background: transparent;
+  }
+		.query-explanation
+		{
+			font-weight: 300;
+		}
+  }
+
+      .list .item.item-accordion {
+        line-height: 38px;
+        padding-left: 40px;
+        padding-top: 0;
+        padding-bottom: 0;
+        transition: 0.09s all linear;
+      }
+      .input-box{
+        color: black;
+        height: 50px;
+        font-size: 1.5em;
+        border-bottom: thin solid antiquewhite;
+    }
+      .list .item.item-accordion.ng-hide {
+        line-height: 0px;
+      }
+      .card-css{
+        border-radius: 1.2em;
+        margin-top: 5%;
+        box-shadow: solid thin lightblue;
+        background: transparent;
+    }
+    .Syllabusclass{
+        width: 90%;
+        margin-left: 5%;
+
+
+    }
+    .divclass{
+      //  margin-left:15%;
+    }
+    .btnfile{
+        padding-right: 5%;
+     //   border-right: 1px solid rgba(36, 50, 157, .25);
+        margin-right: 5%;
+
+    }
+      .list .item.item-accordion.ng-hide-add,
+      .list .item.item-accordion.ng-hide-remove {
+        display: block !important;
+      }
+      
+      .sub-item {
+        padding-left: 20px;
+      }
+}

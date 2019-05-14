@@ -40,6 +40,7 @@ import { QuizServiceProvider } from '../providers/quiz-service/quiz-service';
 import { TeachersServiceProvider } from '../providers/teachers-service/teachers-service';
 import { RequestServiceProvider } from '../providers/request-service/request-service';
 import { AnswerServiceProvider } from '../providers/answer-service/answer-service';
+import { StudentresultsServiceProvider } from '../providers/studentresults-service/studentresults-service';
 
 // import { TeacherloginPage } from '../pages/teacherlogin/teacherlogin';
 // import { ParentloginPage } from '../pages/parentlogin/parentlogin';
@@ -112,7 +113,8 @@ export const firebaseConfig = {
     QuizServiceProvider,
     TeachersServiceProvider,
     RequestServiceProvider,
-    AnswerServiceProvider
+    AnswerServiceProvider,
+    StudentresultsServiceProvider
   ]
 })
 export class AppModule {}

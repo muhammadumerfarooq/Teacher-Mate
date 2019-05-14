@@ -373,17 +373,7 @@ export class HomePage implements OnInit {
     alert.present();
 
   }
-  presentCustomModal() {
-    let customModal = this.modalCtrl.create('CustomModalPage');
-
-    customModal.onDidDismiss((val) => {
-      // Do what you want ...
-      console.log(val);
-    });
-
-    // Present the modal
-    customModal.present();
-  }
+  
 
   sendrequest() {
     let customModal = this.modalCtrl.create('SendRequestPage');
