@@ -312,33 +312,34 @@
       border: none;
     }
   
-    .item {
-      .item-inner {
-        border: none;
-        border-bottom: none;
-      }
-    }
+    // .item {
+    //   .item-inner {
+    //     border: none;
+    //     border-bottom: none;
+    //   }
+    // }
+
   }
   
-  .list-full-border {
-    @extend .list-no-border;
+  // .list-full-border {
+  //   @extend .list-no-border;
   
-    .item,
-    .item:first-child,
-    .item:last-child {
-    //  bitem-innerorder-bottom: 1px solid rgba(86, 61, 124, 0.2);
-      .item-inner {
-        border: none;
-      }
-    }
-  }
+  //   .item,
+  //   .item:first-child,
+  //   .item:last-child {
+  //   //  bitem-innerorder-bottom: 1px solid rgba(86, 61, 124, 0.2);
+  //     // .item-inner {
+  //     //   border: none;
+  //     // }
+  //   }
+  // }
   
   // item style
-  .item.no-border {
-    .item-inner {
-      border: none;
-    }
-  }
+  // .item.no-border {
+  //   // .item-inner {
+  //   //   border: none;
+  //   // }
+  // }
   
   // Toolbar
   // transparent nav bar
@@ -482,7 +483,7 @@
           ion-item {
             background: none;
             padding: 0;
-  
+            border:none;
             &:first-child {
               border-top: none;
             }
@@ -550,7 +551,7 @@
           ion-item {
             background: none;
             padding: 0;
-  
+            border:none;
             &:first-child {
               border-top: none;
             }
@@ -573,6 +574,25 @@
     }
   }
   
+  .progress-outer {
+    width: 96%;
+    margin: 10px 2%;
+    padding: 3px;
+    text-align: center;
+    background-color: #f4f4f4;
+    border: 1px solid #dcdcdc;
+    color: #fff;
+    border-radius: 20px;
+  }
+
+  .progress-inner {
+    min-width: 15%;
+    white-space: nowrap;
+    overflow: hidden;
+    padding: 5px;
+    border-radius: 20px;
+    background-color: green;
+  }
   .Loginmenu-page {
  
     background-color: #fff;
@@ -762,11 +782,11 @@
       &:last-child {
         border-bottom: none;
       }
-      .item-inner {
-        border:none;
-        border-bottom: none;
-       // border-color: rgba(86, 61, 124, .1);
-      }
+      // .item-inner {
+      //   border:none;
+      //   border-bottom: none;
+      //  // border-color: rgba(86, 61, 124, .1);
+      // }
     }
   }
   

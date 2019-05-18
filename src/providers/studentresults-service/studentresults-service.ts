@@ -21,7 +21,7 @@ export class classresult {
     this.results = new Array<results>();
     this.classname = '';
     this.classteacher = '';
-    this.creationdate = Date.toString();
+    this.creationdate = new Date().getTime().toString();
   }
 }
 
@@ -80,7 +80,10 @@ export class StudentresultsServiceProvider {
     return new Promise((resolve, reject) => {
 
       this.afs.collection('classresults').snapshotChanges().take(1).forEach(snap => {
+        this.classresults = new classresult();
+
         snap.forEach(snapshot => {
+      
           if (snapshot.payload.doc.exists) {
             let classres = snapshot.payload.doc.data() as classresult;
             this.classresults.classname = classres.classname;
@@ -104,9 +107,12 @@ export class StudentresultsServiceProvider {
                 result.resulttypes.push(restype);
                 j++;
               }
+              this.classresults.results.push(result);
               i++;
             }
-
+            return resolve('true');
+          }else{
+            return reject('false');
           }
         })
       })
@@ -133,10 +139,12 @@ export class StudentresultsServiceProvider {
           const myresult = Object.assign({}, myclassresult);
 
           for (let i = 0; i < myclassresult.results.length; i++) {
-            myresult[i] = Object.assign({}, myclassresult.results[i]);
+            myresult.results[i] = Object.assign({}, myclassresult.results[i]);
+
+//            myresult.results[i].resulttypes = Object.assign({}, myclassresult.results[i].resulttypes);
 
             for (let j = 0; j < myclassresult.results[i].resulttypes.length; j++) {
-              myresult[i].resulttypes[j] = Object.assign({}, myclassresult.results[i].resulttypes[j]);
+              myresult.results[i].resulttypes[j] = Object.assign({}, myclassresult.results[i].resulttypes[j]);
 
             }
           }
@@ -158,4 +166,51 @@ export class StudentresultsServiceProvider {
     });
   }
 
+
+  update_results(myclassresult: classresult) {
+
+
+    return new Promise((resolve, reject) => {
+
+      this.loaderservice.loading = this.loaderservice.loadingCtrl.create({
+
+        content: `
+        <div class="custom-spinner-container">
+          <div class="custom-spinner-box"> loading... </div>
+        </div>`,
+        duration: 1000
+      });
+
+      setTimeout(() => {
+
+        this.loaderservice.loading.present().then(() => {
+          const myresult = Object.assign({}, myclassresult);
+
+          for (let i = 0; i < myclassresult.results.length; i++) {
+            myresult.results[i] = Object.assign({}, myclassresult.results[i]);
+
+//            myresult.results[i].resulttypes = Object.assign({}, myclassresult.results[i].resulttypes);
+
+            for (let j = 0; j < myclassresult.results[i].resulttypes.length; j++) {
+              myresult.results[i].resulttypes[j] = Object.assign({}, myclassresult.results[i].resulttypes[j]);
+
+            }
+          }
+
+          this.afs.collection<results>('classresults').doc(myclassresult.creationdate).update(myresult).then((res) => {
+
+            console.log(res);
+
+            //   this.loaderservice.dismissloading();
+            resolve('done');
+          }).catch(err => {
+            //  this.loaderservice.dismissloading();
+            reject('error');
+          });
+
+        });
+      }, 500);
+
+    });
+  }
 }

@@ -120,6 +120,7 @@ export class HomeServiceProvider {
             {title: 'Your Child', component: 'YourChild', icon: 'person'},
             {title: 'Courses Info', component: 'CourseInfo', icon: 'paper'},
             {title: 'Quizes Results', component: 'QuizResults', icon: 'book'},
+            
           ];
         }else{
           this.appMenuItems = [
@@ -129,6 +130,8 @@ export class HomeServiceProvider {
             {title: 'Courses Info', component: 'CourseInfo', icon: 'paper'},
             {title: 'Add Courses', component: 'AddCoursesPage', icon: 'create'},
             {title: 'Quizes Results', component: 'QuizResults', icon: 'book'},
+            {title: 'Results Type', component: 'Marks', icon: 'clipboard'},
+            {title: 'Student Portfolio', component: 'portfolio', icon: 'trophy'},
           ];
         }
 

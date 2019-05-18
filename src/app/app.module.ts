@@ -41,6 +41,8 @@ import { TeachersServiceProvider } from '../providers/teachers-service/teachers-
 import { RequestServiceProvider } from '../providers/request-service/request-service';
 import { AnswerServiceProvider } from '../providers/answer-service/answer-service';
 import { StudentresultsServiceProvider } from '../providers/studentresults-service/studentresults-service';
+import { PortfolioServiceProvider } from '../providers/portfolio-service/portfolio-service';
+//import { ComponentsModule } from '../components/components.module';
 
 // import { TeacherloginPage } from '../pages/teacherlogin/teacherlogin';
 // import { ParentloginPage } from '../pages/parentlogin/parentlogin';
@@ -114,7 +116,9 @@ export const firebaseConfig = {
     TeachersServiceProvider,
     RequestServiceProvider,
     AnswerServiceProvider,
-    StudentresultsServiceProvider
+    StudentresultsServiceProvider,
+    PortfolioServiceProvider,
+    
   ]
 })
 export class AppModule {}

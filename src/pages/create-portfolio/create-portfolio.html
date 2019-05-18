@@ -1,0 +1,91 @@
+<ion-header>
+  <ion-navbar no-border-bottom color="primary">
+    <ion-title> Course Results </ion-title>
+    <ion-buttons left>
+      <button ion-button icon-only (click)="viewctrl_dismiss()" class="my-style-for-modal">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content class="content">
+  <ion-card class="card-css" [ngStyle]="{'background-color':'#FFF'}">
+
+    <ion-list>
+      <ion-item>
+
+        <respect-bar [respect]="loadProgress"></respect-bar>
+
+
+        <progress-bar [props]="myProps"></progress-bar>
+
+      </ion-item>
+    </ion-list>
+  </ion-card>
+
+  <ion-card class="card-css">
+
+    <ng-template ngFor let-folio [ngForOf]="portfolios.foliotypes" let-chap="index">
+
+
+      <ion-item [ngStyle]="{'border-bottom':'none'}">
+        <button class="btnfile" margin-right ion-button clear item-end icon-only>
+
+        </button>
+
+
+        <!--  <ion-label color="primary">Chapter</ion-label> -->
+        <ion-input [ngStyle]="{'border-bottom':'none'}" type="text" placeholder=" Name" text-left
+          [(ngModel)]="folio.name"></ion-input>
+        <ion-input [ngStyle]="{'border-bottom':'none', 'width':'30%'}" [(ngModel)]="folio.percent" type="text" placeholder="Max(%)" readonly text-right></ion-input>
+
+        <!--        <ion-input type="number" placeholder=" Weightage" text-right [(ngModel)]="result.totalweightage">
+        </ion-input>
+        -->
+<!--        <ion-badge class="query-tag"> {{result.totalweightage}} </ion-badge>
+-->
+        <button class="btn-inc" ion-button clear item-end icon-only (click)="removepercent(folio)">
+          <!-- here -->
+          <ion-icon name="remove"></ion-icon>
+        </button>
+
+        <button class="btn-inc" ion-button clear margin-right item-end icon-only (click)="addpercent(folio)">
+          <!-- here -->
+          <ion-icon name="add"></ion-icon>
+        </button>
+
+        <button ion-button clear margin-right item-end icon-only (click)="deletepercent(folio)">
+          <!-- here -->
+          <ion-icon name="trash"></ion-icon>
+        </button>
+
+
+      </ion-item>
+
+    </ng-template>
+
+  </ion-card>
+
+  <ion-card class="card-css">
+
+    <div class="divclass">
+      <!--   <span ion-text margin-left color="secondary" tappable (click)="addChapter()"><strong>Chapters</strong></span>
+-->
+      <h3 class="search-query">
+        <span></span>
+        <ion-badge class="query-tag" (click)="addfolio()" margin-left> Portfolio Type </ion-badge>
+        <!--        <ion-badge class="query-tag" (click)="addTopics()" margin-left> Topics </ion-badge>
+-->
+        <span class="query-explanation"> </span>
+      </h3>
+
+    </div>
+
+    <button class="Syllabusclass" ion-button margin-top full (click)="SubmitResults()">Submit/Update Portfolio</button>
+  </ion-card>
+
+
+
+</ion-content>
