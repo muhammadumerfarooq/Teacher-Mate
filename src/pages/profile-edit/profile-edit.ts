@@ -5,6 +5,7 @@ import { Storage } from '@ionic/storage';
 import { Crop } from '@ionic-native/crop';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { HomeServiceProvider } from '../../providers/home-service/home-service';
+import { timestamp } from 'rxjs/internal/operators/timestamp';
 /**
  * Generated class for the ProfileEditPage page.
  *
@@ -39,6 +40,8 @@ export class ProfileEditPage {
         mediaType: this.camera.MediaType.PICTURE,
         correctOrientation: true,
         sourceType:0,
+        targetWidth: 1280,
+        targetHeight: 1280
       }
   
       
@@ -53,15 +56,12 @@ export class ProfileEditPage {
           let email = '';
           
         
-          if (this.homeservice.user == 'teacher'){
-              user = 'teachers';
-          }else if (this.homeservice.user == 'parent'){
-              user = 'parents';
-          }
+
         
             
             email = this.homeservice.useremail;
-            this.profileservice.editprofile(user,email,base64Image).then(res=>{
+            
+            this.profileservice.editprofile(this.homeservice.user,email,this.homeservice.username,base64Image).then(res=>{
               this.presentAlert('Proile Updated Successfull! ','' );
 
             }).catch(err=>{
@@ -88,7 +88,22 @@ export class ProfileEditPage {
    
    }
    updatebtn(){
+     if (this.name!=''){
+      
+this.profileservice.edituser(this.homeservice.user,this.homeservice.useremail, name).then(res=>{
+  this.presentAlert('Proile Updated Successfull! ','' );
 
+}).catch(err=>{
+  this.presentAlert('Error! ','profile not updated' );
+
+});
    }
-   
+
+    
+  else{
+    this.presentAlert('User name must not be empty ','' );
+  }
+  
+}
+
 }

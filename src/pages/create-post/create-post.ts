@@ -162,6 +162,10 @@ export class CreatePostPage {
     });
     pictuealrt.present();
   }
+  deleteimage(){
+    this.mypost.img = '';
+    this.mypost.filetype = '';
+  }
 
   takePicture(sourceType: number) {
 

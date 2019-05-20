@@ -431,7 +431,7 @@ export class HomePage implements OnInit {
 
     this.loader.loading.present().then(() => {
 
-      this.afs.doc<any>('teachers/' + this.homeservice.useremail).snapshotChanges().take(1).forEach(snap => {
+      this.afs.doc<any>(this.homeservice.user+'/' + this.homeservice.useremail).snapshotChanges().take(1).forEach(snap => {
 
         if (snap.payload.exists) {
 

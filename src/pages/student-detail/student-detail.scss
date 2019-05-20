@@ -3,6 +3,34 @@ page-student-detail{
   text-align: center;
 }
 
+.marks {
+  
+
+  position: sticky;
+  bottom: 5px;
+  padding: 5px;
+  background-color:transparent;
+
+  font-size: 4em;
+  padding-bottom: 45px; 
+  padding-right: 15px; 
+  //margin-left: 242px; 
+ button{
+   box-shadow: 0ch;
+   border: transparent; 
+   border-radius: 50px; 
+   background-color:transparent;
+   align-content: center;
+   align-items: center;
+ 
+  }
+  ion-icon{
+    font-size: 2em; 
+    color: #00ACEE
+  }
+
+}
+
 .profile-picture {
   border: 1px solid rgba(0, 0, 0, 0.25);
   padding: 3px;

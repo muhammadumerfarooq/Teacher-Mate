@@ -16,12 +16,28 @@ import { PortfolioServiceProvider, portfolio, portfoliotype } from '../../provid
 })
 export class CreatePortfolioPage {
   loadProgress: number = 0;
-  myProps = { percent: 0, message: 'foo' };
+  myProps = { percent: 0, message: 'foo', background:'' };
+  colors: Array<string>;
 
 portfolios: portfolio;
   constructor(private alertctrl:AlertController,public navCtrl: NavController, public viewctrl: ViewController,public navParams: NavParams, private folioservice:PortfolioServiceProvider) {
    this.portfolios = new portfolio();
 
+   this.folioservice.get_folio().then(()=>{
+    if (this.folioservice.portfolios.foliotypes.length>0){
+      this.portfolios = this.folioservice.portfolios;
+    }
+   }).catch((err)=>{
+
+   });
+
+   this.colors = new Array<string>();
+   this.colors.push('#0077ff');
+   this.colors.push('#B5E61B');
+   this.colors.push('#16144A');
+   this.colors.push('#432B9C');
+    
+    
     setInterval(() => {
       if (this.loadProgress < 50)
       {
@@ -37,8 +53,21 @@ portfolios: portfolio;
   ionViewDidLoad() {
     console.log('ionViewDidLoad CreatePortfolioPage');
   }
+  setborder(folio:portfoliotype){
+    let index = this.portfolios.foliotypes.indexOf(folio);
+    let styles = {
+      'margin-top':'5%',
+      'color':'#FFF',
+      'border': 'thin solid'+this.portfolios.foliotypes[index].background,
+      'border-radius':'1.2em'
+    };
+    return styles;
+  }
   addfolio(){
-    this.portfolios.foliotypes.push(new portfoliotype());
+    let index = Math.floor((Math.random()*4));
+    let folio = new portfoliotype();
+    folio.background = this.colors[index];
+    this.portfolios.foliotypes.push(folio);
   }
   viewctrl_dismiss(){
     this.viewctrl.dismiss();
@@ -92,6 +121,44 @@ portfolios: portfolio;
           handler: () => {
             let index  = this.portfolios.foliotypes.indexOf(folio);
             this.portfolios.foliotypes.splice(index,1);
+          }
+        }
+      ]
+    });
+    confirm.present();
+
+
+  }
+
+  SubmitFolio(){
+     
+
+    let confirm = this.alertctrl.create({
+      title: 'Submit/updatte Portfolio',
+      message: 'Are you sure you want to Submit/updatte Portfolio ',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+            console.log('No clicked');
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            if (this.folioservice.portfolios.foliotypes.length>0){
+              this.folioservice.update_folio(this.portfolios).then(res=>{
+                this.presentAlert('Portfolio Updated Successfully!','');
+              }).catch(err=>{
+                this.presentAlert('Error! ','');
+              });
+            }else{
+            this.folioservice.insert_folio(this.portfolios).then(res=>{
+              this.presentAlert('Portfolio Added Successfully!','');
+            }).catch(err=>{
+              this.presentAlert('Error! ','');
+            });
+          }
           }
         }
       ]

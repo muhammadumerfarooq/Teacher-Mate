@@ -9,8 +9,18 @@
   </ion-navbar>
 
 </ion-header>
-<ion-content class="content">
-  <ion-card class="card-css" [ngStyle]="{'background-color':'#FFF'}">
+<ion-content class="content" >
+<div *ngIf="classresults.results.length == 0" [hidden]="classresults.results.length > 0"
+    [ngStyle]="{'margin-top':'inherit', 'align-items': 'center', 'justify-content': 'center', 'text-align': 'center'}">
+
+<button [ngStyle]="{'background':'transparent'}">
+    <ion-icon name="refresh" [ngStyle]="{'font-size': '50px'}"></ion-icon>
+</button>
+    <p [ngStyle]="{'font-size': '15px'}">No Results Types Found </p>
+  </div>
+
+
+  <ion-card class="card-css" [ngStyle]="{'background-color':'#FFF'}" [hidden]="classresults.results.length == 0">
   <h3 class="search-query">
         <span></span>
         <ion-badge class="query-tag"  margin-left> Total Weightage 100</ion-badge>
@@ -108,7 +118,7 @@
   </ion-item>
   </ion-item>
 -->
-  <ion-card class="card-css">
+  <ion-card class="card-css" >
       
     <ng-template ngFor let-result [ngForOf]="classresults.results" let-chap="index">
 
@@ -226,4 +236,5 @@
  </ion-item>
 </ion-card> -->
 
+ 
 </ion-content>

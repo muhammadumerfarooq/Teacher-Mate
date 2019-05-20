@@ -29,10 +29,11 @@ export class StudentProfilePage {
   user: String = '';
   studentprofile: student = new student();
 
-  constructor(private homeservice:HomeServiceProvider,private studentservice: StudentProvider, private loader: LoaderserviceProvider, private storage: Storage, private viewctrl: ViewController, private camera: Camera, public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController) {
+  parentdetail: Array<userprofile>;
+  constructor(private homeservice: HomeServiceProvider, private studentservice: StudentProvider, private loader: LoaderserviceProvider, private storage: Storage, private viewctrl: ViewController, private camera: Camera, public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController) {
     this.studentprofile = new student();
-
-   // this.studentprofile = this.navParams.get('studentprofile');
+    this.parentdetail = new Array<userprofile>();
+    // this.studentprofile = this.navParams.get('studentprofile');
     this.studentprofile.name = '';
     this.studentprofile.userurl = '';
     // this.studentprofile.parentemail = 
@@ -43,77 +44,92 @@ export class StudentProfilePage {
     <div class="custom-spinner-container">
       <div class="custom-spinner-box"> loading... </div>
     </div>`,
-duration: 800
+      duration: 1000
     });
     setTimeout(() => {
       this.loader.loading.present().then(() => {
 
 
-       // this.storage.get('user').then(user => {
+        // this.storage.get('user').then(user => {
 
-          if (this.homeservice.user == 'parents') {
-            this.user = 'parent';
-      //      this.storage.get('email').then(email => {
-      
-              this.studentprofile.parentemail = this.homeservice.useremail;
-              this.homeservice.allparents.forEach(snap=>{
-               if(snap.useremail == this.homeservice.useremail)
-               {  
-                 this.selectedparent.username = snap.username;
-                 this.selectedparent.imgurl = snap.imgurl;
-                 this.selectedparent.user = snap.user;
-                 this.selectedparent.useremail = snap.useremail;
-               }
-              })
-              // getting class name and teacher
-             // this.storage.get('classroom').then(classname => {
-                
-                this.studentprofile.classname = this.homeservice.classroom;
+        if (this.homeservice.user == 'parents') {
+          this.user = 'parent';
+          //      this.storage.get('email').then(email => {
+
+          this.studentprofile.parentemail = this.homeservice.useremail;
+          this.homeservice.allparents.forEach(snap => {
+            if (snap.useremail == this.homeservice.useremail) {
+              this.selectedparent.username = snap.username;
+              this.selectedparent.imgurl = snap.imgurl;
+              this.selectedparent.user = snap.user;
+              this.selectedparent.useremail = snap.useremail;
+            }
+          })
+          // getting class name and teacher
+          // this.storage.get('classroom').then(classname => {
+
+          this.studentprofile.classname = this.homeservice.classroom;
           //    this.storage.get('classteacher').then(classteacher => {
-                  
-                  this.studentprofile.classteacher = this.homeservice.classteacher;
-               //   this.loader.dismissloading();
 
-              //   }).catch(() => {
-                  
-              //     this.loader.dismissloading();
-              //   });
+          this.studentprofile.classteacher = this.homeservice.classteacher;
+          //   this.loader.dismissloading();
 
-              // }).catch(() => {
-                
-              //   this.loader.dismissloading();
-              // });
+          //   }).catch(() => {
 
-              // this.loader.dismissloading();
-            // }).catch(() => {
-            //   this.loader.dismissloading();
-            // })
+          //     this.loader.dismissloading();
+          //   });
+
+          // }).catch(() => {
+
+          //   this.loader.dismissloading();
+          // });
+
+          // this.loader.dismissloading();
+          // }).catch(() => {
+          //   this.loader.dismissloading();
+          // })
 
 
 
-          } else {
-            this.user = 'teacher';
-            // getting class name and teacher
+        } else {
+          this.user = 'teacher';
+          // getting class name and teacher
           //  this.storage.get('classroom').then(classname => {
-              
-           //   this.studentprofile.classname = classname;
+
+          //   this.studentprofile.classname = classname;
           //    this.storage.get('classteacher').then(classteacher => {
-                
-                this.studentprofile.classteacher = this.homeservice.classteacher;
-           //     this.loader.dismissloading();
-            //   }).catch(() => {
-                
-            //     this.loader.dismissloading();
-            //   });
+          this.studentprofile.classname = this.homeservice.classroom;
+          this.studentprofile.classteacher = this.homeservice.classteacher;
+          for (let j = 0; j < this.homeservice.myclassroom.length; j++) {
+            if (this.homeservice.myclassroom[j].classname == this.homeservice.classroom && this.homeservice.myclassroom[j].teacheremail == this.homeservice.classteacher) {
+              let index = this.homeservice.myclassroom[j].parentsemail.length - 1;
 
-            // }).catch(() => {
-              
-            //   this.loader.dismissloading();
-            // });
+              while (index > -1) {
+                for (let i = 0; i < this.homeservice.allparents.length; i++) {
+                  if (this.homeservice.allparents[i].useremail == this.homeservice.myclassroom[j].parentsemail[index]) {
+                    this.parentdetail.push(this.homeservice.allparents[i]);
+                  }
+                }
+                index--;
+              }
+            }
 
-
-            //  this.loader.dismissloading();
           }
+
+          //     this.loader.dismissloading();
+          //   }).catch(() => {
+
+          //     this.loader.dismissloading();
+          //   });
+
+          // }).catch(() => {
+
+          //   this.loader.dismissloading();
+          // });
+
+
+          //  this.loader.dismissloading();
+        }
 
 
         // }).catch(() => {
@@ -183,11 +199,25 @@ duration: 800
 
   updatestudent() {
     this.studentprofile.datecreation = new Date().toString();
+    if (this.base64Image == '') {
+      this.studentservice.insertstudent(this.studentprofile).then((res) => {
+        if (res == 'updated') {
+          this.presentAlert('Student updated ', 'Successfully');
+        } else
+          this.presentAlert('Student added ', 'Successfully');
+      }).catch((err) => {
+        this.presentAlert('Error! ', ' student not added ');
+      });
+    } else {
+      this.studentservice.insertstudent_img(this.studentprofile, this.base64Image).then((res) => {
+        if (res == 'updated') {
+          this.presentAlert('Student updated ', 'Successfully');
 
-    this.studentservice.insertstudent(this.studentprofile, this.base64Image).then(() => {
-      this.presentAlert('Student added ', 'Successfully');
-    }).catch((err) => {
-      this.presentAlert('Error! ', ' student not added ');
-    });
+        } else
+          this.presentAlert('Student added ', 'Successfully');
+      }).catch((err) => {
+        this.presentAlert('Error! ', ' student not added ');
+      });
+    }
   }
 }

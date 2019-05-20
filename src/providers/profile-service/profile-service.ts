@@ -169,7 +169,55 @@ export class ProfileServiceProvider {
 
   }
 
-  editprofile(user: string, email, imguri) {
+  edituser(user, email, name){
+    return new Promise((resolve, reject) => {
+
+      this.afs.doc(user + "/" + email).snapshotChanges().take(1).forEach(snap => {
+
+        if (snap.payload.exists) {
+          this.loaderservice.loading = this.loaderservice.loadingCtrl.create({
+
+            content: `
+              <div class="custom-spinner-container">
+                <div class="custom-spinner-box"> loading... </div>
+              </div>`,
+
+          });
+          setTimeout(() => {
+            this.loaderservice.loading.present().then(() => {
+
+
+
+
+                  let updateprofile = new profile();
+                  updateprofile = snap.payload.data() as profile;
+              
+                  updateprofile.username  = name;
+                  let docid = user + "/" + email;
+
+                  this.afs.doc(docid).update(updateprofile).then(() => {
+
+                    this.loaderservice.dismissloading();
+                    return resolve('done');
+                  }).catch((err) => {
+
+                    this.loaderservice.dismissloading();
+                    return reject('error');
+                  });
+
+              });
+            }, 1000)
+
+
+        } else {
+
+          return reject('error');
+        }
+      });
+    });
+
+  }
+  editprofile(user: string, email, name,imguri) {
 
     return new Promise((resolve, reject) => {
 
@@ -196,6 +244,7 @@ export class ProfileServiceProvider {
                   let updateprofile = new profile();
                   updateprofile = snap.payload.data() as profile;
                   updateprofile.imgurl = url;
+                  updateprofile.username  = name;
                   let docid = user + "/" + email;
 
                   this.afs.doc(docid).update(updateprofile).then(() => {

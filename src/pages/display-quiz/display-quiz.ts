@@ -98,7 +98,7 @@ if (this.homeservice.user == 'parents'  && myquiz.available == true){
             this.quizservice.deleteQuiz(deletequiz).then(res => {
               if (res == 'done') {
                 this.presentAlert('Quiz Deleted Successfully', 'Successfully');
-        
+                this.quizservice.getquiz(this.quizinfo.topicname);
               } else {
                 this.presentAlert('Error! ', 'Quiz Not Deleted');
         

@@ -99,7 +99,7 @@ export class PostDetailPage {
 
   addcomment() {
 
-    let findemail = false;
+    /* let findemail = false;
     for (let i = 0; i < this.mypost.likes.length; i++) {
       if (this.mypost.likes[i].useremail == this.homeservice.userprofile.useremail) {
         findemail = true;
@@ -108,6 +108,7 @@ export class PostDetailPage {
     }
 
     if (!findemail) {
+      */
       let comment: comments = new comments();
       comment.comment = this.newcomment;
       comment.date = new Date().getTime().toString();
@@ -147,10 +148,11 @@ export class PostDetailPage {
       }).catch(err => {
         this.presentAlert('Comment not Added ', 'Error');
       });
-    } else {
-      this.presentAlert(' you have already liked the post ', ' liked ');
-    }
-  }
+    } 
+    // else {
+    //   this.presentAlert(' you have already liked the post ', ' liked ');
+    // }
+  
 
   presentAlert(alerttitle, alertsub) {
     let alert = this.alertctrl.create({

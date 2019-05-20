@@ -47,10 +47,10 @@
       <div *ngIf="mypost.filetype == 'img'">
         <img [src]="mypost.img" alt="Avatar" class="image">
         <div class="overlay">
-          <a clear small color="light" padding-bottom class="icon-href" title="Edit Image">
+          <a clear small color="light" padding-bottom class="icon-href" (click)="picutreoption()" title="Edit Image">
             <ion-icon name="create"></ion-icon>
           </a>
-          <a clear small color="light" padding-bottom class="icon-href-left" title="Delete Image">
+          <a clear small color="light" padding-bottom class="icon-href-left" (click)="deleteimage()" title="Delete Image">
             <ion-icon name="trash"></ion-icon>
           </a>
         </div>

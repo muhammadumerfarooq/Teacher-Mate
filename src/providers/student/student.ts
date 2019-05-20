@@ -3,6 +3,7 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { LoaderserviceProvider } from '../loaderservice/loaderservice';
 import { storage } from 'firebase';
 import { HomeServiceProvider } from '../home-service/home-service';
+import { profile } from '../profile-service/profile-service';
 
 /*
   Generated class for the StudentProvider provider.
@@ -70,11 +71,16 @@ duration: 1000
     }).snapshotChanges().take(1).forEach(snap => {
 //      this.allstudents = new Array<student>();
         this.class_students = new Array<student>();
+        if (snap.length == 0){
+          return reject('error');
+        }
       snap.forEach(snapshot => {
         if (snapshot.payload.doc.exists) {
           let studentdata: student = snapshot.payload.doc.data() as student;
           this.parentchild = studentdata;
           return resolve('done');
+        }else{
+          return reject('error');
         }
       })
     });
@@ -104,11 +110,17 @@ duration: 500
     }).snapshotChanges().take(1).forEach(snap => {
 //      this.allstudents = new Array<student>();
         this.class_students = new Array<student>();
+        let length = snap.length;
       snap.forEach(snapshot => {
         if (snapshot.payload.doc.exists) {
           let studentdata: student = snapshot.payload.doc.data() as student;
           this.class_students.push(studentdata);
-          
+          length--;
+          if(length==0){
+            resolve('done');
+          }
+        }else{
+          reject('error');
         }
       })
     });
@@ -118,8 +130,7 @@ duration: 500
 
 
   }
- 
-  insertstudent(studentdata: student, imguri: string) {
+  insertstudent(studentdata: student) {
     
     return new Promise((resolve, reject) => {
 
@@ -135,7 +146,85 @@ duration: 500
       setTimeout(() => {
         this.loaderservice.loading.present().then(() => {
 
+try{
+              studentdata.userurl = '';
+              const objectclass = Object.assign({}, studentdata);
 
+              this.afs.collection('students', ref=>{
+                return ref.where('classname','==',this.homeservice.classroom).where('classteacher','==',this.homeservice.classteacher).where('parentemail','==',studentdata.parentemail)
+              }).snapshotChanges().take(1).forEach(snap=>{
+                if (snap.length==0){
+                  this.afs.collection('students').doc(studentdata.datecreation).set(objectclass).then(() => {
+
+                    this.loaderservice.dismissloading();
+                    return resolve('done');
+                  }).catch((err) => {
+                    
+                    this.loaderservice.dismissloading();
+                    return reject('error');
+                  });
+                }
+                snap.forEach(snapshot=>{
+                  if (snapshot.payload.doc.exists){
+                    let profile = snapshot.payload.doc.data() as student; 
+                    objectclass.datecreation = profile.datecreation;
+                    this.afs.collection('students').doc(profile.datecreation).set(objectclass).then(() => {
+
+                      this.loaderservice.dismissloading();
+                      return resolve('updated');
+                    }).catch((err) => {
+                      
+                      this.loaderservice.dismissloading();
+                      return reject('error');
+                    });
+
+                  }else{
+                    this.afs.collection('students').doc(studentdata.datecreation).set(objectclass).then(() => {
+
+                      this.loaderservice.dismissloading();
+                      return resolve('done');
+                    }).catch((err) => {
+                      
+                      this.loaderservice.dismissloading();
+                      return reject('error');
+                    });
+                  }
+                })
+              })
+
+              
+
+           
+        }
+        catch(err){
+          this.loaderservice.dismissloading();
+          return reject('error');
+        }
+        }, 1000);
+
+
+      });
+    });
+
+  }
+
+  insertstudent_img(studentdata: student, imguri: string) {
+    
+    return new Promise((resolve, reject) => {
+
+
+      this.loaderservice.loading = this.loaderservice.loadingCtrl.create({
+
+        content: `
+                <div class="custom-spinner-container">
+                  <div class="custom-spinner-box"> loading... </div>
+                </div>`,
+
+      });
+      setTimeout(() => {
+        this.loaderservice.loading.present().then(() => {
+
+try{
           const id = this.afs.createId();
           const pictures = storage().ref('profile/' + id);
           
@@ -145,17 +234,48 @@ duration: 500
               studentdata.userurl = url;
               const objectclass = Object.assign({}, studentdata);
 
+              this.afs.collection('students', ref=>{
+                return ref.where('classname','==',this.homeservice.classroom).where('classteacher','==',this.homeservice.classteacher).where('parentemail','==',studentdata.parentemail)
+              }).snapshotChanges().take(1).forEach(snap=>{
+                if (snap.length==0){
+                  this.afs.collection('students').doc(studentdata.datecreation).set(objectclass).then(() => {
 
+                    this.loaderservice.dismissloading();
+                    return resolve('done');
+                  }).catch((err) => {
+                    
+                    this.loaderservice.dismissloading();
+                    return reject('error');
+                  });
+                }
+                snap.forEach(snapshot=>{
+                  if (snapshot.payload.doc.exists){
+                    let profile = snapshot.payload.doc.data() as student; 
+                    objectclass.datecreation = profile.datecreation;
+                    this.afs.collection('students').doc(profile.datecreation).set(objectclass).then(() => {
 
-              this.afs.collection('students').doc(studentdata.datecreation).set(objectclass).then(() => {
+                      this.loaderservice.dismissloading();
+                      return resolve('updated');
+                    }).catch((err) => {
+                      
+                      this.loaderservice.dismissloading();
+                      return reject('error');
+                    });
+                  }else{
+                    this.afs.collection('students').doc(studentdata.datecreation).set(objectclass).then(() => {
 
-                this.loaderservice.dismissloading();
-                return resolve('done');
-              }).catch((err) => {
-                
-                this.loaderservice.dismissloading();
-                return reject('error');
-              });
+                      this.loaderservice.dismissloading();
+                      return resolve('done');
+                    }).catch((err) => {
+                      
+                      this.loaderservice.dismissloading();
+                      return reject('error');
+                    });
+                  }
+                })
+              })
+
+              
 
             }).catch(err=>{
               
@@ -167,6 +287,11 @@ duration: 500
             this.loaderservice.dismissloading();
             return reject('error');
           });
+        }
+        catch(err){
+          this.loaderservice.dismissloading();
+          return reject('error');
+        }
         }, 1000);
 
 

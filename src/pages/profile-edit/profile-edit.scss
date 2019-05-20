@@ -7,6 +7,37 @@ page-profile-edit {
         background: url("../assets/img/bg.jpg") no-repeat; 
     }
    
+    .profilebutton {
+      z-index: 2;
+      position: absolute;
+      left: 40%;
+      top: 36%;
+      margin: auto;
+      opacity: 0;
+      transition: .3s ease;
+      background-color: transparent;
+      color: #a3a3a3;
+  }
+  .profilepic {
+    border:1px solid #a3a3a3;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+
+  }
+  .profilepic-border {
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    position: relative;
+    border-radius: 50%;
+  }
+
+  .profilepic:hover .profilebutton {
+    opacity: 1;
+  }
+
     .user-profile {
         border-radius: 1.2em; 
         .container {

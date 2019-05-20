@@ -9,7 +9,17 @@
   </ion-navbar>
 </ion-header>
 <ion-content class="content">
+
 <ion-card class = "card-css">
+<div class="marks" *ngIf="this.homeservice.user == 'teachers'">
+    <button ion-button class="pull-right" color="secondary" tappable (click)="quiz_marks()">
+      <ion-icon name="medal"></ion-icon>
+    </button>
+      <button ion-button class="pull-left" color="secondary" tappable (click)="student_folio()">
+      <ion-icon name="trophy"></ion-icon>
+    </button>
+  </div>
+  
   <div margin-top *ngIf= "studentprofile!=null || studentprofile !=undefined" >
     <div margin-top class="profile-picture big-profile-picture">
       <img [src]="studentprofile.userurl">
@@ -57,5 +67,5 @@
   </h3>
   </div>
 </ion-card>
-
+  
 </ion-content>

@@ -15,9 +15,11 @@ import { LoaderserviceProvider } from '../loaderservice/loaderservice';
 export class classresult {
   classname: string;
   classteacher: string;
+  useremail:string;
   creationdate: string;
   results: Array<results>;
   constructor() {
+    this.useremail = '';
     this.results = new Array<results>();
     this.classname = '';
     this.classteacher = '';
@@ -32,7 +34,6 @@ export class results {
   resulttypes: Array<resulttype>;
   constructor() {
     this.resulttypes = new Array<resulttype>();
-
     this.resultname = '';
     this.totalweightage = 0.0;
     this.obtainedweightage = 0.0;
@@ -40,11 +41,15 @@ export class results {
 }
 
 export class resulttype {
+  resultadded:boolean;
+
   resultname: string;
   totalmarks: number;
   obtainedmarks: number;
   weightage: number;
   constructor() {
+    this.resultadded = false;
+
     this.resultname = "";
     this.totalmarks = 0;
     this.obtainedmarks = 0;
@@ -72,16 +77,18 @@ export class StudentresultsServiceProvider {
       <div class="custom-spinner-container">
         <div class="custom-spinner-box"> loading... </div>
       </div>`,
-      duration: 1000
+      duration: 500
     });
     this.presentLoading(loading);
 
 
     return new Promise((resolve, reject) => {
-
+try{
       this.afs.collection('classresults').snapshotChanges().take(1).forEach(snap => {
         this.classresults = new classresult();
-
+        if (snap.length==0){
+          return reject('error');
+        }
         snap.forEach(snapshot => {
       
           if (snapshot.payload.doc.exists) {
@@ -103,7 +110,7 @@ export class StudentresultsServiceProvider {
                 restype.resultname = classres.results[i].resulttypes[j].resultname;
                 restype.totalmarks = classres.results[i].resulttypes[j].totalmarks;
                 restype.weightage = classres.results[i].resulttypes[j].weightage;
-
+                restype.resultadded =  classres.results[i].resulttypes[j].resultadded;
                 result.resulttypes.push(restype);
                 j++;
               }
@@ -115,7 +122,10 @@ export class StudentresultsServiceProvider {
             return reject('false');
           }
         })
-      })
+      })}
+      catch(err){
+reject('false');
+      }
 
     });
   }

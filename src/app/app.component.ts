@@ -131,6 +131,8 @@ export class MyApp {
           modalPage.present();
 
         }
+      }).catch(err=>{
+        this.presentAlert('You Child is not added ','');
       });
     }
     else if (page.component == 'Marks') {
@@ -147,6 +149,12 @@ export class MyApp {
 
       modalPage.present();
     }
+    else if (page.component=='charts'){
+      modalPage = this.modalctrl.create('PerformanceChartsPage');
+
+      modalPage.present();
+    }
+    
     else if (page.component == 'CourseInfo') {
 
       this.loaderservice.loading = this.loaderservice.loadingCtrl.create({

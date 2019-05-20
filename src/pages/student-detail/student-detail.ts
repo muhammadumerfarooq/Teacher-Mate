@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, ViewController, ModalController } from 'ionic-angular';
 import { CameraOptions, Camera } from '@ionic-native/camera';
 import { student } from '../../providers/student/student';
+import { HomeServiceProvider } from '../../providers/home-service/home-service';
 
 /**
  * Generated class for the StudentDetailPage page.
@@ -18,10 +19,11 @@ import { student } from '../../providers/student/student';
 export class StudentDetailPage {
 
    studentprofile: student = new student();
-  constructor(private modalctrl:ModalController,private viewctrl:ViewController,private camera:Camera,public navCtrl: NavController, public navParams: NavParams, private alertCtrl:AlertController) {
+  constructor(private homeservice:HomeServiceProvider,private modalctrl:ModalController,private viewctrl:ViewController,private camera:Camera,public navCtrl: NavController, public navParams: NavParams, private alertCtrl:AlertController) {
   this.studentprofile = this.navParams.get('studentprofile');
  // this.studentprofile.name = '';
  // this.studentprofile.userurl = '';
+ 
 
   }
 
@@ -75,6 +77,29 @@ export class StudentDetailPage {
   }
 
   updatestudent(){
+    var modalPage = this.modalctrl.create('StudentProfilePage');
+    modalPage.onDidDismiss(data=>{
+     if (data == 'back')
+     {
+      this.viewctrl.dismiss('back');
+     }
+
+   });
+    modalPage.present();
+  }
+
+  quiz_marks(){
+    var modalPage = this.modalctrl.create('StudentmarksPage',{'parentemail':this.studentprofile.parentemail});
+    modalPage.onDidDismiss(data=>{
+     if (data == 'back')
+     {
+      this.viewctrl.dismiss('back');
+     }
+
+   });
+    modalPage.present();
+  }
+  student_folio(){
     var modalPage = this.modalctrl.create('StudentProfilePage');
     modalPage.onDidDismiss(data=>{
      if (data == 'back')

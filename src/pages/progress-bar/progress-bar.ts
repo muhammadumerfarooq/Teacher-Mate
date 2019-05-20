@@ -13,7 +13,7 @@ import { Component,Input } from '@angular/core';
 export class ProgressBarComponent {
 
   text: string;
-  @Input() props: { percent: number; message: string; };
+  @Input() props: { percent: number; name: string; background:string };
 
   constructor() {
     console.log('Hello RespectBarComponent Component');

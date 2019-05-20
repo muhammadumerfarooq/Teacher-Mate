@@ -1,0 +1,105 @@
+<ion-header>
+  <ion-navbar no-border-bottom color="primary">
+    <ion-title> Course Results </ion-title>
+    <ion-buttons left>
+      <button ion-button icon-only (click)="viewctrl_dismiss()" class="my-style-for-modal">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+<ion-content class="content">
+  <ion-card class="card-css" [ngStyle]="{'background-color':'#FFF'}">
+  <h3 class="search-query">
+        <span></span>
+        <ion-badge class="query-tag"  margin-left> Total Weightage 100</ion-badge>
+        <!--        <ion-badge class="query-tag" (click)="addTopics()" margin-left> Topics </ion-badge>
+-->
+        <span class="query-explanation"> </span>
+      </h3>
+
+    <ion-list [hidden]="studentmarks.results.length == 0">
+      <ion-item *ngFor="let p of studentmarks.results; let i=index" text-wrap (click)="toggleLevel1(i)"
+        [ngClass]="{active: isLevel1Shown(i)}" >
+
+
+        <h2 class="result-query" [ngStyle]="{'color':'#4c6df9'}">
+
+
+
+
+          <ion-badge class="query-tag"> {{p.resultname}} </ion-badge>
+
+          
+
+          <ion-badge class="query-tag" margin-left> {{p.totalweightage}}</ion-badge>
+
+<ion-icon  color="success" item-right [name]="isLevel1Shown(i) ? 'arrow-dropdown' : 'arrow-dropright'">
+
+          </ion-icon>
+   <!--       <button ion-button margin-right clear item-end icon-only (click)="addingresults(p)">
+          <ion-icon name="add-circle" class="button-add"></ion-icon>
+        </button>
+-->
+
+            <button ion-button margin-right clear item-end icon-only
+              (click)="showgraph(i)">
+              <ion-icon name="pie"></ion-icon>
+            </button>
+        </h2>
+        <ion-list *ngIf="isLevel1Shown(i)">
+          <ion-item *ngFor="let s of p.resulttypes; let i2=index" text-wrap (click)="toggleLevel1(i)"
+            [ngClass]="{active: isLevel1Shown(i)}">
+<div *ngIf = "s.resultadded">
+        <h2 class="result-query" [ngStyle]="{'color':'#4c6df9'}">
+
+
+
+
+          <ion-badge class="query-tag"> {{s.resultname}} </ion-badge>
+
+
+          <ion-badge class="query-tag" margin-left> {{s.weightage}}</ion-badge>
+
+
+          <ion-badge class="query-tag" margin-left> {{s.obtainedmarks}}/{{s.totalmarks}}</ion-badge>
+
+        </h2>
+</div>
+
+<div *ngIf = "!s.resultadded">
+        <h2 class="result-query" [ngStyle]="{'color':'#4c6df9'}">
+
+
+
+
+          <ion-badge class="query-tag"> {{s.resultname}} </ion-badge>
+
+
+          <ion-badge class="query-tag" margin-left> {{s.weightage}}</ion-badge>
+
+          <ion-badge  [ngStyle] = "{'color':'#ff0000', 'border':'solid thin #ff0000', 'border-radius':'1.2em'}" class="query-tag" margin-left> NILL </ion-badge>
+
+
+        </h2>
+</div>
+
+            <button  ion-button margin-right clear item-end icon-only
+              (click)="update_restype(i,i2)">
+              <ion-icon name="create"></ion-icon>
+            </button>
+
+
+          </ion-item>
+        </ion-list>
+
+      </ion-item>
+    </ion-list>
+  </ion-card>
+
+  <ion-card class="card-css">
+
+    <button class="Syllabusclass" ion-button margin-top full (click)="SubmitResults()">Submit/Update Results</button>
+  </ion-card>
+</ion-content>

@@ -35,13 +35,17 @@ export class CreateStudentResultPage {
     this.classresults.classname = this.homeservice.classroom;
     this.classresults.classteacher = this.homeservice.classteacher;
     this.classresults.creationdate =  new Date().getTime().toString();
-    
+    try{
     this.resultprovider.get_results().then(()=>{
       if (this.resultprovider.classresults.results.length>0){
       this.classresults = this.resultprovider.classresults;
       }
-    }).catch();
-
+    }).catch(err=>{
+      console.log(err)
+    });
+  }catch(err){
+    console.log(err);
+  }
   }
 
   

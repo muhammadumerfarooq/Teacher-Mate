@@ -13,13 +13,20 @@
 <ion-content class="content">
   <ion-card class="card-css" [ngStyle]="{'background-color':'#FFF'}">
 
-    <ion-list>
-      <ion-item>
+    <ion-list [hidden]="portfolios.foliotypes.length == 0">
+      <ion-item *ngFor="let folio of portfolios.foliotypes">
 
-        <respect-bar [respect]="loadProgress"></respect-bar>
+        <!-- <respect-bar [respect]="loadProgress"></respect-bar>
+-->
+        <h3 class="search-query" [ngStyle]="setborder(folio)"  >
+          <span></span>
+          <ion-badge class="query-tag" [style.background-color]="folio.background" [ngStyle]="{'color':'#FFF', 'margin-top':'5%'}" margin-left> {{folio.name}}
+          </ion-badge>
 
+          <progress-bar [props]="folio"></progress-bar>
+          <span class="query-explanation"> </span>
+        </h3>
 
-        <progress-bar [props]="myProps"></progress-bar>
 
       </ion-item>
     </ion-list>
@@ -39,12 +46,13 @@
         <!--  <ion-label color="primary">Chapter</ion-label> -->
         <ion-input [ngStyle]="{'border-bottom':'none'}" type="text" placeholder=" Name" text-left
           [(ngModel)]="folio.name"></ion-input>
-        <ion-input [ngStyle]="{'border-bottom':'none', 'width':'30%'}" [(ngModel)]="folio.percent" type="text" placeholder="Max(%)" readonly text-right></ion-input>
+        <ion-input [ngStyle]="{'border-bottom':'none', 'width':'30%'}" [(ngModel)]="folio.percent" type="text"
+          placeholder="Max(%)" readonly text-right></ion-input>
 
         <!--        <ion-input type="number" placeholder=" Weightage" text-right [(ngModel)]="result.totalweightage">
         </ion-input>
         -->
-<!--        <ion-badge class="query-tag"> {{result.totalweightage}} </ion-badge>
+        <!--        <ion-badge class="query-tag"> {{result.totalweightage}} </ion-badge>
 -->
         <button class="btn-inc" ion-button clear item-end icon-only (click)="removepercent(folio)">
           <!-- here -->
@@ -56,7 +64,7 @@
           <ion-icon name="add"></ion-icon>
         </button>
 
-        <button ion-button clear margin-right item-end icon-only (click)="deletepercent(folio)">
+        <button ion-button clear margin-right item-end icon-only (click)="deletefolio(folio)">
           <!-- here -->
           <ion-icon name="trash"></ion-icon>
         </button>
@@ -83,7 +91,7 @@
 
     </div>
 
-    <button class="Syllabusclass" ion-button margin-top full (click)="SubmitResults()">Submit/Update Portfolio</button>
+    <button class="Syllabusclass" ion-button margin-top full (click)="SubmitFolio()">Submit/Update Portfolio</button>
   </ion-card>
 
 

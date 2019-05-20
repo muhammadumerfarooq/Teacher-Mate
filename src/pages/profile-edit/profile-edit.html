@@ -25,21 +25,31 @@
               <img src="../assets/img/logo.png">
             </div>
             -->
-          <div class="container">
-            <img [src]="homeservice.userprofile.imgurl" class="image">
+   <!--       <div class="container">
+            <img [src]="homeservice.userprofile.imgurl" class="image" onError="this.src='../../assets/img/person.png';"  alt="...">
             <div class="overlay">
               <a clear small color="light" padding-bottom class="icon-href" title="change image" (click)="changeimage()">
                 <ion-icon name="camera"></ion-icon>
               </a>
             </div>
           </div>
-
+-->
+<div class="item profilepic-border" align="center">
+	<a class="button profilebutton icon ion-camera" (click)="changeimage()">
+  <ion-icon name="camera"></ion-icon>
+  </a>
+	<img class="profilepic padding-bottom" [src]="homeservice.userprofile.imgurl"  (click)="changeimage()" onError="this.src='../../assets/img/person.png';"  alt="...">
+</div>
         </ion-col>
         <ion-col padding-top col-8>
           <h2 ion-text class="no-margin bold text-white">
-            User Name
+            {{this.homeservice.username}}
           </h2>
-          <span ion-text color="light">Parent/Teacher</span>
+          <h2 ion-text class="no-margin bold text-white">
+                    {{this.homeservice.useremail}}
+
+          </h2>
+          <span ion-text color="light">{{this.homeservice.useroccupation}}</span>
         </ion-col>
       </ion-row>
 
@@ -56,8 +66,8 @@
 
         <ion-input class="input-box" type="text" placeholder="Enter Name" [(ngModel)] = "name" name="text"></ion-input>
 
-        <ion-input class="input-box" type="string" placeholder="Enter Email" [(ngModel)] = "email" name="text"></ion-input>
-
+<!--        <ion-input class="input-box" type="string" placeholder="Enter Email" [(ngModel)] = "email" name="text"></ion-input>
+-->
         <button ion-button icon-only block class="submitbtn" (click)="updatebtn()">
           Update
         </button>

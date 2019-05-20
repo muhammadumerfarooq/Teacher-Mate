@@ -129,7 +129,10 @@ duration: 500
               this.presentAlert('Login Failed ', err);
             });
           }
-       
+       else{
+        this.presentAlert('Login Failed ', '');
+
+       }
       });
 
 

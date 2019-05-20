@@ -59,5 +59,12 @@ export class StudentListPage {
    });
     modalPage.present();
    }
-  
+   onPullToRefresh(refresher){
+    this.studentservice.getstudents().then(res=>{
+      refresher.complete();
+    }).catch(err=>{
+      refresher.complete();
+    });
+   }
+
 }

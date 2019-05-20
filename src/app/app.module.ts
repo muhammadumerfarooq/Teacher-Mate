@@ -42,6 +42,9 @@ import { RequestServiceProvider } from '../providers/request-service/request-ser
 import { AnswerServiceProvider } from '../providers/answer-service/answer-service';
 import { StudentresultsServiceProvider } from '../providers/studentresults-service/studentresults-service';
 import { PortfolioServiceProvider } from '../providers/portfolio-service/portfolio-service';
+import { StudentmarksServiceProvider } from '../providers/studentmarks-service/studentmarks-service';
+// import { Chart } from 'chart.js';
+
 //import { ComponentsModule } from '../components/components.module';
 
 // import { TeacherloginPage } from '../pages/teacherlogin/teacherlogin';
@@ -74,7 +77,8 @@ export const firebaseConfig = {
     AngularFirestoreModule,
     AngularCropperjsModule,
     IonicStorageModule.forRoot(),
-    HttpModule
+    HttpModule,
+    
     
   ],
   bootstrap: [IonicApp],
@@ -118,6 +122,7 @@ export const firebaseConfig = {
     AnswerServiceProvider,
     StudentresultsServiceProvider,
     PortfolioServiceProvider,
+    StudentmarksServiceProvider,
     
   ]
 })

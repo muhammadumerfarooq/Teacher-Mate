@@ -54,58 +54,62 @@
         [ngClass]="{active: isLevel1Shown(courseindex)}">
 
         <h2 [ngStyle]="{'color':'#4c6df9'}">
-     
 
-<h3 class="search-query">
-    <span></span>
-    <ion-badge class="query-tag"  >    {{p.value}} </ion-badge>
-    <span class="query-explanation"> </span>
-     <ion-icon color="success" [ngStyle]="{'color':'#4c6df9', 'margin-left':'15px'}"  item-right [name]="isLevel1Shown('idx'+i) ? 'arrow-dropdown' : 'arrow-dropright'">
-          </ion-icon>
-          <div [ngStyle]="{'display':'inline'}" *ngIf="this.homeservice.user == 'teachers'">
-           <button ion-button margin-right clear item-end icon-only (click)="deletechap(courseindex,i)">
-              <!-- here -->
-              <ion-icon name="trash"></ion-icon>
-            </button>
+
+          <h3 class="search-query">
+            <span></span>
+            <ion-badge class="query-tag"> {{p.value}} </ion-badge>
+            <span class="query-explanation"> </span>
+            <ion-icon color="success" [ngStyle]="{'color':'#4c6df9', 'margin-left':'15px'}" item-right
+              [name]="isLevel1Shown('idx'+i) ? 'arrow-dropdown' : 'arrow-dropright'">
+            </ion-icon>
+            <div [ngStyle]="{'display':'inline'}" *ngIf="this.homeservice.user == 'teachers'">
+              <button ion-button margin-right clear item-end icon-only (click)="deletechap(courseindex,i)">
+                <!-- here -->
+                <ion-icon name="trash"></ion-icon>
+              </button>
             </div>
-  </h3>
+          </h3>
 
-           
-         
+
+
         </h2>
         <ion-list *ngIf="isLevel1Shown(courseindex)">
           <ion-item *ngFor="let s of p.Topics; let i2=index" text-wrap (click)="toggleLevel2('idx'+i+'idx'+i2)"
             [ngClass]="{active: isLevel2Shown('idx'+i+'idx'+i2)}">
 
 
-            
-<h3 class="search-query">
-    <span></span>
-    <ion-badge class="query-tag"  >    {{s.value}} </ion-badge>
-    <span class="query-explanation"> </span>
-  </h3>
+
+            <h3 class="search-query">
+              <span></span>
+              <ion-badge class="query-tag"> {{s.value}} </ion-badge>
+              <span class="query-explanation"> </span>
+            </h3>
             <div [ngStyle]="{'display':'inline', 'margin':'0px'}" item-end *ngIf="this.homeservice.user == 'teachers'">
 
-            <button ion-button  clear item-end icon-only (click)="deletetopic(courseindex,i, i2);$event.stopPropagation()">
-              <!-- here -->
-              <ion-icon name="trash"></ion-icon>
-            </button>
+              <button ion-button clear item-end icon-only
+                (click)="deletetopic(courseindex,i, i2);$event.stopPropagation()">
+                <!-- here -->
+                <ion-icon name="trash"></ion-icon>
+              </button>
             </div>
-            
-            <button ion-button margin-right clear item-end icon-only (click)="Quiz(ch.creationdate,s.value);$event.stopPropagation()" >
+
+            <button ion-button margin-right clear item-end icon-only
+              (click)="Quiz(ch.creationdate,s.value);$event.stopPropagation()">
               <!-- here -->
               <ion-icon name="clipboard"></ion-icon>
             </button>
 
-            <button ion-button margin-right clear item-end icon-only (click)="downaloadAndOpenfile(s.filename, s.fileurl, s.filetype);$event.stopPropagation()">
+            <button ion-button margin-right clear item-end icon-only
+              (click)="downaloadAndOpenfile(s.filename, s.fileurl, s.filetype);$event.stopPropagation()">
               <!-- here -->
               <ion-icon name="cloud-done"></ion-icon>
             </button>
 
 
 
-            
-   <!--
+
+            <!--
             <ion-icon color="success" item-right
               [name]="isLevel2Shown('idx'+i+'idx'+i2) ? 'arrow-dropdown' : 'arrow-dropright'"></ion-icon>
 
@@ -146,7 +150,7 @@
   </ion-item>
   </ion-item>
 -->
-<!--
+  <!--
   <ion-card class="card-css">
     <ng-template ngFor let-chapter [ngForOf]="mycourses.Chapters" let-chap="index">
       <ion-item>
@@ -209,28 +213,28 @@
   </ion-card>
   <ion-card class="card-css">
   -->
-<!--
+  <!--
     <button ion-button margin-left (click)="addChapter()">Chapters</button>
     <button ion-button (click)="addTopics()">Topics</button>
     <button ion-button (click)="addSubtopic()">SubTopics</button>
--->  
-<ion-card class="card-css" [hidden] = " this.courseservice.allcourses.length > 0">
-<!-- <div *ngIf = " this.courseservice.allcourses.length == 0 ">
+-->
+  <ion-card class="card-css" [hidden]=" this.courseservice.allcourses.length > 0">
+    <!-- <div *ngIf = " this.courseservice.allcourses.length == 0 ">
 <p>
 No course Syllabus are added
 </p>
 </div> -->
-<div *ngIf = " this.courseservice.allcourses.length == 0 "
-    [ngStyle]="{'margin-top':'inherit', 'align-items': 'center', 'justify-content': 'center', 'text-align': 'center'}">
+    <div *ngIf=" this.courseservice.allcourses.length == 0 "
+      [ngStyle]="{'margin-top':'inherit', 'align-items': 'center', 'justify-content': 'center', 'text-align': 'center'}">
 
-<button [ngStyle]="{'background':'transparent'}" (click)="findcourses()">
-    <ion-icon name="refresh" [ngStyle]="{'font-size': '50px'}"></ion-icon>
-</button>
-    <p [ngStyle]="{'font-size': '15px'}">No course Syllabus are added</p>
-  </div>
+      <button [ngStyle]="{'background':'transparent'}" (click)="findcourses()">
+        <ion-icon name="refresh" [ngStyle]="{'font-size': '50px'}"></ion-icon>
+      </button>
+      <p [ngStyle]="{'font-size': '15px'}">No course Syllabus are added</p>
+    </div>
 
-</ion-card>
-<!--    <div class="divclass">
+  </ion-card>
+  <!--    <div class="divclass">
       <span ion-text margin-left color="secondary" tappable (click)="addChapter()"><strong>Chapters</strong></span>
 
       <span ion-text margin-left color="secondary" tappable (click)="addTopics()"><strong>Topics</strong></span>

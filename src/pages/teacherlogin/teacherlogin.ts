@@ -128,6 +128,8 @@ export class TeacherloginPage {
             this.presentAlert('Login Failed ', err);
           });
 
+        }else{
+          this.presentAlert('Login Failed ', '');
         }
       });
 

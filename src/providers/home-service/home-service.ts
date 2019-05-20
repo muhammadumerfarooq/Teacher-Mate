@@ -132,6 +132,8 @@ export class HomeServiceProvider {
             {title: 'Quizes Results', component: 'QuizResults', icon: 'book'},
             {title: 'Results Type', component: 'Marks', icon: 'clipboard'},
             {title: 'Student Portfolio', component: 'portfolio', icon: 'trophy'},
+            {title: 'performance charts ', component: 'charts', icon: 'trophy'},
+            
           ];
         }
 
