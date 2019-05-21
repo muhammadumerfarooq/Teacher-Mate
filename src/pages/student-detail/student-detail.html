@@ -11,7 +11,7 @@
 <ion-content class="content">
 
 <ion-card class = "card-css">
-<div class="marks" *ngIf="this.homeservice.user == 'teachers'">
+<div class="marks" *ngIf="this.homeservice.user == 'teachers' || this.homeservice.useremail ==  this.studentprofile.parentemail ">
     <button ion-button class="pull-right" color="secondary" tappable (click)="quiz_marks()">
       <ion-icon name="medal"></ion-icon>
     </button>

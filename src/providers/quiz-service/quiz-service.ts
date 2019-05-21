@@ -153,7 +153,7 @@ export class QuizServiceProvider {
 
 if (this.homeservice.user == 'parents'){
   this.answerservice.getstudentanswers().then((res)=>{
-    if (res=='done'){
+
       this.loaderservice.loading = this.loaderservice.loadingCtrl.create({
 
         content: `
@@ -273,9 +273,10 @@ if (this.homeservice.user == 'parents'){
       }, 1500)
   
   
-    }
-  });
-}else{
+   
+ });
+}
+else{
   this.loaderservice.loading = this.loaderservice.loadingCtrl.create({
 
     content: `

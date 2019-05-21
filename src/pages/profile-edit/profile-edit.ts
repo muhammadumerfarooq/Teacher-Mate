@@ -90,8 +90,9 @@ export class ProfileEditPage {
    updatebtn(){
      if (this.name!=''){
       
-this.profileservice.edituser(this.homeservice.user,this.homeservice.useremail, name).then(res=>{
+this.profileservice.edituser(this.homeservice.user,this.homeservice.useremail, this.name).then(res=>{
   this.presentAlert('Proile Updated Successfull! ','' );
+  this.homeservice.username = this.name;
 
 }).catch(err=>{
   this.presentAlert('Error! ','profile not updated' );

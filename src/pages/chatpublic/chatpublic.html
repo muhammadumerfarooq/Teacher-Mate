@@ -24,11 +24,11 @@
       <div class="msg-detail">
         <div class="msg-info" *ngIf="msg.time.seconds">
           <p>
-            {{msg.userId}}&nbsp;&nbsp;&nbsp;{{ msg.time.seconds * 1000  | date:'dd/MM/yyyy(EEE) - hh:mmaaa'}}</p>
+            {{msg.userName}}&nbsp;&nbsp;&nbsp;{{ msg.time.seconds * 1000  | date:'dd/MM/yyyy(EEE) - hh:mmaaa'}}</p>
         </div>
         <div class="msg-info" *ngIf="msg.time.seconds == null">
           <p>
-            {{msg.userId}}&nbsp;&nbsp;&nbsp;{{ msg.time  | date:'dd/MM/yyyy(EEE) - hh:mmaaa'}}</p>
+            {{msg.userName}}&nbsp;&nbsp;&nbsp;{{ msg.time  | date:'dd/MM/yyyy(EEE) - hh:mmaaa'}}</p>
         </div>
         <div class="msg-content">
           <span class="triangle"></span>

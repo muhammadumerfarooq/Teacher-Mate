@@ -54,7 +54,9 @@ return new Promise((resolve,reject)=>{
 
       this.allanswers = new Array<QuizAnswer>();
       let snaplength = snap.length;
-
+if (snaplength == 0){
+  reject('not exists');
+}
       snap.forEach(snapshot => {
 
         if (snapshot.payload.doc.exists) {
@@ -126,7 +128,7 @@ return new Promise((resolve,reject)=>{
           snaplength--;
           this.allanswers.push(quiz);
 if(snaplength<=0){
-return resolve('done');
+return resolve('exists');
 }
         }
       })
