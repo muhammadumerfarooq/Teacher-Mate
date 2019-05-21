@@ -68,7 +68,7 @@
         </ion-avatar>
 
 
-        <ion-buttons end>
+        <ion-buttons end *ngIf = "this.homeservice.user == 'teachers'">
 
           <button ion-button tappable [ngStyle]="{'background-color': '#4c6df9', 'box-shadow':'none'}" (click)="feedoption(feed, $event)">
             <ion-icon name="more" class="more-class"></ion-icon>
