@@ -6,7 +6,7 @@
         <ion-row>
           <ion-col col-4>
               <div class="user-avatar">
-                <img [src]="homeservice.userprofile.imgurl">
+                <img [src]="homeservice.userprofile.imgurl" onError="this.src='../../assets/img/person.png';"  alt="...">
               </div>
           </ion-col>
           <ion-col padding-top col-8>

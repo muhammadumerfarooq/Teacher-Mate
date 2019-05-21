@@ -48,7 +48,7 @@
     <ion-item-sliding #sliding *ngFor="let teacher of this.teacherservice.teacherclass" class="item-css" >
       <ion-item class="item-css" (click)="sendrequest(teacher)">
         <ion-avatar item-start>
-          <img [src]="teacher.imgurl" (click) = "goToProfileTeacher(teacher);$event.stopPropagation()">
+          <img [src]="teacher.imgurl" (click) = "goToProfileTeacher(teacher);$event.stopPropagation()" onError="this.src='../../assets/img/person.png';"  alt="...">
         </ion-avatar>
         <h2>
         

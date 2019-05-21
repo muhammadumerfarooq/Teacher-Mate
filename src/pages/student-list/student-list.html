@@ -52,7 +52,7 @@
       [hidden]="studentservice.class_students.length == 0">
       <ion-item class="item-ion" (click)="studentDetail(student)">
         <ion-avatar item-start>
-          <img [src]="student.userurl">
+          <img [src]="student.userurl" onError="this.src='../../assets/img/person.png';"  alt="...">
         </ion-avatar>
         <h2>{{ student.name }} <span ion-text color="primary"> ( Student of Class {{ student.classname }})</span></h2>
       </ion-item>

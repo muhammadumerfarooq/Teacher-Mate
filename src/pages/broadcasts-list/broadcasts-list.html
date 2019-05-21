@@ -29,7 +29,7 @@
     (click)="playBroadcast(broadcast)">
 
     <div broadcast-preview *ngIf="broadcast.preview">
-      <img src="{{ broadcast.preview }}"/>
+      <img src="{{ broadcast.preview }}" onError="this.src='../../assets/img/person.png';"  alt="..."/>
     </div>
 
     <div no-broadcast-preview *ngIf="!broadcast.preview">

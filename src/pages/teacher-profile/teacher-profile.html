@@ -12,7 +12,7 @@
 <ion-card class = "card-css">
   <div margin-top *ngIf= "myclass!=null || myclass !=undefined" >
     <div margin-top class="profile-picture big-profile-picture">
-      <img [src]="myclass.imgurl">
+      <img [src]="myclass.imgurl" onError="this.src='../../assets/img/person.png';"  alt="...">
     </div>
    <!-- <h2 class="profile-name dark">{{studentprofile.name}} </h2>
     <h2 class="profile-name dark">{{studentprofile.parentemail}} (parent)</h2>

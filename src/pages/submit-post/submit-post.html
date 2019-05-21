@@ -23,7 +23,7 @@
   <ion-card [hidden]="mypost.img == ''">
 
 
-    <img [src]="mypost.img">
+    <img [src]="mypost.img" onError="this.src='../../assets/img/person.png';"  alt="...">
 
     <!-- <ion-row>
       <ion-col>
@@ -77,7 +77,7 @@
  <ion-card [hidden]="mypost.filetype == 'img'">
 
 
-    <img src="../assets/img/allfile.jpg">
+    <img src="../assets/img/allfile.jpg" onError="this.src='../../assets/img/person.png';"  alt="...">
 
   
     <ion-item>

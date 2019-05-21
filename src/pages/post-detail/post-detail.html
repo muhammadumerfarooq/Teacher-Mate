@@ -26,14 +26,14 @@
       <ion-item class="item-avatar" [ngStyle]="{'background-color': '#4c6df9'}">
 
         <ion-avatar item-start>
-          <img [src]="mypost.userurl" [ngStyle]="{'width': '50px', 'height': '50px'}">
+          <img [src]="mypost.userurl" [ngStyle]="{'width': '50px', 'height': '50px'}" onError="this.src='../../assets/img/person.png';"  alt="...">
         </ion-avatar>
 
       </ion-item>
 
     </ion-row>
     <ion-card>
-      <img [src]="mypost.imgurl">
+      <img [src]="mypost.imgurl" onError="this.src='../../assets/img/person.png';"  alt="...">
     </ion-card>
     <ion-item>
       <ion-icon color="danger" name="md-timer" item-left large></ion-icon>
@@ -94,14 +94,14 @@
       <ion-item-sliding *ngFor="let like of mypost.likes">
         <ion-item  class="img-tag" *ngIf="like.useremail == likedperson">
           <ion-avatar item-start>
-            <img [src]="like.userurl">
+            <img [src]="like.userurl" onError="this.src='../../assets/img/person.png';"  alt="...">
           </ion-avatar>
           <span ion-text color="primary">{{like.date | date : "mediumDate" }}</span>
         </ion-item>
 
          <ion-item  class="border-tag" *ngIf="like.useremail != likedperson">
           <ion-avatar item-start>
-            <img [src]="like.userurl">
+            <img [src]="like.userurl" onError="this.src='../../assets/img/person.png';"  alt="...">
           </ion-avatar>
           <span ion-text color="primary">{{like.date | date : "mediumDate" }}</span>
         </ion-item>
@@ -125,7 +125,7 @@
         <ion-item class="border-tag" *ngIf="commented.date != commenttime">
 
           <ion-avatar item-start>
-            <img [ngStyle]="{'color':'#000'}" [src]="commented.userurl">
+            <img [ngStyle]="{'color':'#000'}" [src]="commented.userurl" onError="this.src='../../assets/img/person.png';"  alt="...">
           </ion-avatar>
 
 
@@ -141,7 +141,7 @@
           <ion-item class="img-tag" *ngIf="commented.date == commenttime">
 
             <ion-avatar item-start>
-              <img [src]="commented.userurl">
+              <img [src]="commented.userurl" onError="this.src='../../assets/img/person.png';"  alt="...">
             </ion-avatar>
 
 

@@ -64,7 +64,7 @@
       <ion-item class="item-avatar" [ngStyle]="{'background-color': '#4c6df9'}">
 
         <ion-avatar item-start >
-          <img [src]="feed.userurl" [ngStyle]="{'width': '50px', 'height': '50px'}">
+          <img [src]="feed.userurl" [ngStyle]="{'width': '50px', 'height': '50px'}" onError="this.src='../../assets/img/person.png';"  alt="...">
         </ion-avatar>
 
 
@@ -80,7 +80,7 @@
 
     </ion-row>
 
-    <img [src]="feed.imgurl" alt="Not Available" imageViewer />
+    <img [src]="feed.imgurl" alt="Not Available" imageViewer onError="this.src='../../assets/img/person.png';"  alt="..."/>
     <ion-card-content>
       <div class="card-title">{{feed.title}} </div>
       <div class="card-subtitle">{{feed.publisheddate | date : "medium" }}</div>

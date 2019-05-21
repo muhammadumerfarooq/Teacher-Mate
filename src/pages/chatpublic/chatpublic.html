@@ -19,7 +19,7 @@
 
     <div *ngFor="let msg of this.chatService.msgList" class="message" [class.left]=" msg.userId === toUser.toUserId "
       [class.right]=" msg.userId === user.toUserId ">
-      <img class="user-img" [src]="msg.userAvatar" alt="">
+      <img class="user-img" [src]="msg.userAvatar" onError="this.src='../../assets/img/person.png';"  alt="..." >
       <ion-spinner name="dots" *ngIf="msg.status === 'pending'"></ion-spinner>
       <div class="msg-detail">
         <div class="msg-info" *ngIf="msg.time.seconds">

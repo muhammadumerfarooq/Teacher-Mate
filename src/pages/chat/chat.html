@@ -48,7 +48,7 @@
     <ion-item-sliding [ngStyle]="{'background':'transparent'}" #sliding *ngFor="let friend of friends ">
       <ion-item class="item-ion" (click)="goToChatRoom(friend)">
         <ion-avatar item-start>
-          <img [src]="friend.userurl">
+          <img [src]="friend.userurl" onError="this.src='../../assets/img/person.png';"  alt="...">
         </ion-avatar>
         <h2>{{ friend.id }} <span ion-text color="primary">({{ friend.user }})</span></h2>
       </ion-item>

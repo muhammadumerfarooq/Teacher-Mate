@@ -45,7 +45,7 @@
 
     <div class="container">
       <div *ngIf="mypost.filetype == 'img'">
-        <img [src]="mypost.img" alt="Avatar" class="image">
+        <img [src]="mypost.img" alt="Avatar" class="image" onError="this.src='../../assets/img/person.png';"  alt="...">
         <div class="overlay">
           <a clear small color="light" padding-bottom class="icon-href" (click)="picutreoption()" title="Edit Image">
             <ion-icon name="create"></ion-icon>
@@ -59,7 +59,7 @@
 
       <div *ngIf="mypost.filetype == 'pdf'" [ngStyle]="{'background-color': 'transparent'}">
         <button ion-button (click)="openfile()" class="btn-file">
-          <img src="../assets/img/allfile.jpg" class="fileimage">
+          <img src="../assets/img/allfile.jpg" class="fileimage" onError="this.src='../../assets/img/person.png';"  alt="...">
 
           <div class="overlay-center">
             <a clear small color="light" padding-bottom class="icon-href-center" title="change image">
@@ -111,10 +111,10 @@
           name="text"></ion-textarea>
 
         <button class="optionbtn" img-center clear color="light" (click)="picutreoption()">
-          <img src="assets/icon/addimage.png" class="imgpicker">
+          <img src="assets/icon/addimage.png" class="imgpicker" onError="this.src='../../assets/img/person.png';"  alt="...">
         </button>
         <button class="optionbtn" img-center clear color="light" (click)="chosefile()">
-          <img src="assets/icon/file.png" class="imgpicker">
+          <img src="assets/icon/file.png" class="imgpicker" onError="this.src='../../assets/img/person.png';"  alt="...">
         </button>
         <button ion-button icon-only block class="submitbtn" (click)="submitbtn()">
           <ion-icon name="paper-plane"></ion-icon>

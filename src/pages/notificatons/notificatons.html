@@ -6,7 +6,7 @@
       <ion-item-sliding *ngFor="let notifications of notifyservice.Notifications" [hidden]="notifyservice.Notifications.length == 0"  (click)="selectednotify(notifications)">
         <ion-item [ngStyle]="{'border':'none', 'white-space':'normal', 'background':'#4c6df9'}">
           <ion-avatar item-start>
-            <img [src]="notifications.userurl">
+            <img [src]="notifications.userurl" onError="this.src='../../assets/img/person.png';"  alt="...">
           </ion-avatar>
           <p ion-text color="primary" [ngStyle]="{'white-space':'normal','border': 'none', 'width': '100%', 'font-size':'medium','color':'#FFF'}">{{notifications.message}}</p>
         </ion-item>
