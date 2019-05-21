@@ -38,16 +38,16 @@ export class StudentmarksPage {
   showLevel1 = null;
   showLevel2 = null;
   dropdown = new Array<String>();
- parentemail = '';
+  parentemail = '';
 
-  constructor(private viewctrl: ViewController, private homeservice:HomeServiceProvider,private popoverCtrl: PopoverController, private alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, private studentresults: StudentmarksServiceProvider, private classresults: StudentresultsServiceProvider) {
+  constructor(private viewctrl: ViewController, private homeservice: HomeServiceProvider, private popoverCtrl: PopoverController, private alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, private studentresults: StudentmarksServiceProvider, private classresults: StudentresultsServiceProvider) {
     this.parentemail = this.navParams.get('parentemail');
 
     this.studentmarks = new classresult();
     this.getresultsinfo();
   }
 
-  getresultsinfo(){
+  getresultsinfo() {
     this.classresults.get_results().then(() => {
       this.studentresults.get_results(this.parentemail).then(() => {
 
@@ -224,100 +224,106 @@ export class StudentmarksPage {
           text: 'Yes',
           handler: () => {
             this.studentmarks.useremail = this.parentemail;
-              
+
             if (this.studentresults.studentresults.results.length > 0) {
-              try{
-              this.studentresults.update_results(this.studentmarks).then(() => this.presentAlert('Result updated successfully!', '')).catch(() => this.presentAlert('Error while saving result', ''))
-             // this.studentresults.get_results(this.parentemail);
-             this.getresultsinfo();  
-            }catch(err){
+              try {
+                this.studentresults.update_results(this.studentmarks).then(() => {this.presentAlert('Result updated successfully!', '')
+                this.getresultsinfo();}
+                ).catch(() => this.presentAlert('Error while saving result', ''))
+                // this.studentresults.get_results(this.parentemail);
+         
+              } catch (err) {
                 this.presentAlert('Error while saving result', '')
               }
             } else {
-              try{
-              this.studentresults.insert_results(this.studentmarks).then(() => this.presentAlert('Result added successfully!', '')).catch(() => this.presentAlert('Error while saving result', ''))
-            //  this.studentresults.get_results(this.parentemail);
-            this.getresultsinfo();
-            }catch(err){
-                this.presentAlert('Error while saving result', '')
-              }
-            }
+              try {
+                this.studentmarks.creationdate = new Date().getTime().toString();
+                this.studentresults.insert_results(this.studentmarks).then(
+                  () => {this.presentAlert('Result added successfully!', '')
+                  this.getresultsinfo();}
+              ).catch(() => this.presentAlert('Error while saving result', ''))
+    //  this.studentresults.get_results(this.parentemail);
+
+  } catch(err) {
+    this.presentAlert('Error while saving result', '')
+  }
+}
           }
         }
       ]
     });
-    confirm.present();
+confirm.present();
 
   }
 
-  calculatemarks(i: number) {
+calculatemarks(i: number) {
 
-  }
+}
 
-  showgraph(i: number) {
-    this.studentresults.get_allresults().then(() => {
+showgraph(i: number) {
+  this.studentresults.get_allresults().then(() => {
 
-      let typesavg: dummyclass[] = [];
+    let typesavg: dummyclass[] = [];
 
-      let resname = this.studentmarks.results[i].resultname;
-      this.classresults.classresults.results.forEach(res => {
-        if (res.resultname == resname) {
-          typesavg = new dummyclass[res.resulttypes.length];
-          let index = 0;
-          res.resulttypes.forEach(type => {
-            typesavg[index].resultname = type.resultname;
-            typesavg[index].weightage = type.weightage;
-            typesavg[index].totalmarks = type.totalmarks;
+    let resname = this.studentmarks.results[i].resultname;
+    this.classresults.classresults.results.forEach(res => {
+      if (res.resultname == resname) {
+        typesavg = new dummyclass[res.resulttypes.length];
+        let index = 0;
+        res.resulttypes.forEach(type => {
+          typesavg[index].resultname = type.resultname;
+          typesavg[index].weightage = type.weightage;
+          typesavg[index].totalmarks = type.totalmarks;
 
-            index++;
-          });
+          index++;
+        });
+      }
+    });
+    let total = 1;
+    this.studentresults.studentallresults.forEach(res => {
+
+      res.results.forEach(result => {
+
+        if (result.resultname == resname && (this.homeservice.user == 'parents')) {
+          result.resulttypes.forEach(type => {
+            typesavg.forEach(avg => {
+              if (avg.resultname == type.resultname) {
+                avg.weightage = (avg.weightage + (type.obtainedmarks / type.totalmarks) * type.weightage) / (total);
+              }
+            })
+          })
+          total++;
         }
       });
-      let total = 1;
-      this.studentresults.studentallresults.forEach(res => {
-
-        res.results.forEach(result => {
-
-          if (result.resultname == resname && (this.homeservice.user == 'parents' )) {
-            result.resulttypes.forEach(type => {
-              typesavg.forEach(avg => {
-                if (avg.resultname == type.resultname) {
-                  avg.weightage = (avg.weightage + (type.obtainedmarks / type.totalmarks) * type.weightage) / (total);
-                }
-              })
-            })
-            total++;
-          }
-        });
-      });
-
-      let chartname = this.classresults.classresults.results[i].resultname;
-
-      let stdtype: Array<resulttype> = this.studentmarks.results[i].resulttypes;
-
-      let popover = this.popoverCtrl.create('PerformanceChartsPage', { 'chartname': chartname, 'typesavg': typesavg, 'stdtype':stdtype });
-      popover.present({
-
-      });
-    }).catch(err => {
-      this.presentAlert('No Student Result Exists','');
-    })
-
-  }
-  /*console.log(myEvent);
-      let popover = this.popoverCtrl.create('NotificatonsPage');
-      popover.present({
-        ev: myEvent
-      });
-      */
-  presentAlert(alerttitle, alertsub) {
-    let alert = this.alertCtrl.create({
-      title: alerttitle,
-      subTitle: alertsub,
-      buttons: ['OK']
     });
-    alert.present();
 
-  }
+    let chartname = this.classresults.classresults.results[i].resultname;
+
+    let stdtype: Array<resulttype> = this.studentmarks.results[i].resulttypes;
+
+    let popover = this.popoverCtrl.create('PerformanceChartsPage', { 'chartname': chartname, 'typesavg': typesavg, 'stdtype': stdtype });
+    popover.present({
+
+    });
+  }).catch(err => {
+    this.presentAlert('No Student Result Exists', '');
+  })
+
+}
+/*console.log(myEvent);
+    let popover = this.popoverCtrl.create('NotificatonsPage');
+    popover.present({
+      ev: myEvent
+    });
+    */
+presentAlert(alerttitle, alertsub) {
+  let alert = this.alertCtrl.create({
+    title: alerttitle,
+    subTitle: alertsub,
+    buttons: ['OK']
+  });
+  alert.present();
+
+}
 
 }

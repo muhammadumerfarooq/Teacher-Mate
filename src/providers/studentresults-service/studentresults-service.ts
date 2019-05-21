@@ -61,7 +61,7 @@ export class resulttype {
 @Injectable()
 export class StudentresultsServiceProvider {
   classresults: classresult;
-  constructor(private loaderservice: LoaderserviceProvider, private afs: AngularFirestore) {
+  constructor(private loaderservice: LoaderserviceProvider, private afs: AngularFirestore, private homeservice:HomeServiceProvider) {
     console.log('Hello StudentresultsServiceProvider Provider');
     this.classresults = new classresult();
   }
@@ -84,7 +84,9 @@ export class StudentresultsServiceProvider {
 
     return new Promise((resolve, reject) => {
 try{
-      this.afs.collection('classresults').snapshotChanges().take(1).forEach(snap => {
+      this.afs.collection('classresults',ref=>{
+        return ref.where('classname','==',this.homeservice.classroom).where('classteacher','==',this.homeservice.classteacher);
+      }).snapshotChanges().take(1).forEach(snap => {
         this.classresults = new classresult();
         if (snap.length==0){
           return reject('error');
