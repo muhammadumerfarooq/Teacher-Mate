@@ -42,7 +42,7 @@ export class CreateStudentResultPage {
       this.resultprovider.get_results().then(() => {
         if (this.resultprovider.classresults.results.length > 0) {
           this.classresults.classname = this.resultprovider.classresults.classname
-          this.classresults.classteacher = this.resultprovider.classresults.classname
+          this.classresults.classteacher = this.resultprovider.classresults.classteacher
           this.classresults.creationdate = this.resultprovider.classresults.creationdate
 
           this.resultprovider.classresults.results.forEach(res=>{
@@ -305,7 +305,7 @@ else{
             text: 'Yes',
             handler: () => {
               if (this.classresults.results.length == 0 && this.resultprovider.classresults.results.length >0){
-                this.resultprovider.update_results(this.classresults).then(() => this.presentAlert('Result added successfully!', '')).catch(() => this.presentAlert('Error while saving result', ''))
+                this.resultprovider.delete_results(this.classresults).then(() => this.presentAlert('Result added successfully!', '')).catch(() => this.presentAlert('Error while saving result', ''))
                 this.studentresult.deletestudentresults().then(()=>{
 
                 }).catch(err=>{

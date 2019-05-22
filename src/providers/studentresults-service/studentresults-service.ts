@@ -235,4 +235,37 @@ reject('false');
   })
  }
 
+ delete_results(myclassresult: classresult) {
+
+
+  return new Promise((resolve, reject) => {
+
+    this.loaderservice.loading = this.loaderservice.loadingCtrl.create({
+
+      content: `
+      <div class="custom-spinner-container">
+        <div class="custom-spinner-box"> loading... </div>
+      </div>`,
+      duration: 300
+    });
+
+    setTimeout(() => {
+
+      
+        this.afs.collection<results>('classresults').doc(myclassresult.creationdate).delete().then((res) => {
+
+          console.log(res);
+
+          //   this.loaderservice.dismissloading();
+          resolve('done');
+        }).catch(err => {
+          //  this.loaderservice.dismissloading();
+          reject('error');
+        });
+
+    }, 300);
+
+  });
+}
+
 }
