@@ -50,7 +50,7 @@ export class StudentmarksPage {
   getresultsinfo() {
     this.classresults.get_results().then(() => {
       this.studentresults.get_results(this.parentemail).then(() => {
-
+        this.studentmarks = new classresult();
         this.studentmarks.classname = this.classresults.classresults.classname;
         this.studentmarks.classteacher = this.classresults.classresults.classteacher;
         this.studentmarks.creationdate = this.studentresults.studentresults.creationdate;

@@ -225,4 +225,13 @@ reject('false');
 
     });
   }
+
+ update_all(){
+  this.get_results().then(res=>{
+    
+  }).catch(err=>{
+
+  })
+ }
+
 }

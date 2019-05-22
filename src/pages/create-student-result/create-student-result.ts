@@ -40,7 +40,31 @@ export class CreateStudentResultPage {
     try {
       this.resultprovider.get_results().then(() => {
         if (this.resultprovider.classresults.results.length > 0) {
-          this.classresults = this.resultprovider.classresults;
+          this.classresults.classname = this.resultprovider.classresults.classname
+          this.classresults.classteacher = this.resultprovider.classresults.classname
+          this.classresults.creationdate = this.resultprovider.classresults.creationdate
+
+          this.resultprovider.classresults.results.forEach(res=>{
+            let result = new results();
+            result.obtainedweightage = res.obtainedweightage;
+            result.resultname = res.resultname;
+            result.totalweightage = res.totalweightage;
+            
+            res.resulttypes.forEach(type=>{
+              let restype = new resulttype();
+              restype.obtainedmarks = type.obtainedmarks;
+              restype.resultadded = type.resultadded;
+              restype.resultname = type.resultname;
+              restype.totalmarks = type.totalmarks;
+              restype.weightage = type.weightage;
+
+              result.resulttypes.push(restype);
+              
+            });
+            this.classresults.results.push(result);
+          });
+
+       //   this.classresults = this.resultprovider.classresults;
         }
       }).catch(err => {
         console.log(err)
@@ -170,10 +194,10 @@ export class CreateStudentResultPage {
     restype = new resulttype();
 
     let index = this.classresults.results.indexOf(result);
-    if (this.classresults.results[index].resultname!=''){
+    if (this.classresults.results[index].resultname==''){
       this.presentAlert('Result Name cannot be Emtpy','');
     }
-    else if (this.classresults.results[index].totalweightage!=0){
+    else if (this.classresults.results[index].totalweightage==0){
       this.presentAlert('Result Weightage cannot be 0','');
     }
 else{
@@ -194,6 +218,13 @@ else{
           min: 1.0,
           max: this.classresults.results[index].totalweightage
         },
+        {
+          name: 'totalmarks',
+          placeholder: 'total marks',
+          type: 'number',
+          min: 5,
+          max: 100
+        },
       ],
       buttons: [
         {
@@ -209,7 +240,8 @@ else{
             console.log(data);
             restype.weightage = parseFloat(data.resultweigh);
             restype.resultname = data.resultname;
-            if (data.resultweigh == '' || data.resultname == '') {
+            restype.totalmarks = parseFloat(data.totalmarks);
+            if (data.resultweigh == '' || data.resultname == '' || data.totalmarks =='') {
               this.presentAlert(' values must not be empty', '');
             } else {
               let resweg: number = 0;
@@ -253,7 +285,7 @@ else{
     if (this.colorCode == 'red') {
       this.presentAlert('make sure that result types name are unique', '');
     }
-    else if (this.classresults.results.length==0){
+    else if (this.classresults.results.length==0 && this.resultprovider.classresults.results.length == 0){
       this.presentAlert('Nothing to Update','');
     }
     else {
