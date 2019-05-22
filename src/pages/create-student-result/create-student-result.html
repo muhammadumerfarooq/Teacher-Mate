@@ -120,7 +120,7 @@
 -->
   <ion-card class="card-css" >
       
-    <ng-template ngFor let-result [ngForOf]="classresults.results" let-chap="index">
+    <ng-template ngFor let-result [ngForOf]="classresults.results" let-resindex="index">
 
 
       <ion-item [ngStyle]="{'border-bottom':'none'}">
@@ -130,7 +130,9 @@
         
 
         <!--  <ion-label color="primary">Chapter</ion-label> -->
-        <ion-input [ngStyle]="{'border-bottom':'none'}" type="text" placeholder=" Result Type" text-left [(ngModel)]="result.resultname"></ion-input>
+        <ion-input [ngStyle]="{'border-bottom':'none'}" type="text" placeholder=" Result Type" text-left
+         [(ngModel)]="result.resultname" (change)='onChangeinput($event.target.value,resindex)' [style.border]="colorCode=='red' ? '1px solid red' :'1px solid white'"
+></ion-input>
 
 <!--        <ion-input type="number" placeholder=" Weightage" text-right [(ngModel)]="result.totalweightage">
         </ion-input>

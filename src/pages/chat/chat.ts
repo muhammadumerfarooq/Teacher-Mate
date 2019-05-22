@@ -21,7 +21,7 @@ import { Storage } from '@ionic/storage';
 })
 export class ChatPage {
 
-  toUser : {toUserId: string, toUserName: string};
+  toUser : {toUserId: string, toUserName: string, toUserUrl:string};
   friends: Array<any>[] = []; //Observable<any[]>;
   constructor(public viewctrl:ViewController,private modalctrl:ModalController,private storage: Storage, private homeservice :HomeServiceProvider,private chatpublicservice: ChatpublicServiceProvider,public chatservice:ChatServiceProvider, public afauth:AngularFireAuth, public afs: AngularFirestore, public navCtrl: NavController, public navParams: NavParams) {
     this.findchats();
@@ -46,7 +46,8 @@ export class ChatPage {
         console.log(res);
         this.toUser = {
           toUserId:friend.id, 
-          toUserName:friend.name
+          toUserName:friend.username,
+          toUserUrl:friend.userurl,
         }
       //  this.navCtrl.push('ChatpublicPage',{
       //    toUser: this.toUser,

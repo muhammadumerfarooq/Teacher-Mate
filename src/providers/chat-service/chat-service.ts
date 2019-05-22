@@ -158,7 +158,8 @@ export class ChatServiceProvider {
                     let data: any = {
                       id: snapshot.id,
                       user: 'teacher',
-                      userurl: teacherprofile.imgurl
+                      userurl: teacherprofile.imgurl,
+                      username:teacherprofile.username
                     };
                     if (data.id != this.homeservice.useremail) {
                       friends.push(data);
@@ -200,7 +201,8 @@ export class ChatServiceProvider {
                     let data: any = {
                       id: snapshot.id,
                       user: 'teacher',
-                      userurl: teacherprofile.imgurl
+                      userurl: teacherprofile.imgurl,
+                      username:teacherprofile.username
                     };
                     friends.push(data);
                     //   size --;
@@ -230,7 +232,8 @@ export class ChatServiceProvider {
                     let data: any = {
                       id: snapshot.id,
                       user: 'parent',
-                      userurl: parentprofile.imgurl
+                      userurl: parentprofile.imgurl,
+                      username:parentprofile.username
                     };
                     if (this.homeservice.useremail != data.id) {
                       friends.push(data);

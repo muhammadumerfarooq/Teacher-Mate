@@ -35,7 +35,7 @@ export class PostDetailPage {
     
     this.comments = Object.keys(this.mypost.comments).length
     this.likes = Object.keys(this.mypost.likes).length
- 
+    
   }
 
   ionViewDidLoad() {
@@ -60,7 +60,7 @@ export class PostDetailPage {
       like = new likes();
       
       like.date = new Date().getTime().toString();
-      like.useremail = this.homeservice.userprofile.useremail;
+      like.useremail = this.homeservice.useremail;
 
       like.userurl = this.homeservice.userprofile.imgurl;
      this.findimgurllike(like);
@@ -72,9 +72,13 @@ export class PostDetailPage {
       notifications.feedtitle = this.mypost.title;
       notifications.seen = 'false';
       notifications.userurl = this.homeservice.userprofile.imgurl;
-      notifications.message = this.homeservice.userprofile.useremail + ' liked your Feed '
+      if (this.mypost.teacheremail != this.homeservice.useremail)
+      notifications.message = this.homeservice.useremail + ' liked your Feed '
+      else
+      notifications.message = this.homeservice.useremail + ' liked own Feed '
+
       notifications.publisheddate = new Date().getTime().toString();
-      notifications.useremail = this.homeservice.userprofile.useremail;
+      notifications.useremail = this.homeservice.useremail;
       
       
       let tempfeed : Myfeed = new Myfeed();
@@ -115,7 +119,7 @@ export class PostDetailPage {
 
        this.findimgurlcomment(comment);
       comment.userurl = this.homeservice.userprofile.imgurl;
-      comment.useremail = this.homeservice.userprofile.useremail;
+      comment.useremail = this.homeservice.useremail;
       
 
       let notifications: notify = new notify();
@@ -125,9 +129,13 @@ export class PostDetailPage {
       notifications.feedtitle = this.mypost.title;
       notifications.seen = 'false';
       notifications.userurl = this.homeservice.userprofile.imgurl;
-      notifications.message = this.homeservice.userprofile.useremail + ' commented on your Feed '
+      if (this.mypost.teacheremail != this.homeservice.useremail)
+      notifications.message = this.homeservice.useremail + ' commented on your Feed '
+      else
+      notifications.message = this.homeservice.useremail + ' commented on own Feed '
+
       notifications.publisheddate = new Date().getTime().toString();
-      notifications.useremail = this.homeservice.userprofile.useremail;
+      notifications.useremail = this.homeservice.useremail;
 
       let tempfeed : Myfeed = new Myfeed();
       tempfeed = this.mypost;

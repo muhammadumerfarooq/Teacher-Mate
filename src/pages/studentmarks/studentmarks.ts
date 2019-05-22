@@ -310,6 +310,11 @@ showgraph(i: number) {
   })
 
 }
+
+refreshresults(){
+this.getresultsinfo();
+}
+
 /*console.log(myEvent);
     let popover = this.popoverCtrl.create('NotificatonsPage');
     popover.present({

@@ -101,5 +101,16 @@
   <ion-card class="card-css">
 
     <button class="Syllabusclass" ion-button margin-top full (click)="SubmitResults()">Submit/Update Results</button>
+ 
+   <div *ngIf="studentmarks.results.length == 0" [hidden]="studentmarks.results.length > 0"
+    [ngStyle]="{'margin-top':'inherit', 'align-items': 'center', 'justify-content': 'center', 'text-align': 'center'}">
+
+<button [ngStyle]="{'background':'transparent'}">
+    <ion-icon name="refresh" [ngStyle]="{'font-size': '50px'}" (click) = "refreshresults()"></ion-icon>
+</button>
+    <p [ngStyle]="{'font-size': '15px'}">No Results Are Added By Teacher</p>
+  </div>
   </ion-card>
+ 
+
 </ion-content>

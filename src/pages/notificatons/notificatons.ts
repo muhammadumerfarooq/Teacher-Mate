@@ -54,6 +54,9 @@ export class NotificatonsPage {
       });
       modalPage.present();
   }
+  else{
+    this.presentAlert('Feed Deleted by Teacher '+notifications.classteacher,'');
+  }
 
    if (notifications.message.toString().includes('requested')){
     let confirm = this.alertCtrl.create({

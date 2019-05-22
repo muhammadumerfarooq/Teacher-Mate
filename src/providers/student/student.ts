@@ -149,11 +149,12 @@ duration: 500
 try{
               studentdata.userurl = '';
               const objectclass = Object.assign({}, studentdata);
-
+              studentdata.datecreation = new Date().getTime().toString();
               this.afs.collection('students', ref=>{
                 return ref.where('classname','==',this.homeservice.classroom).where('classteacher','==',this.homeservice.classteacher).where('parentemail','==',studentdata.parentemail)
               }).snapshotChanges().take(1).forEach(snap=>{
                 if (snap.length==0){
+                  
                   this.afs.collection('students').doc(studentdata.datecreation).set(objectclass).then(() => {
 
                     this.loaderservice.dismissloading();
@@ -168,15 +169,22 @@ try{
                   if (snapshot.payload.doc.exists){
                     let profile = snapshot.payload.doc.data() as student; 
                     objectclass.datecreation = profile.datecreation;
-                    this.afs.collection('students').doc(profile.datecreation).set(objectclass).then(() => {
+                    if (profile.name == objectclass.name){
+                      return resolve('exists');
+                    }else{
+
+                      
+
+                    this.afs.collection('students').doc(studentdata.datecreation).set(objectclass).then(() => {
 
                       this.loaderservice.dismissloading();
-                      return resolve('updated');
+                      return resolve('done');
                     }).catch((err) => {
                       
                       this.loaderservice.dismissloading();
                       return reject('error');
                     });
+                  }
 
                   }else{
                     this.afs.collection('students').doc(studentdata.datecreation).set(objectclass).then(() => {

@@ -201,8 +201,8 @@ export class StudentProfilePage {
     this.studentprofile.datecreation = new Date().toString();
     if (this.base64Image == '') {
       this.studentservice.insertstudent(this.studentprofile).then((res) => {
-        if (res == 'updated') {
-          this.presentAlert('Student updated ', 'Successfully');
+        if (res == 'exists') {
+          this.presentAlert('Student with name '+this.studentprofile.name +' already exists ', 'Successfully');
         } else
           this.presentAlert('Student added ', 'Successfully');
       }).catch((err) => {

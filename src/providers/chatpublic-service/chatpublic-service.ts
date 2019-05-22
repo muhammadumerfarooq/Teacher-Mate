@@ -158,29 +158,7 @@ export class ChatpublicServiceProvider {
               this.loaderservice.loading.dismiss();
             }
           })
-// resolve('');
 
-
-// if (check == false){
-//   const id = this.afs.createId();
-//   const colid = this.afs.createId();
-//   this.afs.doc('/chatroom/'+id).set({
-//     firstemail: this.afauth.auth.currentUser.email,
-//     secondemail: friendname,
-//     colid: colid
-//   }).then(res=>{
-//     console.log('id ',colid)
-//     this.loaderservice.loading.dismiss();
-//     resolve(colid);
-//   }).catch(err=>{
-//     this.loaderservice.loading.dismiss();
-//     reject(err);
-//   });
-// }else{
-//   console.log('id ',collectionid)
-//   this.loaderservice.loading.dismiss();
-//   resolve(collectionid);
-// }
 }, 1500 );
 
 });

@@ -23,32 +23,48 @@ export class CreateStudentResultPage {
 
   pages: any;
 
-  classresults : classresult;
+  classresults: classresult;
   files = new Map();
+  colorCode = 'white';
+  duplicatename = '';
 
-  constructor(private alertCtrl: AlertController, private resultprovider:StudentresultsServiceProvider,
+  constructor(private alertCtrl: AlertController, private resultprovider: StudentresultsServiceProvider,
     private modalctrl: ModalController, public navCtrl: NavController, public navParams: NavParams,
     private viewctrl: ViewController, private toastctrl: ToastController,
-    private homeservice:HomeServiceProvider) {
-  
+    private homeservice: HomeServiceProvider) {
+
     this.classresults = new classresult();
     this.classresults.classname = this.homeservice.classroom;
     this.classresults.classteacher = this.homeservice.classteacher;
-    this.classresults.creationdate =  new Date().getTime().toString();
-    try{
-    this.resultprovider.get_results().then(()=>{
-      if (this.resultprovider.classresults.results.length>0){
-      this.classresults = this.resultprovider.classresults;
-      }
-    }).catch(err=>{
-      console.log(err)
-    });
-  }catch(err){
-    console.log(err);
-  }
+    this.classresults.creationdate = new Date().getTime().toString();
+    try {
+      this.resultprovider.get_results().then(() => {
+        if (this.resultprovider.classresults.results.length > 0) {
+          this.classresults = this.resultprovider.classresults;
+        }
+      }).catch(err => {
+        console.log(err)
+      });
+    } catch (err) {
+      console.log(err);
+    }
   }
 
-  
+
+  onChangeinput(input, resindex) {
+
+
+    for (let index = 0; index < this.classresults.results.length; index++) {
+
+      if (this.classresults.results[index].resultname == input && index != resindex) {
+        console.log(this.classresults.results[index].resultname + " " + input + " " + index + " " + resindex)
+        this.presentAlert(input + ' with same name of result type already exists', '');
+        this.colorCode = 'red';
+        this.duplicatename = this.classresults.results[index].resultname;
+        break;
+      }
+    }
+  }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AddCoursesPage');
@@ -81,38 +97,40 @@ export class CreateStudentResultPage {
 
 
   addresults() {
-
-    this.classresults.results.push(new results());
-
+    if (this.colorCode == 'red') {
+      this.presentAlert('Please make sure that result types name are unique', '');
+    } else {
+      this.classresults.results.push(new results());
+    }
   }
- 
+
 
   viewctrl_dismiss() {
     this.viewctrl.dismiss('back');
   }
 
   deleteresult(result: results) {
-   
+
     let index = this.classresults.results.indexOf(result);
-    if (this.classresults.results[index].totalweightage>0){
+    if (this.classresults.results[index].totalweightage > 0) {
       this.classresults.results[index].totalweightage = this.classresults.results[index].totalweightage - 1;
-  
+
     }
 
   }
 
   add(result: results) {
     let index = this.classresults.results.indexOf(result);
-  
+
     this.classresults.results[index].totalweightage = this.classresults.results[index].totalweightage + 1;
-  
+
   }
   remove(result: results) {
-    
-  
+
+
     let confirm = this.alertCtrl.create({
       title: 'Delete Result type',
-      message: 'Are you sure you want to Delete '+result.resultname + ' ? ',
+      message: 'Are you sure you want to Delete ' + result.resultname + ' ? ',
       buttons: [
         {
           text: 'No',
@@ -123,9 +141,22 @@ export class CreateStudentResultPage {
         {
           text: 'Yes',
           handler: () => {
-          let index = this.classresults.results.indexOf(result);
+            let index = this.classresults.results.indexOf(result);
             this.classresults.results.splice(index, 1);
-            
+
+            let duplicates = 0;
+            if (this.duplicatename!=''){
+            for (let index = 0; index < this.classresults.results.length; index++) {
+
+              if (this.classresults.results[index].resultname == this.duplicatename) {
+                duplicates++;
+              }
+            }
+            if (duplicates < 2) {
+              this.colorCode = 'white';
+              this.duplicatename = '';
+            }
+          }
           }
         }
       ]
@@ -147,13 +178,15 @@ export class CreateStudentResultPage {
         {
           name: 'resultname',
           placeholder: 'Name',
-          type: 'name'
+          type: 'text'
         },
 
         {
           name: 'resultweigh',
           placeholder: 'weightage',
-          type: 'weightage'
+          type: 'number',
+          min: 1.0,
+          max: this.classresults.results[index].totalweightage
         },
       ],
       buttons: [
@@ -173,22 +206,25 @@ export class CreateStudentResultPage {
             if (data.weightage == '' || data.name == '') {
               this.presentAlert(' values must not be empty', '');
             } else {
-              let resweg = 0;
+              let resweg: number = 0;
               let exists = false;
               this.classresults.results[index].resulttypes.forEach(element => {
                 resweg = resweg + element.weightage;
-                if (element.resultname == restype.resultname){
+                if (element.resultname == restype.resultname) {
                   exists = true;
                 }
               });
-              if (restype.weightage+resweg>this.classresults.results[index].totalweightage && exists==false){
-                  this.presentAlert('weightage must be under the weightage of '+ this.classresults.results[index].totalweightage,'');
-              }else if (exists){
-                this.presentAlert('result name already exists','');
+              if (restype.weightage + resweg > this.classresults.results[index].totalweightage && exists == false) {
+                this.presentAlert('weightage must be under the weightage of ' + this.classresults.results[index].totalweightage, '');
+              } else if (restype.weightage <= 0) {
+                this.presentAlert('weightage must be greater than zero', '');
+
+              } else if (exists) {
+                this.presentAlert('result name already exists', '');
 
               }
-              else{
-              this.classresults.results[index].resulttypes.push(restype);
+              else {
+                this.classresults.results[index].resulttypes.push(restype);
               }
             }
           }
@@ -207,39 +243,43 @@ export class CreateStudentResultPage {
     alert.present();
 
   }
-  SubmitResults(){
-    let confirm = this.alertCtrl.create({
-      title: 'Submit/Update Result type',
-      message: 'Are you sure you want to Submit/Update ',
-      buttons: [
-        {
-          text: 'No',
-          handler: () => {
-            console.log('No clicked');
-          }
-        },
-        {
-          text: 'Yes',
-          handler: () => {
-            if (this.resultprovider.classresults.results.length>0){
-              this.resultprovider.update_results(this.classresults).then(()=>this.presentAlert('Result added successfully!','')).catch(()=>this.presentAlert('Error while saving result',''))
+  SubmitResults() {
+    if (this.colorCode == 'red') {
+      this.presentAlert('make sure that result types name are unique', '');
+    }
+    else {
+      let confirm = this.alertCtrl.create({
+        title: 'Submit/Update Result type',
+        message: 'Are you sure you want to Submit/Update ',
+        buttons: [
+          {
+            text: 'No',
+            handler: () => {
+              console.log('No clicked');
+            }
+          },
+          {
+            text: 'Yes',
+            handler: () => {
+              if (this.resultprovider.classresults.results.length > 0) {
+                this.resultprovider.update_results(this.classresults).then(() => this.presentAlert('Result added successfully!', '')).catch(() => this.presentAlert('Error while saving result', ''))
 
-            }else{
-            this.resultprovider.insert_results(this.classresults).then(()=>this.presentAlert('Result added successfully!','')).catch(()=>this.presentAlert('Error while saving result',''))
+              } else {
+                this.resultprovider.insert_results(this.classresults).then(() => this.presentAlert('Result added successfully!', '')).catch(() => this.presentAlert('Error while saving result', ''))
+              }
             }
           }
-        }
-      ]
-    });
-    confirm.present();
+        ]
+      });
+      confirm.present();
 
-
+    }
   }
 
-  remove_restype(i,j){
+  remove_restype(i, j) {
     let confirm = this.alertCtrl.create({
       title: 'Delete Result type',
-      message: 'Are you sure you want to Delete '+this.classresults.results[i].resulttypes[j].resultname + ' ? ',
+      message: 'Are you sure you want to Delete ' + this.classresults.results[i].resulttypes[j].resultname + ' ? ',
       buttons: [
         {
           text: 'No',
@@ -250,13 +290,13 @@ export class CreateStudentResultPage {
         {
           text: 'Yes',
           handler: () => {
-            this.classresults.results[i].resulttypes.splice(j,1);
+            this.classresults.results[i].resulttypes.splice(j, 1);
 
           }
         }
       ]
     });
     confirm.present();
-  
+
   }
 }
