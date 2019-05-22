@@ -53,11 +53,11 @@ export class PerformanceChartsPage {
 
     this.stdtype.forEach(res=>{
       obtained = obtained + ((res.obtainedmarks/res.totalmarks)*res.weightage);
-      stdweigh.push((res.obtainedmarks/res.totalmarks)*res.weightage);
+      myweigh.push((res.obtainedmarks/res.totalmarks)*res.weightage);
     });
 
     this.hashvalues.forEach(res=>{
-      myweigh.push(res);
+      stdweigh.push(res);
     });
 
     this.hashkeys.forEach(keys=>{
@@ -299,8 +299,8 @@ export class PerformanceChartsPage {
             {
               scaleLabel: {
                 display: true,
-                labelString: 'Your Weightage ('+obtained+'/'+this.total+')',
-                fontColor: '#C7C7CC',
+                labelString: 'Your Weightage ('+(obtained).toPrecision(2)+'/'+this.total+')',
+                fontColor: '#000',
                 fontSize: 11
               }
             }

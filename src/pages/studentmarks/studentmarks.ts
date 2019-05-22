@@ -54,7 +54,7 @@ export class StudentmarksPage {
         this.studentmarks.classname = this.classresults.classresults.classname;
         this.studentmarks.classteacher = this.classresults.classresults.classteacher;
         this.studentmarks.creationdate = this.studentresults.studentresults.creationdate;
-
+        
         this.classresults.classresults.results.forEach(res => {
           let resultfind = false;
 
@@ -289,6 +289,7 @@ export class StudentmarksPage {
 
       let size = 0;
       this.studentresults.studentallresults.forEach(res=>{
+        if (res.useremail != this.parentemail){
         res.results.forEach(result=>{
           if (result.resultname == chartname){
           result.resulttypes.forEach(restype=>{
@@ -301,6 +302,7 @@ export class StudentmarksPage {
           size++;
         }
         })
+      }
       });
 
       for (let i=0;i<length;i++){
