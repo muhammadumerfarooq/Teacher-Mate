@@ -170,7 +170,13 @@ export class CreateStudentResultPage {
     restype = new resulttype();
 
     let index = this.classresults.results.indexOf(result);
-
+    if (this.classresults.results[index].resultname!=''){
+      this.presentAlert('Result Name cannot be Emtpy','');
+    }
+    else if (this.classresults.results[index].totalweightage!=0){
+      this.presentAlert('Result Weightage cannot be 0','');
+    }
+else{
     let joinclass = this.alertCtrl.create({
       title: 'Adding ' + this.classresults.results[index].resultname,
       message: "Enter " + this.classresults.results[index].resultname + " Values",
@@ -201,9 +207,9 @@ export class CreateStudentResultPage {
           handler: data => {
             console.log('Add clicked');
             console.log(data);
-            restype.weightage = data.resultweigh;
+            restype.weightage = parseFloat(data.resultweigh);
             restype.resultname = data.resultname;
-            if (data.weightage == '' || data.name == '') {
+            if (data.resultweigh == '' || data.resultname == '') {
               this.presentAlert(' values must not be empty', '');
             } else {
               let resweg: number = 0;
@@ -214,7 +220,7 @@ export class CreateStudentResultPage {
                   exists = true;
                 }
               });
-              if (restype.weightage + resweg > this.classresults.results[index].totalweightage && exists == false) {
+              if (restype.weightage + resweg> this.classresults.results[index].totalweightage && exists == false) {
                 this.presentAlert('weightage must be under the weightage of ' + this.classresults.results[index].totalweightage, '');
               } else if (restype.weightage <= 0) {
                 this.presentAlert('weightage must be greater than zero', '');
@@ -232,7 +238,7 @@ export class CreateStudentResultPage {
       ]
     });
     joinclass.present();
-
+  }
   }
   presentAlert(alerttitle, alertsub) {
     let alert = this.alertCtrl.create({
@@ -247,7 +253,11 @@ export class CreateStudentResultPage {
     if (this.colorCode == 'red') {
       this.presentAlert('make sure that result types name are unique', '');
     }
+    else if (this.classresults.results.length==0){
+      this.presentAlert('Nothing to Update','');
+    }
     else {
+      
       let confirm = this.alertCtrl.create({
         title: 'Submit/Update Result type',
         message: 'Are you sure you want to Submit/Update ',
@@ -266,6 +276,7 @@ export class CreateStudentResultPage {
 
               } else {
                 this.resultprovider.insert_results(this.classresults).then(() => this.presentAlert('Result added successfully!', '')).catch(() => this.presentAlert('Error while saving result', ''))
+                
               }
             }
           }
