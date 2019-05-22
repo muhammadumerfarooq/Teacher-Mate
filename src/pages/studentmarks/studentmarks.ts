@@ -308,8 +308,9 @@ export class StudentmarksPage {
       }
 
       let stdtype: Array<resulttype> = this.studentmarks.results[i].resulttypes;
+      let total = this.studentmarks.results[i].totalweightage;
 
-      let popover = this.popoverCtrl.create('PerformanceChartsPage', { 'chartname': chartname, 'hashkeys': hashkeys, 'hashvalues':hashvalues,'stdtype': stdtype });
+      let popover = this.popoverCtrl.create('PerformanceChartsPage', { 'chartname': chartname, 'hashkeys': hashkeys, 'hashvalues':hashvalues,'stdtype': stdtype, 'total':total });
       popover.present({
 
       });

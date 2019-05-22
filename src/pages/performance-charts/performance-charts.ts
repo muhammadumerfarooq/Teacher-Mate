@@ -26,12 +26,14 @@ export class PerformanceChartsPage {
   hashkeys: any;
   hashvalues: any
   stdtype:  Array<resulttype> ;
-  
+  total: number = 0;
   constructor(public navCtrl: NavController, public navParams: NavParams) {
 
     this.hashkeys = [];
     this.hashvalues = [];
     this.stdtype = new Array<resulttype>();
+
+    this.total = this.navParams.get('total');
 
     this.chartname = this.navParams.get('chartname');
     this.hashkeys = this.navParams.get('hashkeys');
@@ -47,8 +49,10 @@ export class PerformanceChartsPage {
 
     let stdnames = new Array<string>();
     let stdweigh = new Array<number>();
-    
+    let obtained = 0;
+
     this.stdtype.forEach(res=>{
+      obtained = obtained + ((res.obtainedmarks/res.totalmarks)*res.weightage);
       stdweigh.push((res.obtainedmarks/res.totalmarks)*res.weightage);
     });
 
@@ -283,11 +287,24 @@ export class PerformanceChartsPage {
       options: {
         scales: {
           yAxes: [{
-            label: 'weightage',
+            scaleLabel: {
+              display: true,
+              labelString: 'weightages'
+            },
             ticks: {
               beginAtZero: true
             }
-          }]
+          }],
+          xAxes: [
+            {
+              scaleLabel: {
+                display: true,
+                labelString: 'Your Weightage ('+obtained+'/'+this.total+')',
+                fontColor: '#C7C7CC',
+                fontSize: 11
+              }
+            }
+          ]
         }
       }
 
