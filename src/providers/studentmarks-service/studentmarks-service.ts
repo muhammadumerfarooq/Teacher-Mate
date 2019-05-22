@@ -88,6 +88,44 @@ export class StudentmarksServiceProvider {
   }
 
 
+  
+
+  async deletestudentresults() {
+    const loading = this.loaderservice.loadingCtrl.create({
+
+      content: `
+      <div class="custom-spinner-container">
+        <div class="custom-spinner-box"> loading... </div>
+      </div>`,
+      duration: 500
+    });
+    this.presentLoading(loading);
+
+
+    return new Promise((resolve, reject) => {
+
+      this.afs.collection('studentresults', ref=>{
+       return ref.where('classname','==',this.homersevice.classroom).where('classteacher','==',this.homersevice.classteacher);
+      }).get().take(1).forEach(snap => {
+        if (snap.empty) {
+          return reject('error');
+        }
+        let length = snap.docs.length;
+        this.studentallresults = new Array<classresult>();
+        snap.forEach(snapshot => {
+
+          snapshot.ref.delete();
+          length--;
+          if (length==0){
+            return resolve('done');
+          }
+          })
+      })
+
+    });
+  }
+
+
   async get_allresults() {
     const loading = this.loaderservice.loadingCtrl.create({
 
@@ -102,7 +140,9 @@ export class StudentmarksServiceProvider {
 
     return new Promise((resolve, reject) => {
 
-      this.afs.collection('studentresults').snapshotChanges().take(1).forEach(snap => {
+      this.afs.collection('studentresults', ref=>{
+       return ref.where('classname','==',this.homersevice.classroom).where('classteacher','==',this.homersevice.classteacher);
+      }).snapshotChanges().take(1).forEach(snap => {
         this.studentallresults = new Array<classresult>();
         if (snap.length == 0) {
           return reject('error');

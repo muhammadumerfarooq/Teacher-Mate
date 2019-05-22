@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, ModalController, ToastController, ViewController } from 'ionic-angular';
 import { StudentresultsServiceProvider, results, resulttype, classresult } from '../../providers/studentresults-service/studentresults-service';
 import { HomeServiceProvider } from '../../providers/home-service/home-service';
+import { StudentmarksServiceProvider } from '../../providers/studentmarks-service/studentmarks-service';
 
 /**
  * Generated class for the CreateStudentResultPage page.
@@ -28,7 +29,7 @@ export class CreateStudentResultPage {
   colorCode = 'white';
   duplicatename = '';
 
-  constructor(private alertCtrl: AlertController, private resultprovider: StudentresultsServiceProvider,
+  constructor(private alertCtrl: AlertController, private studentresult:StudentmarksServiceProvider, private resultprovider: StudentresultsServiceProvider,
     private modalctrl: ModalController, public navCtrl: NavController, public navParams: NavParams,
     private viewctrl: ViewController, private toastctrl: ToastController,
     private homeservice: HomeServiceProvider) {
@@ -303,9 +304,17 @@ else{
           {
             text: 'Yes',
             handler: () => {
-              if (this.resultprovider.classresults.results.length > 0) {
+              if (this.classresults.results.length == 0 && this.resultprovider.classresults.results.length >0){
                 this.resultprovider.update_results(this.classresults).then(() => this.presentAlert('Result added successfully!', '')).catch(() => this.presentAlert('Error while saving result', ''))
+                this.studentresult.deletestudentresults().then(()=>{
 
+                }).catch(err=>{
+
+                })
+              }
+              else if (this.resultprovider.classresults.results.length > 0) {
+                this.resultprovider.update_results(this.classresults).then(() => this.presentAlert('Result added successfully!', '')).catch(() => this.presentAlert('Error while saving result', ''))
+               
               } else {
                 this.resultprovider.insert_results(this.classresults).then(() => this.presentAlert('Result added successfully!', '')).catch(() => this.presentAlert('Error while saving result', ''))
                 

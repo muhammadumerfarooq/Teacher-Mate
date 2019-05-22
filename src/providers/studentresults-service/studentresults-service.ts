@@ -5,6 +5,7 @@ import { HomeServiceProvider } from '../home-service/home-service';
 import { Injectable } from '@angular/core';
 import { notify } from '../notifications-service/notifications-service';
 import { LoaderserviceProvider } from '../loaderservice/loaderservice';
+import { StudentmarksServiceProvider } from '../studentmarks-service/studentmarks-service';
 
 /*
   Generated class for the StudentresultsServiceProvider provider.
@@ -61,7 +62,7 @@ export class resulttype {
 @Injectable()
 export class StudentresultsServiceProvider {
   classresults: classresult;
-  constructor(private loaderservice: LoaderserviceProvider, private afs: AngularFirestore, private homeservice:HomeServiceProvider) {
+  constructor(private loaderservice: LoaderserviceProvider, private studentprovider:StudentmarksServiceProvider,private afs: AngularFirestore, private homeservice:HomeServiceProvider) {
     console.log('Hello StudentresultsServiceProvider Provider');
     this.classresults = new classresult();
   }
@@ -228,7 +229,7 @@ reject('false');
 
  update_all(){
   this.get_results().then(res=>{
-    
+
   }).catch(err=>{
 
   })

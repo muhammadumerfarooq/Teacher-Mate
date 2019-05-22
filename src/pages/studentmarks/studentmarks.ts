@@ -151,21 +151,21 @@ export class StudentmarksPage {
 
   update_restype(i1: number, i2: number) {
 
+    var bool = true;
     let joinclass = this.alertCtrl.create({
       title: 'Update Result',
-      message: "Enter " + this.studentmarks.results[i1].resulttypes[i2] + " Values",
+      subTitle: 'Out of '+ this.studentmarks.results[i1].resulttypes[i2].totalmarks.toString(),
+      message: "Enter " + this.studentmarks.results[i1].resulttypes[i2].resultname + " Marks",
       inputs: [
         {
           name: 'obtainedmarks',
           placeholder: 'Obtained Marks',
-          type: 'weightage'
+          type: 'number',
+          min: 0,
+          max: this.studentmarks.results[i1].resulttypes[i2].totalmarks
         },
 
-        {
-          name: 'totalmarks',
-          placeholder: 'Total Marks',
-          type: 'weightage'
-        },
+
       ],
       buttons: [
         {
@@ -179,11 +179,16 @@ export class StudentmarksPage {
           handler: data => {
             console.log('Add clicked');
             console.log(data);
-            let obtained: number = + data.obtainedmarks as number;
-            let total: number = + data.totalmarks as number;
+            let obtained: number = + parseFloat(data.obtainedmarks) as number;
+            let total: number = (this.studentmarks.results[i1].resulttypes[i2].totalmarks);
+
+
             if (Number.isNaN(obtained) || Number.isNaN(total)) {
               this.presentAlert('Marks should be in numeric ', '');
 
+            }
+            else if (total < obtained) {
+              this.presentAlert('obtained marks must be less than or equal to total marks', '');
             } else if (obtained > total) {
               this.presentAlert('Obtained Marks should be less than or equal to Total Marks ', '');
 
@@ -191,7 +196,6 @@ export class StudentmarksPage {
             else {
               try {
                 this.studentmarks.results[i1].resulttypes[i2].obtainedmarks = obtained;
-                this.studentmarks.results[i1].resulttypes[i2].totalmarks = total;
                 this.studentmarks.results[i1].resulttypes[i2].resultadded = true;
               } catch (err) {
                 this.presentAlert('Marks should be in numeric ', '');
@@ -227,11 +231,13 @@ export class StudentmarksPage {
 
             if (this.studentresults.studentresults.results.length > 0) {
               try {
-                this.studentresults.update_results(this.studentmarks).then(() => {this.presentAlert('Result updated successfully!', '')
-                this.getresultsinfo();}
+                this.studentresults.update_results(this.studentmarks).then(() => {
+                  this.presentAlert('Result updated successfully!', '')
+                  this.getresultsinfo();
+                }
                 ).catch(() => this.presentAlert('Error while saving result', ''))
                 // this.studentresults.get_results(this.parentemail);
-         
+
               } catch (err) {
                 this.presentAlert('Error while saving result', '')
               }
@@ -239,96 +245,98 @@ export class StudentmarksPage {
               try {
                 this.studentmarks.creationdate = new Date().getTime().toString();
                 this.studentresults.insert_results(this.studentmarks).then(
-                  () => {this.presentAlert('Result added successfully!', '')
-                  this.getresultsinfo();}
-              ).catch(() => this.presentAlert('Error while saving result', ''))
-    //  this.studentresults.get_results(this.parentemail);
+                  () => {
+                    this.presentAlert('Result added successfully!', '')
+                    this.getresultsinfo();
+                  }
+                ).catch(() => this.presentAlert('Error while saving result', ''))
+                //  this.studentresults.get_results(this.parentemail);
 
-  } catch(err) {
-    this.presentAlert('Error while saving result', '')
-  }
-}
+              } catch (err) {
+                this.presentAlert('Error while saving result', '')
+              }
+            }
           }
         }
       ]
     });
-confirm.present();
+    confirm.present();
 
   }
 
-calculatemarks(i: number) {
+  calculatemarks(i: number) {
 
-}
+  }
 
-showgraph(i: number) {
-  this.studentresults.get_allresults().then(() => {
+  showgraph(i: number) {
+    this.studentresults.get_allresults().then(() => {
 
-    let typesavg: dummyclass[] = [];
+      var hashkeys = [];
 
-    let resname = this.studentmarks.results[i].resultname;
-    this.classresults.classresults.results.forEach(res => {
-      if (res.resultname == resname) {
-        typesavg = new dummyclass[res.resulttypes.length];
-        let index = 0;
-        res.resulttypes.forEach(type => {
-          typesavg[index].resultname = type.resultname;
-          typesavg[index].weightage = type.weightage;
-          typesavg[index].totalmarks = type.totalmarks;
+      let length = 0;
 
-          index++;
-        });
-      }
-    });
-    let total = 1;
-    this.studentresults.studentallresults.forEach(res => {
-
-      res.results.forEach(result => {
-
-        if (result.resultname == resname && (this.homeservice.user == 'parents')) {
-          result.resulttypes.forEach(type => {
-            typesavg.forEach(avg => {
-              if (avg.resultname == type.resultname) {
-                avg.weightage = (avg.weightage + (type.obtainedmarks / type.totalmarks) * type.weightage) / (total);
-              }
-            })
-          })
-          total++;
-        }
+      this.studentmarks.results[i].resulttypes.forEach(res=>{
+          hashkeys.push(res.resultname);
+          length ++;
       });
+
+      var hashvalues = [length];
+      for (let i=0;i<length;i++){
+        hashvalues[i] = 0.0;
+      }
+
+      let chartname = this.classresults.classresults.results[i].resultname;
+
+      let size = 0;
+      this.studentresults.studentallresults.forEach(res=>{
+        res.results.forEach(result=>{
+          if (result.resultname == chartname){
+          result.resulttypes.forEach(restype=>{
+            if (hashkeys.indexOf(restype.resultname)>=0){
+              let index = hashkeys.indexOf(restype.resultname);
+              hashvalues[index] = hashvalues[index] +( (restype.obtainedmarks/restype.totalmarks)*(restype.weightage));
+          
+            }
+          });
+          size++;
+        }
+        })
+      });
+
+      for (let i=0;i<length;i++){
+        hashvalues[i] = (hashvalues[i] / size);
+      }
+
+      let stdtype: Array<resulttype> = this.studentmarks.results[i].resulttypes;
+
+      let popover = this.popoverCtrl.create('PerformanceChartsPage', { 'chartname': chartname, 'hashkeys': hashkeys, 'hashvalues':hashvalues,'stdtype': stdtype });
+      popover.present({
+
+      });
+    }).catch(err => {
+      this.presentAlert('No Student Result Exists', err);
+    })
+
+  }
+
+  refreshresults() {
+    this.getresultsinfo();
+  }
+
+  /*console.log(myEvent);
+      let popover = this.popoverCtrl.create('NotificatonsPage');
+      popover.present({
+        ev: myEvent
+      });
+      */
+  presentAlert(alerttitle, alertsub) {
+    let alert = this.alertCtrl.create({
+      title: alerttitle,
+      subTitle: alertsub,
+      buttons: ['OK']
     });
+    alert.present();
 
-    let chartname = this.classresults.classresults.results[i].resultname;
-
-    let stdtype: Array<resulttype> = this.studentmarks.results[i].resulttypes;
-
-    let popover = this.popoverCtrl.create('PerformanceChartsPage', { 'chartname': chartname, 'typesavg': typesavg, 'stdtype': stdtype });
-    popover.present({
-
-    });
-  }).catch(err => {
-    this.presentAlert('No Student Result Exists', '');
-  })
-
-}
-
-refreshresults(){
-this.getresultsinfo();
-}
-
-/*console.log(myEvent);
-    let popover = this.popoverCtrl.create('NotificatonsPage');
-    popover.present({
-      ev: myEvent
-    });
-    */
-presentAlert(alerttitle, alertsub) {
-  let alert = this.alertCtrl.create({
-    title: alerttitle,
-    subTitle: alertsub,
-    buttons: ['OK']
-  });
-  alert.present();
-
-}
+  }
 
 }
