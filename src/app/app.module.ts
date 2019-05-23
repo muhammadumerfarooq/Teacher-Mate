@@ -43,6 +43,7 @@ import { AnswerServiceProvider } from '../providers/answer-service/answer-servic
 import { StudentresultsServiceProvider } from '../providers/studentresults-service/studentresults-service';
 import { PortfolioServiceProvider } from '../providers/portfolio-service/portfolio-service';
 import { StudentmarksServiceProvider } from '../providers/studentmarks-service/studentmarks-service';
+import { StudentPortfolioServiceProvider } from '../providers/student-portfolio-service/student-portfolio-service';
 // import { Chart } from 'chart.js';
 
 //import { ComponentsModule } from '../components/components.module';
@@ -123,6 +124,7 @@ export const firebaseConfig = {
     StudentresultsServiceProvider,
     PortfolioServiceProvider,
     StudentmarksServiceProvider,
+    StudentPortfolioServiceProvider,
     
   ]
 })

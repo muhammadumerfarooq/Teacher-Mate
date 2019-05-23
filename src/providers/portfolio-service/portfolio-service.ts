@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { LoaderserviceProvider } from '../loaderservice/loaderservice';
 import { AngularFirestore } from 'angularfire2/firestore';
+import { HomeServiceProvider } from '../home-service/home-service';
 
 /*
   Generated class for the PortfolioServiceProvider provider.
@@ -11,9 +12,15 @@ import { AngularFirestore } from 'angularfire2/firestore';
 
 export class portfolio{
 creationdate:string;
+classname:string;
+classteacher:string;
+useremail: string;
 foliotypes: Array<portfoliotype>; 
 
 constructor(){
+  this.classname = '';
+  this.classteacher = '';
+  this.useremail = '';
 this.creationdate = new Date().getTime().toString();
 this.foliotypes = new Array<portfoliotype>();
 }
@@ -34,7 +41,7 @@ constructor(){
 @Injectable()
 export class PortfolioServiceProvider {
 portfolios: portfolio;
-  constructor(private loaderservice:LoaderserviceProvider, private afs:AngularFirestore) {
+  constructor(private loaderservice:LoaderserviceProvider, private afs:AngularFirestore, private homeservice:HomeServiceProvider) {
     this.portfolios = new portfolio();
     console.log('Hello PortfolioServiceProvider Provider');
   }
@@ -63,7 +70,7 @@ portfolios: portfolio;
 
       
       }
-      this.afs.collection('portfolio').doc(portfolio.creationdate).set(myfolio).then(()=>{
+      this.afs.collection('classportfolios').doc(portfolio.creationdate).set(myfolio).then(()=>{
         resolve('done');
       }).catch((err)=>{
         return reject('error');
@@ -72,6 +79,31 @@ portfolios: portfolio;
     
   }
 
+
+  
+  async delete_folio(portfolio:portfolio) {
+    const loading = this.loaderservice.loadingCtrl.create({
+
+      content: `
+      <div class="custom-spinner-container">
+        <div class="custom-spinner-box"> loading... </div>
+      </div>`,
+      duration: 1000
+    });
+    this.presentLoading(loading);
+
+    return new Promise((resolve,reject)=>{
+
+      this.afs.collection('classportfolios').doc(portfolio.creationdate).delete().then(()=>{
+        resolve('done');
+      }).catch((err)=>{
+        return reject('error');
+      })
+    });
+    
+  }
+
+  
   async update_folio(portfolio:portfolio) {
     const loading = this.loaderservice.loadingCtrl.create({
 
@@ -91,7 +123,7 @@ portfolios: portfolio;
 
       
       }
-      this.afs.collection('portfolio').doc(portfolio.creationdate).update(myfolio).then(()=>{
+      this.afs.collection('classportfolios').doc(portfolio.creationdate).update(myfolio).then(()=>{
         resolve('done');
       }).catch((err)=>{
         return reject('error');
@@ -99,6 +131,8 @@ portfolios: portfolio;
     });
     
   }
+
+  
   async get_folio() {
     const loading = this.loaderservice.loadingCtrl.create({
 
@@ -111,11 +145,29 @@ portfolios: portfolio;
     this.presentLoading(loading);
 
     return new Promise((resolve,reject)=>{
-    this.afs.collection('portfolio').stateChanges().take(1).forEach(snap=>{
+    this.afs.collection('classportfolios', ref=>{
+      return ref.where('classname','==',this.homeservice.classroom).where('classteacher','==',this.homeservice.classteacher);
+    }).get().take(1).forEach(snap=>{
+      this.portfolios = new portfolio();
       snap.forEach(snapshot=>{
-        if (snapshot.payload.doc.exists){
-          this.portfolios = new portfolio();
-          this.portfolios = snapshot.payload.doc.data() as portfolio;
+
+        if (snapshot.exists){
+          let temp = snapshot.data() as portfolio;
+          this.portfolios.classname = temp.classname;
+          this.portfolios.classteacher = temp.classteacher;
+          this.portfolios.useremail = temp.useremail;
+          this.portfolios.creationdate = temp.creationdate;
+          
+          let index = 0;
+          while (temp.foliotypes[index]!=undefined && temp.foliotypes!=null){
+            let porttype = new portfoliotype();
+            porttype.background = temp.foliotypes[index].background;
+            porttype.name = temp.foliotypes[index].name;
+            porttype.percent = temp.foliotypes[index].percent;
+            this.portfolios.foliotypes.push(porttype);
+            index++;
+          }
+
           return resolve('done');
           
         }else{

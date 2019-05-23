@@ -24,7 +24,6 @@
             [ngStyle]="{'color':'#FFF', 'margin-top':'5%'}" margin-left> {{folio.name}}
           </ion-badge>
 
-          <progress-bar [props]="folio"></progress-bar>
           <span class="query-explanation"> </span>
         </h3>
 
@@ -57,7 +56,7 @@
         <ion-input [ngStyle]="{'border-bottom':'none'}" type="text" placeholder=" Name" text-left
           [(ngModel)]="folio.name"></ion-input>
         <ion-input [ngStyle]="{'border-bottom':'none', 'width':'30%'}" [(ngModel)]="folio.percent" type="text"
-          placeholder="Max(%)" readonly text-right  (change)='onChangeinput($event.target.value)'></ion-input>
+          placeholder="Max(%)" readonly text-right></ion-input>
 
         <!--        <ion-input type="number" placeholder=" Weightage" text-right [(ngModel)]="result.totalweightage">
         </ion-input>
@@ -74,10 +73,6 @@
           <ion-icon name="add"></ion-icon>
         </button>
 
-        <button ion-button clear margin-right item-end icon-only (click)="deletefolio(folio)">
-          <!-- here -->
-          <ion-icon name="trash"></ion-icon>
-        </button>
 
 
       </ion-item>
@@ -86,20 +81,26 @@
 
   </ion-card>
 
+ <ion-card class="card-css" [hidden]="portfolios.foliotypes.length == 0">
+
+      <div class="div-input">
+
+        <!-- {{offer.desc}} Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. -->
+        <ion-input class="input-box" type="text" [(ngModel)]="title" name="text" readonly></ion-input>
+
+        <ion-textarea class="textbox" type="string" placeholder="Enter Discription" [(ngModel)]="description"
+          name="text"></ion-textarea>
+
+      </div>
+
+
+
+
+
+
+  </ion-card>
+
   <ion-card class="card-css">
-
-    <div class="divclass">
-      <!--   <span ion-text margin-left color="secondary" tappable (click)="addChapter()"><strong>Chapters</strong></span>
--->
-      <h3 class="search-query">
-        <span></span>
-        <ion-badge class="query-tag" (click)="addfolio()" margin-left> Portfolio Type </ion-badge>
-        <!--        <ion-badge class="query-tag" (click)="addTopics()" margin-left> Topics </ion-badge>
--->
-        <span class="query-explanation"> </span>
-      </h3>
-
-    </div>
 
     <button class="Syllabusclass" ion-button margin-top full (click)="SubmitFolio()">Submit/Update Portfolio</button>
   </ion-card>

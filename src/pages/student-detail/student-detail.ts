@@ -100,7 +100,7 @@ export class StudentDetailPage {
     modalPage.present();
   }
   student_folio(){
-    var modalPage = this.modalctrl.create('StudentProfilePage');
+    var modalPage = this.modalctrl.create('StudentPortfolioPage',{'parentemail':this.studentprofile.parentemail});
     modalPage.onDidDismiss(data=>{
      if (data == 'back')
      {

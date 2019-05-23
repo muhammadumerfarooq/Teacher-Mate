@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, AlertController } from 'ionic-angular';
 import { PortfolioServiceProvider, portfolio, portfoliotype } from '../../providers/portfolio-service/portfolio-service';
+import { HomeServiceProvider } from '../../providers/home-service/home-service';
+import { StudentPortfolioServiceProvider } from '../../providers/student-portfolio-service/student-portfolio-service';
 
 /**
  * Generated class for the CreatePortfolioPage page.
@@ -18,17 +20,29 @@ export class CreatePortfolioPage {
   loadProgress: number = 0;
   myProps = { percent: 0, message: 'foo', background:'' };
   colors: Array<string>;
-
+  duplicate: number = 0;
 portfolios: portfolio;
-  constructor(private alertctrl:AlertController,public navCtrl: NavController, public viewctrl: ViewController,public navParams: NavParams, private folioservice:PortfolioServiceProvider) {
+  constructor(private alertctrl:AlertController,private studentfolio: StudentPortfolioServiceProvider,private homeservice:HomeServiceProvider,public navCtrl: NavController, public viewctrl: ViewController,public navParams: NavParams, private folioservice:PortfolioServiceProvider) {
    this.portfolios = new portfolio();
 
    this.folioservice.get_folio().then(()=>{
     if (this.folioservice.portfolios.foliotypes.length>0){
-      this.portfolios = this.folioservice.portfolios;
+      this.portfolios.classname = this.folioservice.portfolios.classname
+      this.portfolios.classteacher =  this.folioservice.portfolios.classteacher
+      this.portfolios.creationdate =  this.folioservice.portfolios.creationdate
+      this.portfolios.useremail =  this.folioservice.portfolios.useremail
+      this.folioservice.portfolios.foliotypes.forEach(folio=>{
+        let fol = new portfoliotype();
+        fol.background = folio.background;
+        fol.name = folio.name;
+        fol.percent = folio.percent;
+        this.portfolios.foliotypes.push(fol);
+      });
     }
    }).catch((err)=>{
-
+    this.portfolios.classname = this.homeservice.classroom;
+    this.portfolios.classteacher = this.homeservice.classteacher;
+    
    });
 
    this.colors = new Array<string>();
@@ -132,7 +146,11 @@ portfolios: portfolio;
 
   SubmitFolio(){
      
-
+    if (this.duplicate >= 2){
+        this.presentAlert('Portfolio Type Names cannot be same ', '');
+      
+    }
+    else{
     let confirm = this.alertctrl.create({
       title: 'Submit/updatte Portfolio',
       message: 'Are you sure you want to Submit/updatte Portfolio ',
@@ -146,7 +164,21 @@ portfolios: portfolio;
         {
           text: 'Yes',
           handler: () => {
-            if (this.folioservice.portfolios.foliotypes.length>0){
+            if (this.folioservice.portfolios.foliotypes.length>0 && this.portfolios.foliotypes.length==0){
+              this.folioservice.delete_folio(this.portfolios).then(res=>{
+                this.studentfolio.delete_allfolio().then(()=>{
+                  this.presentAlert('Portfolio Updated Successfully!','');
+                }).catch(()=>{
+                  this.presentAlert('Error! Portfolio Not Updated ','');
+
+                })
+
+              }).catch(err=>{
+                this.presentAlert('Error! Portfolio Not Updated ','');
+
+              })
+            }
+            else if (this.folioservice.portfolios.foliotypes.length>0){
               this.folioservice.update_folio(this.portfolios).then(res=>{
                 this.presentAlert('Portfolio Updated Successfully!','');
               }).catch(err=>{
@@ -164,7 +196,19 @@ portfolios: portfolio;
       ]
     });
     confirm.present();
+  }
 
-
+  }
+  onChangeinput(value){
+    this.portfolios.foliotypes.forEach(res=>{
+      if (value == res.name){
+        this.duplicate ++;
+      }
+    });
+    if (this.duplicate >=2){
+      this.presentAlert('Portfolio Type Names cannot be same ', '');
+    }else{
+      this.duplicate = 0;
+    }
   }
 }
