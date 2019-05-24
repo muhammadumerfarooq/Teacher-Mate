@@ -44,8 +44,12 @@ import { StudentresultsServiceProvider } from '../providers/studentresults-servi
 import { PortfolioServiceProvider } from '../providers/portfolio-service/portfolio-service';
 import { StudentmarksServiceProvider } from '../providers/studentmarks-service/studentmarks-service';
 import { StudentPortfolioServiceProvider } from '../providers/student-portfolio-service/student-portfolio-service';
+//import { StudentPortfolioPageModule } from '../pages/student-portfolio/student-portfolio.module';
+//import { CreatePortfolioPageModule } from '../pages/create-portfolio/create-portfolio.module';
+// import { ProgressBarComponentModule } from '../pages/progress-bar/progress-bar.module';
+// import { ProgressBarComponent } from '../pages/progress-bar/progress-bar';
 // import { Chart } from 'chart.js';
-
+import { SharedModule } from '../pages/shared-modules';
 //import { ComponentsModule } from '../components/components.module';
 
 // import { TeacherloginPage } from '../pages/teacherlogin/teacherlogin';
@@ -64,7 +68,7 @@ export const firebaseConfig = {
   declarations: [
     MyApp,
     HomePage,
-    
+   // ProgressBarComponent
   ],
   imports: [
     BrowserModule,
@@ -79,8 +83,7 @@ export const firebaseConfig = {
     AngularCropperjsModule,
     IonicStorageModule.forRoot(),
     HttpModule,
-    
-    
+    SharedModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

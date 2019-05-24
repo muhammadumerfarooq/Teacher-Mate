@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { PortfolioServiceProvider, portfolio, portfoliotype } from '../../providers/portfolio-service/portfolio-service';
 import { StudentPortfolioServiceProvider } from '../../providers/student-portfolio-service/student-portfolio-service';
 import { HomeServiceProvider } from '../../providers/home-service/home-service';
+import { ViewController } from 'ionic-angular/navigation/view-controller';
 
 /**
  * Generated class for the StudentPortfolioPage page.
@@ -22,7 +23,7 @@ export class StudentPortfolioPage {
   title:string = '';
   description:string = '';
 
-  constructor(public navCtrl: NavController, private homeservice:HomeServiceProvider,public navParams: NavParams,private folioservice:PortfolioServiceProvider,private studentfolio:StudentPortfolioServiceProvider, private nav:NavParams) {
+  constructor(public navCtrl: NavController, private alertctrl:AlertController,private view_ctrl:ViewController,private homeservice:HomeServiceProvider,public navParams: NavParams,private folioservice:PortfolioServiceProvider,private studentfolio:StudentPortfolioServiceProvider, private nav:NavParams) {
     
     this.parentemail = this.nav.get('parentemail');
 
@@ -60,6 +61,13 @@ export class StudentPortfolioPage {
         });
 
       }).catch(err=>{
+        this.folioservice.portfolios.foliotypes.forEach(folio=>{
+        let foliotype:portfoliotype = new portfoliotype();
+        foliotype.background = folio.background;
+        foliotype.name = folio.name;
+        foliotype.percent = folio.percent;
+         this.portfolios.foliotypes.push(foliotype);
+        });
 
       })
     }).catch(err=>{
@@ -72,6 +80,68 @@ export class StudentPortfolioPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad StudentPortfolioPage');
+  }
+  viewctrl_dismiss(){
+    this.view_ctrl.dismiss();
+  }
+  setborder(folio:portfoliotype){
+    let index = this.portfolios.foliotypes.indexOf(folio);
+    let styles = {
+      'margin-top':'5%',
+      'color':'#FFF',
+      'border': 'thin solid'+this.portfolios.foliotypes[index].background,
+      'border-radius':'1.2em'
+    };
+    return styles;
+  }
+
+  SubmitFolio(){
+    let confirm = this.alertctrl.create({
+      title: 'Submit/updatte Portfolio',
+      message: 'Are you sure you want to Submit/updatte Portfolio ',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+            console.log('No clicked');
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            if (this.studentfolio.portfolios.foliotypes.length>0){
+              
+                this.studentfolio.update_folio(this.portfolios).then(()=>{
+                  this.presentAlert('Portfolio Updated Successfully!','');
+                }).catch(()=>{
+                  this.presentAlert('Error! Portfolio Not Updated ','');
+
+                })
+
+            
+            }
+            else if (this.folioservice.portfolios.foliotypes.length==0){
+              this.folioservice.insert_folio(this.portfolios).then(res=>{
+                this.presentAlert('Portfolio Updated Successfully!','');
+              }).catch(err=>{
+                this.presentAlert('Error! ','');
+              });
+            }
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
+
+  presentAlert(alerttitle, alertsub) {
+    let alert = this.alertctrl.create({
+      title: alerttitle,
+      subTitle: alertsub,
+      buttons: ['OK']
+    });
+    alert.present();
+
   }
 
 }

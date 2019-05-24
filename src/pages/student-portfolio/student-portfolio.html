@@ -24,6 +24,16 @@
             [ngStyle]="{'color':'#FFF', 'margin-top':'5%'}" margin-left> {{folio.name}}
           </ion-badge>
 
+          <progress-bar [props]="folio"></progress-bar>
+          <button class="btn-inc" ion-button clear item-end icon-only (click)="removepercent(folio)">
+            <!-- here -->
+            <ion-icon name="remove"></ion-icon>
+          </button>
+
+          <button class="btn-inc" ion-button clear margin-right item-end icon-only (click)="addpercent(folio)">
+            <!-- here -->
+            <ion-icon name="add"></ion-icon>
+          </button>
           <span class="query-explanation"> </span>
         </h3>
 
@@ -81,17 +91,17 @@
 
   </ion-card>
 
- <ion-card class="card-css" [hidden]="portfolios.foliotypes.length == 0">
+  <ion-card class="card-css" [hidden]="portfolios.foliotypes.length == 0">
 
-      <div class="div-input">
+    <div class="div-input">
 
-        <!-- {{offer.desc}} Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. -->
-        <ion-input class="input-box" type="text" [(ngModel)]="title" name="text" readonly></ion-input>
+      <!-- {{offer.desc}} Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. -->
+      <ion-input class="input-box" type="text" [(ngModel)]="title" name="text" readonly></ion-input>
 
-        <ion-textarea class="textbox" type="string" placeholder="Enter Discription" [(ngModel)]="description"
-          name="text"></ion-textarea>
+      <ion-textarea class="textbox" type="string" placeholder="Enter Discription" [(ngModel)]="description" name="text">
+      </ion-textarea>
 
-      </div>
+    </div>
 
 
 

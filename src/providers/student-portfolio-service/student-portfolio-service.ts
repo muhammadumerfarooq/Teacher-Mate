@@ -124,6 +124,9 @@ export class StudentPortfolioServiceProvider {
         return ref.where('classname', '==', this.homeservice.classroom).where('classteacher', '==', this.homeservice.classteacher).where('useremail', '==', parentemail);
       }).get().take(1).forEach(snap => {
         this.portfolios = new portfolio();
+        if (snap.docs.length==0){
+          return resolve('done');
+        }
         snap.forEach(snapshot => {
 
           if (snapshot.exists) {

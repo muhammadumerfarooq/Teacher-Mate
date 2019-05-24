@@ -476,7 +476,35 @@ export class HomeServiceProvider {
 
   }
 
-  addclassroom(teacherclass) {
+  deleteclassroom(classname, classteacher){
+    return new Promise((resolve, reject) => {
+      let id = this.afs.createId();
+
+
+      
+      
+      try {
+
+ 
+
+        this.afs.collection('classroom', ref=>{
+          return ref.where('classname','==',classname).where('classteacher','==',classteacher);
+        }).get().take(1).forEach(snap=>{
+        if (snap.empty){
+          return reject('error');
+        }else{
+          snap.forEach(snapshot=>{
+            snapshot.ref.delete();
+            return resolve('done');
+          })
+        }
+        });
+      }catch(err){
+        return reject('error');
+      }
+    });
+  } 
+   addclassroom(teacherclass) {
 
     return new Promise((resolve, reject) => {
       let id = this.afs.createId();

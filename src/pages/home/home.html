@@ -65,6 +65,16 @@
             <h6 class="pull-top text-white" ion-text>{{myclass.teachername}}</h6>
 
             <!--    <div class="clear"></div> -->
+            <!--  <div *ngIf="this.homeservice.user == 'teachers'" [ngStyle]="{'text-align':'right', 'float':'right'}">
+
+              <button class="delete-button" color="danger" ion-button clear medium tappable
+                (click)="delete_class(myclass.classname, myclass.teacheremail);$event.stopPropagation()"
+                [ngStyle]="{'color':'#FFF', 'font-size':'2.2em'}">
+                <ion-icon name="ios-trash-outline"></ion-icon>
+              </button>
+
+            </div>
+            -->
           </div>
           <!--   <div class="align-bottom padding-la primary-lg"> -->
           <ion-toolbar class="profile">
@@ -72,14 +82,29 @@
             <ion-grid>
               <ion-row>
                 <ion-col col-4>
-                  <div class="user-avatar">
-                    <img [src]="myclass.imgurl" onError="this.src='../../assets/img/person.png';"  alt="...">
+                  <div class="user-avatar" tappable>
+                    <img [src]="myclass.imgurl" onError="this.src='../../assets/img/person.png';" alt="...">
 
                   </div>
 
 
                 </ion-col>
 
+                <ion-col col-8>
+                
+                    <div *ngIf="this.homeservice.user == 'teachers'"
+                      [ngStyle]="{'text-align':'right', 'float':'right'}" padding-bottom>
+                      <!-- <ion-col no-padding col-2>-->
+                      <button class="delete-button" color="danger" ion-button clear medium tappable
+                        (click)="delete_class(myclass.classname, myclass.teacheremail);$event.stopPropagation()"
+                        [ngStyle]="{'color':'#FFF', 'font-size':'2.2em'}">
+                        <ion-icon name="ios-trash-outline"></ion-icon>
+                      </button>
+                      <!-- </ion-col> -->
+                    </div>
+
+
+                </ion-col>
               </ion-row>
 
 

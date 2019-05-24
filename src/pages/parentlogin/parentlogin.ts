@@ -143,11 +143,7 @@ duration: 500
 
 
 
-  googlelogin() {
-
-
-  }
-
+ 
   register() {
     var person = 'Parent';
     var modalPage = this.modalctrl.create('SignupModalPage', { person: person });
@@ -205,5 +201,11 @@ duration: 500
     */
     this.login();
   }
-
+  forgotPass(){
+    var modalPage = this.modalctrl.create('ResetPasswordPage');
+    modalPage.onDidDismiss(data => {
+    
+    });
+    modalPage.present();
+  }
 }

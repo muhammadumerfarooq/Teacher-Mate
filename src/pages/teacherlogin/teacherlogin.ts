@@ -138,10 +138,7 @@ export class TeacherloginPage {
     });
 
   }
-  googlelogin() {
 
-
-  }
 
   register() {
     var person = 'Teacher';
@@ -207,5 +204,12 @@ export class TeacherloginPage {
     // }else{
     //   this.presentAlert('Email verfication ',' Failed ');
     // }
+  }
+  forgotPass(){
+    var modalPage = this.modalctrl.create('ResetPasswordPage');
+    modalPage.onDidDismiss(data => {
+    
+    });
+    modalPage.present();
   }
 }

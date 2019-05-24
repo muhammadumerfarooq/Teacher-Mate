@@ -8,7 +8,7 @@ import { HomeServiceProvider } from '../../providers/home-service/home-service';
 
 // import {OnInit} from '@angular/core';
 // import { FCM } from '@ionic-native/fcm';
- import { ProfileServiceProvider } from '../../providers/profile-service/profile-service';
+import { ProfileServiceProvider } from '../../providers/profile-service/profile-service';
 import { TeachersServiceProvider } from '../../providers/teachers-service/teachers-service';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { LoaderserviceProvider } from '../../providers/loaderservice/loaderservice';
@@ -30,7 +30,7 @@ export class HomePage implements OnInit {
 
   emailVerified: boolean = false;
 
-  constructor(private profileservice:ProfileServiceProvider,private afs: AngularFirestore, private loader: LoaderserviceProvider, private viewctrl: ViewController, private teacherclass: TeachersServiceProvider, private modalCtrl: ModalController, public homeservice: HomeServiceProvider, public afAuth: AngularFireAuth, public alertctrl: AlertController, public toastctrl: ToastController, public modalctrl: ModalController, public platform: Platform, public actionsheetCtrl: ActionSheetController, private storage: Storage, public nav: NavController, public popoverCtrl: PopoverController) {
+  constructor(private profileservice: ProfileServiceProvider, private afs: AngularFirestore, private loader: LoaderserviceProvider, private viewctrl: ViewController, private teacherclass: TeachersServiceProvider, private modalCtrl: ModalController, public homeservice: HomeServiceProvider, public afAuth: AngularFireAuth, public alertctrl: AlertController, public toastctrl: ToastController, public modalctrl: ModalController, public platform: Platform, public actionsheetCtrl: ActionSheetController, private storage: Storage, public nav: NavController, public popoverCtrl: PopoverController) {
     console.log(this.homeservice.searchname);
 
 
@@ -63,25 +63,24 @@ export class HomePage implements OnInit {
 
           this.emailVerified = this.afAuth.auth.currentUser.emailVerified;
           if (this.homeservice.userprofile.useremail == null || this.homeservice.userprofile.useremail == undefined) {
-     
-              console.log('go to login');
-      
-              
-             this.storage.clear();
-              var callmodalPage = this.modalCtrl.create('LoginmenuPage');
-              console.log('opening modal');
-              callmodalPage.onDidDismiss(data=>{
-                if (data == true)
-                {
-                  console.log(data+" login menu home ");
-               //   this.viewctrl.dismiss();
-                }
-              });
-              
-              callmodalPage.present();
-      
-      
-      
+
+            console.log('go to login');
+
+
+            this.storage.clear();
+            var callmodalPage = this.modalCtrl.create('LoginmenuPage');
+            console.log('opening modal');
+            callmodalPage.onDidDismiss(data => {
+              if (data == true) {
+                console.log(data + " login menu home ");
+                //   this.viewctrl.dismiss();
+              }
+            });
+
+            callmodalPage.present();
+
+
+
           }
         }
 
@@ -300,20 +299,36 @@ export class HomePage implements OnInit {
               section = data.section;
             }
 
-            let quizcolor: Array<string> =  new Array<string>();
-            
-        
-            quizcolor.push('#78BD83');
-            quizcolor.push('#F08D45');
-            quizcolor.push('#E829BA');
-            quizcolor.push('#16CEE0');
-            quizcolor.push('#CEBF0A');
-            quizcolor.push('#432B9C');
-            quizcolor.push('#DF9FD6');
-            quizcolor.push( '#3285C2');
-            quizcolor.push('#B5E61B');
-            quizcolor.push('#D70EFF');
-            
+            let quizcolor: Array<string> = new Array<string>();
+
+
+            /* quizcolor.push('#78BD83');
+             quizcolor.push('#F08D45');
+             quizcolor.push('#E829BA');
+             quizcolor.push('#16CEE0');
+             quizcolor.push('#CEBF0A');
+             quizcolor.push('#432B9C');
+             quizcolor.push('#DF9FD6');
+             quizcolor.push( '#3285C2');
+             quizcolor.push('#B5E61B');
+             quizcolor.push('#D70EFF');*/
+            quizcolor.push('#FA2C00');
+            quizcolor.push('#0400FA');
+            quizcolor.push('#073E00');
+            quizcolor.push('#1FFF00');
+            quizcolor.push('#58005B');
+            quizcolor.push('#FF5733');
+            quizcolor.push('#C70039');
+            quizcolor.push('#0087AC');
+            quizcolor.push('#34495E');
+            quizcolor.push('#424949');
+            quizcolor.push('#7D3C98');
+            quizcolor.push('#196F3D');
+            quizcolor.push('#9B59B6');
+            quizcolor.push('#9B59B6');
+            quizcolor.push('#E67E22');
+            quizcolor.push('#3498DB');
+
             // this.images.push('assets/img/trip/thumb/brown.jpg');
             // this.images.push('assets/img/trip/thumb/brushes.jpg');
             // this.images.push('assets/img/trip/thumb/deepteal.jpg');
@@ -353,7 +368,7 @@ export class HomePage implements OnInit {
               }
 
             }).catch(err => {
-              this.presentAlert('Error', 'Cannot Create Classroom'+ err);
+              this.presentAlert('Error', 'Cannot Create Classroom' + err);
             });
 
 
@@ -373,7 +388,7 @@ export class HomePage implements OnInit {
     alert.present();
 
   }
-  
+
 
   sendrequest() {
     let customModal = this.modalCtrl.create('SendRequestPage');
@@ -431,7 +446,7 @@ export class HomePage implements OnInit {
 
     this.loader.loading.present().then(() => {
 
-      this.afs.doc<any>(this.homeservice.user+'/' + this.homeservice.useremail).snapshotChanges().take(1).forEach(snap => {
+      this.afs.doc<any>(this.homeservice.user + '/' + this.homeservice.useremail).snapshotChanges().take(1).forEach(snap => {
 
         if (snap.payload.exists) {
 
@@ -444,7 +459,7 @@ export class HomePage implements OnInit {
           this.afAuth.auth.signInWithEmailAndPassword(this.homeservice.useremail, this.homeservice.userpassword).then(() => {
 
             this.emailVerified = this.afAuth.auth.currentUser.emailVerified;
-             
+
             if (this.emailVerified == false) {
               this.presentAlert('Email Not Verified', ' Make Sure to Open Your Mail For Verification');
               //         this.loader.dismissloading();
@@ -473,24 +488,44 @@ export class HomePage implements OnInit {
             })
 
           })
-          // this.emailverified=true;
-          // this.loader.dismissloading();
-          // this.viewCtrl.dismiss(true);
-          //   }).catch(err => {
 
-          //     this.loader.dismissloading();
-          //     this.presentAlert('Login Failed ', err);
-          //   });
-          // }).catch(err => {
-          //   this.loader.dismissloading();
-          //   this.presentAlert('Login Failed ', err);
-          // });
         }
       })
 
 
 
     });
+
+  }
+  delete_class(classname, classteacher) {
+
+    let confirm = this.alertctrl.create({
+      title: 'Delete Classroom',
+      message: 'Are you sure you want to Delete this Classroom?',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+            console.log('No clicked');
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+
+            this.homeservice.deleteclassroom(classname, classteacher).then(res => {
+              this.presentAlert('class deleted successfully', '');
+            }).catch(err => {
+              this.presentAlert('Error! class not deleted ', '');
+
+            });
+          }
+        }
+      ]
+    });
+    confirm.present();
+
+
 
   }
 }

@@ -149,6 +149,9 @@ portfolios: portfolio;
       return ref.where('classname','==',this.homeservice.classroom).where('classteacher','==',this.homeservice.classteacher);
     }).get().take(1).forEach(snap=>{
       this.portfolios = new portfolio();
+      if (snap.docs.length==0){
+        return reject('error');
+      }
       snap.forEach(snapshot=>{
 
         if (snapshot.exists){
