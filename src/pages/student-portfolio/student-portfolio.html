@@ -53,41 +53,7 @@
       <p [ngStyle]="{'font-size': '15px'}">No Portfolios Found </p>
     </div>
 
-    <ng-template ngFor let-folio [ngForOf]="portfolios.foliotypes" let-chap="index">
-
-
-      <ion-item [ngStyle]="{'border-bottom':'none'}">
-        <button class="btnfile" margin-right ion-button clear item-end icon-only>
-
-        </button>
-
-
-        <!--  <ion-label color="primary">Chapter</ion-label> -->
-        <ion-input [ngStyle]="{'border-bottom':'none'}" type="text" placeholder=" Name" text-left
-          [(ngModel)]="folio.name"></ion-input>
-        <ion-input [ngStyle]="{'border-bottom':'none', 'width':'30%'}" [(ngModel)]="folio.percent" type="text"
-          placeholder="Max(%)" readonly text-right></ion-input>
-
-        <!--        <ion-input type="number" placeholder=" Weightage" text-right [(ngModel)]="result.totalweightage">
-        </ion-input>
-        -->
-        <!--        <ion-badge class="query-tag"> {{result.totalweightage}} </ion-badge>
--->
-        <button class="btn-inc" ion-button clear item-end icon-only (click)="removepercent(folio)">
-          <!-- here -->
-          <ion-icon name="remove"></ion-icon>
-        </button>
-
-        <button class="btn-inc" ion-button clear margin-right item-end icon-only (click)="addpercent(folio)">
-          <!-- here -->
-          <ion-icon name="add"></ion-icon>
-        </button>
-
-
-
-      </ion-item>
-
-    </ng-template>
+   
 
   </ion-card>
 
