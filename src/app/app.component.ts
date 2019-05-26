@@ -144,6 +144,16 @@ export class MyApp {
       modalPage.present();
 
     }
+    else if (page.component == 'history') {
+
+
+
+      modalPage = this.modalctrl.create('PortfolioHistoryPage');
+      
+      modalPage.present();
+
+    }
+    
     else if (page.component=='portfolio'){
       modalPage = this.modalctrl.create('CreatePortfolioPage');
 

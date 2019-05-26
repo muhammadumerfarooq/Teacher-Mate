@@ -1,0 +1,76 @@
+<!--
+  Generated template for the ChatPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<!-- -->
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-buttons left>
+      <button ion-button icon-only (click)="viewctrl_dismiss()" class="my-style-for-modal">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+
+    <!-- <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button> -->
+    <ion-title>
+      <strong> Students List (Choose Your Child) </strong>
+    </ion-title>
+    <ion-buttons end>
+
+      <!--      <button ion-button tappable (click)="presentNotifications($event)">
+        <ion-icon name="notifications"></ion-icon> 
+      </button>
+      <button ion-button tappable (click)="goToAccount()">
+        <ion-icon name="cog"></ion-icon>
+      </button> -->
+
+      <!-- <button ion-button tappable  (click)="createclassroom()" >
+        <ion-icon name="add-circle"  class="button-add" ></ion-icon> 
+      </button>
+       -->
+      <!-- <button ion-button tappable class="chat-button" (click) = "chatpage()">
+        <ion-icon name="chatbubbles"></ion-icon>
+        <span class="button__badge">4</span>
+       </button>
+       -->
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+
+<ion-content padding-top>
+  <ion-refresher (ionRefresh)="onPullToRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <ion-list>
+    <ion-item-sliding #sliding *ngFor="let folio of this.portfoliolists.foliolist; let folioindex=index "
+      [hidden]="this.portfoliolists.foliolist.length == 0">
+      <ion-item class="item-ion" (click)="historyDetail(folio)" *ngIf="studentslist[folioindex] != undefined">
+        <ion-avatar item-start>
+          <img [src]="studentslist[folioindex].userurl" onError="this.src='../../assets/img/person.png';"  alt="...">
+        </ion-avatar>
+        <h2>{{ studentslist[folioindex].name }} <span ion-text color="primary"> ( Student of Class {{ studentslist[folioindex].classname }})</span></h2>
+      </ion-item>
+
+    </ion-item-sliding>
+  </ion-list>
+   <div *ngIf="this.portfoliolists.foliolist.length == 0" [hidden]="this.portfoliolists.foliolist.length > 0"
+    [ngStyle]="{'margin-top':'inherit', 'align-items': 'center', 'justify-content': 'center', 'text-align': 'center'}">
+
+<button [ngStyle]="{'background':'transparent'}">
+    <ion-icon name="refresh" [ngStyle]="{'font-size': '50px'}"></ion-icon>
+</button>
+    <p [ngStyle]="{'font-size': '15px'}">No PortFolio History Found </p>
+  </div>
+  
+  <div class="chatbox">
+    <button ion-button class="pull-right" color="secondary" tappable >
+      <ion-icon name="person-add"></ion-icon>
+    </button>
+  </div>
+</ion-content>

@@ -1,10 +1,10 @@
 <ion-header>
 
- 
+
 
   <ion-navbar color="primary">
-    <ion-title color= "#fff">{{toUser.toUserId}}</ion-title>
-      <ion-buttons left>
+    <ion-title color="#fff">{{toUser.toUserId}}</ion-title>
+    <ion-buttons left>
       <button ion-button icon-only (click)="viewctrl_dismiss()" class="my-style-for-modal">
         <ion-icon name="arrow-back"></ion-icon>
       </button>
@@ -17,18 +17,36 @@
 
   <div class="message-wrap">
 
-    <div *ngFor="let msg of this.chatService.msgList" class="message" [class.left]=" msg.userId === toUser.toUserId "
-      [class.right]=" msg.userId === user.toUserId ">
-      <img class="user-img" [src]="msg.userAvatar" onError="this.src='../../assets/img/person.png';"  alt="..." >
+    <div *ngFor="let msg of this.chatService.msgList; let index =index" class="message"
+      [class.left]=" msg.userId === toUser.toUserId " [class.right]=" msg.userId === user.toUserId ">
+
+      <div *ngIf="msg.time.seconds * 1000 && ( index == 0 ||  (msg.time.seconds * 1000 | date:'dd/MM/yyyy') 
+        !=  (this.chatService.msgList[index-1].time.seconds * 1000 | date:'dd/MM/yyyy'))">
+        <h3 class="search-query">{{ msg.time.seconds * 1000  | date:'dd/MM/yyyy'}}</h3>
+      </div>
+
+      <img class="user-img" [src]="msg.userAvatar" onError="this.src='../../assets/img/person.png';" alt="...">
       <ion-spinner name="dots" *ngIf="msg.status === 'pending'"></ion-spinner>
+
+
       <div class="msg-detail">
+        <!--*ngIf="index == 0 ||  (msg.time  | date:'dd/MM/yyyy') !=  (this.chatService.msgList[index-1].time  | date:'dd/MM/yyyy')"-->
+
         <div class="msg-info" *ngIf="msg.time.seconds">
+
           <p>
-            {{msg.userName}}&nbsp;&nbsp;&nbsp;{{ msg.time.seconds * 1000  | date:'dd/MM/yyyy(EEE) - hh:mmaaa'}}</p>
+            {{msg.userName}}</p>
+          <!--&nbsp;&nbsp;&nbsp;{{ msg.time.seconds * 1000  | date:'dd/MM/yyyy(EEE) - hh:mmaaa'}}</p>
+-->
+
         </div>
         <div class="msg-info" *ngIf="msg.time.seconds == null">
+
+
+
           <p>
-            {{msg.userName}}&nbsp;&nbsp;&nbsp;{{ msg.time  | date:'dd/MM/yyyy(EEE) - hh:mmaaa'}}</p>
+            {{msg.userName}} </p>
+            <!--&nbsp;&nbsp;&nbsp;{{ msg.time  | date:'dd/MM/yyyy(EEE) - hh:mmaaa'}}</p>-->
         </div>
         <div class="msg-content">
           <span class="triangle"></span>
@@ -46,7 +64,8 @@
     <button ion-button clear icon-only item-right (click)="switchEmojiPicker()">
       <ion-icon name="md-happy"></ion-icon>
     </button>
-    <textarea #chat_input placeholder="Text Input" [(ngModel)]="editorMsg" (keyup.enter)="sendMsg()" (focusin)="onFocus()">
+    <textarea #chat_input placeholder="Text Input" [(ngModel)]="editorMsg" (keyup.enter)="sendMsg()"
+      (focusin)="onFocus()">
     </textarea>
     <button ion-button clear icon-only item-right (click)="sendMsg()">
       <ion-icon name="ios-send" ios="ios-send" md="md-send"></ion-icon>

@@ -13,8 +13,8 @@
 <ion-content class="content">
   <ion-card class="card-css" [ngStyle]="{'background-color':'#FFF'}">
 
-    <ion-list [hidden]="portfolios.foliotypes.length == 0">
-      <ion-item *ngFor="let folio of portfolios.foliotypes; let folioindex=index">
+    <ion-list [hidden]="folioinfos.length == 0">
+      <ion-item *ngFor="let folio of folioinfos; let folioindex=index">
 
         <!-- <respect-bar [respect]="loadProgress"></respect-bar>
 -->
@@ -23,21 +23,13 @@
           <ion-badge class="query-tag" [style.background-color]="folio.background"
             [ngStyle]="{'color':'#FFF', 'margin-top':'5%'}" margin-left> {{folio.name}}
           </ion-badge>
-
           <progress-bar [props]="folio"></progress-bar>
-          <button class="btn-inc" ion-button clear item-end icon-only (click)="removepercent(folio,folioindex)">
-            <!-- here -->
-            <ion-icon name="remove"></ion-icon>
-          </button>
 
-          <button class="btn-inc" ion-button clear margin-right item-end icon-only (click)="addpercent(folio,folioindex)">
-            <!-- here -->
-            <ion-icon name="add"></ion-icon>
-          </button>
+         
           <span class="query-explanation"> </span>
         </h3>
-        <div *ngIf="listfolios[folioindex].description">
-          <p [ngStyle]="{'margin-left':'5%', 'color':'#4c6df9'}">{{listfolios[folioindex].description}}</p>
+        <div *ngIf="folio.description">
+          <p [ngStyle]="{'margin-left':'5%', 'color':'#4c6df9'}">{{folio.description}}</p>
         </div>
 
       </ion-item>
@@ -46,7 +38,7 @@
 
   <ion-card class="card-css">
 
-    <div *ngIf="portfolios.foliotypes.length == 0" [hidden]="portfolios.foliotypes.length > 0"
+    <div *ngIf="folioinfos.length == 0" [hidden]="folioinfos.length > 0"
       [ngStyle]="{'margin-top':'inherit', 'align-items': 'center', 'justify-content': 'center', 'text-align': 'center'}">
 
       <button [ngStyle]="{'background':'transparent'}">
@@ -60,13 +52,13 @@
 
   </ion-card>
 
-  <ion-card class="card-css" [hidden]="portfolios.foliotypes.length == 0">
+  <ion-card class="card-css" [hidden]="folioinfos.length == 0">
 
     <div class="div-input">
 
       <!-- {{offer.desc}} Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. -->
 
-      <ion-textarea class="textbox"  [ngStyle]="{'color':'#4c6df9'}" type="string" placeholder="Enter Discription" [(ngModel)]="description" name="text">
+      <ion-textarea class="textbox"  [ngStyle]="{'color':'#4c6df9'}" type="string"  [(ngModel)]="portfolios.description" name="text" readonly>
       </ion-textarea>
 
     </div>
@@ -76,11 +68,6 @@
 
 
 
-  </ion-card>
-
-  <ion-card class="card-css">
-
-    <button class="Syllabusclass" ion-button margin-top full (click)="SubmitFolio()">Submit/Update Portfolio</button>
   </ion-card>
 
 

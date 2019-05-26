@@ -120,6 +120,7 @@ export class HomeServiceProvider {
             {title: 'Your Child', component: 'YourChild', icon: 'person'},
             {title: 'Courses Info', component: 'CourseInfo', icon: 'paper'},
             {title: 'Quizes Results', component: 'QuizResults', icon: 'book'},
+            {title: 'Portfolio History', component: 'history', icon: 'pulse'},
             
           ];
         }else{
@@ -131,8 +132,8 @@ export class HomeServiceProvider {
             {title: 'Add Courses', component: 'AddCoursesPage', icon: 'create'},
             {title: 'Quizes Results', component: 'QuizResults', icon: 'book'},
             {title: 'Results Type', component: 'Marks', icon: 'clipboard'},
-            {title: 'Student Portfolio', component: 'portfolio', icon: 'trophy'},
-            {title: 'performance charts ', component: 'charts', icon: 'trophy'},
+            {title: 'Create Portfolio', component: 'portfolio', icon: 'trophy'},
+    //        {title: 'performance charts ', component: 'charts', icon: 'trophy'},
             
           ];
         }

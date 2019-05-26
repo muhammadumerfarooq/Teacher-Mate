@@ -50,6 +50,7 @@ import { StudentPortfolioServiceProvider } from '../providers/student-portfolio-
 // import { ProgressBarComponent } from '../pages/progress-bar/progress-bar';
 // import { Chart } from 'chart.js';
 import { SharedModule } from '../pages/shared-modules';
+import { PortfolioListProvider } from '../providers/portfolio-list/portfolio-list';
 //import { ComponentsModule } from '../components/components.module';
 
 // import { TeacherloginPage } from '../pages/teacherlogin/teacherlogin';
@@ -128,6 +129,7 @@ export const firebaseConfig = {
     PortfolioServiceProvider,
     StudentmarksServiceProvider,
     StudentPortfolioServiceProvider,
+    PortfolioListProvider,
     
   ]
 })

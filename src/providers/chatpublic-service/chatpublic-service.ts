@@ -49,7 +49,9 @@ export class ChatpublicServiceProvider {
   msgList: ChatMessage[] = [];
   Allfriends: AngularFirestoreCollection<any>; 
   Allmessages: AngularFirestoreCollection<any>;
+
   constructor(private homeservice:HomeServiceProvider,private events:Events, private afauth:AngularFireAuth, private afs:AngularFirestore, private loaderservice:LoaderserviceProvider) {
+
     console.log('Hello ChatpublicServiceProvider Provider');
 
     this.Allfriends = this.afs.collection('/chatroom');
@@ -251,12 +253,13 @@ duration: 1500
     return ref.orderBy('time','asc');
   }).get().take(1).forEach(snap=>{
     console.log(snap.docs.length)
+    let mydate = '';
     snap.forEach(snapshot=>{
 
 
       let tempchat:ChatMessage = snapshot.data() as ChatMessage;
       messages.push(tempchat);
-
+     
     })
     console.log('in getall');
     resolve(messages);
