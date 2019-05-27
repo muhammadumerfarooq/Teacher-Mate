@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, ViewController, AlertController } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Storage } from '@ionic/storage';
@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { HomeServiceProvider } from '../../providers/home-service/home-service';
 // import { ProfileServiceProvider } from '../../providers/profile-service/profile-service';
-
+import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 
 /**
  * Generated class for the ParentloginPage page.
@@ -21,14 +21,44 @@ import { HomeServiceProvider } from '../../providers/home-service/home-service';
   selector: 'page-parentlogin',
   templateUrl: 'parentlogin.html',
 })
-export class ParentloginPage {
+export class ParentloginPage implements OnInit  {
+  
+  ngOnInit(): void {
+    console.log('in init');
+    
+    let EMAILPATTERN = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
+    /*this.signupform = new FormGroup({
+      username: new FormControl('', [Validators.required, Validators.pattern('[a-zA-Z ]*'), Validators.minLength(4), Validators.maxLength(10)]),
+      password: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(12)]),
+      name: new FormControl('', [Validators.required, Validators.pattern('[a-zA-Z ]*'), Validators.minLength(4), Validators.maxLength(30)]),
+      email: new FormControl('', [Validators.required, Validators.pattern(EMAILPATTERN)]),
+    });
+    */
+  }
   parent_email: string = "";
   parent_password: string = "";
   emailverified: boolean = false;
   parentsarray: Observable<any[]>;
+ // userData = { "username": "", "password": "", "email": "", "name": "" };
+  signupform: FormGroup ;
 
-  constructor( private homeservice:HomeServiceProvider,private afs: AngularFirestore, private loader: LoaderserviceProvider, public loaderserivce: LoaderserviceProvider, public storage: Storage, public modalctrl: ModalController, public viewCtrl: ViewController, public navCtrl: NavController, public navParams: NavParams, public afauth: AngularFireAuth, public alertCtrl: AlertController) {
+  constructor( private formBuilder:FormBuilder,private homeservice:HomeServiceProvider,private afs: AngularFirestore, private loader: LoaderserviceProvider, public loaderserivce: LoaderserviceProvider, public storage: Storage, public modalctrl: ModalController, public viewCtrl: ViewController, public navCtrl: NavController, public navParams: NavParams, public afauth: AngularFireAuth, public alertCtrl: AlertController) {
 
+    let EMAILPATTERN = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
+    this.signupform = this.formBuilder.group({
+      email: [
+        '', Validators.compose([
+          Validators.pattern(EMAILPATTERN),
+          Validators.required
+        ])
+      ],
+      password: [
+        '', Validators.compose([
+        
+          Validators.required, Validators.minLength(6), Validators.maxLength(12)
+        ])
+      ]
+    });
 
     if (this.afauth.auth.currentUser != null || this.afauth.auth.currentUser != undefined) {
       if (this.afauth.auth.currentUser.emailVerified) {
@@ -54,6 +84,7 @@ export class ParentloginPage {
   }
 
   login() {
+    if (this.signupform.controls.email.valid && this.signupform.controls.name.valid){
     console.log(this.parent_email, " ", this.parent_password)
     // this.loginprovider.findteacher(tcredts);
     this.loader.loading = this.loader.loadingCtrl.create({
@@ -138,7 +169,9 @@ duration: 500
 
 
     });
-
+  }else{
+    this.presentAlert('Invalid Insertion! ','check again');
+  }
   }
 
 
@@ -164,7 +197,7 @@ duration: 500
         this.viewCtrl.dismiss(true);
         }
 
-      }else if (data.email != undefined || data.email != null){
+      }else if (data!=undefined && (data.email != undefined || data.email != null)){
         this.parent_email = data.email;
         this.parent_password = data.password
         this.emailverified = this.afauth.auth.currentUser.emailVerified;

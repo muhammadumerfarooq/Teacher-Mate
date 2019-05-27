@@ -12,37 +12,56 @@
       </div>
 
       <!-- Login form -->
-      <form class="list-form">
+      <form class="list-form" [formGroup]="signupform">
         <ion-item>
           <ion-label floating>
             <ion-icon name="mail" item-start class="text-primary"></ion-icon>
             Email
           </ion-label>
-          <ion-input type="email" [(ngModel)]="teacher_email" name="email"></ion-input>
+          <ion-input type="email" [(ngModel)]="teacher_email" [formControl]="signupform.controls['email']" name="email"></ion-input>
         </ion-item>
+
+        <div *ngIf="!signupform.controls.email.valid &&
+        signupform.controls.email.dirty" class="error">
+          Please enter a valid email.
+        </div>
 
         <ion-item>
           <ion-label floating>
             <ion-icon name="lock" item-start class="text-primary"></ion-icon>
             Password
           </ion-label>
-          <ion-input type="password" [(ngModel)]="teacher_password" name="password"></ion-input>
+          <ion-input type="password" [(ngModel)]="teacher_password" [formControl]="signupform.controls['password']" name="password"></ion-input>
         </ion-item>
-      </form>
+
+        <div *ngIf="!signupform.controls.password.valid &&
+        signupform.controls.password.dirty" class="error">
+          Please enter a valid password.
+        </div>
+
+
+
 
       <p text-right ion-text color="secondary" tappable (click)="forgotPass()"><strong>Forgot Password?</strong></p>
 
-      <div>
-        <button ion-button icon-start block color="dark" tappable (click)="login()">
+
+        <div *ngIf="signupform.controls.password.valid && signupform.controls.email.valid">
+          <button ion-button icon-start block color="dark" tappable (click)="login()">
           <ion-icon name="log-in"></ion-icon>
           SIGN IN
-        </button>
+          </button>
 
-        <p text-center ion-text color="secondary">Or Sign in with:</p>
+        </div>
 
-      
-      </div>
+        <div *ngIf="!signupform.controls.password.valid || !signupform.controls.email.valid">
+          <button ion-button icon-start block color="dark" tappable (click)="login()" disabled>
+          <ion-icon name="log-in"></ion-icon>
+          SIGN IN
+          </button>
 
+        </div>
+
+      </form>
 
       <!-- Other links -->
       <div text-center margin-top>

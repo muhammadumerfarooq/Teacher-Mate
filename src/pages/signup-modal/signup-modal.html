@@ -12,41 +12,67 @@
     </div>
 
     <!-- Login form -->
-    <form class="list-form">
+    <form class="list-form" [formGroup]="signupform">
       <ion-item>
         <ion-label floating>
           <ion-icon name="person" item-start class="text-primary" ></ion-icon>
           Name
         </ion-label>
-        <ion-input type="name" [(ngModel)] = "name" name="email" ></ion-input>
+        <ion-input type="name" [(ngModel)] = "name"  [formControl]="signupform.controls['username']"></ion-input>
       </ion-item>
+<div *ngIf="!signupform.controls.username.valid &&
+    signupform.controls.username.dirty" class="error">
+          Please enter a valid username.
+        </div>
+        
+
       <ion-item>
         <ion-label floating>
           <ion-icon name="mail" item-start class="text-primary"></ion-icon>
           Email
         </ion-label>
-        <ion-input type="email" [(ngModel)] = "email" name="email"></ion-input>
+        <ion-input type="email" [(ngModel)] = "email" name="email" [formControl]="signupform.controls['email']"></ion-input>
       </ion-item>
+<div *ngIf="!signupform.controls.email.valid &&
+    signupform.controls.email.dirty" class="error">
+          Please enter a valid email.
+        </div>
 
       <ion-item>
         <ion-label floating>
           <ion-icon name="lock" item-start class="text-primary"></ion-icon>
           Password
         </ion-label>
-        <ion-input type="password" [(ngModel)] = "password" name="password"></ion-input>
+        <ion-input type="password" [(ngModel)] = "password" name="password" [formControl]="signupform.controls['password']"></ion-input>
       </ion-item>
+        <div *ngIf="!signupform.controls.password.valid &&
+        signupform.controls.password.dirty" class="error">
+          Please enter a valid password.
+        </div>
+
+
+
+
+
+
+ <div *ngIf="signupform.controls.username.valid && signupform.controls.password.valid && signupform.controls.email.valid">
+          <button ion-button icon-start block color="dark" tappable (click)="register()">
+          <ion-icon name="log-in"></ion-icon>
+          REGISTER
+          </button>
+
+        </div>
+
+        <div *ngIf="!signupform.controls.username.valid || !signupform.controls.password.valid || !signupform.controls.email.valid">
+          <button ion-button icon-start block color="dark" tappable (click)="register()" disabled>
+          <ion-icon name="log-in"></ion-icon>
+          REGISTER
+          </button>
+
+        </div>
+
+
     </form>
-
-
-    <div>
-      <button ion-button icon-start block color="dark" tappable (click)="register()">
-        <ion-icon name="log-in"></ion-icon>
-        REGISTER
-      </button>
-    </div>
-
-
-
 
   </div>
     </div>

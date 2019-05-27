@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, ModalController, ViewController } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { LoaderserviceProvider } from '../../providers/loaderservice/loaderservice';
@@ -7,6 +7,8 @@ import { Storage } from '@ionic/storage';
 import { AngularFirestore, PersistenceSettingsToken } from 'angularfire2/firestore';
 import { Observable } from 'rxjs';
 import { HomeServiceProvider } from '../../providers/home-service/home-service';
+import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
+
 // import { ProfileServiceProvider } from '../../providers/profile-service/profile-service';
 /**
  * Generated class for the TeacherloginPage page.
@@ -22,16 +24,38 @@ import { HomeServiceProvider } from '../../providers/home-service/home-service';
 })
 
 
-export class TeacherloginPage {
+export class TeacherloginPage implements OnInit  {
+  
+  ngOnInit(): void {
+    console.log('in init');
 
+   
+
+
+  }
 
   teacher_email: string = "";
   teacher_password: string = "";
   emailverified: boolean = false;
   teachersarray: Observable<any[]>;
-
-  constructor(private homeservice: HomeServiceProvider, public afs: AngularFirestore, public storage: Storage, public modalctrl: ModalController, public viewCtrl: ViewController, public loginprovider: LoginserviceProvider, public alertCtrl: AlertController, public loader: LoaderserviceProvider, public navCtrl: NavController, public navParams: NavParams, public afauth: AngularFireAuth) {
-
+  signupform: FormGroup ;
+  
+  constructor(private formBuilder:FormBuilder,private homeservice: HomeServiceProvider, public afs: AngularFirestore, public storage: Storage, public modalctrl: ModalController, public viewCtrl: ViewController, public loginprovider: LoginserviceProvider, public alertCtrl: AlertController, public loader: LoaderserviceProvider, public navCtrl: NavController, public navParams: NavParams, public afauth: AngularFireAuth) {
+    let EMAILPATTERN = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
+    this.signupform = this.formBuilder.group({
+      email: [
+        '', Validators.compose([
+          Validators.pattern(EMAILPATTERN),
+          Validators.required
+        ])
+      ],
+      password: [
+        '', Validators.compose([
+        
+          Validators.required, Validators.minLength(6), Validators.maxLength(12)
+        ])
+      ]
+    });
 
     if (this.afauth.auth.currentUser != null || this.afauth.auth.currentUser != undefined) {
       if (this.afauth.auth.currentUser.emailVerified) {
@@ -40,6 +64,8 @@ export class TeacherloginPage {
     } else {
       this.emailverified = true;
     }
+    
+    
   }
 
   ionViewDidLoad() {
@@ -57,6 +83,7 @@ export class TeacherloginPage {
   }
 
   login() {
+    if (this.signupform.controls.email.valid && this.signupform.controls.password.valid){
     this.teachersarray = new Observable<any[]>();
 
     this.loader.loading = this.loader.loadingCtrl.create({
@@ -136,7 +163,9 @@ export class TeacherloginPage {
 
 
     });
-
+  }else{
+    this.presentAlert('Invalid insertion','Check inputs again')
+  }
   }
 
 
@@ -157,7 +186,7 @@ export class TeacherloginPage {
           this.viewCtrl.dismiss(true);
         }
 
-      }else if (data.email != undefined || data.email != null){
+      }else if (data!=undefined && ( data.email != undefined || data.email != null)){
         this.teacher_email = data.email;
         this.teacher_password = data.password
         this.emailverified = this.afauth.auth.currentUser.emailVerified;

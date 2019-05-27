@@ -53,6 +53,7 @@ export class NotificationsServiceProvider {
   Notifications: Array<notify>;
 
   constructor( private afs: AngularFirestore, private localstorage: Storage, private homeservice: HomeServiceProvider) {
+    this.Notifications = new Array<notify>();
 
  /*   this.localstorage.get('classteacher').then(val => {
       let teacheremail = val;
