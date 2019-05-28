@@ -84,7 +84,7 @@ export class ParentloginPage implements OnInit  {
   }
 
   login() {
-    if (this.signupform.controls.email.valid && this.signupform.controls.name.valid){
+    if (this.signupform.controls.email.valid && this.signupform.controls.password.valid){
     console.log(this.parent_email, " ", this.parent_password)
     // this.loginprovider.findteacher(tcredts);
     this.loader.loading = this.loader.loadingCtrl.create({
