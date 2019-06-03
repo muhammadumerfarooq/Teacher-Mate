@@ -258,7 +258,8 @@ try{
                 }
                 snap.forEach(snapshot=>{
                   if (snapshot.payload.doc.exists){
-                    let profile = snapshot.payload.doc.data() as student; 
+                    return resolve('exists');
+                   /* let profile = snapshot.payload.doc.data() as student; 
                     objectclass.datecreation = profile.datecreation;
                     this.afs.collection('students').doc(profile.datecreation).set(objectclass).then(() => {
 
@@ -269,6 +270,7 @@ try{
                       this.loaderservice.dismissloading();
                       return reject('error');
                     });
+                    */
                   }else{
                     this.afs.collection('students').doc(studentdata.datecreation).set(objectclass).then(() => {
 

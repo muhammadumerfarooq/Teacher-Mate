@@ -25,6 +25,7 @@ export class SingleQuiz {
   scheduledate: string;
   background: string;
   attempted: boolean;
+
   constructor() {
     this.attempted = false;
     this.quiztime = '';
@@ -58,7 +59,7 @@ export class TakeQuizPage {
   public blankTime = "00:00"
   public time = "00:00"
   public myanswers: QuizAnswer;
-
+  isDisabled : boolean = false;
   constructor(private answerservice: AnswerServiceProvider, private alertCtrl: AlertController, private viewctrl: ViewController, public navCtrl: NavController, public navParams: NavParams, private quizservice: QuizServiceProvider) {
 
     this.myanswers = new QuizAnswer();
@@ -156,7 +157,7 @@ export class TakeQuizPage {
             text: 'Yes',
             handler: () => {
               /// quiz again 
-
+              this.isDisabled = true;
               if (this.running) return;
               if (this.timeBegan === null) {
                 this.reset();
@@ -223,6 +224,18 @@ export class TakeQuizPage {
     if (this.time == this.myquiz.quiztime) {
       clearInterval(this.started); // interval closed
 
+      this.myanswers.quiztimetaken = this.time;
+      this.calculating_score();
+      this.reset();
+      this.myanswers.attempted = true;
+      this.myanswers.creationdate = new Date().toString();
+      this.presentAlert('You Scored ' + this.myanswers.score, ' out of ' + this.myanswers.questions.length);
+      this.answerservice.insert_Answer(this.myanswers).then(res => {
+
+        this.presentAlert('Your Quiz is Saved', '');
+      }).catch(err => {
+        this.presentAlert('Error Saving Quiz', ' ');
+      });
     }
 
   };

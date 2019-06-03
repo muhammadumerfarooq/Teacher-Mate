@@ -92,19 +92,19 @@
           <ion-col col-10>
             <ion-row class="question-details">
               <ion-col col-12>
-                <h2 class="question-text" (click)="openAnswers(quiz.questions)">{{ quiz.questions.question }}</h2>
+                <h2 class="question-text" >{{ quiz.questions.question }}</h2>
               </ion-col>
               <ion-item text-wrap *ngFor="let option of quiz.questions.options; let op=index"
                 [ngStyle]="{'border-bottom':'1px solid #dedede', 'color':'#FFF'}">
                 <!--     -->
                 <!-- <ion-col col-4 class="votes-details" *ngFor="let option of question.options; let op=index">
 -->
-                <div *ngIf="option.myanswer" class="div-true" (click)="selected_option(quizno, op)">
+                <div *ngIf="option.myanswer" class="div-true" (click)= "isDisabled ? selected_option(quizno, op) : null"  >
 
                   {{option.option}}
 
                 </div>
-                <div *ngIf="!option.myanswer" class="div-false" (click)="selected_option(quizno, op)">
+                <div *ngIf="!option.myanswer" class="div-false" (click)="isDisabled ? selected_option(quizno, op) : null">
 
                   {{option.option}}
 

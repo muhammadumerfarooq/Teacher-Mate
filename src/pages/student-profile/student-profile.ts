@@ -210,7 +210,7 @@ export class StudentProfilePage {
       });
     } else {
       this.studentservice.insertstudent_img(this.studentprofile, this.base64Image).then((res) => {
-        if (res == 'updated') {
+        if (res == 'exists') {
           this.presentAlert('Student updated ', 'Successfully');
 
         } else
