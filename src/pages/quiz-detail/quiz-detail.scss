@@ -173,14 +173,16 @@ page-quiz-detail {
   .div-true {
     border: solid thin $white-b;
     background-color: #74ADFA;
-    padding: 10px;
+    padding-top: 10px;
+    padding-left: 10px;
     border-radius: 10px;
   }
 
   .div-false {
     border: solid thin $white-b;
     background-color: #FC8B8B;
-    padding: 10px;
+    padding-top: 10px;
+    padding-left: 10px;
     border-radius: 10px;
   }
   

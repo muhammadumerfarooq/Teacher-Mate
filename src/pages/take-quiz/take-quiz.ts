@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, ViewController, AlertController, O
 import { QuizServiceProvider, Quiz, QuestionAnswer, OptionsAnswer, QuizAnswer, Question, Options } from '../../providers/quiz-service/quiz-service';
 import { isThisMinute } from 'date-fns';
 import { AnswerServiceProvider } from '../../providers/answer-service/answer-service';
+import { Platform } from 'ionic-angular/platform/platform';
 
 /**
  * Generated class for the TakeQuizPage page.
@@ -60,7 +61,11 @@ export class TakeQuizPage {
   public time = "00:00"
   public myanswers: QuizAnswer;
   isDisabled : boolean = false;
-  constructor(private answerservice: AnswerServiceProvider, private alertCtrl: AlertController, private viewctrl: ViewController, public navCtrl: NavController, public navParams: NavParams, private quizservice: QuizServiceProvider) {
+  constructor(private platform:Platform,private answerservice: AnswerServiceProvider, private alertCtrl: AlertController, private viewctrl: ViewController, public navCtrl: NavController, public navParams: NavParams, private quizservice: QuizServiceProvider) {
+
+
+   
+
 
     this.myanswers = new QuizAnswer();
     this.myquiz = new Quiz();
@@ -138,7 +143,34 @@ export class TakeQuizPage {
   }
 
   viewctrl_dismiss() {
-    this.viewctrl.dismiss();
+    let backAction = this.platform.registerBackButtonAction((res)=> {
+      console.log(res);
+      if (this.running){
+            const alert =  this.alertCtrl.create({
+            title: 'Confirm!',
+            message: 'Do you want to go back!!!',
+            buttons: [
+            {
+               text: 'Yes',
+               handler: () => {
+             
+            }
+            }, {
+               text: 'No',
+               handler: () => {
+                
+                 }
+               }
+            ]
+         });
+      
+         alert.present();
+        }else{
+          this.viewctrl.dismiss();
+        }
+        backAction();
+       },1)
+ 
   }
 
   start() {
@@ -194,6 +226,7 @@ export class TakeQuizPage {
     this.running = false;
     this.timeStopped = new Date();
     clearInterval(this.started);
+    this.isDisabled = false;
   }
   reset() {
     this.running = false;
@@ -222,7 +255,8 @@ export class TakeQuizPage {
       this.zeroPrefix(min, 2) + ":" +
       this.zeroPrefix(sec, 2); // + "." ;
     if (this.time == this.myquiz.quiztime) {
-      clearInterval(this.started); // interval closed
+     // clearInterval(this.started); // interval closed
+      this.stop();
 
       this.myanswers.quiztimetaken = this.time;
       this.calculating_score();

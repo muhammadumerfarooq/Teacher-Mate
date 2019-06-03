@@ -36,8 +36,7 @@
 
       <ion-col col-12 class="category-title" *ngIf="running">
 
-        <button class="circle-button circle-button-bg circle-button-red font-md" ion-button
-          (tap)="completequiz()">
+        <button class="circle-button circle-button-bg circle-button-red font-md" ion-button (tap)="completequiz()">
           {{time}} </button>
 
       </ion-col>
@@ -87,24 +86,53 @@
 
           <ion-col col-10>
             <ion-row class="question-details">
-              <ion-col col-12>
+              <ion-col col-10>
                 <h2 class="question-text" (click)="openAnswers(quiz.questions)">{{ quiz.questions.question }}</h2>
               </ion-col>
+
+              <ion-col col-2>
+                <button class="delete-button" ion-button small round clear icon-only color="primary">
+                  <ion-icon name="create"></ion-icon>
+                </button>
+              </ion-col>
+
+
               <ion-item text-wrap *ngFor="let option of quiz.questions.options; let op=index"
                 [ngStyle]="{'border-bottom':'1px solid #dedede', 'color':'#FFF'}">
                 <!--     -->
                 <!-- <ion-col col-4 class="votes-details" *ngFor="let option of question.options; let op=index">
 -->
-                <div *ngIf="option.isanswer" class="div-true">
 
-                  {{option.option}}
+                <ion-row class="question-details">
+                  <ion-col *ngIf="option.isanswer" class="div-true" col-12>
+                    {{option.option}}
+                  
+                    <button [ngStyle]="{'float':'right', 'color':'#FFF'}" ion-button small round clear icon-only >
+                      <ion-icon name="create"></ion-icon>
+                    </button>
+                    <button [ngStyle]="{'float':'right', 'color':'#FFF'}" ion-button small round clear icon-only>
+                      <ion-icon name="trash"></ion-icon>
+                    </button>
+                  </ion-col>
+                </ion-row>
 
-                </div>
-                <div *ngIf="!option.isanswer" class="div-false">
 
-                  {{option.option}}
+                <ion-row class="question-details">
+                  <ion-col *ngIf="!option.isanswer" class="div-false" col-12>
+                    {{option.option}}
+                     <button [ngStyle]="{'float':'right', 'color':'#FFF'}" ion-button small round clear icon-only >
+                      <ion-icon name="create"></ion-icon>
+                    </button>
+                    <button [ngStyle]="{'float':'right', 'color':'#FFF'}" ion-button small round clear icon-only >
+                      <ion-icon name="trash"></ion-icon>
+                    </button>
+                  </ion-col>
+                 
+                   
+              
+                </ion-row>
 
-                </div>
+
                 <!--  <ion-label text-wrap >{{option.option}}
                   </ion-label>
 

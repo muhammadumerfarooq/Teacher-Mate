@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController, AlertController, ModalController, Alert } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, AlertController, ModalController, Alert, Platform } from 'ionic-angular';
 
 import { Courses, Chapters, Topics, CourseProvider } from '../../providers/course/course';
 import { ClassServiceProvider } from '../../providers/class-service/class-service';
@@ -8,7 +8,6 @@ import { FileOpener } from '@ionic-native/file-opener';
 import { FilePath } from '@ionic-native/file-path';
 import { FileTransfer } from "@ionic-native/file-transfer";
 import { File } from '@ionic-native/file';
-import { Platform } from 'ionic-angular/platform/platform';
 import { DocumentViewer } from '@ionic-native/document-viewer';
 import { HomeServiceProvider } from '../../providers/home-service/home-service';
 // import { ProfileServiceProvider } from '../../providers/profile-service/profile-service';
@@ -39,7 +38,8 @@ export class CourseInfoPage {
   files = new Map();
 
   constructor(private alertCtrl: AlertController, private homeservice: HomeServiceProvider, private class_service: ClassServiceProvider, private modalctrl: ModalController, private documentview: DocumentViewer, private filetransfer: FileTransfer, private file: File, private plateform: Platform, private fileChooser: FileChooser, private filePath: FilePath, private alertctrl: AlertController, private fileOpener: FileOpener, private courseservice: CourseProvider, public navCtrl: NavController, public navParams: NavParams, private viewctrl: ViewController) {
-    console.log(this.homeservice.user)
+    
+  //  console.log(this.homeservice.user)
     this.courseservice.getcourses();
 
   }
