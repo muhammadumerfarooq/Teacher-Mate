@@ -599,6 +599,51 @@ else{
     });
   }
 
+
+  update_Quiz(quizes: Quiz) {
+    quizes.classname = this.homeservice.classroom;
+    quizes.classteacher = this.homeservice.classteacher;
+
+    return new Promise((resolve, reject) => {
+
+      this.loaderservice.loading = this.loaderservice.loadingCtrl.create({
+
+        content: `
+        <div class="custom-spinner-container">
+          <div class="custom-spinner-box"> loading... </div>
+        </div>`,
+
+      });
+
+      setTimeout(() => {
+
+        this.loaderservice.loading.present().then(() => {
+          const quiz = Object.assign({}, quizes);
+
+          for (let i = 0; i < quizes.questions.length; i++) {
+            quiz.questions[i] = Object.assign({}, quizes.questions[i]);
+
+            for (let j = 0; j < quizes.questions[i].options.length; j++) {
+              quiz.questions[i].options[j] = Object.assign({}, quizes.questions[i].options[j]);
+
+            }
+          }
+
+          this.afs.collection<Quiz>('quizes').doc(quizes.creationdate).update(quiz).then(() => {
+
+            this.loaderservice.dismissloading();
+            resolve('done');
+          }).catch(err => {
+            this.loaderservice.dismissloading();
+            reject('error');
+          });
+
+        });
+      }, 500);
+
+    });
+  }
+
   deleteQuiz(quiz: Quiz) {
     return new Promise((resolve, reject) => {
 

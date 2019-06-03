@@ -91,7 +91,7 @@
               </ion-col>
 
               <ion-col col-2>
-                <button class="delete-button" ion-button small round clear icon-only color="primary">
+                <button class="delete-button" ion-button small round clear icon-only color="primary" (click)="editquestion(quiz)">
                   <ion-icon name="create"></ion-icon>
                 </button>
               </ion-col>
@@ -107,10 +107,10 @@
                   <ion-col *ngIf="option.isanswer" class="div-true" col-12>
                     {{option.option}}
                   
-                    <button [ngStyle]="{'float':'right', 'color':'#FFF'}" ion-button small round clear icon-only >
+                    <button [ngStyle]="{'float':'right', 'color':'#FFF'}" ion-button small round clear icon-only (click)="optionedit(quiz,op)">
                       <ion-icon name="create"></ion-icon>
                     </button>
-                    <button [ngStyle]="{'float':'right', 'color':'#FFF'}" ion-button small round clear icon-only>
+                    <button [ngStyle]="{'float':'right', 'color':'#FFF'}" ion-button small round clear icon-only (click)="optiondelete(quiz,op)">
                       <ion-icon name="trash"></ion-icon>
                     </button>
                   </ion-col>
@@ -120,10 +120,10 @@
                 <ion-row class="question-details">
                   <ion-col *ngIf="!option.isanswer" class="div-false" col-12>
                     {{option.option}}
-                     <button [ngStyle]="{'float':'right', 'color':'#FFF'}" ion-button small round clear icon-only >
+                     <button [ngStyle]="{'float':'right', 'color':'#FFF'}" ion-button small round clear icon-only (click)="optionedit(quiz,op)>
                       <ion-icon name="create"></ion-icon>
                     </button>
-                    <button [ngStyle]="{'float':'right', 'color':'#FFF'}" ion-button small round clear icon-only >
+                    <button [ngStyle]="{'float':'right', 'color':'#FFF'}" ion-button small round clear icon-only (click)="optiondelete(quiz,op)">
                       <ion-icon name="trash"></ion-icon>
                     </button>
                   </ion-col>
