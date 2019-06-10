@@ -25,8 +25,8 @@
 
     <div class="stopwatch pt-3">
 
-      <ion-col col-12 class="category-title" *ngIf="!running && time == blankTime">
-        <button class="circle-button circle-button-bg font-md" ion-button (tap)="start()"> start </button>
+      <ion-col col-12 class="category-title" >
+        <button class="circle-button circle-button-bg font-md" ion-button disabled>  {{time}} </button>
 
         <!--           <span text-center class="spanfont">
     {{time}}
@@ -120,7 +120,7 @@
                 <ion-row class="question-details">
                   <ion-col *ngIf="!option.isanswer" class="div-false" col-12>
                     {{option.option}}
-                     <button [ngStyle]="{'float':'right', 'color':'#FFF'}" ion-button small round clear icon-only (click)="optionedit(quiz,op)>
+                     <button [ngStyle]="{'float':'right', 'color':'#FFF'}" ion-button small round clear icon-only (click)="optionedit(quiz,op)">
                       <ion-icon name="create"></ion-icon>
                     </button>
                     <button [ngStyle]="{'float':'right', 'color':'#FFF'}" ion-button small round clear icon-only (click)="optiondelete(quiz,op)">
@@ -167,8 +167,8 @@
 
 <ion-footer>
   <ion-toolbar>
-    <button ion-button block (click)="nextQuestion()" color="ask">
-      <b>Next Question</b>
+    <button ion-button block (click)="addQuestion()" color="ask">
+      <b>Add Question</b>
     </button>
   </ion-toolbar>
 </ion-footer>

@@ -1,7 +1,7 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar no-border-bottom color="primary">
     <ion-title>
-      <span>Updating {{ data }}</span>
+      <span>Updating {{ type }}</span>
     </ion-title>
     <ion-buttons start>
       <button ion-button (click)="dismiss()">
@@ -17,13 +17,13 @@
     <ion-row>
       <ion-col offset-1 col-10>
         <ion-item class="textarea-item">
-          <ion-label floating>Write your {{data}} here</ion-label>
-          <ion-textarea formControlName="question" rows="5"></ion-textarea>
+          <ion-label floating>Write your {{type}} here</ion-label>
+          <ion-textarea [(ngModel)]="question" formControlName="question" rows="5"></ion-textarea>
         </ion-item>
       </ion-col>
       <ion-col offset-1 col-10>
         <button ion-button block type="submit" [disabled]="!answerForm.valid" color="answer">
-          <b>{{data}}</b>
+          <b>{{type}}</b>
         </button>
       </ion-col>
     </ion-row>

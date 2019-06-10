@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, AlertController } from 'ionic-angular';
 import { QuizServiceProvider, Quiz, Question, Options } from '../../providers/quiz-service/quiz-service';
 import moment from 'moment';
+// import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 
 
 /**
@@ -69,11 +70,12 @@ export class CreateQuizPage {
     courseid: '',
     topicname: ''
   }
-  paymethods = 'creditcard';
 
   months: Array<month> = new Array<month>();
   days: Array<day> = new Array<day>();
   constructor(private alertctrl: AlertController, public viewctrl: ViewController, public navCtrl: NavController, public navParams: NavParams, private quizservice: QuizServiceProvider) {
+   
+    
     this.quizinfo = this.navParams.get('quizinfo');
     this.myquizes.questions = new Array<Question>();
     this.setDate();
@@ -154,7 +156,22 @@ export class CreateQuizPage {
   }
 
   addQuiz() {
-
+if (this.myquizes.quizname==''){
+  this.presentAlert('Quiz Name Cannot be Empty','');
+}else if (this.myquizes.quizdescription==''){
+  this.presentAlert('Quiz Description Cannot be Empty','');
+}else if (this.myquizes.quizdescription==''){
+  this.presentAlert('Quiz Description Cannot be Empty','');
+}else if (this.myquizes.quiztype==''){
+  this.presentAlert('Quiz Type Cannot be Empty','');
+}else if (this.myquizes.background==''){
+  this.presentAlert('Quiz Color Cannot be Empty','');
+}
+else if (this.myquizes.quiztype=='hard'){
+if (this.myquizes.quiztime==''){
+  this.presentAlert('Quiz Time Cannot be Empty','');
+}
+}else{
     this.quizservice.insert_Quiz(this.myquizes).then(val => {
 
       if (val == 'done') {
@@ -165,6 +182,7 @@ export class CreateQuizPage {
     }).catch(err => {
       this.presentAlert('Error! ', ' Quiz Not Added');
     });
+  }
   }
 
   presentAlert(alerttitle, alertsub) {
@@ -195,7 +213,7 @@ export class CreateQuizPage {
       console.log(start.diff(end, 'weeks'))
       let weekdiff = start.diff(end, 'weeks');
 
-      if (weekdiff <= 0 || weekdiff>1) {
+      if (weekdiff <= 0 || weekdiff > 1) {
         this.presentAlert('Error', ' Quiz must have Difference of 1 week between previous Quiz');
         this.mydate = '';
         this.mydate = null;
@@ -204,7 +222,7 @@ export class CreateQuizPage {
       }
 
     } else {
-      start = moment(new Date(), "YYYY-MM-DD").add(1,'weeks');
+      start = moment(new Date(), "YYYY-MM-DD").add(1, 'weeks');
 
       end = moment(this.mydate, "YYYY-MM-DD");
 
@@ -215,7 +233,7 @@ export class CreateQuizPage {
 
       let weekdiff = start.diff(end, 'weeks');
 
-      if (weekdiff < 0 || weekdiff >1 ) {
+      if (weekdiff < 0 || weekdiff > 1) {
         this.presentAlert('Error', ' Quiz must have Difference of 1 week between previous Quiz');
         this.mydate = '';
         this.mydate = null;
@@ -238,40 +256,40 @@ export class CreateQuizPage {
 
     this.myquizes.background = value;
     this.mycolor = value;
-   
+
   }
 
   typeselected(value: string) {
     console.log(value);
     this.myquizes.quiztype = value;
   }
-  delete_question(chap: number){
-    this.myquizes.questions.splice(chap,1);
+  delete_question(chap: number) {
+    this.myquizes.questions.splice(chap, 1);
 
   }
 
-  delete_option(chap: number, op: number){
-    this.myquizes.questions[chap].options.splice(op,1);
+  delete_option(chap: number, op: number) {
+    this.myquizes.questions[chap].options.splice(op, 1);
 
   }
-  setQuiztime(value:string){
+  setQuiztime(value: string) {
     console.log(value)
-    if (value == null || value == undefined || value == ''){
+    if (value == null || value == undefined || value == '') {
       this.quiztime = null;
-    }else{
-    let splitarray =this.quiztime.split(':');
-    console.log(splitarray);
-    this.myquizes.quiztime = splitarray[1]+":"+splitarray[2];
+    } else {
+      let splitarray = this.quiztime.split(':');
+      console.log(splitarray);
+      this.myquizes.quiztime = splitarray[1] + ":" + splitarray[2];
     }
   }
 
-  cleardate(){
+  cleardate() {
     console.log('cancel clicked')
     this.mydate = null;
-  this.myquizes.scheduledate = '';
+    this.myquizes.scheduledate = '';
   }
 
-  cleartime(){
+  cleartime() {
     this.quiztime = null;
     this.myquizes.quiztime = '';
   }

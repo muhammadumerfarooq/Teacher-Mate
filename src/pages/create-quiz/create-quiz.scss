@@ -1,4 +1,13 @@
 page-create-quiz {
+  .error {
+    color: rgb(223, 62, 62);
+    font-size: 1.2em;
+  }
+
+  .error1 {
+    color: rgb(75, 75, 75);
+    border-bottom: 1px solid #ff0000;
+  }
   .content{
     background: url("../assets/img/bg.jpg") no-repeat;
   }

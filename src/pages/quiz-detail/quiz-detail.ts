@@ -249,31 +249,8 @@ export class QuizDetailPage {
 
   }
 
-  nextQuestion() {
-    if (this.quizno >= 0 && this.quizno + 1 < this.myquiz.questions.length) {
-      this.quizno++;
-      let myquestion: QuestionAnswer = new QuestionAnswer();
-      myquestion.question = this.myquiz.questions[this.quizno].question;
-
-      for (let j = 0; j < this.myquiz.questions[this.quizno].options.length; j++) {
-
-        let myoption: OptionsAnswer = new OptionsAnswer();
-
-        myoption.isanswer = this.myquiz.questions[this.quizno].options[j].isanswer
-        myoption.myanswer = false;
-        myoption.option = this.myquiz.questions[this.quizno].options[j].option
-
-        myquestion.options.push(myoption)
-
+  addQuestion() {
       }
-      //  this.quiz = new SingleQuiz();
-      this.quiz.questions = myquestion;
-      //      this.quizno++;
-
-    } else {
-      this.presentAlert('No more Questions ', ' :) ');
-    }
-  }
 
   backQuestion() {
 
@@ -324,7 +301,7 @@ export class QuizDetailPage {
   }
 
   editquestion(quiz: SingleQuiz) {
-    let edit_answer_modal = this.modalCtrl.create(EditOptionPage,{'type':'question'});
+    let edit_answer_modal = this.modalCtrl.create('EditOptionPage',{'type':'question'});
     edit_answer_modal.onDidDismiss(data => {
       if (data != true) {
 
@@ -352,7 +329,7 @@ export class QuizDetailPage {
 
   optionedit(quiz: SingleQuiz, op: number) {
 
-    let edit_answer_modal = this.modalCtrl.create(EditOptionPage, {'type':'option'});
+    let edit_answer_modal = this.modalCtrl.create('EditOptionPage', {'type':'option'});
     edit_answer_modal.onDidDismiss(data => {
       if (data != true) {
         let index = 0;
@@ -362,8 +339,8 @@ export class QuizDetailPage {
               }
             })
 
-        this.quiz.questions.options[op] = data;
-        this.myquiz.questions[index].options[op] = data;
+        this.quiz.questions.options[op].option = data;
+        this.myquiz.questions[index].options[op].option = data;
         this.quizservice.update_Quiz(this.myquiz).then(res => {
           this.presentAlert('Quiz Option Updated Successfully  ', ' ');
 
@@ -390,7 +367,12 @@ export class QuizDetailPage {
         {
           text: 'Yes',
           handler: () => {
+            if (this.quiz.questions.options.length == 1){
+              this.presentAlert ('cannot delete the only option from question','');
+            }else
+            {
 
+            
             let index = 0;
             this.myquiz.questions.forEach(question => {
               if (question.question == this.quiz.questions.question) {
@@ -398,8 +380,15 @@ export class QuizDetailPage {
               }
             })
            this.myquiz.questions[index].options.splice(op,1);
-            this.quiz.questions.options.splice(op,1);
-      
+            
+           this.quiz.questions.options.splice(op,1);
+           this.quizservice.update_Quiz(this.myquiz).then(res => {
+            this.presentAlert('Quiz Option Updated Successfully  ', ' ');
+  
+          }).catch(err => {
+            this.presentAlert('Error!! ', ' quiz option not updated ');
+          });
+          }
           }
         }
       ]

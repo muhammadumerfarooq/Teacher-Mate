@@ -19,16 +19,17 @@ export class EditOptionPage {
 
   answerForm: FormGroup;
   question:string = "";
+  type:string = "";
   constructor(
     public navParams: NavParams,
     public viewCtrl: ViewController,
 
   ) {
     this.answerForm = new FormGroup({
-      answer: new FormControl(this.question, Validators.required)
+      question: new FormControl(this.question, Validators.required)
     })
     
-     let data = navParams.get('type');
+      this.type = navParams.get('type');
      
     // this._mode = isPresent(data) && isPresent(data.mode) ? data.mode : '';
     // this._question_id = isPresent(data) && isPresent(data.questionId) ? data.questionId : '';
