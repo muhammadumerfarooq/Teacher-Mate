@@ -34,7 +34,7 @@ export class Myfeed {
 */
 @Injectable()
 export class PostProvider {
-  feed: Myfeed;
+  newfeed: Myfeed;
   anfeeds: AngularFirestoreCollection<Myfeed>;
   Feeds: Array<Myfeed> = new Array<Myfeed>();
   allfeeds: AngularFirestoreCollection<Myfeed>;
@@ -155,29 +155,29 @@ export class PostProvider {
 
           let notifypromise = this.postfeednotification(notifications);
 
-          this.feed = new Myfeed();
-          this.feed.classid = post.classid;
-          this.feed.comments = post.comments;
-          this.feed.description = post.description;
-          this.feed.likes = post.likes;
-          this.feed.publisheddate = notifications.publisheddate;
-          this.feed.teacheremail = post.teacheremail;
-          this.feed.title = post.title;
-          this.feed.userurl = post.userurl;
+          this.newfeed = new Myfeed();
+          this.newfeed.classid = post.classid;
+          this.newfeed.comments = post.comments;
+          this.newfeed.description = post.description;
+          this.newfeed.likes = post.likes;
+          this.newfeed.publisheddate = notifications.publisheddate;
+          this.newfeed.teacheremail = post.teacheremail;
+          this.newfeed.title = post.title;
+          this.newfeed.userurl = post.userurl;
           const id = this.afs.createId();
           const pictures = storage().ref('post/' + id);
           pictures.putString(post.img, 'data_url').then(() => {
 
             storage().ref().child('post/' + id).getDownloadURL().then((url) => {
 
-              this.feed.imgurl = url;
+              this.newfeed.imgurl = url;
 
-              const objectfeed = Object.assign({}, this.feed);
-              objectfeed.comments = Object.assign({}, this.feed.comments);
-              objectfeed.likes = Object.assign({}, this.feed.likes);
+              const objectfeed = Object.assign({}, this.newfeed);
+              objectfeed.comments = Object.assign({}, this.newfeed.comments);
+              objectfeed.likes = Object.assign({}, this.newfeed.likes);
 
               notifypromise.then(result => {
-                this.afs.collection<Myfeed>('feeds').doc(this.feed.publisheddate.toString()).set(objectfeed).then(() => {
+                this.afs.collection<Myfeed>('feeds').doc(this.newfeed.publisheddate.toString()).set(objectfeed).then(() => {
 
                   this.loader.dismissloading();
                   return resolve('resolve');

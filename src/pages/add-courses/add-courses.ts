@@ -37,7 +37,7 @@ export class AddCoursesPage {
   files = new Map();
 
   constructor(private alertCtrl:AlertController,private homeservice: HomeServiceProvider, private modalctrl: ModalController, private documentview: DocumentViewer, private filetransfer: FileTransfer, private file: File, private plateform: Platform, private fileChooser: FileChooser, private filePath: FilePath, private alertctrl: AlertController, private fileOpener: FileOpener, private courseservice: CourseProvider, private classprovider: ClassServiceProvider, public navCtrl: NavController, public navParams: NavParams, private viewctrl: ViewController) {
-
+    this.courseservice.getcourses();
 
     // this.topics.push({'value':''});
     //  this.mycourses.Chapters.push(new Chapters);
@@ -134,8 +134,19 @@ export class AddCoursesPage {
     this.mycourses.classname = this.homeservice.classroom; //this.classprovider.classname;
 
     //    this.courseservice.insert_course(this.mycourses)
-
-
+    let chaptercheck: boolean = false;
+    let chaptername: string = '';
+    this.courseservice.allcourses.forEach(course=>{
+      course.Chapters.forEach(chap=>{
+        this.mycourses.Chapters.forEach(cour=>{
+          if (cour.value.trim() == chap.value.trim()){
+            chaptername = chap.value;
+chaptercheck = true;
+          }
+        })
+      })
+    });
+    if (chaptercheck == false){
     var modalPage = this.modalctrl.create('CourseDetailsPage', { mycourses: this.mycourses });
     modalPage.onDidDismiss(data => {
       if (data == true) {
@@ -146,6 +157,9 @@ export class AddCoursesPage {
       }
     });
     modalPage.present();
+  }else{
+this.presentAlert('Error! Chapter Name '+chaptername, ' already exists in the Course');
+  }
   }
 
 

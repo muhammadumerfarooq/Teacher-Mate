@@ -52,7 +52,6 @@ import { StudentPortfolioServiceProvider } from '../providers/student-portfolio-
 import { SharedModule } from '../pages/shared-modules';
 import { PortfolioListProvider } from '../providers/portfolio-list/portfolio-list';
 //import { ComponentsModule } from '../components/components.module';
-
 // import { TeacherloginPage } from '../pages/teacherlogin/teacherlogin';
 // import { ParentloginPage } from '../pages/parentlogin/parentlogin';
 
@@ -69,6 +68,7 @@ export const firebaseConfig = {
   declarations: [
     MyApp,
     HomePage,
+    
    // ProgressBarComponent
   ],
   imports: [

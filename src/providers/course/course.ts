@@ -249,7 +249,7 @@ duration: 500
 
   }
 
-  delete_course(courses: Courses){
+  update_course(courses: Courses){
    
     const course= Object.assign({}, courses);
     course.Chapters = Object.assign({},course.Chapters);
@@ -304,7 +304,7 @@ duration: 500
 
   }
 
-  delete_all(creationdate:string){
+  delete_course(creationdate:string){
    return new Promise((resolve,reject)=>{
      
     this.loaderservice.loading = this.loaderservice.loadingCtrl.create({
@@ -341,8 +341,8 @@ duration: 500
 
   }
 
-  makeFileIntoBlob(_imagePath, name, type) {
-    var window;
+  makeFileIntoBlob(_imagePath:string, name:string, type:string) {
+    // var window;
     // INSTALL PLUGIN - cordova plugin add cordova-plugin-file
     return new Promise((resolve, reject) => {
       this.fileservice.resolveLocalFilesystemUrl(_imagePath).then((fileEntry: any) => {

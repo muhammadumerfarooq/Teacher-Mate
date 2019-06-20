@@ -74,6 +74,7 @@
   },
   "devDependencies": {
     "@ionic/app-scripts": "^3.2.3",
+    "grunt-angular-architecture-graph": "^0.2.7",
     "typescript": "~2.6.2"
   },
   "description": "An Ionic project",

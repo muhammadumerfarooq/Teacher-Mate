@@ -38,14 +38,13 @@ export class ParentloginPage implements OnInit  {
   parent_email: string = "";
   parent_password: string = "";
   emailverified: boolean = false;
-  parentsarray: Observable<any[]>;
  // userData = { "username": "", "password": "", "email": "", "name": "" };
-  signupform: FormGroup ;
+  loginform: FormGroup ;
 
-  constructor( private formBuilder:FormBuilder,private homeservice:HomeServiceProvider,private afs: AngularFirestore, private loader: LoaderserviceProvider, public loaderserivce: LoaderserviceProvider, public storage: Storage, public modalctrl: ModalController, public viewCtrl: ViewController, public navCtrl: NavController, public navParams: NavParams, public afauth: AngularFireAuth, public alertCtrl: AlertController) {
+  constructor( private formBuilder:FormBuilder,private homeservice:HomeServiceProvider,private afs: AngularFirestore, private loader: LoaderserviceProvider, public storage: Storage, public modalctrl: ModalController, public viewCtrl: ViewController, public navCtrl: NavController, public navParams: NavParams, public afauth: AngularFireAuth, public alertCtrl: AlertController) {
 
     let EMAILPATTERN = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
-    this.signupform = this.formBuilder.group({
+    this.loginform = this.formBuilder.group({
       email: [
         '', Validators.compose([
           Validators.pattern(EMAILPATTERN),
@@ -84,7 +83,7 @@ export class ParentloginPage implements OnInit  {
   }
 
   login() {
-    if (this.signupform.controls.email.valid && this.signupform.controls.password.valid){
+    if (this.loginform.controls.email.valid && this.loginform.controls.password.valid){
     console.log(this.parent_email, " ", this.parent_password)
     // this.loginprovider.findteacher(tcredts);
     this.loader.loading = this.loader.loadingCtrl.create({

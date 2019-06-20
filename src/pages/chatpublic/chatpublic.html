@@ -22,8 +22,11 @@
 
       <div *ngIf="msg.time.seconds * 1000 && ( index == 0 ||  (msg.time.seconds * 1000 | date:'dd/MM/yyyy') 
         !=  (this.chatService.msgList[index-1].time.seconds * 1000 | date:'dd/MM/yyyy'))">
-        <h3 class="search-query">{{ msg.time.seconds * 1000  | date:'dd/MM/yyyy'}}</h3>
+        <h3 class="search-query">{{  msg.time.seconds * 1000  | relativeTime }}
+          {{ msg.time.seconds * 1000  | date:'dd/MM/yyyy'}}</h3>
       </div>
+
+     
 
       <img class="user-img" [src]="msg.userAvatar" onError="this.src='../../assets/img/person.png';" alt="...">
       <ion-spinner name="dots" *ngIf="msg.status === 'pending'"></ion-spinner>
@@ -44,13 +47,16 @@
 
 
 
-          <p>
+          <p [ngStyle]="{'font-size':'1.2em'}">
             {{msg.userName}} </p>
-            <!--&nbsp;&nbsp;&nbsp;{{ msg.time  | date:'dd/MM/yyyy(EEE) - hh:mmaaa'}}</p>-->
+          <!--&nbsp;&nbsp;&nbsp;{{ msg.time  | date:'dd/MM/yyyy(EEE) - hh:mmaaa'}}</p>-->
         </div>
         <div class="msg-content">
           <span class="triangle"></span>
-          <p class="line-breaker ">{{msg.message}}</p>
+          <p class="line-breaker ">{{msg.message}} 
+                              <span [ngStyle]="{'font-size':'0.75em','white-space':'nowrap'}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ msg.time.seconds * 1000   | date:'h:mm a'}}</span>
+
+          </p>
         </div>
       </div>
     </div>

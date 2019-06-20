@@ -7,13 +7,13 @@ import distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
  * See https://angular.io/api/core/Pipe for more info on Angular Pipes.
  */
 @Pipe({
-  name: 'relativeTime',
+  name: 'relativeTime'
 })
 export class RelativeTimePipe implements PipeTransform {
   /**
    * Takes a value and makes it lowercase.
    */
-  transform(value: string, ...args) {
+  transform(value: string) {
     return distanceInWordsToNow(new Date(value), { addSuffix: true });
   }
 }

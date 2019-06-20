@@ -78,8 +78,7 @@ export class HomeServiceProvider {
   classroomdoc: AngularFirestoreCollection<classroom>;
 
 
-  homeclass: Array<any> = [];
-  home: Array<any> = [];
+
   myclassroom: Array<classroom> = [];
 
   classfound: boolean = false;

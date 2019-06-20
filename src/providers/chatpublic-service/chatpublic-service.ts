@@ -48,7 +48,7 @@ export class ChatpublicServiceProvider {
 
   msgList: ChatMessage[] = [];
   Allfriends: AngularFirestoreCollection<any>; 
-  Allmessages: AngularFirestoreCollection<any>;
+  // Allmessages: AngularFirestoreCollection<any>;
 
   constructor(private homeservice:HomeServiceProvider,private events:Events, private afauth:AngularFireAuth, private afs:AngularFirestore, private loaderservice:LoaderserviceProvider) {
 

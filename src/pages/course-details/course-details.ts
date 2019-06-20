@@ -4,6 +4,8 @@ import { Courses, CourseProvider } from '../../providers/course/course';
 import { FileTransfer } from "@ionic-native/file-transfer";
 import { File } from '@ionic-native/file';
 import { FileOpener } from '@ionic-native/file-opener';
+import { notify, NotificationsServiceProvider } from '../../providers/notifications-service/notifications-service';
+import { HomeServiceProvider } from '../../providers/home-service/home-service';
 
 /**
  * Generated class for the CourseDetailsPage page.
@@ -22,7 +24,7 @@ export class CourseDetailsPage {
  showLevel1 = null;
  showLevel2 = null;
 
- constructor(private file:File, private filetransfer:FileTransfer, private fileOpener:FileOpener ,private plateform:Platform,private viewctrl:ViewController,public navCtrl: NavController, public navParams: NavParams, private courseservice:CourseProvider) {
+ constructor(private notifyservice:NotificationsServiceProvider,private homeservice:HomeServiceProvider,private file:File, private filetransfer:FileTransfer, private fileOpener:FileOpener ,private plateform:Platform,private viewctrl:ViewController,public navCtrl: NavController, public navParams: NavParams, private courseservice:CourseProvider) {
     this.mycourses = this.navParams.get('mycourses');
     
     
@@ -59,10 +61,36 @@ export class CourseDetailsPage {
   };
 
   addSyllabus(){
+
     this.courseservice.insert_course(this.mycourses).then(res=>{
       if (res != 'inserted'){
       this.viewctrl.dismiss(false);
       }else{
+        
+    let notifications: notify = new notify();
+
+    notifications.classname = this.mycourses.classname;
+    notifications.classteacher = this.mycourses.classteacher;
+    notifications.feedtitle = 'New Course Added';
+    notifications.seen = 'false';
+    notifications.userurl = this.homeservice.userprofile.imgurl;
+    notifications.message = this.homeservice.userprofile.username + ' added new course ';
+    notifications.publisheddate = new Date().getTime().toString();
+    notifications.useremail = this.homeservice.userprofile.useremail;
+
+    this.notifyservice.insertnotification(notifications).then(res=>{
+      this.viewctrl.dismiss(true);
+    }).catch(err=>{
+      this.courseservice.delete_course(this.mycourses.creationdate).then(res=>{
+        this.viewctrl.dismiss(false);
+
+      }).catch(err=>{
+
+      this.viewctrl.dismiss(false);
+
+      });
+      this.viewctrl.dismiss(false);
+    });
         this.viewctrl.dismiss(true);
       }
     }).catch(err=>{

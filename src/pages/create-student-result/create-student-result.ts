@@ -20,12 +20,9 @@ import { StudentmarksServiceProvider } from '../../providers/studentmarks-servic
 export class CreateStudentResultPage {
   showLevel1 = null;
   showLevel2 = null;
-  data = false;
 
-  pages: any;
 
   classresults: classresult;
-  files = new Map();
   colorCode = 'white';
   duplicatename = '';
 

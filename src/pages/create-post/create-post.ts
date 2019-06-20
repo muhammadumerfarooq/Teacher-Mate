@@ -56,7 +56,7 @@ export class CreatePostPage {
     fullpath: '',
     filetype: ''
   };
-  constructor(private homeservice:HomeServiceProvider, private fileChooser: FileChooser, private filePath: FilePath, private fileOpener: FileOpener, private storage: Storage, private modalctrl: ModalController, private camera: Camera, private image: ImagePicker, public navCtrl: NavController, public navParams: NavParams, private alertctrl: AlertController, private loader: LoaderserviceProvider) {
+  constructor(private cropservice:Crop,private homeservice:HomeServiceProvider, private fileChooser: FileChooser, private filePath: FilePath, private fileOpener: FileOpener, private storage: Storage, private modalctrl: ModalController, private camera: Camera, private image: ImagePicker, public navCtrl: NavController, public navParams: NavParams, private alertctrl: AlertController, private loader: LoaderserviceProvider) {
   this.mypost.filetype = '';
    this.filename.name = "";
    this.filename.fullpath = "";
@@ -190,7 +190,7 @@ export class CreatePostPage {
 
           this.mypost.img = (base64Image);
           this.mypost.filetype = 'img';
-
+          this.cropimage();
         }).catch(err => {
           this.presentAlert('error', err);
         })
@@ -198,6 +198,19 @@ export class CreatePostPage {
     catch (exception) {
       this.presentAlert('error', exception);
     }
+  }
+
+  cropimage() {
+    this.cropservice
+      .crop(this.mypost.img, { quality: 100 })
+      .then((newImage) => {
+        let base64Image = 'data:image/jpeg;base64,' + newImage;
+        console.log(newImage)
+        this.mypost.img = (base64Image);
+      }).catch(error => {
+        console.error("Error cropping image", error)
+        this.presentAlert('error', error);
+      })
   }
   presentAlert(alerttitle, alertsub) {
     let alert = this.alertctrl.create({

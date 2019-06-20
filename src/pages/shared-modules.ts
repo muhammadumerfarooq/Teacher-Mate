@@ -1,15 +1,18 @@
 import { NgModule } from '@angular/core';
 
 import { ProgressBarComponent } from './progress-bar/progress-bar';
+import { RelativeTimePipe } from '../pipes/relative-time/relative-time';
 
 @NgModule({
   imports: [
   ],
   declarations: [
-    ProgressBarComponent
+    ProgressBarComponent,
+    RelativeTimePipe
   ],
   exports: [
-    ProgressBarComponent
+    ProgressBarComponent,
+    RelativeTimePipe
   ]
 })
 

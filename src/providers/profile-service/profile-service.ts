@@ -151,7 +151,7 @@ export class ProfileServiceProvider {
   }
 
 
-  getprofile(docid, email) {
+  getprofile(docid:string, email:string) {
     this.user = docid;
     this.useremail = email;
 
@@ -169,7 +169,7 @@ export class ProfileServiceProvider {
 
   }
 
-  edituser(user, email, name){
+  edituser(user:string, email:string, name:string){
     return new Promise((resolve, reject) => {
 
       this.afs.doc(user + "/" + email).snapshotChanges().take(1).forEach(snap => {
@@ -217,7 +217,7 @@ export class ProfileServiceProvider {
     });
 
   }
-  editprofile(user: string, email, name,imguri) {
+  editprofile(user: string, email:string, name:string,imguri:string) {
 
     return new Promise((resolve, reject) => {
 

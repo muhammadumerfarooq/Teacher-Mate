@@ -109,44 +109,16 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit() {
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
-
-    // console.log(this.fcm);
-
-    //   this.initFCM();
+ 
   }
 
   ionViewWillEnter() {
-    // this.search.pickup = "Rio de Janeiro, Brazil";
-    // this.search.dropOff = "Same as pickup";
+  
 
 
 
   }
 
-  // go to result page
-  doSearch() {
-    //  this.nav.push(TripsPage);
-  }
-
-  // choose place
-  choosePlace(from) {
-    //  this.nav.push(SearchLocationPage, from);
-  }
-
-  // to go account page
-  goToAccount() {
-    //  this.nav.push(SettingsPage);
-  }
-
-  presentNotifications(myEvent) {
-    // console.log(myEvent);
-    // let popover = this.popoverCtrl.create(NotificationsPage);
-    // popover.present({
-    //   ev: myEvent
-    // });
-  }
 
 
   viewClassroom(classname: any, classteacher: any) {
@@ -279,7 +251,7 @@ export class HomePage implements OnInit {
             console.log('Create clicked');
             console.log(data);
             let classname = '';
-            let subject = '';
+            // let subject = '';
             let section = '';
             if (data.classname == '') {
               classname = data.classname;

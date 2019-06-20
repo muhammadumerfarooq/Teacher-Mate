@@ -45,7 +45,7 @@ export class SubmitPostPage {
     notifications.feedtitle = this.mypost.title;
     notifications.seen = 'false';
     notifications.userurl = this.homeservice.userprofile.imgurl;
-    notifications.message = this.homeservice.userprofile.useremail + ' added a post ';
+    notifications.message = this.homeservice.userprofile.username + ' added a post ';
     notifications.publisheddate = new Date().getTime().toString();
     notifications.useremail = this.homeservice.userprofile.useremail;
 

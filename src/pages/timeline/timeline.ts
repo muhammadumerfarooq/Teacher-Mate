@@ -77,7 +77,7 @@ export class TimelinePage {
         });
       }, (err) => { console.log(err) });
   }
-
+  
   reduceImages(selected_pictures: any): any {
     return selected_pictures.reduce((promise: any, item: any) => {
       return promise.then((result) => {

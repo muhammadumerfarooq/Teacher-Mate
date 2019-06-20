@@ -25,7 +25,6 @@ import { HomeServiceProvider } from '../../providers/home-service/home-service';
   templateUrl: 'course-info.html',
 })
 export class CourseInfoPage {
-  downloadSrc = "https://firebasestorage.googleapis.com/v0/b/wired-coffee-4f603.appspot.com/o/blob%2FfgTdNYr7tDyITjZt66lzAmazon.com%20-%20Order%20112-8920059-1225843.pdf?alt=media&token=3f0bf1a9-fe9b-4a76-9738-6bc6a03b7e3c";
 
 
   showLevel1 = null;
@@ -220,7 +219,7 @@ export class CourseInfoPage {
 
             }
 
-            this.courseservice.delete_course(tempcourse).then(res => {
+            this.courseservice.update_course(tempcourse).then(res => {
               this.presentAlert('Topic Deleted', '');
 
             }).catch(err => {
@@ -285,7 +284,7 @@ export class CourseInfoPage {
 
               }
 
-              this.courseservice.delete_course(tempcourse).then(res => {
+              this.courseservice.update_course(tempcourse).then(res => {
                 this.presentAlert('Chapter Deleted', '');
 
               }).catch(err => {
@@ -293,7 +292,7 @@ export class CourseInfoPage {
               });
             }
             else {
-              this.courseservice.delete_all(this.courseservice.allcourses[courseindex].creationdate).then(res => {
+              this.courseservice.delete_course(this.courseservice.allcourses[courseindex].creationdate).then(res => {
                 this.presentAlert('Chapter Deleted', '');
 
               }).catch(err => {

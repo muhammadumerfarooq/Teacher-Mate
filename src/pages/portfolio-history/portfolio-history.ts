@@ -63,7 +63,7 @@ refresher: any;
     var modalPage = this.modalctrl.create('HistoryDetailPage', { folio: folio });
     modalPage.onDidDismiss(data => {
       if (data == true) {
-        console.log(data + " chat page ")
+
   
       }
   

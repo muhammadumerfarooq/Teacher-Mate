@@ -37,12 +37,12 @@ export class TeacherloginPage implements OnInit  {
   teacher_email: string = "";
   teacher_password: string = "";
   emailverified: boolean = false;
-  teachersarray: Observable<any[]>;
-  signupform: FormGroup ;
+
+  loginform: FormGroup ;
   
   constructor(private formBuilder:FormBuilder,private homeservice: HomeServiceProvider, public afs: AngularFirestore, public storage: Storage, public modalctrl: ModalController, public viewCtrl: ViewController, public loginprovider: LoginserviceProvider, public alertCtrl: AlertController, public loader: LoaderserviceProvider, public navCtrl: NavController, public navParams: NavParams, public afauth: AngularFireAuth) {
     let EMAILPATTERN = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
-    this.signupform = this.formBuilder.group({
+    this.loginform = this.formBuilder.group({
       email: [
         '', Validators.compose([
           Validators.pattern(EMAILPATTERN),
@@ -83,8 +83,8 @@ export class TeacherloginPage implements OnInit  {
   }
 
   login() {
-    if (this.signupform.controls.email.valid && this.signupform.controls.password.valid){
-    this.teachersarray = new Observable<any[]>();
+    if (this.loginform.controls.email.valid && this.loginform.controls.password.valid){
+   
 
     this.loader.loading = this.loader.loadingCtrl.create({
 

@@ -12,7 +12,7 @@
       </div>
 
       <!-- Login form -->
-      <form class="list-form" [formGroup]="signupform">
+      <form class="list-form" [formGroup]="loginform">
         <!--<ion-item>
         <ion-label floating>
           <ion-icon name="mail" item-start class="text-primary" formControlName="email" [class.error1]="!signupform.controls.email.valid && signupform.controls.email.dirty"></ion-icon>
@@ -31,12 +31,12 @@
               -->
             Email
           </ion-label>
-          <ion-input type="email" [(ngModel)]="parent_email" [formControl]="signupform.controls['email']" name="email">
+          <ion-input type="email" [(ngModel)]="parent_email" [formControl]="loginform.controls['email']" name="email">
           </ion-input>
         </ion-item>
 
-        <div *ngIf="!signupform.controls.email.valid &&
-    signupform.controls.email.dirty" class="error">
+        <div *ngIf="!loginform.controls.email.valid &&
+    loginform.controls.email.dirty" class="error">
           Please enter a valid email.
         </div>
         <!---->
@@ -45,12 +45,12 @@
             <ion-icon name="lock" item-start class="text-primary"></ion-icon>
             Password
           </ion-label>
-          <ion-input type="password" [(ngModel)]="parent_password" [formControl]="signupform.controls['password']"
+          <ion-input type="password" [(ngModel)]="parent_password" [formControl]="loginform.controls['password']"
             name="password"></ion-input>
         </ion-item>
 
-        <div *ngIf="!signupform.controls.password.valid &&
-        signupform.controls.password.dirty" class="error">
+        <div *ngIf="!loginform.controls.password.valid &&
+        loginform.controls.password.dirty" class="error">
           Please enter a valid password.
         </div>
 
@@ -58,7 +58,7 @@
 
         <p text-right ion-text color="secondary" tappable (click)="forgotPass()"><strong>Forgot Password?</strong></p>
 
-        <div *ngIf="signupform.controls.password.valid && signupform.controls.email.valid">
+        <div *ngIf="loginform.controls.password.valid && loginform.controls.email.valid">
           <button ion-button icon-start block color="dark" tappable (click)="login()">
           <ion-icon name="log-in"></ion-icon>
           SIGN IN
@@ -66,7 +66,7 @@
 
         </div>
 
-        <div *ngIf="!signupform.controls.password.valid || !signupform.controls.email.valid">
+        <div *ngIf="!loginform.controls.password.valid || !loginform.controls.email.valid">
           <button ion-button icon-start block color="dark" tappable (click)="login()" disabled>
           <ion-icon name="log-in"></ion-icon>
           SIGN IN
