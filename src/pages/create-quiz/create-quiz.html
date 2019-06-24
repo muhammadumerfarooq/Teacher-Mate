@@ -99,13 +99,13 @@
             </ion-select>
           </ion-item>
         </ion-col>
-        <ion-col col-4>
+        <ion-col col-2>
           <!--<ion-item no-padding>-->
           <div class="box" [style.background-color]="mycolor"></div>
 
           <!-- </ion-item> -->
         </ion-col>
-        <ion-col col-2>
+        <ion-col col-4>
           <ion-item no-padding>
             <ion-select placeholder="Type" class="max-width full-width">
               <div *ngFor="let type of quiztype">
@@ -130,10 +130,10 @@
               <ion-datetime displayFormat="hh:mm:ss" hourValues="00" [(ngModel)]="quiztime"
                 (ionChange)="setQuiztime(quiztime)" (ionCancel)="cleartime()">{{quiztime}}</ion-datetime>
 
-              <div *ngIf="!this.myquiz.quizdata" class="error">
+           <!--   <div *ngIf="!this.myquiz.quizdata" class="error">
                 Please enter a valid date.
               </div>
-
+-->
             </ion-item>
           </ion-col>
         </ion-row>

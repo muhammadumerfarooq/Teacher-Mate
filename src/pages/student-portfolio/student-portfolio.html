@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar no-border-bottom color="primary">
-    <ion-title> Course Results </ion-title>
+    <ion-title> Student Portfolio </ion-title>
     <ion-buttons left>
       <button ion-button icon-only (click)="viewctrl_dismiss()" class="my-style-for-modal">
         <ion-icon name="arrow-back"></ion-icon>
@@ -60,7 +60,7 @@
 
   </ion-card>
 
-  <ion-card class="card-css" [hidden]="portfolios.foliotypes.length == 0">
+  <ion-card class="card-css" [hidden]="portfolios.foliotypes.length == 0 && this.homeservice.user != 'teachers'">
 
     <div class="div-input">
 
