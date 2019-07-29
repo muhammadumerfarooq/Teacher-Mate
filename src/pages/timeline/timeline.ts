@@ -132,10 +132,35 @@ export class TimelinePage {
     });
   }
   feedoption(feed: Myfeed, myEvent) {
-    console.log();
     let popover = this.popoverCtrl.create('FeedNotifyPage', { feed: feed });
     console.log(myEvent)
     popover.present({ ev: myEvent });
 
+  }
+  
+  showAddressModal(){
+
+    /*let popover = this.popoverCtrl.create('SearchPage');
+    let ev = {
+      target : {
+        getBoundingClientRect : () => {
+          return {
+            top: 100
+          };
+        }
+      }
+    };
+    
+    popover.present({ev});
+    */
+   let modal = this.modalctrl.create('SearchPage');
+   modal.onDidDismiss(data => {
+     if(data == undefined) return;
+    else{
+      // load the post here 
+    }
+
+   });
+   modal.present();
   }
 }

@@ -103,7 +103,7 @@
             <button ion-button clear item-end icon-only
               (click)="downaloadAndOpenfile(s.filename, s.fileurl, s.filetype);$event.stopPropagation()">
               <!-- here -->
-              <ion-icon name="cloud-done"></ion-icon>
+              <ion-icon name="cloud-done" [ngStyle]="{'color':  s.filename ? '#4c6df9' : '#f53d3d'  }"></ion-icon>
             </button>
 
 

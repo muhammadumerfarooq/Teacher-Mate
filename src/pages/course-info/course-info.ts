@@ -85,6 +85,9 @@ export class CourseInfoPage {
     this.viewctrl.dismiss('back');
   }
   downaloadAndOpenfile(filename: string, fileurl: string, filetype: string) {
+    if (filename  == "" || filetype == "" || fileurl == ""){
+      this.presentAlert('No File Exists ','');
+    }else{
     let path = null;
     if (this.plateform.is('ios')) {
       path = this.file.documentsDirectory;
@@ -110,7 +113,7 @@ export class CourseInfoPage {
     // }).catch(err=>{
     //   this.presentAlert('Error ',err);
     // });
-
+  }
   }
 
 

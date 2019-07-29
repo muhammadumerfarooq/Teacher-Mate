@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { ViewController } from 'ionic-angular/navigation/view-controller';
+import { HomeServiceProvider } from '../../providers/home-service/home-service';
+
 // import { TimelinePage } from '../timeline/timeline';
 
 /**
@@ -23,10 +25,15 @@ export class TabsPage {
   tab3Root: any = 'BroadcasterPage';
   tab4Root: any = 'BroadcastsListPage'
   mySelectedIndex: number;
-
-  constructor(navParams: NavParams) {
+  show : boolean = true;
+  constructor(navParams: NavParams, private homeservice: HomeServiceProvider) {
+    
     this.mySelectedIndex = navParams.data.tabIndex || 0;
-
+    if (this.homeservice.user == 'parents'){
+      this.show = false;
+    }else{
+      this.show = true;
+    }
 
   }
 }

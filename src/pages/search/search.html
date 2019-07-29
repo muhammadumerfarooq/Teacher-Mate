@@ -1,0 +1,14 @@
+
+
+<ion-header>
+  <ion-toolbar>
+      <ion-searchbar placeholder="Search Post" color="primary" [(ngModel)]="searchText" [showCancelButton]="true" (ionCancel)="dismiss()"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list *ngIf="autocompleteItems != null">
+      <ion-item *ngFor="let item of this.searchservice.feedtitles | searchpost : searchText" tappable (click)="chooseItem(item)">
+          {{ item }}
+      </ion-item>
+  </ion-list>
+</ion-content>
