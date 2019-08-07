@@ -48,7 +48,7 @@ export class SubmitPostPage {
     notifications.message = this.homeservice.userprofile.username + ' added a post ';
     notifications.publisheddate = new Date().getTime().toString();
     notifications.useremail = this.homeservice.userprofile.useremail;
-
+    
     this.postprovider.postmyfeed(this.mypost, notifications).then(()=>{
      this.viewctrl.dismiss(true);
     }).catch(()=>{

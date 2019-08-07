@@ -190,9 +190,9 @@ export class CreatePostPage {
 
           this.mypost.img = (base64Image);
           this.mypost.filetype = 'img';
-          this.cropimage();
+       //   this.cropimage();
         }).catch(err => {
-          this.presentAlert('error', err);
+          this.presentAlert('error', 'Error while taking image from gallery');
         })
     }
     catch (exception) {

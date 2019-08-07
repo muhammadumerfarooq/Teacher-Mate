@@ -38,7 +38,7 @@
 
       <button ion-button tappable class="chat-button" (click)="chatpage()">
         <ion-icon name="chatbubbles"></ion-icon>
-        <span class="button__badge">4</span>
+        <!-- <span class="button__badge"></span> -->
       </button>
  
       <button ion-button tappable class="chat-button" (click)="presentNotifications($event)">
@@ -63,10 +63,25 @@
 
       <ion-item class="item-avatar" [ngStyle]="{'background-color': '#4c6df9'}">
 
+          <div *ngIf="feed.filetype == 'pdf'" [ngStyle]="{'background-color': 'transparent'}">
+              <button ion-button (click)="openfile()" class="btn-file">
+                <img src="../assets/img/allfile.jpg" class="fileimage" onError="this.src='../../assets/img/person.png';"  alt="...">
+      
+                <div class="overlay-center">
+                  <a clear small color="light" padding-bottom class="icon-href-center" title="change image">
+                    {{feed.filename}}
+                    <!--  <ion-icon name="camera"></ion-icon> -->
+                  </a>
+                </div>
+              </button>
+            </div>
+
+            <!-- <div *ngIf="feed.filetype == 'img'" [ngStyle]="{'background-color': 'transparent'}">
+             -->
         <ion-avatar item-start >
           <img [src]="feed.userurl" [ngStyle]="{'width': '50px', 'height': '50px'}" onError="this.src='../../assets/img/person.png';"  alt="...">
         </ion-avatar>
-
+<!-- </div> -->
 
         <ion-buttons end *ngIf = "this.homeservice.user == 'teachers'">
 

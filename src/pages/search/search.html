@@ -10,7 +10,8 @@
       <!-- <ion-item *ngFor="let item of this.searchservice.feedtitles | searchpost : searchText" tappable (click)="chooseItem(item)">
           {{ item }}
       </ion-item> -->
-      <ul>
+      <ul [ngStyle]="{'border': 'solid thin lightblue',
+      'font-size': '1.6em'}">
           <li *ngFor="let item of this.searchservice.feedtitles | searchpost : searchText" tappable (click)="chooseItem(item)">
             {{item}}
           </li>

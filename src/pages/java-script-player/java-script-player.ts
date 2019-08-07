@@ -60,7 +60,7 @@ export class JavaScriptPlayerPage {
     window['player'] = player;
 
     // Log all player events as they occur, for debugging purposes
-    [
+  /*  [
       'canplay',
       'durationchange',
       'ended',
@@ -76,7 +76,7 @@ export class JavaScriptPlayerPage {
       'volumechange',
       'waiting'
     ].map(eventName => player.addEventListener(eventName, e => log(eventName)));
-
+*/
     if (this.navParams.get('autoplay')) {
       // Does not work in all circumstances - see notes at
       // https://bambuser.com/docs/playback/web-player/#javascript-api

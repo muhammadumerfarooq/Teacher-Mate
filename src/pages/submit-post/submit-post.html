@@ -22,8 +22,10 @@
   -->
   <ion-card [hidden]="mypost.img == ''">
 
+   <div class="container">
 
     <img [src]="mypost.img" onError="this.src='../../assets/img/person.png';"  alt="...">
+    
 
     <!-- <ion-row>
       <ion-col>
@@ -71,8 +73,8 @@
     <button ion-button icon-only block class="postbtn" (click)="postfeed()">
       <ion-icon name="send"></ion-icon>
     </button>
-
-  </ion-card>
+  </div>
+</ion-card>
 
  <ion-card [hidden]="mypost.filetype == 'img'">
 
