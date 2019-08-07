@@ -23,6 +23,7 @@ import { NotificationsServiceProvider } from '../../providers/notifications-serv
   templateUrl: 'timeline.html',
 })
 export class TimelinePage {
+  refresher: any;
   photos = [];
 
   constructor( private notifyservice:NotificationsServiceProvider,public popoverCtrl: PopoverController, private homeservice: HomeServiceProvider, private modalctrl: ModalController, private post: PostProvider, private camera: Camera, private alertctrl: AlertController, private cropservice: Crop, private imagepicker: ImagePicker, public navCtrl: NavController, public navParams: NavParams, public afauth: AngularFireAuth) {
@@ -46,6 +47,15 @@ export class TimelinePage {
 
   }
 
+  onPullToRefresh(refresher) {
+    // don't show our own spinner: refresher component has an internal spinner
+    this.post.getfeeds();
+    setTimeout(() => {
+      refresher.complete();
+
+    }, 1000);
+
+  }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad TimelinePage');

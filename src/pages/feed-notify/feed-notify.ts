@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ModalController } from 'ionic-angular';
 import { Myfeed, PostProvider } from '../../providers/post/post';
 import { LoaderserviceProvider } from '../../providers/loaderservice/loaderservice';
 
@@ -18,7 +18,7 @@ import { LoaderserviceProvider } from '../../providers/loaderservice/loaderservi
 export class FeedNotifyPage {
 
   feed: Myfeed = new Myfeed();
-  constructor(private alertctrl:AlertController,private postservice:PostProvider,private loader:LoaderserviceProvider,public navCtrl: NavController, public navParams: NavParams) {
+  constructor(private modalctrl:ModalController,private alertctrl:AlertController,private postservice:PostProvider,private loader:LoaderserviceProvider,public navCtrl: NavController, public navParams: NavParams) {
      this.feed = this.navParams.get('feed');
 
   }
@@ -27,7 +27,20 @@ export class FeedNotifyPage {
     console.log('ionViewDidLoad FeedNotifyPage');
   }
   editfeed(){
-    
+    //EditPostPage
+
+    var modalPage = this.modalctrl.create('EditPostPage', { Myfeed: this.feed });
+    modalPage.onDidDismiss(data => {
+      if (data == true) {
+        // this.presentAlert('Success', ' post created');
+      } else if (data == false) {
+        //  this.presentAlert('Error', ' post not created');
+      } else if (data == 'back') {
+
+      }
+    });
+    modalPage.present();
+
   }
 
   deletefeed(){

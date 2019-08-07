@@ -57,6 +57,10 @@
   </ion-toolbar>
 </ion-header>
 <ion-content class="content">
+    <ion-refresher (ionRefresh)="onPullToRefresh($event)">
+        <ion-refresher-content></ion-refresher-content>
+      </ion-refresher>
+    
   <ion-card *ngFor="let feed of post.Feeds" [hidden]="post.Feeds.count == 0">
 
     <ion-row>

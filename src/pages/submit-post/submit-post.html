@@ -23,9 +23,9 @@
   <ion-card [hidden]="mypost.img == ''">
 
    <div class="container">
-
+      <div *ngIf="mypost.filetype =='img'">
     <img [src]="mypost.img"  class="image"  onError="this.src='../../assets/img/person.png';"  alt="...">
-    
+  </div>
 
     <!-- <ion-row>
       <ion-col>
@@ -106,7 +106,7 @@
   </ion-card>
 
 
-<!-- <div *ngIf="mypost.filetype == 'pdf'" [ngStyle]="{'background-color': 'transparent'}">
+ <div *ngIf="mypost.filetype == 'pdf'" [ngStyle]="{'background-color': 'transparent'}">
         <button ion-button (click)="openfile()" class="btn-file">
           <img src="../assets/img/allfile.jpg" class="fileimage">
 
@@ -118,5 +118,5 @@
           </div>
         </button>
       </div>
--->
+
 </ion-content>

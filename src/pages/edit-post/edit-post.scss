@@ -1,3 +1,124 @@
-page-edit-post {
 
+
+page-edit-post {
+    
+    .container {
+        position: relative;
+        width: 100%;
+         }
+
+
+         .fileimage {
+
+            width: 40%;
+            height: auto;
+            margin-left: 30%;
+          }
+          
+      
+   
+          
+      .image {
+        
+        width: 100%;
+        height: auto;
+      }
+    .content{
+        background: url("../assets/img/bg.jpg") no-repeat; 
+    }
+    .user-profile{
+       // background-color: #4c6df9;
+        border-radius: 1.2em;
+    }
+    .paragraph{
+        color: black;
+        
+        font-size: 1.5em;
+    }
+    .div-input{
+        padding: 13px 16px 13px 16px;
+           
+   
+            textarea{
+                color: black;
+                height: 160px;
+                font-size: 1.5em;
+                border-bottom: thin solid antiquewhite;
+            }
+        .picturebtn{
+            padding-left: 20%;
+            font-size: 2.2em;
+            color: lightblue;
+            background-color:transparent 
+        }
+        .videobtn{
+            padding-left: 50%;
+            font-size: 2.2em;
+            color: lightblue;
+            background-color:transparent
+        }
+        .input-box{
+            color: black;
+            height: 50px;
+            font-size: 1.5em;
+            border-bottom: thin solid antiquewhite;
+        }
+            p{
+                color: black;
+                height: 160px;
+                font-size: 1.5em;
+                
+            }
+            a{
+                border-bottom: thin solid antiquewhite;
+                width: 100%;
+                display: inline-block
+            }
+            .submitbtn{
+                margin-top: 5%;
+                width: 100%;
+              
+            }
+    }
+    .btn-file{
+        width: 80%;
+        box-shadow: none;
+        background: transparent;
+        height: 10.0em;
+        
+    }
+    ion-row {
+        background-color: #019689;
+    }
+    ion-buttons button[icon-only].my-style-for-modal {
+        margin: 0 6px;
+        min-width: 36px;
+     }
+
+    .div-input{
+        padding: 13px 16px 13px 16px;
+           
+   
+            textarea{
+                height: 160px;
+                font-size: 1.5em;
+                
+            }
+        
+            
+    }
+    .commentsimage{
+        border-radius: 50%;
+    }
+    .postbtn{
+      
+            margin-top: 5%;
+            width: 100%;
+           
+        
+    }
+    .whitebtn{
+        color: white;
+    }
 }
+

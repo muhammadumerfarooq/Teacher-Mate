@@ -20,12 +20,11 @@
       </button>
     </ion-fab>
     -->
-    <ion-card [hidden]="mypost.img == ''">
+    <ion-card [hidden]="mypost.filetype == 'pdf'">
   
      <div class="container">
+      <img [src]="mypost.imgurl" onError="this.src='../../assets/img/person.png';"  alt="...">
   
-      <img [src]="mypost.img" onError="this.src='../../assets/img/person.png';"  alt="...">
-      
   
       <!-- <ion-row>
         <ion-col>
@@ -62,11 +61,12 @@
       </ion-item>
       <ion-card-content>
         <div class="div-input">
+            <ion-input class="input-box" type="text" placeholder="Enter Post Title" [(ngModel)]="mypost.title" name="text"></ion-input>
+
+            
+            <ion-textarea class="textbox" type="string" placeholder="Enter Discription" [(ngModel)]="mypost.description"
+            name="text"></ion-textarea>
   
-          <p class="paragraph">
-            {{mypost.description}}
-  
-          </p>
         </div>
       </ion-card-content>
   
@@ -78,8 +78,20 @@
   
    <ion-card [hidden]="mypost.filetype == 'img'">
   
+    
+          <button ion-button (click)="openfile()" class="btn-file">
+            <img src="../assets/img/allfile.jpg" class="fileimage" onError="this.src='../../assets/img/person.png';"  alt="...">
   
-      <img src="../assets/img/allfile.jpg" onError="this.src='../../assets/img/person.png';"  alt="...">
+            <div class="overlay-center">
+              <a clear small color="light" padding-bottom class="icon-href-center" title="change image">
+                {{mypost.filename}}
+                <!--  <ion-icon name="camera"></ion-icon> -->
+              </a>
+            </div>
+          </button>
+
+  
+      <img src="../assets/img/allfile.jpg" class="fileimage" onError="this.src='../../assets/img/person.png';"  alt="...">
   
     
       <ion-item>
@@ -91,11 +103,11 @@
       </ion-item>
       <ion-card-content>
         <div class="div-input">
+            <ion-input class="input-box" type="text" placeholder="Enter Post Title" [(ngModel)]="mypost.title" name="text"></ion-input>
+
+            <ion-textarea class="textbox" type="string" placeholder="Enter Discription" [(ngModel)]="mypost.description"
+            name="text"></ion-textarea>
   
-          <p class="paragraph">
-            {{mypost.filename}}
-  
-          </p>
         </div>
       </ion-card-content>
   

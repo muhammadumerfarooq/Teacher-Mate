@@ -15,6 +15,7 @@ import { HomeServiceProvider } from '../home-service/home-service';
 
 
 export class Myfeed {
+  filetype: string;
   imgurl: string;
   title: string;
   description: string;
@@ -24,7 +25,17 @@ export class Myfeed {
   comments: Array<comments>;
   publisheddate: String;
   userurl: string;
-
+  filename: String;
+constructor(){
+  this.filename = "";
+  this.filetype = "";
+  this.imgurl = "";
+  this.title = "";
+  this.description= "";
+  this.classid = "";
+  this.teacheremail  ="";
+  this.userurl = "";
+}
 }
 /*
   Generated class for the PostProvider provider.
@@ -42,13 +53,17 @@ export class PostProvider {
   classname: string = '';
 
   constructor(private homeservice: HomeServiceProvider,private fileChooser: FileChooser, private filePath: FilePath, private fileservice: File, private notifyservice: NotificationsServiceProvider, private loader: LoaderserviceProvider, private afs: AngularFirestore, private localstorage: Storage) {
+    this.getfeeds();
 
+  }
 
+  getfeeds(){
+    
 
-    this.localstorage.get('classteacher').then(val => {
-      this.teacheremail = val;
-      this.localstorage.get('classroom').then(v => {
-        this.classname = v;
+//    this.localstorage.get('classteacher').then(val => {
+  this.teacheremail = this.homeservice.classteacher;
+  //    this.localstorage.get('classroom').then(v => {
+        this.classname = this.homeservice.classroom;
 
         this.allfeeds = this.afs.collection<Myfeed>('feeds', ref => {
           return ref.where('classid', '==', this.classname).where('teacheremail', '==', this.teacheremail)
@@ -65,6 +80,59 @@ export class PostProvider {
 
               console.log(snap.payload.doc.data())
               posts = snap.payload.doc.data();
+
+              
+            //  for (let i=0;i<posts.likes.length;i++){
+
+                let i = 0;
+                let likesarray: Array<likes> = new Array<likes>();
+
+                while(posts.likes[i]!=undefined){
+                  posts.likes[i] =   this.findimgurllike(posts.likes[i]);
+
+                  let like: likes = new likes();
+                  like.date = posts.likes[i].date;
+                  like.useremail = posts.likes[i].useremail;
+                  like.userurl = posts.likes[i].userurl;
+
+
+                  likesarray.push({...like});
+
+                  i++;
+                }
+        if (i==0){
+            posts.likes = new Array<likes>();
+
+          }
+
+          posts.likes = likesarray;
+              //}
+              i = 0;
+              let commentsarray: Array<comments> = new Array<comments>();
+
+                while(posts.comments[i]!=undefined){
+                  posts.comments[i] = this.findimgurlcomment(posts.comments[i]);
+
+                  let comment: comments = new comments();
+                  comment.date = posts.comments[i].date;
+                  comment.useremail = posts.comments[i].useremail;
+                  comment.userurl = posts.comments[i].userurl;
+
+
+                  commentsarray.push({...comment});
+
+                  i++;
+                }
+                if (i==0){
+                  posts.comments = new Array<comments>();
+                }
+
+                posts.comments = commentsarray;
+              // for (let i=0;i<posts.comments.length;i++){
+              //   this.findimgurlcomment(posts.comments[i]);
+                
+              // }
+/*
               if (posts.comments== undefined || posts.comments == null ){
                 posts.comments = new Array<comments>();
               }
@@ -77,26 +145,21 @@ export class PostProvider {
               else if (posts.likes.length == undefined || posts.likes.length == 0) {
                 posts.likes = new Array<likes>();
               }
+              */
               this.findimgurl(posts);
 
-              for (let i=0;i<posts.likes.length;i++){
-                this.findimgurllike(posts.likes[i]);
-              }
-              for (let i=0;i<posts.comments.length;i++){
-                this.findimgurlcomment(posts.comments[i]);
-                
-              }
               
               this.Feeds.push(posts);
             }
 
           })
         })
-      }).catch();
-    }).catch();
+    //   }).catch();
+    // }).catch();
 
 
   }
+
   checkforduplicate() {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
@@ -146,7 +209,7 @@ export class PostProvider {
         <div class="custom-spinner-container">
           <div class="custom-spinner-box"> loading... </div>
         </div>`,
-
+        duration: 2500
       });
       setTimeout(() => {
         this.loader.loading.present().then(() => {
@@ -163,6 +226,9 @@ export class PostProvider {
           this.newfeed.teacheremail = post.teacheremail;
           this.newfeed.title = post.title;
           this.newfeed.userurl = post.userurl;
+          this.newfeed.filetype = post.filetype;
+          this.newfeed.filename = post.filename;
+
           const id = this.afs.createId();
           const pictures = storage().ref('post/' + id);
           pictures.putString(post.img, 'data_url').then(() => {
@@ -220,6 +286,46 @@ export class PostProvider {
 
   
   }
+
+
+
+  updatemyfeed(feed: Myfeed) {
+
+    return new Promise((resolve, reject) => {
+
+      this.loader.loading = this.loader.loadingCtrl.create({
+
+        content: `
+        <div class="custom-spinner-container">
+          <div class="custom-spinner-box"> loading... </div>
+        </div>`,
+        duration: 1000
+      });
+      setTimeout(() => {
+        this.loader.loading.present().then(() => {
+              const objectfeed = Object.assign({}, feed);
+              objectfeed.comments = Object.assign({}, feed.comments);
+              objectfeed.likes = Object.assign({}, feed.likes);
+
+                this.afs.collection<Myfeed>('feeds').doc(feed.publisheddate.toString()).update(objectfeed).then(() => {
+
+                  this.loader.dismissloading();
+                  return resolve('resolve');
+                }).catch((err) => {
+
+                  this.loader.dismissloading();
+                  return resolve('error');
+                });
+              });
+
+      }, 1000);
+
+  
+      });
+  
+
+  }
+
 
   updatedlikes(updatedfeed: Myfeed, notifications: notify) {
 
@@ -443,7 +549,7 @@ export class PostProvider {
     });
   }
 
-  findimgurlcomment(comment:comments) {
+  findimgurlcomment(comment:comments):comments {
     
     this.homeservice.allparents.forEach(parents => {
    if ( comment.useremail==parents.useremail){
@@ -460,16 +566,16 @@ export class PostProvider {
       }
       
        });
-   
+   return comment;
   }
 
-  findimgurllike(like:likes) {
+  findimgurllike(like:likes) : likes{
     this.homeservice.allparents.forEach(parents => {
    if ( like.useremail==parents.useremail){
     like.userurl = parents.imgurl; 
     return like;
    }
-   
+
     });
 
     this.homeservice.allteachers.forEach(teachers => {
@@ -479,7 +585,7 @@ export class PostProvider {
       }
       
        });
-   
+       return like;
   }
 
   findimgurl(post:Myfeed) {
