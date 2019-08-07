@@ -202,7 +202,7 @@ export class StudentProfilePage {
     if (this.base64Image == '') {
       this.studentservice.insertstudent(this.studentprofile).then((res) => {
         if (res == 'exists') {
-          this.presentAlert('Student with name '+this.studentprofile.name +' already exists ', 'Successfully');
+          this.presentAlert('Student with name '+this.studentprofile.name +' and having same parent already exists ', 'Successfully');
         } else
           this.presentAlert('Student added ', 'Successfully');
       }).catch((err) => {
