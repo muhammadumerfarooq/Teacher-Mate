@@ -250,7 +250,13 @@ export class QuizDetailPage {
   }
 
   addQuestion() {
-      }
+
+    let edit_question_modal = this.modalCtrl.create('AddQuestionPage',{'quiz':this.myquiz});
+    edit_question_modal.onDidDismiss(data => {
+     
+    });
+    edit_question_modal.present();
+  }
 
   backQuestion() {
 
@@ -395,4 +401,34 @@ export class QuizDetailPage {
     });
     confirm.present();
   }
+
+  nextQuestion() {
+    
+    if (this.quizno >= 0 && (this.quizno + 1) < this.myquiz.questions.length) {
+      this.quizno++;
+      let myquestion: QuestionAnswer = new QuestionAnswer();
+      myquestion.question = this.myquiz.questions[this.quizno].question;
+
+      for (let j = 0; j < this.myquiz.questions[this.quizno].options.length; j++) {
+
+        let myoption: OptionsAnswer = new OptionsAnswer();
+
+        myoption.isanswer = this.myquiz.questions[this.quizno].options[j].isanswer
+        myoption.myanswer = false;
+        myoption.option = this.myquiz.questions[this.quizno].options[j].option
+
+        myquestion.options.push(myoption)
+
+      }
+      this.quiz.questions = myquestion;
+
+    } else {
+      this.presentAlert('No more Questions ', ' :) ');
+    }
+
+    
+    
+  }
+
+
 }

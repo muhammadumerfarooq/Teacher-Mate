@@ -12,6 +12,10 @@
 </ion-header>
 
 <ion-content class="content">
+    <ion-refresher (ionRefresh)="onPullToRefresh($event)">
+        <ion-refresher-content></ion-refresher-content>
+      </ion-refresher>
+      
   <div *ngIf ="this.homeservice.user == 'teachers'" class="chatbox">
     <button ion-button class="pull-right" color="secondary" tappable (click)="create_quiz()">
       <ion-icon name="clipboard"></ion-icon>

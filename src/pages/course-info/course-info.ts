@@ -26,7 +26,7 @@ import { HomeServiceProvider } from '../../providers/home-service/home-service';
 })
 export class CourseInfoPage {
 
-
+  refresher: any = "";
   showLevel1 = null;
   showLevel2 = null;
   data = false;
@@ -42,6 +42,19 @@ export class CourseInfoPage {
     this.courseservice.getcourses();
 
   }
+
+ 
+  onPullToRefresh(refresher){
+    this.courseservice.getcourses();
+    
+    setTimeout(() => {
+      
+
+    
+      refresher.complete();
+    }, 500);
+    }
+
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad CourseInfoPage');

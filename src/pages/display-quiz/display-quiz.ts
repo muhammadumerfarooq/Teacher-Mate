@@ -28,12 +28,25 @@ export class DisplayQuizPage {
     this.quizinfo = this.navParams.get('quizinfo');
 
     this.quizservice.getquiz(this.quizinfo.topicname);
+    
   //  this.quizservice.myquizes[0].attempted
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad DisplayQuizPage');
   }
+  
+  onPullToRefresh(refresher){
+    this.quizservice.getquiz(this.quizinfo.topicname);
+
+    setTimeout(() => {
+      
+
+    
+      refresher.complete();
+    }, 500);
+  }
+
   viewctrl_dismiss() {
     this.viewctrl.dismiss('back');
   }

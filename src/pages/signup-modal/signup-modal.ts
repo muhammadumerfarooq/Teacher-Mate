@@ -109,7 +109,7 @@ export class SignupModalPage implements OnInit  {
     this.signupservice.teachersignup(this.email, this.name).then((val)=>{
       console.log(val);
       this.afauth.auth.createUserWithEmailAndPassword(this.email, this.password).then(val=>{
-        this.storage.set('user','teacher');
+        this.storage.set('user','teacher').then(()=>{
         this.storage.set('email',this.email).then(()=>{
           
           this.storage.set('password',this.password).then(()=>{
@@ -120,12 +120,13 @@ export class SignupModalPage implements OnInit  {
             }
             this.viewCtrl.dismiss(info);
           });
-
         });
+
+      });
       
       }).catch(()=>{ 
         this.presentAlert('Account not created ','Failed');
-        this.viewCtrl.dismiss(true);
+        this.viewCtrl.dismiss(false);
         
       });
      

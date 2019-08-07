@@ -37,6 +37,8 @@
 </ion-content>
 -->
 <ion-header>
+
+
   <ion-navbar no-border-bottom color="primary">
     <ion-title> Course Syllabus </ion-title>
     <ion-buttons left>
@@ -47,7 +49,11 @@
   </ion-navbar>
 
 </ion-header>
-<ion-content class="content">
+<ion-content padding-top>
+    <ion-refresher (ionRefresh)="onPullToRefresh($event)">
+        <ion-refresher-content></ion-refresher-content>
+      </ion-refresher>
+
   <ion-card class="card-css" [hidden]="this.courseservice.allcourses.length == 0">
     <ion-list *ngFor="let ch of this.courseservice.allcourses; let courseindex=index">
       <ion-item *ngFor="let p of ch.Chapters; let i=index" text-wrap (click)="toggleLevel1(courseindex)"

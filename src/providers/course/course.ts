@@ -140,6 +140,8 @@ export class CourseProvider {
 duration: 500
     });
 
+   return new Promise((resolve,reject)=>{
+
    
       this.loaderservice.loading.present().then(()=>{
           
@@ -196,6 +198,8 @@ duration: 500
         }
       })
     })
+    return resolve();
+  });
   });
   }
   insert_course(courses: Courses){

@@ -488,7 +488,7 @@ export class HomeServiceProvider {
  
 
         this.afs.collection('classroom', ref=>{
-          return ref.where('classname','==',classname).where('classteacher','==',classteacher);
+          return ref.where('classname','==',classname).where('teacheremail','==',classteacher);
         }).get().take(1).forEach(snap=>{
         if (snap.empty){
           return reject('error');

@@ -200,6 +200,8 @@ export class TeacherloginPage implements OnInit  {
         //  this.loader.dismissloading();
           this.viewCtrl.dismiss(true);
         }
+      }else{
+        this.viewCtrl.dismiss(false);
       }
     });
     modalPage.present();

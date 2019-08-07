@@ -170,7 +170,7 @@ if (this.homeservice.user == 'parents'){
   
           this.afs.collection<Quiz>('quizes', ref => {
             return ref.where('classname', '==', this.homeservice.classroom).where('classteacher', '==', this.homeservice.classteacher);
-          }).snapshotChanges().forEach(snap => {
+          }).snapshotChanges().take(1).forEach(snap => {
   
             this.myquizes = new Array<Quiz>();
   
@@ -603,7 +603,13 @@ else{
   update_Quiz(quizes: Quiz) {
     quizes.classname = this.homeservice.classroom;
     quizes.classteacher = this.homeservice.classteacher;
-
+    if (quizes.quiztype == undefined && quizes.quiztype == null){
+      quizes.quiztype="";
+    }
+    if (quizes.quiztime == undefined && quizes.quiztime == null){
+      quizes.quiztime="";
+    }
+   
     return new Promise((resolve, reject) => {
 
       this.loaderservice.loading = this.loaderservice.loadingCtrl.create({
@@ -612,7 +618,7 @@ else{
         <div class="custom-spinner-container">
           <div class="custom-spinner-box"> loading... </div>
         </div>`,
-
+        duration: 1500
       });
 
       setTimeout(() => {

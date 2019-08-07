@@ -21,9 +21,20 @@
 
 
             {{p.question}}
+
+      
             <ion-icon color="success" item-right [name]="isLevel1Shown('idx'+i) ? 'arrow-dropdown' : 'arrow-dropright'">
-            </ion-icon>
+              </ion-icon>
+              
+            <button [ngStyle]="{'font-size':'0.8em'}" ion-button clear margin-right item-end icon-only (click)="delete_question(i)">
+                <!-- here -->
+                <ion-icon name="trash"></ion-icon>
+              </button>
+  
+         
+           
           </h2>
+       
           <ion-list *ngIf="isLevel1Shown('idx'+i)">
             <ion-item *ngFor="let s of p.options; let i2=index" text-wrap (click)="toggleLevel2('idx'+i+'idx'+i2)"
               [ngClass]="{active: isLevel2Shown('idx'+i+'idx'+i2)}">
@@ -32,10 +43,12 @@
 
                 {{s.option}}
               </h2>
+
+      
               <button ion-button margin-right clear item-end icon-only
                 (click)="downaloadAndOpenfile(s.filename,s.fileurl, s.filetype)">
                 <!-- here -->
-                <ion-icon name="cloud-done"></ion-icon>
+                <ion-icon name="cloud-done" [ngStyle]="{'color':  s.filename ? '#4c6df9' : '#f53d3d'  }" ></ion-icon>
               </button>
 
             </ion-item>
@@ -145,37 +158,37 @@
 
     <ion-card class="card-css">
 
-      <ng-template ngFor let-quest [ngForOf]="myquizes.questions" let-chap="index">
+    <!--  <ng-template ngFor let-quest [ngForOf]="questiontaken" let-chap="index"> -->
         <ion-item>
           <button class="btnfile" margin-right ion-button clear item-end icon-only>
 
           </button>
           
-          <button ion-button clear margin-right item-end icon-only (click)="delete_question(chap)">
+          <button ion-button clear margin-right item-end icon-only (click)="delete_question()">
             <!-- here -->
             <ion-icon name="trash"></ion-icon>
           </button>
 
 
           <!--  <ion-label color="primary">Chapter</ion-label> -->
-          <ion-input type="text" placeholder="Enter Question" text-left [(ngModel)]="quest.question"></ion-input>
+          <ion-input type="text" placeholder="Enter Question" text-left [(ngModel)]="questiontaken.question"></ion-input>
 
 
         </ion-item>
 
 
-        <ng-template ngFor let-opt [ngForOf]="quest.options" let-top="index">
+        <ng-template ngFor let-opt [ngForOf]="questiontaken.options" let-top="index">
           <ion-item>
             <!--   <ion-label color="primary">Topic ({{chapter.value}})</ion-label> -->
-            <ion-input type="text" placeholder="Enter Topic of {{quest.question}}" text-left [(ngModel)]="opt.option">
+            <ion-input type="text" placeholder="Add Option" text-left [(ngModel)]="opt.option">
             </ion-input>
 
-            <button ion-button clear item-end icon-only (click)="option_box(chap,top)">
+            <button ion-button clear item-end icon-only (click)="option_box(top)">
               <!-- here -->
               <ion-checkbox slot="end" [(ngModel)]="opt.isanswer"></ion-checkbox>
             </button>
 
-            <button ion-button clear margin-right item-end icon-only (click)="delete_option(chap,top)">
+            <button ion-button clear margin-right item-end icon-only (click)="delete_option(top)">
               <!-- here -->
               <ion-icon name="trash"></ion-icon>
             </button>
@@ -184,16 +197,30 @@
           </ion-item>
 
 
-        </ng-template>
+      
+       <!-- </ng-template>  -->
+
       </ng-template>
+      <div *ngIf = "questiontaken.options.length == 4 " class="divclass">
+            
+          <h3 class="search-query">
+            <span tappable (click)="addQuestion()">
+              <ion-badge class="query-tag"> Add Question </ion-badge>
+            </span>
+          </h3>
+  
+  
+        </div>
+
     </ion-card>
     <ion-card class="card-css">
 
       <div class="divclass">
         <h3 class="search-query">
-          <span tappable (click)="addQuestion()">
+          <!--<span tappable (click)="addQuestion()">
             <ion-badge class="query-tag"> Add Question </ion-badge>
           </span>
+        -->
 
           <span margin-left tappable (click)="addOption()">
             <ion-badge class="query-tag"> Add Options </ion-badge>

@@ -55,10 +55,15 @@ refresher: any;
  
 })
   }
+
   onPullToRefresh(refresher){
-    this.getdata().then(refresher.complete()).catch(refresher.complete());
-    
-  }
+    this.getdata().then(res=>{
+      refresher.complete();
+    }).catch(err=>{
+      refresher.complete();
+    });
+   }
+
   historyDetail(folio:myfolio){
     var modalPage = this.modalctrl.create('HistoryDetailPage', { folio: folio });
     modalPage.onDidDismiss(data => {

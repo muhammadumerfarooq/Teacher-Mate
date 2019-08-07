@@ -2,6 +2,12 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, AlertController } from 'ionic-angular';
 import { QuizServiceProvider, Quiz, Question, Options } from '../../providers/quiz-service/quiz-service';
 import moment from 'moment';
+import { FileChooser } from '@ionic-native/file-chooser';
+import { FileOpener } from '@ionic-native/file-opener';
+import { FilePath } from '@ionic-native/file-path';
+import { FileTransfer } from "@ionic-native/file-transfer";
+import { File } from '@ionic-native/file';
+import { Platform } from 'ionic-angular/platform/platform';
 // import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 
 
@@ -48,6 +54,9 @@ export class month {
   templateUrl: 'create-quiz.html',
 })
 export class CreateQuizPage {
+  
+  questiontaken: Question = new Question();
+  
   mydate = '';
   currentStyles = {
     'background-color': '#F84C61'
@@ -73,9 +82,10 @@ export class CreateQuizPage {
 
   months: Array<month> = new Array<month>();
   days: Array<day> = new Array<day>();
-  constructor(private alertctrl: AlertController, public viewctrl: ViewController, public navCtrl: NavController, public navParams: NavParams, private quizservice: QuizServiceProvider) {
+  constructor( private fileOpener:FileOpener,private filetransfer: FileTransfer, private file: File, private plateform: Platform, private fileChooser: FileChooser, private filePath: FilePath,private alertctrl: AlertController, public viewctrl: ViewController, public navCtrl: NavController, public navParams: NavParams, private quizservice: QuizServiceProvider) {
    
-    
+    this.questiontaken = new Question();
+ 
     this.quizinfo = this.navParams.get('quizinfo');
     this.myquizes.questions = new Array<Question>();
     this.setDate();
@@ -84,7 +94,7 @@ export class CreateQuizPage {
 
     this.quizcolor.push(new colors('blue', '#0077ff'));
     this.quizcolor.push(new colors('light green', '#B5E61B'));
-    this.quizcolor.push(new colors('dard blue', '#16144A'));
+    this.quizcolor.push(new colors('dark blue', '#16144A'));
     this.quizcolor.push(new colors('purple', '#432B9C'));
 
     this.quiztype.push('hard');
@@ -101,23 +111,48 @@ export class CreateQuizPage {
   }
 
   addQuestion() {
-    console.log(this.myquizes.questions)
-    this.myquizes.questions.push(new Question());
+    /*let questionindex = this.myquizes.questions.length;
 
+    console.log(this.myquizes.questions)
+    if (questionindex> 0 && this.myquizes.questions[questionindex - 1].options.length<4){
+      this.presentAlert("Must have 4 options in each question","");
+    }else{
+    this.myquizes.questions.push(new Question());
+    }
+    */
+   let find = false;
+   
+
+   if (this.questiontaken.options.find(x => x.isanswer == true)!=undefined){
+   this.myquizes.questions.push({...this.questiontaken});
+   this.questiontaken = new Question();
+   }else{
+     this.presentAlert("Please Select alteast one correct Answer","");
+   }
   }
 
   addOption() {
-
+/*
     let questionindex = this.myquizes.questions.length;
     if (questionindex - 1 < 0) {
       this.presentAlert('First Add Question ', '');
-    } else {
+    } else if (this.myquizes.questions[questionindex - 1].options.length>=4){
+      this.presentAlert("Already 4 Options are added ","Cannot add more");
+    }
+    else {
       this.myquizes.questions[questionindex - 1].options.push(new Options());
       let topindex = this.myquizes.questions[questionindex - 1].options.length;
       this.myquizes.questions[questionindex - 1].options[topindex - 1].option = '';
 
       console.log(this.myquizes.questions)
 
+    }*/
+    let optionindex = this.questiontaken.options.length;
+    if (optionindex>4){
+      this.presentAlert("Already 4 Options are added ","Cannot add more");
+
+    }else {
+      this.questiontaken.options.push(new Options());
     }
 
   }
@@ -147,28 +182,26 @@ export class CreateQuizPage {
     return this.showLevel2 === idx;
   };
 
-  option_box(ques: number, op: number) {
-    if (this.myquizes.questions[ques].options[op].isanswer == true)
-      this.myquizes.questions[ques].options[op].isanswer = false;
+  option_box(op: number) {
+    if (this.questiontaken.options[op].isanswer == true)
+      this.questiontaken.options[op].isanswer = false;
     else {
-      this.myquizes.questions[ques].options[op].isanswer = true;
+      this.questiontaken.options[op].isanswer = true;
     }
   }
 
   addQuiz() {
-if (this.myquizes.quizname==''){
+if (this.myquizes.quizname=='' || this.myquizes.quizname==undefined){
   this.presentAlert('Quiz Name Cannot be Empty','');
-}else if (this.myquizes.quizdescription==''){
+}else if (this.myquizes.quizdescription=='' || this.myquizes.quizdescription==undefined){
   this.presentAlert('Quiz Description Cannot be Empty','');
-}else if (this.myquizes.quizdescription==''){
-  this.presentAlert('Quiz Description Cannot be Empty','');
-}else if (this.myquizes.quiztype==''){
+}else if (this.myquizes.quiztype=='' || this.myquizes.quiztype==undefined){
   this.presentAlert('Quiz Type Cannot be Empty','');
-}else if (this.myquizes.background==''){
+}else if (this.myquizes.background==''  || this.myquizes.background==undefined){
   this.presentAlert('Quiz Color Cannot be Empty','');
 }
-else if (this.myquizes.quiztype=='hard'){
-if (this.myquizes.quiztime==''){
+else if (this.myquizes.quiztype=='hard' || this.myquizes.quiztype==undefined){
+if (this.myquizes.quiztime=='' || this.myquizes.quiztype==undefined){
   this.presentAlert('Quiz Time Cannot be Empty','');
 }
 }else{
@@ -214,7 +247,7 @@ if (this.myquizes.quiztime==''){
       let weekdiff = start.diff(end, 'weeks');
 
       if (weekdiff <= 0 || weekdiff > 1) {
-        this.presentAlert('Error', ' Quiz must have Difference of 1 week between previous Quiz');
+        this.presentAlert('Previous Quiz Date '+lastdate, ' Quiz must have Difference of 1 week between previous Quiz');
         this.mydate = '';
         this.mydate = null;
       } else {
@@ -264,12 +297,32 @@ if (this.myquizes.quiztime==''){
     this.myquizes.quiztype = value;
   }
   delete_question(chap: number) {
-    this.myquizes.questions.splice(chap, 1);
+    let confirm = this.alertctrl.create({
+      title: 'Delete Question',
+      message: 'Are you sure you want to Delete this Question?',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+            console.log('No clicked');
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            this.myquizes.questions.splice(chap, 1);
 
+          }
+        }
+      ]
+    });
+    confirm.present();
+
+    
   }
 
-  delete_option(chap: number, op: number) {
-    this.myquizes.questions[chap].options.splice(op, 1);
+  delete_option(op: number) {
+    this.questiontaken.options.splice(op, 1);
 
   }
   setQuiztime(value: string) {
@@ -281,6 +334,58 @@ if (this.myquizes.quiztime==''){
       console.log(splitarray);
       this.myquizes.quiztime = splitarray[1] + ":" + splitarray[2];
     }
+  }
+
+  downaloadAndOpenfile(filename: string, fileurl: string, filetype: string) {
+    if (filename  == "" || filetype == "" || fileurl == ""){
+      this.presentAlert('No File Exists ','');
+    }else{
+    let path = null;
+    if (this.plateform.is('ios')) {
+      path = this.file.documentsDirectory;
+    } else {
+      path = this.file.externalApplicationStorageDirectory;
+    }
+    const transfer = this.filetransfer.create();
+    transfer.download(fileurl, path + filename + '.' + filetype).then(entry => {
+      // this.presentAlert('file path ',path+'myfile.'+filetype);
+      // let url = entry.toURL();
+
+      let fileMIMEType = this.getMIMEtype(filetype);
+
+      this.fileOpener.open(path + filename + '.' + filetype, fileMIMEType).then(file => {
+        //   alert(file);
+
+        //   alert("It worked!")
+      }).catch(err => {
+        alert(JSON.stringify(err));
+      });
+    });
+    //   this.documentview.viewDocument(url,'application/'+filetype,{});
+    // }).catch(err=>{
+    //   this.presentAlert('Error ',err);
+    // });
+  }
+  }
+
+
+  getMIMEtype(extn) {
+    let ext = extn.toLowerCase();
+    let MIMETypes = {
+      'txt': 'text/plain',
+      'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'doc': 'application/msword',
+      'pdf': 'application/pdf',
+      'jpg': 'image/jpeg',
+      'bmp': 'image/bmp',
+      'png': 'image/png',
+      'xls': 'application/vnd.ms-excel',
+      'xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      'rtf': 'application/rtf',
+      'ppt': 'application/vnd.ms-powerpoint',
+      'pptx': 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+    }
+    return MIMETypes[ext];
   }
 
   cleardate() {
