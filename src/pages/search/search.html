@@ -6,9 +6,15 @@
   </ion-toolbar>
 </ion-header>
 <ion-content class="content">
-  <ion-list *ngIf="autocompleteItems != null">
-      <ion-item *ngFor="let item of this.searchservice.feedtitles | searchpost : searchText" tappable (click)="chooseItem(item)">
+ <!-- <ion-list *ngIf="autocompleteItems != null">-->
+      <!-- <ion-item *ngFor="let item of this.searchservice.feedtitles | searchpost : searchText" tappable (click)="chooseItem(item)">
           {{ item }}
-      </ion-item>
-  </ion-list>
+      </ion-item> -->
+      <ul>
+          <li *ngFor="let item of this.searchservice.feedtitles | searchpost : searchText" tappable (click)="chooseItem(item)">
+            {{item}}
+          </li>
+        </ul>
+
+ 
 </ion-content>
