@@ -20,7 +20,7 @@
     </button>
   </ion-fab>
   -->
-  <ion-card [hidden]="mypost.img == ''">
+  <ion-card [hidden]="mypost.filetype == 'pdf'">
 
    <div class="container">
       <div *ngIf="mypost.filetype =='img'">
@@ -78,8 +78,8 @@
 
  <ion-card [hidden]="mypost.filetype == 'img'">
 
-
-    <img src="../assets/img/allfile.jpg" onError="this.src='../../assets/img/person.png';"  alt="...">
+    <div class="container">
+    <img src="../assets/img/allfile.jpg" class="fileimage" onError="this.src='../../assets/img/person.png';"  alt="...">
 
   
     <ion-item>
@@ -96,27 +96,18 @@
           {{mypost.filename}}
 
         </p>
+        <p class="paragraph">
+            {{mypost.description}}
+  
+          </p>
       </div>
     </ion-card-content>
 
     <button ion-button icon-only block class="postbtn" (click)="postfeed()">
       <ion-icon name="send"></ion-icon>
     </button>
-
+</div>
   </ion-card>
 
-
- <div *ngIf="mypost.filetype == 'pdf'" [ngStyle]="{'background-color': 'transparent'}">
-        <button ion-button (click)="openfile()" class="btn-file">
-          <img src="../assets/img/allfile.jpg" class="fileimage">
-
-          <div class="overlay-center">
-            <a clear small color="light" padding-bottom class="icon-href-center" title="change image">
-              {{filename.name}}
-               <ion-icon name="camera"></ion-icon> 
-       </a>
-          </div>
-        </button>
-      </div>
 
 </ion-content>

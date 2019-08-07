@@ -49,11 +49,12 @@
     <ion-badge class="query-tag"> {{studentprofile.classteacher}} </ion-badge>
     <span class="query-explanation"> </span>
   </h3>
+  <div *ngIf="this.homeservice.user =='teachers'">
     <button ion-button icon-start block color="dark" class="Updatebtn" tappable (click)="updatestudent()">
       <ion-icon name="log-in"></ion-icon>
       Update Student
     </button>
-
+  </div>
   </div>
 <!--  <div *ngIf = "studentprofile==undefined" >
   Your child info is not added, try to add it in menu option

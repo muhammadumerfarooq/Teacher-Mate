@@ -25,7 +25,21 @@ export class SubmitPostPage {
   constructor(private homeservice:HomeServiceProvider,public alertctrl: AlertController,public postprovider:PostProvider,public navCtrl: NavController, public navParams: NavParams, public viewctrl : ViewController) {
     this.mypost = this.navParams.get('post');
    // 
-    this.comments = this.mypost.comments.length;
+  //  this.presentAlert(this.mypost.classid+
+  //   this.mypost.comments ? undefined+"comments" : ""+
+  //   this.mypost.description? undefined+"description" : ""+
+  //   this.mypost.filename? undefined+"filename" : ""+
+  //   this.mypost.filetype? undefined+"filetype" : ""+
+  //   this.mypost.img? undefined+"commeimgnts" : ""+
+  //   this.mypost.likes? undefined+"likes" : ""+
+  //   this.mypost.publisheddate? undefined+"publisheddate" : ""+
+  //   this.mypost.teacheremail? undefined+"teacheremail" : ""+
+  //   this.mypost.title? undefined+"title" : ""+
+  //   this.mypost.userurl ? undefined+"userurl" : ""
+
+  //     ,"");
+
+
     this.likes = this.mypost.likes.length; 
   }
 

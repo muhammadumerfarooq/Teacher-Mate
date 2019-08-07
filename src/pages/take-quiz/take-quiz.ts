@@ -83,7 +83,10 @@ export class TakeQuizPage {
     this.quiz.syllabusid = this.myquiz.syllabusid
     this.quiz.quiztime = this.myquiz.quiztime
     this.quiz.attempted = this.myquiz.attempted;
-
+    
+    if (this.quiz.quiztype == undefined || this.quiz.quiztype == "" || this.quiz.quiztype =="easy"){
+      this.isDisabled = true;
+    }
     if (this.myquiz.questions.length > 0) {
       let myquestion: QuestionAnswer = new QuestionAnswer();
       myquestion.question = this.myquiz.questions[this.quizno].question;

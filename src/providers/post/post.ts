@@ -11,6 +11,7 @@ import { FileChooser } from '@ionic-native/file-chooser';
 import { FileOpener } from '@ionic-native/file-opener';
 import { FilePath } from '@ionic-native/file-path';
 import { HomeServiceProvider } from '../home-service/home-service';
+import { AlertController } from 'ionic-angular';
 // import { ProfileServiceProvider } from '../profile-service/profile-service';
 
 
@@ -52,7 +53,7 @@ export class PostProvider {
   teacheremail: string = '';
   classname: string = '';
 
-  constructor(private homeservice: HomeServiceProvider,private fileChooser: FileChooser, private filePath: FilePath, private fileservice: File, private notifyservice: NotificationsServiceProvider, private loader: LoaderserviceProvider, private afs: AngularFirestore, private localstorage: Storage) {
+  constructor(private alertctrl:AlertController,private homeservice: HomeServiceProvider,private fileChooser: FileChooser, private filePath: FilePath, private fileservice: File, private notifyservice: NotificationsServiceProvider, private loader: LoaderserviceProvider, private afs: AngularFirestore, private localstorage: Storage) {
     this.getfeeds();
 
   }
@@ -198,6 +199,16 @@ export class PostProvider {
     });
 
   }
+  presentAlert(alerttitle, alertsub) {
+    let alert = this.alertctrl.create({
+      title: alerttitle,
+      subTitle: alertsub,
+      buttons: ['OK']
+    });
+    alert.present();
+   
+  }
+
   postmyfeed(post: post, notifications: notify) {
 
     return new Promise((resolve, reject) => {
@@ -234,6 +245,8 @@ export class PostProvider {
           pictures.putString(post.img, 'data_url').then(() => {
 
             storage().ref().child('post/' + id).getDownloadURL().then((url) => {
+              
+              this.presentAlert("download link",url );
 
               this.newfeed.imgurl = url;
 
@@ -243,29 +256,32 @@ export class PostProvider {
 
               notifypromise.then(result => {
                 this.afs.collection<Myfeed>('feeds').doc(this.newfeed.publisheddate.toString()).set(objectfeed).then(() => {
+                  this.presentAlert("feed added","");
 
                   this.loader.dismissloading();
                   return resolve('resolve');
                 }).catch((err) => {
-
+this.presentAlert("feed not added",err);
+                  
                   this.loader.dismissloading();
                   return resolve('error');
                 });
               }).catch(error => {
                 this.loader.dismissloading();
+                this.presentAlert("feed not added",error);
                 return resolve('error');
               });
 
 
 
             }).catch((err) => {
-
+              this.presentAlert("feed not added",err);
               this.loader.dismissloading();
               return reject('error');
             });
 
           }).catch(err => {
-
+            this.presentAlert("feed not added",err);
             this.loader.dismissloading();
             return reject('error');
           });
@@ -278,6 +294,8 @@ export class PostProvider {
 
     }catch(ex){
       this.loader.dismissloading();
+      this.presentAlert("feed not added",ex);
+
       return reject(ex);
     }
       });

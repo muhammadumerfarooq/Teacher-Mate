@@ -40,6 +40,19 @@ export class post {
   publisheddate: String;
   userurl:string;
   filename:String;
+  constructor(){
+    this.filename="";
+    this.filetype="";
+    this.classid="";
+    this.title="";
+    this.description="";
+    this.teacheremail = "";
+    this.comments = new Array<comments>();
+    this.likes = new Array<likes>();
+    this.img = "";
+    this.userurl = "";
+    
+  }
 }
 
 @IonicPage()
@@ -229,10 +242,12 @@ export class CreatePostPage {
 this.presentAlert("Feed Title Should not be empty"," Error!")
  }else if (this.mypost.description==""||this.mypost.description==undefined){
   this.presentAlert("Feed Description Should not be empty"," Error!")
- }else if (this.mypost.filetype==""||this.mypost.filetype==undefined){
+ }
+ else if (this.mypost.filetype==""||this.mypost.filetype==undefined){
   this.presentAlert("Feed Must Contains File/Image"," Error!")
 
-}else{
+}
+else{
     var modalPage = this.modalctrl.create('SubmitPostPage', { post: post });
     modalPage.onDidDismiss(data => {
       if (data == true) {

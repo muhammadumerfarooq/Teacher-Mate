@@ -25,6 +25,7 @@
           </ion-badge>
 
           <progress-bar [props]="folio"></progress-bar>
+          <div *ngIf= "this.homeservice.user == 'teachers'">
           <button class="btn-inc" ion-button clear item-end icon-only (click)="removepercent(folio,folioindex)">
             <!-- here -->
             <ion-icon name="remove"></ion-icon>
@@ -34,6 +35,7 @@
             <!-- here -->
             <ion-icon name="add"></ion-icon>
           </button>
+        </div>
           <span class="query-explanation"> </span>
         </h3>
         <div *ngIf="listfolios[folioindex].description">
@@ -62,7 +64,7 @@
 
   <ion-card class="card-css" [hidden]="portfolios.foliotypes.length == 0 && this.homeservice.user != 'teachers'">
 
-    <div class="div-input">
+    <div *ngIf="this.homeservice.user == 'teachers'" class="div-input">
 
       <!-- {{offer.desc}} Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. -->
 
@@ -78,7 +80,7 @@
 
   </ion-card>
 
-  <ion-card class="card-css">
+  <ion-card *ngIf = "this.homeservice.user == 'teachers'" [hidden] = "this.homeservice.user == 'parents'" class="card-css">
 
     <button class="Syllabusclass" ion-button margin-top full (click)="SubmitFolio()">Submit/Update Portfolio</button>
   </ion-card>
