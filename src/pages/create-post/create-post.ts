@@ -225,7 +225,14 @@ export class CreatePostPage {
     console.log(new Date().getTime().toString())
     this.mypost.publisheddate = new Date().getTime().toString();
     var post = this.mypost;
+ if (this.mypost.title==""||this.mypost.title==undefined){
+this.presentAlert("Feed Title Should not be empty"," Error!")
+ }else if (this.mypost.description==""||this.mypost.description==undefined){
+  this.presentAlert("Feed Description Should not be empty"," Error!")
+ }else if (this.mypost.filetype==""||this.mypost.filetype==undefined){
+  this.presentAlert("Feed Must Contains File/Image"," Error!")
 
+}else{
     var modalPage = this.modalctrl.create('SubmitPostPage', { post: post });
     modalPage.onDidDismiss(data => {
       if (data == true) {
@@ -243,6 +250,7 @@ export class CreatePostPage {
       }
     });
     modalPage.present();
+  }
   }
 
   chosefile() {
