@@ -138,7 +138,7 @@ export class PostProvider {
   postmyfeed(post: post, notifications: notify) {
 
     return new Promise((resolve, reject) => {
-
+      try{
 
       this.loader.loading = this.loader.loadingCtrl.create({
 
@@ -152,7 +152,6 @@ export class PostProvider {
         this.loader.loading.present().then(() => {
           let docid = new Date().getTime().toString();
           notifications.publisheddate = docid;
-
           let notifypromise = this.postfeednotification(notifications);
 
           this.newfeed = new Myfeed();
@@ -211,7 +210,15 @@ export class PostProvider {
         });
       }, 2000);
 
-    });
+    }catch(ex){
+      this.loader.dismissloading();
+      return reject(ex);
+    }
+      });
+  
+
+
+  
   }
 
   updatedlikes(updatedfeed: Myfeed, notifications: notify) {

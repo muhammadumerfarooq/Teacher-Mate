@@ -51,7 +51,10 @@ export class SubmitPostPage {
     
     this.postprovider.postmyfeed(this.mypost, notifications).then(()=>{
      this.viewctrl.dismiss(true);
-    }).catch(()=>{
+    }).catch((err)=>{
+      
+      this.presentAlert(err,"");
+
      this.viewctrl.dismiss(false);
     });
   }
