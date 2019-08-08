@@ -246,7 +246,7 @@ export class PostProvider {
 
             storage().ref().child('post/' + id).getDownloadURL().then((url) => {
               
-              this.presentAlert("download link",url );
+        //      this.presentAlert("download link",url );
 
               this.newfeed.imgurl = url;
 
@@ -256,32 +256,32 @@ export class PostProvider {
 
               notifypromise.then(result => {
                 this.afs.collection<Myfeed>('feeds').doc(this.newfeed.publisheddate.toString()).set(objectfeed).then(() => {
-                  this.presentAlert("feed added","");
+  //                this.presentAlert("feed added","");
 
                   this.loader.dismissloading();
                   return resolve('resolve');
                 }).catch((err) => {
-this.presentAlert("feed not added",err);
+//this.presentAlert("feed not added",err);
                   
                   this.loader.dismissloading();
                   return resolve('error');
                 });
               }).catch(error => {
                 this.loader.dismissloading();
-                this.presentAlert("feed not added",error);
+    //            this.presentAlert("feed not added",error);
                 return resolve('error');
               });
 
 
 
             }).catch((err) => {
-              this.presentAlert("feed not added",err);
+      //        this.presentAlert("feed not added",err);
               this.loader.dismissloading();
               return reject('error');
             });
 
           }).catch(err => {
-            this.presentAlert("feed not added",err);
+        //    this.presentAlert("feed not added",err);
             this.loader.dismissloading();
             return reject('error');
           });
@@ -294,7 +294,7 @@ this.presentAlert("feed not added",err);
 
     }catch(ex){
       this.loader.dismissloading();
-      this.presentAlert("feed not added",ex);
+    //  this.presentAlert("feed not added",ex);
 
       return reject(ex);
     }
