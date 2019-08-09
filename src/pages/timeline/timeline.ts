@@ -68,7 +68,6 @@ export class TimelinePage {
     modalPage.onDidDismiss(data => {
       if (data == true) {
         console.log(data + " parentsignup ")
-        // this.viewCtrl.dismiss(true);
       }
     });
     modalPage.present();
@@ -124,9 +123,7 @@ export class TimelinePage {
     var modalPage = this.modalctrl.create('PostDetailPage', { Myfeed: feed });
     modalPage.onDidDismiss(data => {
       if (data == true) {
-        // this.presentAlert('Success', ' post created');
       } else if (data == false) {
-        //  this.presentAlert('Error', ' post not created');
       } else if (data == 'back') {
 
       }
